@@ -18,7 +18,6 @@ namespace ESP
       if (!Settings.showNoise)
         return;
       var text = CharacterUtils.GetNameText(__instance) + "\n" + CharacterUtils.GetNameText(___m_noiseRange);
-      if (___m_noiseRange == 0) text = "";
       Drawer.DrawSphere(__instance.gameObject, __instance.transform.position, ___m_noiseRange, Color.cyan, 0.1f, text);
     }
   }
@@ -31,7 +30,6 @@ namespace ESP
       if (!Settings.showNoise)
         return;
       var text = CharacterUtils.GetNameText(__instance) + "\n" + CharacterUtils.GetNameText(___m_noiseRange);
-      if (___m_noiseRange == 0) text = "";
       Drawer.UpdateSphere(__instance.gameObject, Vector3.zero, ___m_noiseRange, text);
     }
   }

@@ -1,14 +1,86 @@
 using System;
+using HarmonyLib;
 using UnityEngine;
 
 namespace ESP
 {
+  [HarmonyPatch(typeof(Player), "UpdateHover")]
+  public class Player_UpdateHover
+  {
+    // Extra hover search for drawn objects if no other hover object.
+    public static void Postfix(ref GameObject ___m_hovering, ref GameObject ___m_hoveringCreature)
+    {
+      if (___m_hovering || ___m_hoveringCreature) return;
+      var hits = Physics.RaycastAll(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, 50f, LayerMask.GetMask(new String[] { "character_trigger" }));
+      Array.Sort<RaycastHit>(hits, (RaycastHit x, RaycastHit y) => x.distance.CompareTo(y.distance));
+      foreach (var hit in hits)
+      {
+        if (hit.distance == 0) continue;
+        if (hit.collider.GetComponent<Hoverable>() != null)
+        {
+          ___m_hovering = hit.collider.gameObject;
+          return;
+        }
+      }
+    }
+  }
+
+
+  /**
+private void FindHoverObject(out GameObject hover, out Character hoverCreature)
+    {
+      hover = null;
+      hoverCreature = null;
+      RaycastHit[] array = Physics.RaycastAll(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, 50f, this.m_interactMask);
+      Array.Sort<RaycastHit>(array, (RaycastHit x, RaycastHit y) => x.distance.CompareTo(y.distance));
+      RaycastHit[] array2 = array;
+      int i = 0;
+      while (i < array2.Length)
+      {
+        RaycastHit raycastHit = array2[i];
+        if (!raycastHit.collider.attachedRigidbody || !(raycastHit.collider.attachedRigidbody.gameObject == base.gameObject))
+        {
+          if (hoverCreature == null)
+          {
+            Character character = raycastHit.collider.attachedRigidbody ? raycastHit.collider.attachedRigidbody.GetComponent<Character>() : raycastHit.collider.GetComponent<Character>();
+            if (character != null)
+            {
+              hoverCreature = character;
+            }
+          }
+          if (Vector3.Distance(this.m_eye.position, raycastHit.point) >= this.m_maxInteractDistance)
+          {
+            break;
+          }
+          if (raycastHit.collider.GetComponent<Hoverable>() != null)
+          {
+            hover = raycastHit.collider.gameObject;
+            return;
+          }
+          if (raycastHit.collider.attachedRigidbody)
+          {
+            hover = raycastHit.collider.attachedRigidbody.gameObject;
+            return;
+          }
+          hover = raycastHit.collider.gameObject;
+          return;
+        }
+        else
+        {
+          i++;
+        }
+      }
+    }
+*/
+
+
   public class Drawer
   {
     private static int GetSegments(float angle) => (int)Math.Floor(32 * angle / 360);
     private static GameObject CreateObject(GameObject parent)
     {
       var obj = new GameObject();
+      obj.layer = LayerMask.NameToLayer("character_trigger");
       obj.transform.position = parent.transform.position;
       obj.transform.rotation = parent.transform.rotation;
       obj.transform.parent = parent.transform;

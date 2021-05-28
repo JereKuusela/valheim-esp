@@ -18,10 +18,12 @@ namespace ESP
     public static bool showBaseAI => configShowBaseAI.Value;
     public static ConfigEntry<bool> configshowNoise;
     public static bool showNoise => configshowNoise.Value;
+    public static ConfigEntry<bool> configShowProgress;
+    public static bool showProgress => configShowProgress.Value;
   }
 
 
-  [BepInPlugin("valheim.jerekuusela.eso", "ESP", "1.0.0.0")]
+  [BepInPlugin("valheim.jerekuusela.esp", "ESP", "1.0.0.0")]
   public class ESP : BaseUnityPlugin
   {
     void Awake()
@@ -31,7 +33,8 @@ namespace ESP
       Settings.configShowEffectAreas = Config.Bind("General", "ShowEffectAreas", true, "Whether to visualize structure effect areas");
       Settings.configShowPickables = Config.Bind("General", "ShowPickables", true, "Whether to visualize pickables");
       Settings.configShowBaseAI = Config.Bind("General", "ShowCreatures", true, "Whether to visualize creatures");
-      Settings.configshowNoise = Config.Bind("General", "ShowNoise", true, "Whether to noise");
+      Settings.configshowNoise = Config.Bind("General", "ShowNoise", true, "Whether to visualize noise");
+      Settings.configShowProgress = Config.Bind("General", "ShowProgress", true, "Whether to show progress for plants and structures");
       var harmony = new Harmony("valheim.jerekuusela.reverse_engineer");
       harmony.PatchAll();
     }
