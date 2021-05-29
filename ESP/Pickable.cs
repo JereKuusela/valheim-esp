@@ -8,10 +8,11 @@ namespace ESP
   {
     public static bool IsEnabled(Pickable instance)
     {
+      if (!Settings.showPickables) return false;
       var name = instance.m_itemPrefab.name.ToLower();
       var excluded = Settings.excludedPickables.ToLower().Split(',');
       if (Array.Exists(excluded, item => item == name)) return false;
-      return Settings.showPickables;
+      return true;
     }
     private static String GetRespawnTime(Pickable instance, ZNetView nview, bool picked)
     {

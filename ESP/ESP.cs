@@ -10,6 +10,8 @@ namespace ESP
     public static bool showSpawnAreas => configShowSpawnAreas.Value;
     public static ConfigEntry<bool> configShowCreatureSpawners;
     public static bool showCreatureSpawners => configShowCreatureSpawners.Value;
+    public static ConfigEntry<string> configExcludedCreatureSpawners;
+    public static string excludedCreatureSpawners => configExcludedCreatureSpawners.Value;
     public static ConfigEntry<bool> configShowBiomes;
     public static bool showBiomes => configShowBiomes.Value;
     public static ConfigEntry<bool> configShowEffectAreas;
@@ -36,17 +38,18 @@ namespace ESP
   {
     void Awake()
     {
-      Settings.configShowCreatureSpawners = Config.Bind("General", "ShowCreatureSpawners", true, "Enable creature spawn points");
-      Settings.configShowSpawnAreas = Config.Bind("General", "ShowSpawnAreas", true, "Enable creature spawners");
+      Settings.configShowCreatureSpawners = Config.Bind("SpawnPoints", "ShowSpawnPoints", true, "Enable for creature spawn points");
+      Settings.configExcludedCreatureSpawners = Config.Bind("SpawnPoints", "ExcludedSpawnPoints", "", "List of creatures separated by , that are not visualized");
+      Settings.configShowSpawnAreas = Config.Bind("General", "ShowCreatureSpawners", true, "Enable for creature spawners");
       Settings.configShowBiomes = Config.Bind("General", "ShowBiomes", true, "Enable biomes");
-      Settings.configShowEffectAreas = Config.Bind("General", "ShowEffectAreas", true, "Enable structure effect areas");
-      Settings.configShowPickables = Config.Bind("Pickables", "ShowPickables", true, "Enablee pickables");
+      Settings.configShowEffectAreas = Config.Bind("General", "ShowEffectAreas", true, "Enable for structure effect areas");
+      Settings.configShowPickables = Config.Bind("Pickables", "ShowPickables", true, "Enablee for pickables");
       Settings.configExcludedPickables = Config.Bind("Pickables", "ExcludedPickables", "Wood,Stone", "List of items separated by , that are not visualized");
-      Settings.configShowBaseAI = Config.Bind("General", "ShowCreatures", true, "Enable creatures");
-      Settings.configshowNoise = Config.Bind("General", "ShowNoise", true, "Enable noise");
+      Settings.configShowBaseAI = Config.Bind("General", "ShowCreatures", true, "Enable for creatures");
+      Settings.configshowNoise = Config.Bind("General", "ShowNoise", true, "Enable for noise");
       Settings.configShowProgress = Config.Bind("General", "ShowProgress", true, "Enable progress for plants and structures");
-      Settings.configShowChests = Config.Bind("General", "ShowChests", true, "Enable hidden chests");
-      Settings.configShowLocations = Config.Bind("General", "ShowLocations", true, "Enable pre-made structures and other locations");
+      Settings.configShowChests = Config.Bind("General", "ShowChests", true, "Enable for hidden chests");
+      Settings.configShowLocations = Config.Bind("General", "ShowLocations", true, "Enable for pre-made structures and other locations");
       var harmony = new Harmony("valheim.jerekuusela.reverse_engineer");
       harmony.PatchAll();
     }

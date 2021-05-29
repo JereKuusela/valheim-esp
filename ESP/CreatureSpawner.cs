@@ -6,6 +6,14 @@ namespace ESP
 {
   public class CreatureSpawnerUtils
   {
+    public static bool IsEnabled(CreatureSpawner instance)
+    {
+      if (!Settings.showCreatureSpawners) return false;
+      var name = instance.name.ToLower();
+      var excluded = Settings.excludedCreatureSpawners.ToLower().Split(',');
+      if (Array.Exists(excluded, item => item == name)) return false;
+      return true;
+    }
     private static String GetRespawnTime(CreatureSpawner instance, ZNetView nview)
     {
       if (instance.m_respawnTimeMinuts == 0) return "Never";
@@ -45,7 +53,7 @@ namespace ESP
   {
     public static void Postfix(CreatureSpawner __instance, ZNetView ___m_nview)
     {
-      if (!Settings.showCreatureSpawners)
+      if (!CreatureSpawnerUtils.IsEnabled(__instance))
         return;
       var color = CreatureSpawnerUtils.GetColor(__instance);
       var text = CreatureSpawnerUtils.GetText(__instance, ___m_nview);
@@ -58,7 +66,7 @@ namespace ESP
   {
     public static void Postfix(CreatureSpawner __instance, ZNetView ___m_nview)
     {
-      if (!Settings.showCreatureSpawners)
+      if (!CreatureSpawnerUtils.IsEnabled(__instance))
         return;
       var text = CreatureSpawnerUtils.GetText(__instance, ___m_nview);
       __instance.GetComponentInChildren<HoverText>().m_text = text;

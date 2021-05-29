@@ -1,6 +1,4 @@
 using HarmonyLib;
-using UnityEngine;
-using System;
 
 namespace ESP
 {
@@ -15,18 +13,6 @@ namespace ESP
     {
       return m_nview.GetZDO().GetFloat("slot" + slot, 0f);
     }
-    // Copypaste from decompiled.
-    private static CookingStation.ItemConversion GetItemConversion(CookingStation instance, string itemName)
-    {
-      foreach (var itemConversion in instance.m_conversion)
-      {
-        if (itemConversion.m_from.gameObject.name == itemName || itemConversion.m_to.gameObject.name == itemName)
-        {
-          return itemConversion;
-        }
-      }
-      return null;
-    }
     public static void Postfix(CookingStation __instance, ZNetView ___m_nview, ref string __result)
     {
       if (!Settings.showProgress)
@@ -36,7 +22,7 @@ namespace ESP
         var itemName = GetItem(___m_nview, i);
         var cookedTime = GetTime(___m_nview, i);
         if (itemName == "") continue;
-        var item = GetItemConversion(__instance, itemName);
+        var item = Patch.CookingStation_GetItemConversion(__instance, itemName);
         if (item == null) continue;
         var value = cookedTime;
         var limit = item.m_cookTime;
