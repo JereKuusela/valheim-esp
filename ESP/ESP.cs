@@ -6,6 +6,13 @@ namespace ESP
 {
   public class Settings
   {
+    public static ConfigEntry<bool> configShowCreatureRays;
+    public static bool showCreatureRays => configShowCreatureRays.Value;
+    public static ConfigEntry<string> configExcludedCreatures;
+    public static string excludedCreatures => configExcludedCreatures.Value;
+    public static ConfigEntry<float> configCharacterRayWidth;
+    public static float characterRayWidth => configCharacterRayWidth.Value;
+
     public static ConfigEntry<bool> configShowSpawnAreas;
     public static bool showSpawnAreas => configShowSpawnAreas.Value;
     public static ConfigEntry<bool> configShowCreatureSpawners;
@@ -26,6 +33,8 @@ namespace ESP
     public static bool showNoise => configshowNoise.Value;
     public static ConfigEntry<bool> configShowProgress;
     public static bool showProgress => configShowProgress.Value;
+    public static ConfigEntry<bool> configShowCreatureStats;
+    public static bool showCreatureStats => configShowCreatureStats.Value;
     public static ConfigEntry<bool> configShowChests;
     public static bool showChests => configShowChests.Value;
     public static ConfigEntry<bool> configShowLocations;
@@ -38,6 +47,12 @@ namespace ESP
   {
     void Awake()
     {
+      Settings.configShowBaseAI = Config.Bind("Creatures", "Show creature senses", true, "Enable to visualuze creature sight and hear ranges");
+      Settings.configShowCreatureStats = Config.Bind("Creatures", "Show creature stats", true, "Enable to show creature health, stagger, mass and resistances");
+      Settings.configShowCreatureRays = Config.Bind("Creatures", "Show creature rays", true, "Enable to visualize creature locations");
+      Settings.configCharacterRayWidth = Config.Bind("Creatures", "Width of the character rays", 0.5f, "");
+      Settings.configExcludedCreatures = Config.Bind("Creatures", "Exclude creatures", "", "List of creatures separated by ,");
+
       Settings.configShowCreatureSpawners = Config.Bind("SpawnPoints", "ShowSpawnPoints", true, "Enable for creature spawn points");
       Settings.configExcludedCreatureSpawners = Config.Bind("SpawnPoints", "ExcludedSpawnPoints", "", "List of creatures separated by , that are not visualized");
       Settings.configShowSpawnAreas = Config.Bind("General", "ShowCreatureSpawners", true, "Enable for creature spawners");
@@ -45,7 +60,6 @@ namespace ESP
       Settings.configShowEffectAreas = Config.Bind("General", "ShowEffectAreas", true, "Enable for structure effect areas");
       Settings.configShowPickables = Config.Bind("Pickables", "ShowPickables", true, "Enablee for pickables");
       Settings.configExcludedPickables = Config.Bind("Pickables", "ExcludedPickables", "Wood,Stone", "List of items separated by , that are not visualized");
-      Settings.configShowBaseAI = Config.Bind("General", "ShowCreatures", true, "Enable for creatures");
       Settings.configshowNoise = Config.Bind("General", "ShowNoise", true, "Enable for noise");
       Settings.configShowProgress = Config.Bind("General", "ShowProgress", true, "Enable progress for plants and structures");
       Settings.configShowChests = Config.Bind("General", "ShowChests", true, "Enable for hidden chests");

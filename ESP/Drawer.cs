@@ -11,11 +11,15 @@ namespace ESP
     public static void Postfix(ref GameObject ___m_hovering, ref GameObject ___m_hoveringCreature)
     {
       if (___m_hovering || ___m_hoveringCreature) return;
-      var hits = Physics.RaycastAll(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, 50f, LayerMask.GetMask(new string[] { "character_trigger" }));
+      var distance = 50f;
+      var mask = LayerMask.GetMask(new string[] { "character_trigger" });
+      var hits = Physics.RaycastAll(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, distance, mask);
+      // Reverse search is used to find edge when inside colliders.
+      var reverseHits = Physics.RaycastAll(GameCamera.instance.transform.position + GameCamera.instance.transform.forward * distance, -GameCamera.instance.transform.forward, distance, mask);
+      hits = hits.AddRangeToArray(reverseHits);
       Array.Sort<RaycastHit>(hits, (RaycastHit x, RaycastHit y) => x.distance.CompareTo(y.distance));
       foreach (var hit in hits)
       {
-        if (hit.distance == 0) continue;
         if (hit.collider.GetComponent<Hoverable>() != null)
         {
           ___m_hovering = hit.collider.gameObject;

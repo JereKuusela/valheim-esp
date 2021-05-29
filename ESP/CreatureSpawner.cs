@@ -28,7 +28,7 @@ namespace ESP
       var respawn = GetRespawnTime(instance, nview);
       var level = instance.m_maxLevel > instance.m_minLevel ? instance.m_minLevel + "-" + instance.m_maxLevel : instance.m_maxLevel.ToString();
       var lines = new string[]{
-        TextUtils.StringValue(instance.m_creaturePrefab.name),
+        TextUtils.StringValue(Localization.instance.Localize(instance.m_creaturePrefab.name)),
         "Respawn: " + TextUtils.StringValue(respawn),
         "Level: " + TextUtils.StringValue(level) + " (" + TextUtils.PercentValue(instance.m_levelupChance / 100f) + " per level)"
       };

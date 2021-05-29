@@ -25,6 +25,9 @@
     <Reference Include="assembly_valheim.dll">
       <HintPath>..\Libs\assembly_valheim.dll</HintPath>
     </Reference>
+    <Reference Include="assembly_guiutils.dll">
+      <HintPath>..\Libs\assembly_guiutils.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

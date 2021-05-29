@@ -1,13 +1,8 @@
 Drawer:
- - Add backwards raytracing. Use to find edge when inside areas.
- * Setting for line widths per type.
- * Some kind of color customization.
+ - Setting for line widths per type.
+ - Some kind of color customization (rgb + string to color).
+ * List of priority names (different color and width can be set).
 
-Enemies:
- - Add health
- - Add resists.
- - Add ray from enemies.
- - Add setting to filter rayed enemies.
 
 Creatures:
  - Add breeding range, visualize conditions.
