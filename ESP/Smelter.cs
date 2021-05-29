@@ -25,13 +25,13 @@ namespace ESP
       var value = GetBakeTimer(___m_nview);
       var limit = __instance.m_secPerProduct;
       if (limit > 0)
-        hover.m_hoverText += "\n" + TextUtils.ProgressValue(value, limit);
+        hover.m_hoverText += "\n" + TextUtils.ProgressValue("Progress", value, limit);
       if (__instance.m_maxFuel > 0)
       {
         value = GetFuel(___m_nview) * __instance.m_secPerProduct / __instance.m_fuelPerProduct;
         limit = __instance.m_maxFuel * __instance.m_secPerProduct / __instance.m_fuelPerProduct;
         if (limit > 0)
-          hover.m_hoverText += "\n" + TextUtils.ProgressValue(value, limit, "Fuel");
+          hover.m_hoverText += "\n" + TextUtils.ProgressValue("Fuel", value, limit);
 
       }
       if (__instance.m_windmill)

@@ -29,7 +29,7 @@ namespace ESP
       var value = TimeSincePlanted(___m_nview);
       var limit = GetGrowTime(__instance, ___m_nview);
       if (limit > 0)
-        __result += "\n" + TextUtils.ProgressValue(value, limit);
+        __result += "\n" + TextUtils.ProgressValue("Progress", value, limit);
     }
   }
 }

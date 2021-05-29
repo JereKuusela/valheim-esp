@@ -11,7 +11,7 @@ namespace ESP
     public static void Postfix(ref GameObject ___m_hovering, ref GameObject ___m_hoveringCreature)
     {
       if (___m_hovering || ___m_hoveringCreature) return;
-      var hits = Physics.RaycastAll(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, 50f, LayerMask.GetMask(new String[] { "character_trigger" }));
+      var hits = Physics.RaycastAll(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, 50f, LayerMask.GetMask(new string[] { "character_trigger" }));
       Array.Sort<RaycastHit>(hits, (RaycastHit x, RaycastHit y) => x.distance.CompareTo(y.distance));
       foreach (var hit in hits)
       {
@@ -24,55 +24,6 @@ namespace ESP
       }
     }
   }
-
-
-  /**
-private void FindHoverObject(out GameObject hover, out Character hoverCreature)
-    {
-      hover = null;
-      hoverCreature = null;
-      RaycastHit[] array = Physics.RaycastAll(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, 50f, this.m_interactMask);
-      Array.Sort<RaycastHit>(array, (RaycastHit x, RaycastHit y) => x.distance.CompareTo(y.distance));
-      RaycastHit[] array2 = array;
-      int i = 0;
-      while (i < array2.Length)
-      {
-        RaycastHit raycastHit = array2[i];
-        if (!raycastHit.collider.attachedRigidbody || !(raycastHit.collider.attachedRigidbody.gameObject == base.gameObject))
-        {
-          if (hoverCreature == null)
-          {
-            Character character = raycastHit.collider.attachedRigidbody ? raycastHit.collider.attachedRigidbody.GetComponent<Character>() : raycastHit.collider.GetComponent<Character>();
-            if (character != null)
-            {
-              hoverCreature = character;
-            }
-          }
-          if (Vector3.Distance(this.m_eye.position, raycastHit.point) >= this.m_maxInteractDistance)
-          {
-            break;
-          }
-          if (raycastHit.collider.GetComponent<Hoverable>() != null)
-          {
-            hover = raycastHit.collider.gameObject;
-            return;
-          }
-          if (raycastHit.collider.attachedRigidbody)
-          {
-            hover = raycastHit.collider.attachedRigidbody.gameObject;
-            return;
-          }
-          hover = raycastHit.collider.gameObject;
-          return;
-        }
-        else
-        {
-          i++;
-        }
-      }
-    }
-*/
-
 
   public class Drawer
   {
@@ -100,7 +51,7 @@ private void FindHoverObject(out GameObject hover, out Character hoverCreature)
     {
       return new Vector3(Math.Abs(end.x - start.x) + width, Math.Abs(end.y - start.y) + width, Math.Abs(end.z - start.z) + width);
     }
-    public static void DrawLine(GameObject parent, Vector3 start, Vector3 end, Color color, float width, String text = "")
+    public static void DrawLine(GameObject parent, Vector3 start, Vector3 end, Color color, float width, string text = "")
     {
       var obj = CreateObject(parent);
       if (text != "")
@@ -116,7 +67,7 @@ private void FindHoverObject(out GameObject hover, out Character hoverCreature)
       component.SetPosition(1, end);
     }
 
-    private static void UpdateSphereText(GameObject obj, float radius, String text)
+    private static void UpdateSphereText(GameObject obj, float radius, string text)
     {
       if (text == "") return;
       obj.GetComponentInChildren<HoverText>().m_text = text;
@@ -124,7 +75,7 @@ private void FindHoverObject(out GameObject hover, out Character hoverCreature)
       collider.isTrigger = true;
       collider.radius = radius;
     }
-    private static void AddSphereText(GameObject obj, float radius, String text)
+    private static void AddSphereText(GameObject obj, float radius, string text)
     {
       if (text == "") return;
       obj.AddComponent<HoverText>().m_text = text;
@@ -145,7 +96,7 @@ private void FindHoverObject(out GameObject hover, out Character hoverCreature)
         currentAngle += (angle / segments);
       }
     }
-    public static void DrawArcX(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, String text = "")
+    public static void DrawArcX(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, string text = "")
     {
       var obj = CreateObject(parent);
       AddSphereText(obj, radius, text);
@@ -165,7 +116,7 @@ private void FindHoverObject(out GameObject hover, out Character hoverCreature)
         currentAngle += (angle / segments);
       }
     }
-    public static void DrawArcY(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, String text = "")
+    public static void DrawArcY(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, string text = "")
     {
       var obj = CreateObject(parent);
       AddSphereText(obj, radius, text);
@@ -185,7 +136,7 @@ private void FindHoverObject(out GameObject hover, out Character hoverCreature)
         currentAngle += (angle / segments);
       }
     }
-    public static void DrawArcZ(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, String text = "")
+    public static void DrawArcZ(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, string text = "")
     {
       var obj = CreateObject(parent);
       AddSphereText(obj, radius, text);
@@ -196,7 +147,7 @@ private void FindHoverObject(out GameObject hover, out Character hoverCreature)
     {
       UpdateArcX(renderer, position, radius, 360f);
     }
-    private static void DrawCircleX(GameObject parent, Vector3 position, float radius, Color color, float width, String text = "")
+    private static void DrawCircleX(GameObject parent, Vector3 position, float radius, Color color, float width, string text = "")
     {
       DrawArcX(parent, position, radius, 360f, color, width, text);
     }
@@ -204,7 +155,7 @@ private void FindHoverObject(out GameObject hover, out Character hoverCreature)
     {
       UpdateArcY(renderer, position, radius, 360f);
     }
-    private static void DrawCircleY(GameObject parent, Vector3 position, float radius, Color color, float width, String text = "")
+    private static void DrawCircleY(GameObject parent, Vector3 position, float radius, Color color, float width, string text = "")
     {
       DrawArcY(parent, position, radius, 360f, color, width, text);
     }
@@ -212,15 +163,15 @@ private void FindHoverObject(out GameObject hover, out Character hoverCreature)
     {
       UpdateArcZ(renderer, position, radius, 360f);
     }
-    private static void DrawCircleZ(GameObject parent, Vector3 position, float radius, Color color, float width, String text = "")
+    private static void DrawCircleZ(GameObject parent, Vector3 position, float radius, Color color, float width, string text = "")
     {
       DrawArcZ(parent, position, radius, 360f, color, width, text);
     }
-    public static void DrawCircle(GameObject parent, Vector3 position, float radius, Color color, float width, String text = "")
+    public static void DrawCircle(GameObject parent, Vector3 position, float radius, Color color, float width, string text = "")
     {
       DrawCircleY(parent, position, radius, color, width, text);
     }
-    public static void UpdateSphere(GameObject parent, Vector3 position, float radius, String text = "")
+    public static void UpdateSphere(GameObject parent, Vector3 position, float radius, string text = "")
     {
       UpdateSphereText(parent, radius, text);
       var renderers = parent.GetComponentsInChildren<LineRenderer>();
@@ -229,7 +180,7 @@ private void FindHoverObject(out GameObject hover, out Character hoverCreature)
       UpdateCircleY(renderers[1], position, radius);
       UpdateCircleZ(renderers[2], position, radius);
     }
-    public static void DrawSphere(GameObject parent, Vector3 position, float radius, Color color, float width, String text = "")
+    public static void DrawSphere(GameObject parent, Vector3 position, float radius, Color color, float width, string text = "")
     {
       DrawCircleX(parent, position, radius, color, width, text);
       DrawCircleY(parent, position, radius, color, width);
@@ -237,12 +188,12 @@ private void FindHoverObject(out GameObject hover, out Character hoverCreature)
     }
 
 
-    public static void DrawMarkerLine(GameObject parent, Vector3 start, Color color, float width, String text = "")
+    public static void DrawMarkerLine(GameObject parent, Vector3 start, Color color, float width, string text = "")
     {
       var end = new Vector3(start.x, 500f, start.z);
       DrawLine(parent, start, end, color, width, text);
     }
-    public static void DrawConeY(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, String text = "")
+    public static void DrawConeY(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, string text = "")
     {
       var obj = CreateObject(parent);
       AddSphereText(obj, radius, text);
@@ -260,7 +211,7 @@ private void FindHoverObject(out GameObject hover, out Character hoverCreature)
       }
       component.SetPosition(segments + 2, position);
     }
-    public static void DrawConeX(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, String text = "")
+    public static void DrawConeX(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, string text = "")
     {
       var obj = CreateObject(parent);
       AddSphereText(obj, radius, text);
@@ -277,6 +228,11 @@ private void FindHoverObject(out GameObject hover, out Character hoverCreature)
         currentAngle += (angle / segments);
       }
       component.SetPosition(segments + 2, position);
+    }
+
+    public static void UpdateTexts(GameObject parent, string text)
+    {
+      Array.ForEach(parent.GetComponentsInChildren<HoverText>(), item => item.m_text = text);
     }
   }
 }

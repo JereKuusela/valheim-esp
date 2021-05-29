@@ -41,7 +41,7 @@ namespace ESP
         var value = cookedTime;
         var limit = item.m_cookTime;
         if (limit > 0)
-          __result += "\n" + TextUtils.ProgressValue(value, limit);
+          __result += "\n" + TextUtils.ProgressValue("Progress", value, limit);
 
       }
     }

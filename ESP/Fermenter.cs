@@ -24,7 +24,7 @@ namespace ESP
       var value = GetFermentationTime(___m_nview);
       var limit = __instance.m_fermentationDuration;
       if (limit > 0)
-        __result += "\n" + TextUtils.ProgressValue(value, limit);
+        __result += "\n" + TextUtils.ProgressValue("Progress", value, limit);
     }
   }
 }

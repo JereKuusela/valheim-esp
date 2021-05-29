@@ -15,7 +15,7 @@ namespace ESP
       var value = percent * __instance.m_secPerFuel;
       var limit = __instance.m_secPerFuel;
       if (limit > 0)
-        __result += "\n" + TextUtils.ProgressValue(value, limit);
+        __result += "\n" + TextUtils.ProgressValue("Progress", value, limit);
     }
   }
 }

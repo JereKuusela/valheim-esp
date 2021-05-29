@@ -18,10 +18,20 @@ namespace ESP
     public static String GetText(CreatureSpawner instance, ZNetView nview)
     {
       var respawn = GetRespawnTime(instance, nview);
+      var level = instance.m_maxLevel > instance.m_minLevel ? instance.m_minLevel + "-" + instance.m_maxLevel : instance.m_maxLevel.ToString();
       var lines = new string[]{
         TextUtils.StringValue(instance.m_creaturePrefab.name),
-        "Respawn: " + TextUtils.StringValue(respawn)
+        "Respawn: " + TextUtils.StringValue(respawn),
+        "Level: " + TextUtils.StringValue(level) + " (" + TextUtils.PercentValue(instance.m_levelupChance / 100f) + " per level)"
       };
+      if (!instance.m_spawnAtDay)
+      {
+        lines.AddItem("Only during " + TextUtils.StringValue("night"));
+      }
+      if (!instance.m_spawnAtNight)
+      {
+        lines.AddItem("Only during " + TextUtils.StringValue("day"));
+      }
       return lines.Join(null, "\n");
     }
     public static Color GetColor(CreatureSpawner __instance)

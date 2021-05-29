@@ -9,9 +9,6 @@ Enemies:
  - Add ray from enemies.
  - Add setting to filter rayed enemies.
 
-Pickables:
- - Add setting to filter rayed.
-
 Creature spawner:
  - Add setting to filter rayed spawners.
  - Show night when night time only.
@@ -25,3 +22,4 @@ Spawn system:
  - Show active spawners: condition, chance, interval, timer, max spawn (with current amount).
  - Perhaps one object per spawner if there is lots of info?
 
+ Replace copy pastes with patches.
