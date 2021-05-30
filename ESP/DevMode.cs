@@ -26,13 +26,13 @@ namespace ESP
   [HarmonyPatch(typeof(Player), "Awake")]
   public class Player_Awake
   {
-    public static void Prefix(Player __instance, ref bool ___m_noPlacementCost)
+    public static void Prefix(Player __instance, ref bool ___m_noPlacementCost, ref bool ___m_debugFly)
     {
       if (!Settings.useDegugMode) return;
       Player.m_debugMode = true;
-      ___m_noPlacementCost = true;
-      Player.m_debugMode = true;
-      __instance.SetGodMode(true);
+      ___m_noPlacementCost = Settings.useFreeBuild;
+      ___m_debugFly = Settings.useFreeFly;
+      __instance.SetGodMode(Settings.useGodMode);
     }
   }
 }

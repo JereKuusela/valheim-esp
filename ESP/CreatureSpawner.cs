@@ -27,6 +27,7 @@ namespace ESP
     {
       var respawn = GetRespawnTime(instance, nview);
       var level = TextUtils.Range(instance.m_minLevel, instance.m_maxLevel);
+      var noise = instance.m_triggerNoise > 0 ? " with noise of " + TextUtils.Int(instance.m_triggerNoise) : "";
       var lines = new string[]{
         TextUtils.String(Localization.instance.Localize(instance.m_creaturePrefab.name)),
         "Respawn: " + TextUtils.String(respawn),
@@ -40,6 +41,15 @@ namespace ESP
       {
         lines.AddItem("Only during " + TextUtils.String("day"));
       }
+      if (instance.m_spawnInPlayerBase)
+      {
+        lines.AddItem("Can spawn inside player base");
+      }
+      if (instance.m_setPatrolSpawnPoint)
+      {
+        lines.AddItem("Patrol point is set at at the spawn point");
+      }
+      lines.AddItem("Activates within " + TextUtils.Int(instance.m_triggerDistance) + " meters" + noise);
       return lines.Join(null, "\n");
     }
     public static Color GetColor(CreatureSpawner __instance)

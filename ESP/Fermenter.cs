@@ -7,14 +7,19 @@ namespace ESP
   [HarmonyPatch(typeof(Fermenter), "GetHoverText")]
   public class Fermenter_GetHoverText
   {
+    private static string GetProgressText(Fermenter instance)
+    {
+      var limit = instance.m_fermentationDuration;
+      if (limit == 0) return "";
+      var value = Patch.Fermenter_GetFermentationTime(instance);
+      return "\n" + TextUtils.ProgressPercent("Progress", value, limit);
+    }
     public static void Postfix(Fermenter __instance, ref string __result)
     {
       if (!Settings.showProgress)
         return;
-      var value = Patch.Fermenter_GetFermentationTime(__instance);
-      var limit = __instance.m_fermentationDuration;
-      if (limit > 0)
-        __result += "\n" + TextUtils.ProgressPercent("Progress", value, limit);
+
+      __result += GetProgressText(__instance);
     }
   }
 }

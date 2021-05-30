@@ -4,9 +4,11 @@ using System;
 
 namespace ESP
 {
-  public class PickableUtils
+
+  [HarmonyPatch(typeof(Pickable), "Awake")]
+  public class Pickabler_Awake
   {
-    public static bool IsEnabled(Pickable instance)
+    private static bool IsEnabled(Pickable instance)
     {
       if (!Settings.showPickables) return false;
       var name = instance.m_itemPrefab.name.ToLower();
@@ -14,69 +16,53 @@ namespace ESP
       if (Array.Exists(excluded, item => item == name)) return false;
       return true;
     }
-    private static String GetRespawnTime(Pickable instance, ZNetView nview, bool picked)
+    private static Color GetColor(Pickable instance)
     {
-      if (!instance.m_hideWhenPicked || instance.m_respawnTimeMinutes == 0) return "Never";
+      return instance.m_hideWhenPicked && instance.m_respawnTimeMinutes > 0 ? Color.green : Color.blue;
+    }
+    public static void Postfix(Pickable __instance, ZNetView ___m_nview)
+    {
+      if (!IsEnabled(__instance))
+        return;
+      var color = GetColor(__instance);
+      Action<GameObject> action = (GameObject obj) =>
+        {
+          var text = obj.AddComponent<PickableText>();
+          text.pickable = __instance;
+          text.nview = ___m_nview;
+        };
+      Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, color, Settings.pickableRayWidth, action);
+    }
+  }
+
+  public class PickableText : MonoBehaviour, Hoverable
+  {
+    private String GetRespawnTime()
+    {
+      if (!pickable.m_hideWhenPicked || pickable.m_respawnTimeMinutes == 0) return "Never";
       DateTime time = ZNet.instance.GetTime();
       DateTime d = new DateTime(nview.GetZDO().GetLong("picked_time", 0L));
       var timer = (time - d).TotalMinutes;
+      var picked = nview.GetZDO().GetBool("picked", false); ;
       var timerString = picked ? timer.ToString("N0") : "Not picked";
-      return timerString + " / " + instance.m_respawnTimeMinutes.ToString("N0") + " minutes";
+      return timerString + " / " + pickable.m_respawnTimeMinutes.ToString("N0") + " minutes";
     }
-    public static String GetText(Pickable instance, ZNetView nview, bool picked)
+    public string GetHoverText()
     {
-      var respawn = GetRespawnTime(instance, nview, picked);
+      var respawn = GetRespawnTime();
       var lines = new string[]{
-        TextUtils.String(instance.m_itemPrefab.name),
+        TextUtils.String(pickable.m_itemPrefab.name),
         "Respawn: " + TextUtils.String(respawn)
       };
-      if (instance.m_amount > 0)
+      if (pickable.m_amount > 0)
       {
-        lines.AddItem("Amount: " + TextUtils.String(instance.m_amount.ToString()));
+        lines.AddItem("Amount: " + TextUtils.String(pickable.m_amount.ToString()));
       }
       return lines.Join(null, "\n");
     }
-    public static Color GetColor(Pickable __instance)
-    {
-      return __instance.m_hideWhenPicked ? Color.green : Color.blue;
-    }
-  }
+    public string GetHoverName() => pickable.m_itemPrefab.name;
 
-  [HarmonyPatch(typeof(Pickable), "Awake")]
-  public class Pickabler_Awake
-  {
-    public static void Postfix(Pickable __instance, ZNetView ___m_nview, bool ___m_picked)
-    {
-      if (!PickableUtils.IsEnabled(__instance))
-        return;
-      var color = PickableUtils.GetColor(__instance);
-      var text = PickableUtils.GetText(__instance, ___m_nview, ___m_picked);
-      Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, color, 0.5f, text);
-    }
-  }
-
-  [HarmonyPatch(typeof(Pickable), "UpdateRespawn")]
-  public class Pickable_UpdateRespawn
-  {
-    public static void Postfix(Pickable __instance, ZNetView ___m_nview, bool ___m_picked)
-    {
-      if (!PickableUtils.IsEnabled(__instance))
-        return;
-      var text = PickableUtils.GetText(__instance, ___m_nview, ___m_picked);
-      __instance.GetComponentInChildren<HoverText>().m_text = text;
-    }
-  }
-
-
-  [HarmonyPatch(typeof(Pickable), "RPC_SetPicked")]
-  public class Pickable_RPC_SetPicked
-  {
-    public static void Postfix(Pickable __instance, ZNetView ___m_nview, bool ___m_picked)
-    {
-      if (!PickableUtils.IsEnabled(__instance))
-        return;
-      var text = PickableUtils.GetText(__instance, ___m_nview, ___m_picked);
-      __instance.GetComponentInChildren<HoverText>().m_text = text;
-    }
+    public Pickable pickable;
+    public ZNetView nview;
   }
 }

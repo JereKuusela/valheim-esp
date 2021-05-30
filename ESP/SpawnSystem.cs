@@ -132,44 +132,49 @@ namespace ESP
     public string GetHoverText()
     {
       var text = GetZoneText();
-      var timer = GetTimeSinceSpawned();
-      var timeString = "";
+      var timeSinceSpawned = GetTimeSinceSpawned();
+      var time = "";
       if (!spawnData.m_spawnAtDay)
       {
-        timeString = ", only during " + TextUtils.String("night");
+        time = ", only during " + TextUtils.String("night");
       }
       if (!spawnData.m_spawnAtNight)
       {
-        timeString = ", only during " + TextUtils.String("day");
+        time = ", only during " + TextUtils.String("day");
       }
-      var forestString = "";
+      var forest = "";
       if (!spawnData.m_inForest)
       {
-        forestString = ", only outside forests";
+        forest = ", only outside forests";
       }
       if (!spawnData.m_outsideForest)
       {
-        forestString = ", only inside forests";
+        forest = ", only inside forests";
       }
 
       var instances = SpawnSystem.GetNrOfInstances(spawnData.m_prefab, Vector3.zero, 0f, false, false);
-      var biomeAreaString = ((spawnData.m_biomeArea == Heightmap.BiomeArea.Median) ? ", only full biomes" : "");
-      var weatherString = spawnData.m_requiredEnvironments.Count > 0 ? (", Weather: " + TextUtils.String(spawnData.m_requiredEnvironments.Join(null, ", "))) : "";
-      var globalString = spawnData.m_requiredGlobalKey != "" ? (", Bosses: " + TextUtils.String(spawnData.m_requiredGlobalKey)) : "";
+      var progress = TextUtils.ProgressPercent("Attempt", timeSinceSpawned, spawnData.m_spawnInterval);
+      var chance = TextUtils.Percent(spawnData.m_spawnChance / 100.0) + " chance";
+      var biomeArea = ((spawnData.m_biomeArea == Heightmap.BiomeArea.Median) ? ", only full biomes" : "");
+      var weather = spawnData.m_requiredEnvironments.Count > 0 ? (", Weather: " + TextUtils.String(spawnData.m_requiredEnvironments.Join(null, ", "))) : "";
+      var global = spawnData.m_requiredGlobalKey != "" ? (", Bosses: " + TextUtils.String(spawnData.m_requiredGlobalKey)) : "";
       var spawns = TextUtils.Progress(instances, spawnData.m_maxSpawned);
       var spawnDistance = TextUtils.Int(spawnData.m_spawnDistance) + " meters";
       var level = TextUtils.Range(spawnData.m_minLevel, spawnData.m_maxLevel);
       var levelLimit = (spawnData.m_levelUpMinCenterDistance > 0) ? " after " + TextUtils.Int(spawnData.m_levelUpMinCenterDistance) + " meters" : "";
-      var groupString = TextUtils.Range(spawnData.m_groupSizeMin, spawnData.m_groupSizeMax);
+      var group = TextUtils.Range(spawnData.m_groupSizeMin, spawnData.m_groupSizeMax);
       var groupRadius = (spawnData.m_groupSizeMax > spawnData.m_groupSizeMin) ? " within " + TextUtils.Int(spawnData.m_groupRadius) + " meters" : "";
       var altitude = TextUtils.Range(spawnData.m_minAltitude, spawnData.m_maxAltitude);
       var offset = (spawnData.m_groundOffset > 0) ? ", " + TextUtils.Int(spawnData.m_groundOffset) + " meters off ground" : "";
-      text += "\nCreature: " + TextUtils.String(spawnData.m_prefab.name);
-      text += "\n" + TextUtils.ProgressPercent("Attempt", timer, spawnData.m_spawnInterval) + ", " + TextUtils.Percent(spawnData.m_spawnChance / 100.0) + " chance";
-      text += "\nBiome: " + BiomeUtils.GetName(spawnData.m_biome) + biomeAreaString + forestString + weatherString + globalString + timeString;
+      var tilt = TextUtils.Range(spawnData.m_minTilt, spawnData.m_maxTilt);
+      var ocean = TextUtils.Range(spawnData.m_minOceanDepth, spawnData.m_maxOceanDepth);
+      var hunt = spawnData.m_huntPlayer ? ", forces hunt mode" : "";
+      text += "\nCreature: " + TextUtils.String(spawnData.m_prefab.name) + hunt;
+      text += "\n" + progress + ", " + chance;
+      text += "\nBiome: " + BiomeUtils.GetName(spawnData.m_biome) + biomeArea + forest + weather + global + time;
       text += "\nCreature limit: " + spawns + ", Distance limit: " + spawnDistance;
-      text += "\nLevel: " + level + levelLimit + ", Group size: " + groupString + groupRadius;
-      text += "\nAltitude: " + altitude + offset;
+      text += "\nLevel: " + level + levelLimit + ", Group size: " + group + groupRadius;
+      text += "\nAltitude: " + altitude + offset + ", Tilt: " + tilt + ", Water: " + ocean;
       return text;
     }
     public string GetHoverName() => spawnData.m_name.Length > 0 ? spawnData.m_name : spawnData.m_prefab.name;

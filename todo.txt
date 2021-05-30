@@ -8,3 +8,9 @@ Ship:
  - Total velocity (and over 30 seconds).
  - Sail power, wind power, wind direction (relative to ship)
  - Global wind direction and strength.
+
+Creatures:
+ - Move speed (depending how it moves?), with current speed
+ - Targeting system (current status, target, last known location, etc.)
+
+Replace updates with custom texts!

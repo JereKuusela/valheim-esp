@@ -105,10 +105,19 @@ namespace ESP
       if (!Settings.showCreatureStats)
         return "";
       var stats = "";
-      if (monsterAI && monsterAI.IsAlerted())
-        stats += "\n<color=red>Alerted</color>";
+      if (monsterAI && (monsterAI.IsAlerted() || monsterAI.HuntPlayer()))
+      {
+        var mode = "";
+        if (monsterAI.IsAlerted())
+          mode += "Alerted";
+        if (monsterAI.IsAlerted() && monsterAI.HuntPlayer())
+          mode += ", ";
+        if (monsterAI.HuntPlayer())
+          mode += "Hunt mode";
+        stats += "\n<color=red>" + mode + "</color>";
+      }
       var health = instance.GetMaxHealth();
-      stats += "\n" + "Health: " + TextUtils.Progress(instance.m_health, health);
+      stats += "\n" + "Health: " + TextUtils.Progress(instance.GetHealth(), health);
       stats += GetStaggerText(health, instance.m_staggerDamageFactor, staggerDamage);
       stats += "\n" + "Mass: " + TextUtils.Int(body.mass) + " (" + TextUtils.Percent(1f - 5f / body.mass) + " knockback resistance)";
       var damageModifiers = Patch.Character_GetDamageModifiers(instance);

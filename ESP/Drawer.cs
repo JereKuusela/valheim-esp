@@ -46,7 +46,7 @@ namespace ESP
     {
       var component = obj.AddComponent<LineRenderer>();
       component.useWorldSpace = false;
-      component.material = new Material(Shader.Find("Standard"));
+      component.material = new Material(Shader.Find("Standard TwoSided"));
       component.material.SetColor("_Color", color);
       component.widthMultiplier = width;
       return component;

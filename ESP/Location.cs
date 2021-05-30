@@ -8,10 +8,10 @@ namespace ESP
   {
     public static void Postfix(Location __instance)
     {
-      if (!Settings.showChests)
+      if (!Settings.showLocations)
         return;
       var text = TextUtils.String(__instance.name);
-      Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.black, 0.5f, text);
+      Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.black, Settings.locationRayWidth, text);
     }
   }
 }

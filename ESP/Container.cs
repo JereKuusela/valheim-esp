@@ -11,7 +11,7 @@ namespace ESP
       if (!Settings.showChests || ___m_piece.IsPlacedByPlayer())
         return;
       var text = TextUtils.String(__instance.GetHoverName());
-      Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.white, 0.5f, text);
+      Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.white, Settings.chestRayWidth, text);
     }
   }
 }

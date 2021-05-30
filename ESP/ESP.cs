@@ -42,21 +42,35 @@ namespace ESP
     public static bool showPickables => configShowPickables.Value;
     public static ConfigEntry<string> configExcludedPickables;
     public static string excludedPickables => configExcludedPickables.Value;
+    public static ConfigEntry<float> configPickableRayWidth;
+    public static float pickableRayWidth => configPickableRayWidth.Value;
 
     public static ConfigEntry<bool> configShowEffectAreas;
     public static bool showEffectAreas => configShowEffectAreas.Value;
 
     public static ConfigEntry<bool> configShowChests;
     public static bool showChests => configShowChests.Value;
+    public static ConfigEntry<float> configChestRayWidth;
+    public static float chestRayWidth => configChestRayWidth.Value;
     public static ConfigEntry<bool> configShowLocations;
     public static bool showLocations => configShowLocations.Value;
+    public static ConfigEntry<float> configLocationRayWidth;
+    public static float locationRayWidth => configLocationRayWidth.Value;
+
+
+    public static ConfigEntry<bool> configUseDebugMode;
+    public static bool useDegugMode => configUseDebugMode.Value;
+    public static ConfigEntry<bool> configUseFreeFly;
+    public static bool useFreeFly => configUseFreeFly.Value;
+    public static ConfigEntry<bool> configUseGodMode;
+    public static bool useGodMode => configUseGodMode.Value;
+    public static ConfigEntry<bool> configUseFreeBuild;
+    public static bool useFreeBuild => configUseFreeBuild.Value;
 
     public static ConfigEntry<bool> configshowNoise;
     public static bool showNoise => configshowNoise.Value;
     public static ConfigEntry<bool> configShowProgress;
     public static bool showProgress => configShowProgress.Value;
-    public static ConfigEntry<bool> configUseDebugMode;
-    public static bool useDegugMode => configUseDebugMode.Value;
   }
 
 
@@ -82,13 +96,20 @@ namespace ESP
       Settings.configShowSpawnSystems = Config.Bind("Spawners", "Show spawn zones", true, "Visualize spawn zone system");
       Settings.configShowBiomes = Config.Bind("Spawners", "Show zone corner rays", true, "Visualize zone corners and their biomes");
 
-      Settings.configShowPickables = Config.Bind("Pickables", "ShowPickables", true, "Enablee for pickables");
+      Settings.configShowPickables = Config.Bind("Pickables", "ShowPickables", true, "Enable for pickables");
       Settings.configExcludedPickables = Config.Bind("Pickables", "ExcludedPickables", "Wood,Stone", "List of items separated by , that are not visualized");
+      Settings.configPickableRayWidth = Config.Bind("Pickables", "Width of the pickable rays", 0.5f, "");
 
       Settings.configShowChests = Config.Bind("Locations", "Show chest rays", true, "Visualize hidden chests");
+      Settings.configChestRayWidth = Config.Bind("Locations", "Width of the chest rays", 0.5f, "");
       Settings.configShowLocations = Config.Bind("Locations", "Show location rays", true, "Visualize pre-made structures and other locations");
+      Settings.configLocationRayWidth = Config.Bind("Locations", "Width of the location rays", 0.5f, "");
 
-      Settings.configUseDebugMode = Config.Bind("General", "Use debugmode", true, "Enable devcommands, debugmode, god mode and free build automatically");
+      Settings.configUseDebugMode = Config.Bind("Dev", "Use debugmode", true, "Enable devcommands and debugmode automatically");
+      Settings.configUseGodMode = Config.Bind("Dev", "Use god mode", true, "Enable god mode automatically");
+      Settings.configUseFreeBuild = Config.Bind("Dev", "Use free build", true, "Enable free build automatically");
+      Settings.configUseFreeFly = Config.Bind("Dev", "Use free fly", true, "Enable free fly automatically");
+
       Settings.configShowEffectAreas = Config.Bind("General", "Show area effects", true, "Visualize structure area effects");
       Settings.configshowNoise = Config.Bind("General", "Show noise", true, "Visualuze noise");
       Settings.configShowProgress = Config.Bind("General", "Show progress", true, "Show progress for plants and structures");
