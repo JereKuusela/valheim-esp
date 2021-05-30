@@ -28,6 +28,9 @@
     <Reference Include="assembly_guiutils.dll">
       <HintPath>..\Libs\assembly_guiutils.dll</HintPath>
     </Reference>
+    <Reference Include="assembly_utils.dll">
+      <HintPath>..\Libs\assembly_utils.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

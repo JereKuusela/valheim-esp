@@ -3,12 +3,6 @@ Drawer:
  - Some kind of color customization (rgb + string to color).
  * List of priority names (different color and width can be set).
 
-
-Creatures:
- - Add breeding range, visualize conditions.
- - Hunger meter.
- - Amount of partners.
-
 Spawn system:
  - Show active spawners: condition, chance, interval, timer, max spawn (with current amount).
  - Perhaps one object per spawner if there is lots of info?

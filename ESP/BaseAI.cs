@@ -28,17 +28,27 @@ namespace ESP
       Drawer.DrawConeY(instance.gameObject, character.m_eye.position - character.transform.position, range, angle, Color.white, 0.1f, text);
       Drawer.DrawConeX(instance.gameObject, character.m_eye.position - character.transform.position, range, angle, Color.white, 0.1f, text);
     }
-    private static void DrawRay(Character instance)
+    private static void DrawRay(Character character)
     {
-      var text = Localization.instance.Localize(instance.m_name);
-      Drawer.DrawMarkerLine(instance.gameObject, Vector3.zero, Color.magenta, Settings.characterRayWidth, text);
-
+      if (!Settings.showCreatureRays || CharacterUtils.IsExcluded(character))
+        return;
+      var text = Localization.instance.Localize(character.m_name);
+      Drawer.DrawMarkerLine(character.gameObject, Vector3.zero, Color.magenta, Settings.characterRayWidth, text);
+    }
+    private static void DrawFireLimit(BaseAI instance, Character character)
+    {
+      if (!Settings.showCreatureFireLimits || CharacterUtils.IsExcluded(character))
+        return;
+      if (!instance.m_afraidOfFire && !instance.m_avoidFire) return;
+      var text = instance.m_afraidOfFire ? "Fears fire" : "Avoids fire";
+      Drawer.DrawSphere(instance.gameObject, Vector3.zero, 3f, Color.magenta, 0.5f, text);
     }
     public static void Postfix(BaseAI __instance, Character ___m_character)
     {
       DrawHearRange(__instance, ___m_character);
       DrawViewRange(__instance, ___m_character);
       DrawRay(___m_character);
+      DrawFireLimit(__instance, ___m_character);
     }
   }
 }

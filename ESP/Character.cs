@@ -15,7 +15,7 @@ namespace ESP
       return Array.Exists(excluded, item => item == name || item == m_name || item == localized);
     }
     public static string GetNameText(float range) => "Noise: " + TextUtils.IntValue(range);
-    public static string GetNameText(Character character) => TextUtils.StringValue(character.m_name);
+    public static string GetNameText(Character character) => TextUtils.StringValue(Localization.instance.Localize(character.m_name));
 
   }
   [HarmonyPatch(typeof(Character), "Awake")]
@@ -91,27 +91,49 @@ namespace ESP
       else
         return "\n" + "Stagger: " + TextUtils.StringValue("Immune");
     }
-    public static void Postfix(Character __instance, ref string __result, float ___m_staggerDamage, Rigidbody ___m_body)
+    private static string GetCreatureStats(Character instance, MonsterAI monsterAI, float staggerDamage, Rigidbody body)
     {
       if (!Settings.showCreatureStats)
-        return;
-      var health = __instance.GetMaxHealth();
-      __result += "\n" + "Health: " + TextUtils.FloatValue(__instance.m_health) + "/" + TextUtils.IntValue(health);
-      __result += GetStaggerText(health, __instance.m_staggerDamageFactor, ___m_staggerDamage);
-      __result += "\n" + "Mass: " + TextUtils.IntValue(___m_body.mass) + " (" + TextUtils.PercentValue(1f - 5f / ___m_body.mass) + " knockback resistance)";
-      var damageModifiers = Patch.Character_GetDamageModifiers(__instance);
-      __result += GetText(damageModifiers, HitData.DamageType.Blunt);
-      __result += GetText(damageModifiers, HitData.DamageType.Chop);
-      __result += GetText(damageModifiers, HitData.DamageType.Elemental);
-      __result += GetText(damageModifiers, HitData.DamageType.Fire);
-      __result += GetText(damageModifiers, HitData.DamageType.Frost);
-      __result += GetText(damageModifiers, HitData.DamageType.Lightning);
-      __result += GetText(damageModifiers, HitData.DamageType.Physical);
-      __result += GetText(damageModifiers, HitData.DamageType.Pickaxe);
-      __result += GetText(damageModifiers, HitData.DamageType.Pierce);
-      __result += GetText(damageModifiers, HitData.DamageType.Poison);
-      __result += GetText(damageModifiers, HitData.DamageType.Slash);
-      __result += GetText(damageModifiers, HitData.DamageType.Spirit);
+        return "";
+      var stats = "";
+      if (monsterAI && monsterAI.IsAlerted())
+        stats += "\n<color=red>Alerted</color>";
+      var health = instance.GetMaxHealth();
+      stats += "\n" + "Health: " + TextUtils.FloatValue(instance.m_health) + "/" + TextUtils.IntValue(health);
+      stats += GetStaggerText(health, instance.m_staggerDamageFactor, staggerDamage);
+      stats += "\n" + "Mass: " + TextUtils.IntValue(body.mass) + " (" + TextUtils.PercentValue(1f - 5f / body.mass) + " knockback resistance)";
+      var damageModifiers = Patch.Character_GetDamageModifiers(instance);
+      stats += GetText(damageModifiers, HitData.DamageType.Blunt);
+      stats += GetText(damageModifiers, HitData.DamageType.Chop);
+      stats += GetText(damageModifiers, HitData.DamageType.Elemental);
+      stats += GetText(damageModifiers, HitData.DamageType.Fire);
+      stats += GetText(damageModifiers, HitData.DamageType.Frost);
+      stats += GetText(damageModifiers, HitData.DamageType.Lightning);
+      stats += GetText(damageModifiers, HitData.DamageType.Physical);
+      stats += GetText(damageModifiers, HitData.DamageType.Pickaxe);
+      stats += GetText(damageModifiers, HitData.DamageType.Pierce);
+      stats += GetText(damageModifiers, HitData.DamageType.Poison);
+      stats += GetText(damageModifiers, HitData.DamageType.Slash);
+      stats += GetText(damageModifiers, HitData.DamageType.Spirit);
+      return stats;
+    }
+
+    private static string GetGrowupStats(BaseAI baseAI, Growup growup)
+    {
+      if (!Settings.showBreedingStats || !baseAI || !growup)
+        return "";
+      var value = baseAI.GetTimeSinceSpawned().TotalSeconds;
+      var limit = growup.m_growTime;
+      return "\n" + TextUtils.ProgressValue("Progress", value, limit);
+    }
+    public static void Postfix(Character __instance, ref string __result, float ___m_staggerDamage, Rigidbody ___m_body)
+    {
+      var baseAI = __instance.GetComponent<BaseAI>();
+      var growup = __instance.GetComponent<Growup>();
+      var tameable = __instance.GetComponent<Tameable>();
+      var monsterAI = __instance.GetComponent<MonsterAI>();
+      __result += GetCreatureStats(__instance, monsterAI, ___m_staggerDamage, ___m_body);
+      __result += GetGrowupStats(baseAI, growup);
     }
   }
 }

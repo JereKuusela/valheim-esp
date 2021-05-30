@@ -6,12 +6,20 @@ namespace ESP
 {
   public class Settings
   {
+    public static ConfigEntry<bool> configShowCreatureFireLimits;
+    public static bool showCreatureFireLimits => configShowCreatureFireLimits.Value;
     public static ConfigEntry<bool> configShowCreatureRays;
     public static bool showCreatureRays => configShowCreatureRays.Value;
     public static ConfigEntry<string> configExcludedCreatures;
     public static string excludedCreatures => configExcludedCreatures.Value;
     public static ConfigEntry<float> configCharacterRayWidth;
     public static float characterRayWidth => configCharacterRayWidth.Value;
+    public static ConfigEntry<bool> configShowCreatureStats;
+    public static bool showCreatureStats => configShowCreatureStats.Value;
+    public static ConfigEntry<bool> configShowBreedingStats;
+    public static bool showBreedingStats => configShowBreedingStats.Value;
+    public static ConfigEntry<bool> configShowBreedingLimits;
+    public static bool showBreedingLimits => configShowBreedingLimits.Value;
 
     public static ConfigEntry<bool> configShowSpawnAreas;
     public static bool showSpawnAreas => configShowSpawnAreas.Value;
@@ -33,8 +41,6 @@ namespace ESP
     public static bool showNoise => configshowNoise.Value;
     public static ConfigEntry<bool> configShowProgress;
     public static bool showProgress => configShowProgress.Value;
-    public static ConfigEntry<bool> configShowCreatureStats;
-    public static bool showCreatureStats => configShowCreatureStats.Value;
     public static ConfigEntry<bool> configShowChests;
     public static bool showChests => configShowChests.Value;
     public static ConfigEntry<bool> configShowLocations;
@@ -47,9 +53,12 @@ namespace ESP
   {
     void Awake()
     {
-      Settings.configShowBaseAI = Config.Bind("Creatures", "Show creature senses", true, "Enable to visualuze creature sight and hear ranges");
-      Settings.configShowCreatureStats = Config.Bind("Creatures", "Show creature stats", true, "Enable to show creature health, stagger, mass and resistances");
-      Settings.configShowCreatureRays = Config.Bind("Creatures", "Show creature rays", true, "Enable to visualize creature locations");
+      Settings.configShowCreatureFireLimits = Config.Bind("Creatures", "Show creature fire limits", true, "Vsualize radius of fire fearing");
+      Settings.configShowBaseAI = Config.Bind("Creatures", "Show creature senses", true, "Visualize creature sight and hear ranges");
+      Settings.configShowCreatureStats = Config.Bind("Creatures", "Show creature stats", true, "Show creature health, stagger, mass and resistances");
+      Settings.configShowBreedingStats = Config.Bind("Creatures", "Show breeding stats", true, "Show taming and breeding related stats");
+      Settings.configShowBreedingLimits = Config.Bind("Creatures", "Show breeding limits", true, "Visualize breeding parther check and total limit ranges");
+      Settings.configShowCreatureRays = Config.Bind("Creatures", "Show creature rays", true, "Visualize creature locations");
       Settings.configCharacterRayWidth = Config.Bind("Creatures", "Width of the character rays", 0.5f, "");
       Settings.configExcludedCreatures = Config.Bind("Creatures", "Exclude creatures", "", "List of creatures separated by ,");
 

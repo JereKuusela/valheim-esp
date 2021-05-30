@@ -56,5 +56,11 @@ namespace ESP
     {
       throw new NotImplementedException("Dummy");
     }
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(Tameable), "GetRemainingTime")]
+    public static float Tameable_GetRemainingTime(Tameable instance)
+    {
+      throw new NotImplementedException("Dummy");
+    }
   }
 }
