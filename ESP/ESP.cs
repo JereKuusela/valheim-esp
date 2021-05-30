@@ -16,11 +16,15 @@ namespace ESP
     public static float characterRayWidth => configCharacterRayWidth.Value;
     public static ConfigEntry<bool> configShowCreatureStats;
     public static bool showCreatureStats => configShowCreatureStats.Value;
+    public static ConfigEntry<bool> configShowDropStats;
+    public static bool showDropStats => configShowDropStats.Value;
     public static ConfigEntry<bool> configShowBreedingStats;
     public static bool showBreedingStats => configShowBreedingStats.Value;
     public static ConfigEntry<bool> configShowBreedingLimits;
     public static bool showBreedingLimits => configShowBreedingLimits.Value;
 
+    public static ConfigEntry<bool> configShowSpawnSystems;
+    public static bool showSpawnSystems => configShowSpawnSystems.Value;
     public static ConfigEntry<bool> configShowSpawnAreas;
     public static bool showSpawnAreas => configShowSpawnAreas.Value;
     public static ConfigEntry<bool> configShowCreatureSpawners;
@@ -28,6 +32,7 @@ namespace ESP
     public static ConfigEntry<string> configExcludedCreatureSpawners;
     public static string excludedCreatureSpawners => configExcludedCreatureSpawners.Value;
     public static ConfigEntry<bool> configShowBiomes;
+
     public static bool showBiomes => configShowBiomes.Value;
     public static ConfigEntry<bool> configShowEffectAreas;
     public static bool showEffectAreas => configShowEffectAreas.Value;
@@ -56,15 +61,18 @@ namespace ESP
       Settings.configShowCreatureFireLimits = Config.Bind("Creatures", "Show creature fire limits", true, "Vsualize radius of fire fearing");
       Settings.configShowBaseAI = Config.Bind("Creatures", "Show creature senses", true, "Visualize creature sight and hear ranges");
       Settings.configShowCreatureStats = Config.Bind("Creatures", "Show creature stats", true, "Show creature health, stagger, mass and resistances");
+      Settings.configShowDropStats = Config.Bind("Creatures", "Show drop stats", true, "Show loot stats");
       Settings.configShowBreedingStats = Config.Bind("Creatures", "Show breeding stats", true, "Show taming and breeding related stats");
       Settings.configShowBreedingLimits = Config.Bind("Creatures", "Show breeding limits", true, "Visualize breeding parther check and total limit ranges");
       Settings.configShowCreatureRays = Config.Bind("Creatures", "Show creature rays", true, "Visualize creature locations");
       Settings.configCharacterRayWidth = Config.Bind("Creatures", "Width of the character rays", 0.5f, "");
       Settings.configExcludedCreatures = Config.Bind("Creatures", "Exclude creatures", "", "List of creatures separated by ,");
 
-      Settings.configShowCreatureSpawners = Config.Bind("SpawnPoints", "ShowSpawnPoints", true, "Enable for creature spawn points");
-      Settings.configExcludedCreatureSpawners = Config.Bind("SpawnPoints", "ExcludedSpawnPoints", "", "List of creatures separated by , that are not visualized");
-      Settings.configShowSpawnAreas = Config.Bind("General", "ShowCreatureSpawners", true, "Enable for creature spawners");
+      Settings.configShowCreatureSpawners = Config.Bind("Spawners", "Show spawn points", true, "Visualize fixed creature spawn points");
+      Settings.configExcludedCreatureSpawners = Config.Bind("Spawners", "Excluded spawn points", "", "List of creatures separated by , that are not visualized");
+      Settings.configShowSpawnAreas = Config.Bind("Spawners", "Show creature spawners", true, "Visualize physical creature spawners");
+      Settings.configShowSpawnSystems = Config.Bind("Spawners", "Show spawn zones", true, "Visualize spawn zone system");
+
       Settings.configShowBiomes = Config.Bind("General", "ShowBiomes", true, "Enable biomes");
       Settings.configShowEffectAreas = Config.Bind("General", "ShowEffectAreas", true, "Enable for structure effect areas");
       Settings.configShowPickables = Config.Bind("Pickables", "ShowPickables", true, "Enablee for pickables");

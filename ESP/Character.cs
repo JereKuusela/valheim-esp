@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace ESP
 {
@@ -45,6 +46,14 @@ namespace ESP
       var text = CharacterUtils.GetNameText(__instance) + "\n" + CharacterUtils.GetNameText(___m_noiseRange);
       Drawer.UpdateSphere(__instance.gameObject, Vector3.zero, ___m_noiseRange, text);
     }
+  }
+
+  struct DropChance
+  {
+    public float chance;
+    public int min;
+    public int max;
+    public bool perPlayer;
   }
 
   [HarmonyPatch(typeof(Character), "GetHoverText")]
@@ -126,14 +135,67 @@ namespace ESP
       var limit = growup.m_growTime;
       return "\n" + TextUtils.ProgressValue("Progress", value, limit);
     }
+
+    private static List<string> GetDropTexts(CharacterDrop characterDrop, Character character)
+    {
+      var list = new List<string>();
+      int num = character ? Mathf.Max(1, (int)Mathf.Pow(2f, (float)(character.GetLevel() - 1))) : 1;
+      foreach (CharacterDrop.Drop drop in characterDrop.m_drops)
+      {
+        if (!(drop.m_prefab == null))
+        {
+          float chance = drop.m_chance;
+          if (drop.m_levelMultiplier)
+          {
+            chance *= (float)num;
+          }
+          int min = drop.m_amountMin;
+          int max = drop.m_amountMax;
+          if (drop.m_levelMultiplier)
+          {
+            min *= num;
+            max *= num;
+          }
+          var dropChance = new DropChance()
+          {
+            chance = chance,
+            max = max,
+            min = min,
+            perPlayer = drop.m_onePerPlayer
+          };
+          var text = " ";
+          if (max > min) text += TextUtils.StringValue(min + "-" + max);
+          else text += TextUtils.IntValue(max);
+          text += " " + drop.m_prefab.name;
+          if (drop.m_onePerPlayer) text += " (per player)";
+          if (chance < 1.0) text += " (" + TextUtils.PercentValue(chance) + ")";
+          list.Add(text);
+        }
+      }
+      return list;
+    }
+    private static string GetDropStats(CharacterDrop characterDrop, Character character)
+    {
+      if (!Settings.showDropStats || !characterDrop)
+        return "";
+      var dropTexts = GetDropTexts(characterDrop, character);
+      var text = "\nDrops:";
+      foreach (var dropText in dropTexts)
+      {
+        text += dropText;
+      }
+      return text;
+    }
     public static void Postfix(Character __instance, ref string __result, float ___m_staggerDamage, Rigidbody ___m_body)
     {
       var baseAI = __instance.GetComponent<BaseAI>();
       var growup = __instance.GetComponent<Growup>();
       var tameable = __instance.GetComponent<Tameable>();
       var monsterAI = __instance.GetComponent<MonsterAI>();
+      var characterDrop = __instance.GetComponent<CharacterDrop>();
       __result += GetCreatureStats(__instance, monsterAI, ___m_staggerDamage, ___m_body);
       __result += GetGrowupStats(baseAI, growup);
+      __result += GetDropStats(characterDrop, __instance);
     }
   }
 }

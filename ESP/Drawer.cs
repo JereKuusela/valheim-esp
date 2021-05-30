@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 
@@ -234,6 +235,13 @@ namespace ESP
     public static void UpdateTexts(GameObject parent, string text)
     {
       Array.ForEach(parent.GetComponentsInChildren<HoverText>(), item => item.m_text = text);
+    }
+
+    public static void UpdateTexts(GameObject parent, List<string> texts)
+    {
+      var items = parent.GetComponentsInChildren<HoverText>();
+      for (var i = 0; i < items.Length && i < texts.Count; i++)
+        items[i].m_text = texts[i];
     }
   }
 }
