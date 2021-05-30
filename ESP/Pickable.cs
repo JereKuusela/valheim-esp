@@ -27,12 +27,12 @@ namespace ESP
     {
       var respawn = GetRespawnTime(instance, nview, picked);
       var lines = new string[]{
-        TextUtils.StringValue(instance.m_itemPrefab.name),
-        "Respawn: " + TextUtils.StringValue(respawn)
+        TextUtils.String(instance.m_itemPrefab.name),
+        "Respawn: " + TextUtils.String(respawn)
       };
       if (instance.m_amount > 0)
       {
-        lines.AddItem("Amount: " + TextUtils.StringValue(instance.m_amount.ToString()));
+        lines.AddItem("Amount: " + TextUtils.String(instance.m_amount.ToString()));
       }
       return lines.Join(null, "\n");
     }

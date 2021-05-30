@@ -68,6 +68,18 @@ namespace ESP
       component.SetPosition(0, start);
       component.SetPosition(1, end);
     }
+    public static void DrawLine(GameObject parent, Vector3 start, Vector3 end, Color color, float width, Action<GameObject> textCallback)
+    {
+      var obj = CreateObject(parent);
+      textCallback(obj);
+      var collider = obj.AddComponent<BoxCollider>();
+      collider.isTrigger = true;
+      collider.center = start + (end - start) / 2;
+      collider.size = (end - start) + 2 * new Vector3(width, width, width);
+      var component = CreateComponent(obj, color, width);
+      component.SetPosition(0, start);
+      component.SetPosition(1, end);
+    }
 
     private static void UpdateSphereText(GameObject obj, float radius, string text)
     {
@@ -194,6 +206,11 @@ namespace ESP
     {
       var end = new Vector3(start.x, 500f, start.z);
       DrawLine(parent, start, end, color, width, text);
+    }
+    public static void DrawMarkerLine(GameObject parent, Vector3 start, Color color, float width, Action<GameObject> textCallback)
+    {
+      var end = new Vector3(start.x, 500f, start.z);
+      DrawLine(parent, start, end, color, width, textCallback);
     }
     public static void DrawConeY(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, string text = "")
     {

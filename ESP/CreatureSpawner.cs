@@ -26,19 +26,19 @@ namespace ESP
     public static String GetText(CreatureSpawner instance, ZNetView nview)
     {
       var respawn = GetRespawnTime(instance, nview);
-      var level = instance.m_maxLevel > instance.m_minLevel ? instance.m_minLevel + "-" + instance.m_maxLevel : instance.m_maxLevel.ToString();
+      var level = TextUtils.Range(instance.m_minLevel, instance.m_maxLevel);
       var lines = new string[]{
-        TextUtils.StringValue(Localization.instance.Localize(instance.m_creaturePrefab.name)),
-        "Respawn: " + TextUtils.StringValue(respawn),
-        "Level: " + TextUtils.StringValue(level) + " (" + TextUtils.PercentValue(instance.m_levelupChance / 100f) + " per level)"
+        TextUtils.String(Localization.instance.Localize(instance.m_creaturePrefab.name)),
+        "Respawn: " + TextUtils.String(respawn),
+        "Level: " + level + " (" + TextUtils.Percent(instance.m_levelupChance / 100f) + " per level)"
       };
       if (!instance.m_spawnAtDay)
       {
-        lines.AddItem("Only during " + TextUtils.StringValue("night"));
+        lines.AddItem("Only during " + TextUtils.String("night"));
       }
       if (!instance.m_spawnAtNight)
       {
-        lines.AddItem("Only during " + TextUtils.StringValue("day"));
+        lines.AddItem("Only during " + TextUtils.String("day"));
       }
       return lines.Join(null, "\n");
     }

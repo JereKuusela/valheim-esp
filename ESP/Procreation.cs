@@ -9,12 +9,12 @@ namespace ESP
   {
     private static void DrawTotalLimit(Procreation instance, string name)
     {
-      var text = name + "\nLimit range: " + TextUtils.IntValue(instance.m_totalCheckRange) + " meters";
+      var text = name + "\nLimit range: " + TextUtils.Int(instance.m_totalCheckRange) + " meters";
       Drawer.DrawSphere(instance.gameObject, Vector3.zero, instance.m_totalCheckRange, Color.cyan, 0.1f, text);
     }
     private static void DrawPartnerCheck(Procreation instance, string name)
     {
-      var text = name + "\nPartner range: " + TextUtils.IntValue(instance.m_partnerCheckRange) + " meters";
+      var text = name + "\nPartner range: " + TextUtils.Int(instance.m_partnerCheckRange) + " meters";
       Drawer.DrawSphere(instance.gameObject, Vector3.zero, instance.m_partnerCheckRange, Color.magenta, 0.1f, text);
     }
     public static void Postfix(Procreation __instance, Character ___m_character)

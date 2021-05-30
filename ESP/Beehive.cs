@@ -12,7 +12,7 @@ namespace ESP
       var value = ___m_nview.GetZDO().GetFloat("product", 0f);
       var limit = __instance.m_secPerUnit;
       if (limit > 0)
-        __result += "\n" + TextUtils.ProgressValue("Progress", value, limit);
+        __result += "\n" + TextUtils.ProgressPercent("Progress", value, limit);
     }
   }
 }

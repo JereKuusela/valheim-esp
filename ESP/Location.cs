@@ -10,7 +10,7 @@ namespace ESP
     {
       if (!Settings.showChests)
         return;
-      var text = TextUtils.StringValue(__instance.name);
+      var text = TextUtils.String(__instance.name);
       Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.black, 0.5f, text);
     }
   }

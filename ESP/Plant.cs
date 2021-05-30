@@ -12,7 +12,7 @@ namespace ESP
       var value = Patch.Plant_TimeSincePlanted(__instance);
       var limit = Patch.Plant_GetGrowTime(__instance);
       if (limit > 0)
-        __result += "\n" + TextUtils.ProgressValue("Progress", value, limit);
+        __result += "\n" + TextUtils.ProgressPercent("Progress", value, limit);
     }
   }
 }

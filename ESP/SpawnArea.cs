@@ -11,13 +11,13 @@ namespace ESP
       int near, total;
       Patch.SpawnArea_GetInstances(instance, out near, out total);
       var lines = new string[]{
-        TextUtils.StringValue(instance.name),
-        TextUtils.ProgressValue("Timer", spawnTimer, instance.m_spawnIntervalSec),
-        "Area: " + TextUtils.IntValue(instance.m_spawnRadius) + " m",
-        "Level up: " + TextUtils.PercentValue(instance.m_levelupChance / 100f),
-        "Trigger: " + TextUtils.IntValue(instance.m_triggerDistance) + " m",
-        "Near limit: " + TextUtils.StringValue(near + "/" + instance.m_maxNear) + " within " + TextUtils.IntValue(instance.m_nearRadius) + " m",
-        "Far limit: " +  TextUtils.StringValue(total + "/" + instance.m_maxTotal) + " within " + TextUtils.IntValue(instance.m_farRadius) + " m"
+        TextUtils.String(instance.name),
+        TextUtils.ProgressPercent("Timer", spawnTimer, instance.m_spawnIntervalSec),
+        "Area: " + TextUtils.Int(instance.m_spawnRadius) + " m",
+        "Level up: " + TextUtils.Percent(instance.m_levelupChance / 100f),
+        "Trigger: " + TextUtils.Int(instance.m_triggerDistance) + " m",
+        "Near limit: " + TextUtils.Progress(near, instance.m_maxNear) + " within " + TextUtils.Int(instance.m_nearRadius) + " m",
+        "Far limit: " +  TextUtils.Progress(total, instance.m_maxTotal) + " within " + TextUtils.Int(instance.m_farRadius) + " m"
       };
       if (instance.m_onGroundOnly)
       {
@@ -32,8 +32,8 @@ namespace ESP
       }
       foreach (var data in instance.m_prefabs)
       {
-        var level = data.m_maxLevel > data.m_minLevel ? data.m_minLevel + "-" + data.m_maxLevel : data.m_maxLevel.ToString();
-        lines.AddItem(TextUtils.StringValue(data.m_prefab.name) + TextUtils.PercentValue(data.m_weight / totalWeight) + " Level: " + TextUtils.StringValue(level));
+        var level = TextUtils.Range(data.m_minLevel, data.m_maxLevel);
+        lines.AddItem(TextUtils.String(data.m_prefab.name) + TextUtils.Percent(data.m_weight / totalWeight) + " Level: " + level);
       }
       return lines.Join(null, "\n");
     }

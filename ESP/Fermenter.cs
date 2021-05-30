@@ -14,7 +14,7 @@ namespace ESP
       var value = Patch.Fermenter_GetFermentationTime(__instance);
       var limit = __instance.m_fermentationDuration;
       if (limit > 0)
-        __result += "\n" + TextUtils.ProgressValue("Progress", value, limit);
+        __result += "\n" + TextUtils.ProgressPercent("Progress", value, limit);
     }
   }
 }

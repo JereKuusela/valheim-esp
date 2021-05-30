@@ -7,14 +7,14 @@ namespace ESP
   [HarmonyPatch(typeof(BaseAI), "Awake")]
   public class BaseAI_Awake
   {
-    private static String GetNameText(Character character) => TextUtils.StringValue(character.m_name);
+    private static String GetNameText(Character character) => TextUtils.String(character.m_name);
     private static void DrawHearRange(BaseAI instance, Character character)
     {
       if (!Settings.showBaseAI || CharacterUtils.IsExcluded(character))
         return;
       var range = instance.m_hearRange;
       if (range > 100) return;
-      var text = GetNameText(character) + "\nHear range: " + TextUtils.IntValue(range);
+      var text = GetNameText(character) + "\nHear range: " + TextUtils.Int(range);
       Drawer.DrawSphere(instance.gameObject, Vector3.zero, range, Color.green, 0.1f, text);
     }
     private static void DrawViewRange(BaseAI instance, Character character)
@@ -23,8 +23,8 @@ namespace ESP
         return;
       var range = instance.m_viewRange;
       var angle = instance.m_viewAngle;
-      var text = GetNameText(character) + "\nView range: " + TextUtils.IntValue(range) + "\nView angle: " + TextUtils.IntValue(angle);
-      if (instance.m_hearRange > 100) text += "\n Hear range: " + TextUtils.StringValue("Infinite");
+      var text = GetNameText(character) + "\nView range: " + TextUtils.Int(range) + "\nView angle: " + TextUtils.Int(angle);
+      if (instance.m_hearRange > 100) text += "\n Hear range: " + TextUtils.String("Infinite");
       Drawer.DrawConeY(instance.gameObject, character.m_eye.position - character.transform.position, range, angle, Color.white, 0.1f, text);
       Drawer.DrawConeX(instance.gameObject, character.m_eye.position - character.transform.position, range, angle, Color.white, 0.1f, text);
     }

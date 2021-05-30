@@ -15,8 +15,8 @@ namespace ESP
       var excluded = Settings.excludedCreatures.ToLower().Split(',');
       return Array.Exists(excluded, item => item == name || item == m_name || item == localized);
     }
-    public static string GetNameText(float range) => "Noise: " + TextUtils.IntValue(range);
-    public static string GetNameText(Character character) => TextUtils.StringValue(Localization.instance.Localize(character.m_name));
+    public static string GetNameText(float range) => "Noise: " + TextUtils.Int(range);
+    public static string GetNameText(Character character) => TextUtils.String(Localization.instance.Localize(character.m_name));
 
   }
   [HarmonyPatch(typeof(Character), "Awake")]
@@ -79,11 +79,11 @@ namespace ESP
     {
       var name = DamageTypeToString(damageType);
       var modifier = modifiers.GetModifier(damageType);
-      if (modifier == HitData.DamageModifier.Immune) return name + ": " + TextUtils.StringValue("x0");
-      if (modifier == HitData.DamageModifier.Resistant) return name + ": " + TextUtils.StringValue("x0.5");
-      if (modifier == HitData.DamageModifier.VeryResistant) return name + ": " + TextUtils.StringValue("x0.25");
-      if (modifier == HitData.DamageModifier.Weak) return name + ": " + TextUtils.StringValue("x1.5");
-      if (modifier == HitData.DamageModifier.VeryWeak) return name + ": " + TextUtils.StringValue("x2");
+      if (modifier == HitData.DamageModifier.Immune) return name + ": " + TextUtils.String("x0");
+      if (modifier == HitData.DamageModifier.Resistant) return name + ": " + TextUtils.String("x0.5");
+      if (modifier == HitData.DamageModifier.VeryResistant) return name + ": " + TextUtils.String("x0.25");
+      if (modifier == HitData.DamageModifier.Weak) return name + ": " + TextUtils.String("x1.5");
+      if (modifier == HitData.DamageModifier.VeryWeak) return name + ": " + TextUtils.String("x2");
       return "";
     }
     private static string GetText(HitData.DamageModifiers modifiers, HitData.DamageType damageType)
@@ -96,9 +96,9 @@ namespace ESP
     {
       var staggerLimit = staggerDamageFactor * health;
       if (staggerLimit > 0)
-        return "\n" + "Stagger: " + TextUtils.FloatValue(staggerDamage) + "/" + TextUtils.FloatValue(staggerLimit);
+        return "\n" + "Stagger: " + TextUtils.Progress(staggerDamage, staggerLimit);
       else
-        return "\n" + "Stagger: " + TextUtils.StringValue("Immune");
+        return "\n" + "Stagger: " + TextUtils.String("Immune");
     }
     private static string GetCreatureStats(Character instance, MonsterAI monsterAI, float staggerDamage, Rigidbody body)
     {
@@ -108,9 +108,9 @@ namespace ESP
       if (monsterAI && monsterAI.IsAlerted())
         stats += "\n<color=red>Alerted</color>";
       var health = instance.GetMaxHealth();
-      stats += "\n" + "Health: " + TextUtils.FloatValue(instance.m_health) + "/" + TextUtils.IntValue(health);
+      stats += "\n" + "Health: " + TextUtils.Progress(instance.m_health, health);
       stats += GetStaggerText(health, instance.m_staggerDamageFactor, staggerDamage);
-      stats += "\n" + "Mass: " + TextUtils.IntValue(body.mass) + " (" + TextUtils.PercentValue(1f - 5f / body.mass) + " knockback resistance)";
+      stats += "\n" + "Mass: " + TextUtils.Int(body.mass) + " (" + TextUtils.Percent(1f - 5f / body.mass) + " knockback resistance)";
       var damageModifiers = Patch.Character_GetDamageModifiers(instance);
       stats += GetText(damageModifiers, HitData.DamageType.Blunt);
       stats += GetText(damageModifiers, HitData.DamageType.Chop);
@@ -127,13 +127,25 @@ namespace ESP
       return stats;
     }
 
+    private static string GetStatusStats(Character character)
+    {
+      if (!Settings.showStatusEffects || !character)
+        return "";
+      var statusEffects = character.GetSEMan().GetStatusEffects();
+      var text = "";
+      foreach (var status in statusEffects)
+      {
+        text += "\n" + Localization.instance.Localize(status.m_name) + ": " + TextUtils.Progress(status.GetRemaningTime(), status.m_ttl) + " seconds";
+      }
+      return text;
+    }
     private static string GetGrowupStats(BaseAI baseAI, Growup growup)
     {
       if (!Settings.showBreedingStats || !baseAI || !growup)
         return "";
       var value = baseAI.GetTimeSinceSpawned().TotalSeconds;
       var limit = growup.m_growTime;
-      return "\n" + TextUtils.ProgressValue("Progress", value, limit);
+      return "\n" + TextUtils.ProgressPercent("Progress", value, limit);
     }
 
     private static List<string> GetDropTexts(CharacterDrop characterDrop, Character character)
@@ -163,12 +175,11 @@ namespace ESP
             min = min,
             perPlayer = drop.m_onePerPlayer
           };
-          var text = " ";
-          if (max > min) text += TextUtils.StringValue(min + "-" + max);
-          else text += TextUtils.IntValue(max);
-          text += " " + drop.m_prefab.name;
+          var text = "";
+          if (max > 1) text += TextUtils.Range(min, max) + " ";
+          text += drop.m_prefab.name;
           if (drop.m_onePerPlayer) text += " (per player)";
-          if (chance < 1.0) text += " (" + TextUtils.PercentValue(chance) + ")";
+          if (chance < 1.0) text += " (" + TextUtils.Percent(chance) + ")";
           list.Add(text);
         }
       }
@@ -178,13 +189,8 @@ namespace ESP
     {
       if (!Settings.showDropStats || !characterDrop)
         return "";
-      var dropTexts = GetDropTexts(characterDrop, character);
-      var text = "\nDrops:";
-      foreach (var dropText in dropTexts)
-      {
-        text += dropText;
-      }
-      return text;
+      var dropTexts = GetDropTexts(characterDrop, character).Join(null, ", ");
+      return "\nDrops: " + dropTexts;
     }
     public static void Postfix(Character __instance, ref string __result, float ___m_staggerDamage, Rigidbody ___m_body)
     {
@@ -194,6 +200,7 @@ namespace ESP
       var monsterAI = __instance.GetComponent<MonsterAI>();
       var characterDrop = __instance.GetComponent<CharacterDrop>();
       __result += GetCreatureStats(__instance, monsterAI, ___m_staggerDamage, ___m_body);
+      __result += GetStatusStats(__instance);
       __result += GetGrowupStats(baseAI, growup);
       __result += GetDropStats(characterDrop, __instance);
     }

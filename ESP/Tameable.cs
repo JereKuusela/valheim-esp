@@ -14,14 +14,14 @@ namespace ESP
       DateTime d = new DateTime(nview.GetZDO().GetLong("TameLastFeeding", 0L));
       var value = feedingTime == 0 ? 0 : instance.m_fedDuration - (ZNet.instance.GetTime() - d).TotalSeconds;
       var limit = instance.m_fedDuration;
-      return "\n" + TextUtils.ProgressValue("Food", value, limit);
+      return "\n" + TextUtils.ProgressPercent("Food", value, limit);
     }
     private static string GetTamingText(Tameable instance)
     {
       if (!Settings.showBreedingStats) return "";
       var value = instance.m_tamingTime - Patch.Tameable_GetRemainingTime(instance);
       var limit = instance.m_tamingTime;
-      return "\n" + TextUtils.ProgressValue("Taming", value, limit);
+      return "\n" + TextUtils.ProgressPercent("Taming", value, limit);
     }
     private static string GetPregnancyText(Procreation instance, ZNetView nview)
     {
@@ -29,21 +29,21 @@ namespace ESP
       DateTime d = new DateTime(nview.GetZDO().GetLong("pregnant", 0L));
       var value = (ZNet.instance.GetTime() - d).TotalSeconds;
       var limit = instance.m_pregnancyDuration;
-      return "\n" + TextUtils.ProgressValue("Pregnancy", value, limit);
+      return "\n" + TextUtils.ProgressPercent("Pregnancy", value, limit);
     }
     private static string GetLoveText(Procreation instance, ZNetView nview)
     {
       if (!Settings.showBreedingStats || !instance || instance.IsPregnant()) return "";
       var value = nview.GetZDO().GetInt("lovePoints", 0);
       var limit = instance.m_requiredLovePoints;
-      return "\nBreeding: " + TextUtils.StringValue(value + "/" + limit) + ", " + TextUtils.PercentValue(instance.m_pregnancyChance) + " chance every " + TextUtils.IntValue(instance.m_updateInterval) + " seconds";
+      return "\nBreeding: " + TextUtils.Progress(value, limit) + ", " + TextUtils.Percent(instance.m_pregnancyChance) + " chance every " + TextUtils.Int(instance.m_updateInterval) + " seconds";
     }
     private static string GetPartnersText(Procreation instance, ZNetView nview)
     {
       if (!Settings.showBreedingStats || !instance || instance.IsPregnant()) return "";
       var prefab = ZNetScene.instance.GetPrefab(nview.GetZDO().GetPrefab());
       var partners = SpawnSystem.GetNrOfInstances(prefab, instance.transform.position, instance.m_partnerCheckRange, false, true) - 1;
-      return "\nPartners: " + TextUtils.IntValue(partners) + " within " + instance.m_partnerCheckRange + " meters";
+      return "\nPartners: " + TextUtils.Int(partners) + " within " + instance.m_partnerCheckRange + " meters";
     }
     private static string GetLimitText(Procreation instance, ZNetView nview)
     {
@@ -54,7 +54,7 @@ namespace ESP
       var offspringAmount = SpawnSystem.GetNrOfInstances(offspring, instance.transform.position, instance.m_totalCheckRange, false, false);
       var value = ownAmount + offspringAmount;
       var limit = instance.m_maxCreatures;
-      return "\nLimit: " + TextUtils.StringValue(value + "/" + limit) + " within " + instance.m_totalCheckRange + " meters";
+      return "\nLimit: " + TextUtils.Progress(value, limit) + " within " + instance.m_totalCheckRange + " meters";
     }
     public static void Postfix(Tameable __instance, Character ___m_character, ZNetView ___m_nview, ref string __result)
     {

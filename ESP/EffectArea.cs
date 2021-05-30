@@ -31,7 +31,7 @@ namespace ESP
     }
     private static String GetRadiusText(float radius)
     {
-      return "Radius: " + TextUtils.FloatValue(radius);
+      return "Radius: " + TextUtils.Float(radius);
     }
     public static void Postfix(EffectArea __instance)
     {

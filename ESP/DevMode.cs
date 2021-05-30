@@ -8,6 +8,7 @@ namespace ESP
   {
     public static void Prefix(Console __instance, ref bool ___m_cheat)
     {
+      if (!Settings.useDegugMode) return;
       ___m_cheat = true;
     }
   }
@@ -27,6 +28,7 @@ namespace ESP
   {
     public static void Prefix(Player __instance, ref bool ___m_noPlacementCost)
     {
+      if (!Settings.useDegugMode) return;
       Player.m_debugMode = true;
       ___m_noPlacementCost = true;
       Player.m_debugMode = true;
