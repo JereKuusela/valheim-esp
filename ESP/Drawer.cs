@@ -36,9 +36,9 @@ namespace ESP
     {
       var obj = new GameObject();
       obj.layer = LayerMask.NameToLayer("character_trigger");
-      obj.transform.position = parent.transform.position;
-      obj.transform.rotation = parent.transform.rotation;
       obj.transform.parent = parent.transform;
+      obj.transform.localPosition = Vector3.zero;
+      obj.transform.localRotation = Quaternion.identity;
       return obj;
     }
     private static LineRenderer CreateComponent(GameObject obj, Color color, float width)
@@ -51,10 +51,6 @@ namespace ESP
       return component;
     }
 
-    private static Vector3 GetLineCollider(Vector3 start, Vector3 end, float width)
-    {
-      return new Vector3(Math.Abs(end.x - start.x) + width, Math.Abs(end.y - start.y) + width, Math.Abs(end.z - start.z) + width);
-    }
     public static void DrawLine(GameObject parent, Vector3 start, Vector3 end, Color color, float width, string text = "")
     {
       var obj = CreateObject(parent);
@@ -63,7 +59,8 @@ namespace ESP
         obj.AddComponent<HoverText>().m_text = text;
         var collider = obj.AddComponent<BoxCollider>();
         collider.isTrigger = true;
-        collider.size = GetLineCollider(start, end, width);
+        collider.center = start + (end - start) / 2;
+        collider.size = (end - start) + 2 * new Vector3(width, width, width);
 
       }
       var component = CreateComponent(obj, color, width);

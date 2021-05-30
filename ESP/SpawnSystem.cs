@@ -36,7 +36,7 @@ namespace ESP
     }
     private static void DrawMarker(GameObject parent, Vector3 position, Heightmap.Biome biome)
     {
-      Drawer.DrawMarkerLine(parent, position, GetBiomeColor(biome), 0.25f, GetBiomeName(biome));
+      Drawer.DrawMarkerLine(parent, position, GetBiomeColor(biome), 0.25f, TextUtils.StringValue(GetBiomeName(biome)));
     }
     private static Heightmap.Biome GetBiome(SpawnSystem instance, Heightmap heightmap, Vector3 relative)
     {
