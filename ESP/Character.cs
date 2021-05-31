@@ -214,4 +214,12 @@ namespace ESP
       __result += GetDropStats(characterDrop, __instance);
     }
   }
+  [HarmonyPatch(typeof(Character), "GetRandomSkillFactor")]
+  public class Character_GetRandomSkillFactor
+  {
+    public static void Postfix(float __result)
+    {
+      __result = UnityEngine.Random.Range(1f - Settings.creatureDamageRange, 1f);
+    }
+  }
 }

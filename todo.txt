@@ -12,5 +12,3 @@ Ship:
 Creatures:
  - Move speed (depending how it moves?), with current speed
  - Targeting system (current status, target, last known location, etc.)
-
-Replace updates with custom texts!

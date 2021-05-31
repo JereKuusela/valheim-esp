@@ -67,12 +67,20 @@ namespace ESP
     public static ConfigEntry<bool> configUseFreeBuild;
     public static bool useFreeBuild => configUseFreeBuild.Value;
 
+
+    public static ConfigEntry<bool> configShowAllDamageTypes;
+    public static bool showAllDamageTypes => configShowAllDamageTypes.Value;
+    public static ConfigEntry<string> configSetSkills;
+    public static string setSkills => configSetSkills.Value;
+    public static ConfigEntry<float> configPlayerDamageRange;
+    public static float playerDamageRange => configPlayerDamageRange.Value;
+    public static ConfigEntry<float> configCreatureDamageRange;
+    public static float creatureDamageRange => configCreatureDamageRange.Value;
+
     public static ConfigEntry<bool> configshowNoise;
     public static bool showNoise => configshowNoise.Value;
     public static ConfigEntry<bool> configShowProgress;
     public static bool showProgress => configShowProgress.Value;
-    public static ConfigEntry<bool> configShowAllDamageTypes;
-    public static bool showAllDamageTypes => configShowAllDamageTypes.Value;
   }
 
 
@@ -112,10 +120,15 @@ namespace ESP
       Settings.configUseFreeBuild = Config.Bind("Dev", "Use free build", true, "Enable free build automatically");
       Settings.configUseFreeFly = Config.Bind("Dev", "Use free fly", true, "Enable free fly automatically");
 
+      Settings.configShowAllDamageTypes = Config.Bind("Combat", "Show all damage types", true, "Show all damage types on weapon tooltips");
+      Settings.configSetSkills = Config.Bind("Combat", "Set skill levels", "", "Sets all skill levels to a given number");
+      Settings.configPlayerDamageRange = Config.Bind("Combat", "Player damage range", 0.15f, "Damage variance for players");
+      Settings.configCreatureDamageRange = Config.Bind("Combat", "Creaute damage range", 0.25f, "Damage variance for creatures");
+
+
       Settings.configShowEffectAreas = Config.Bind("General", "Show area effects", true, "Visualize structure area effects");
       Settings.configshowNoise = Config.Bind("General", "Show noise", true, "Visualuze noise");
       Settings.configShowProgress = Config.Bind("General", "Show progress", true, "Show progress for plants and structures");
-      Settings.configShowAllDamageTypes = Config.Bind("General", "Show all damage types", true, "Show all damage types on weapon tooltips");
       var harmony = new Harmony("valheim.jerekuusela.esp");
       harmony.PatchAll();
     }
