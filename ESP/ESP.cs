@@ -71,6 +71,8 @@ namespace ESP
     public static bool showNoise => configshowNoise.Value;
     public static ConfigEntry<bool> configShowProgress;
     public static bool showProgress => configShowProgress.Value;
+    public static ConfigEntry<bool> configShowAllDamageTypes;
+    public static bool showAllDamageTypes => configShowAllDamageTypes.Value;
   }
 
 
@@ -113,6 +115,7 @@ namespace ESP
       Settings.configShowEffectAreas = Config.Bind("General", "Show area effects", true, "Visualize structure area effects");
       Settings.configshowNoise = Config.Bind("General", "Show noise", true, "Visualuze noise");
       Settings.configShowProgress = Config.Bind("General", "Show progress", true, "Show progress for plants and structures");
+      Settings.configShowAllDamageTypes = Config.Bind("General", "Show all damage types", true, "Show all damage types on weapon tooltips");
       var harmony = new Harmony("valheim.jerekuusela.esp");
       harmony.PatchAll();
     }

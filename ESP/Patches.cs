@@ -62,5 +62,11 @@ namespace ESP
     {
       throw new NotImplementedException("Dummy");
     }
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(HitData.DamageTypes), "DamageRange")]
+    public static string DamageTypes_DamageRange(HitData.DamageTypes instance, float damage, float minFactor, float maxFactor)
+    {
+      throw new NotImplementedException("Dummy");
+    }
   }
 }

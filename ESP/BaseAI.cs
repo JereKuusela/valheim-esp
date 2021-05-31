@@ -41,7 +41,7 @@ namespace ESP
         return;
       if (!instance.m_afraidOfFire && !instance.m_avoidFire) return;
       var text = instance.m_afraidOfFire ? "Fears fire" : "Avoids fire";
-      Drawer.DrawSphere(instance.gameObject, Vector3.zero, 3f, Color.magenta, 0.5f, text);
+      Drawer.DrawSphere(instance.gameObject, Vector3.zero, 3f, Color.magenta, 0.1f, text);
     }
     public static void Postfix(BaseAI __instance, Character ___m_character)
     {
