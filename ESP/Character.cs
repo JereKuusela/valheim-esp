@@ -185,7 +185,7 @@ namespace ESP
             perPlayer = drop.m_onePerPlayer
           };
           var text = "";
-          if (max > 1) text += TextUtils.Range(min, max) + " ";
+          if (max > 1 || (max == 1 && chance >= 1.0)) text += TextUtils.Range(min, max) + " ";
           text += drop.m_prefab.name;
           if (drop.m_onePerPlayer) text += " (per player)";
           if (chance < 1.0) text += " (" + TextUtils.Percent(chance) + ")";

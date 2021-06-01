@@ -24,7 +24,7 @@ namespace ESP
       var range = instance.m_viewRange;
       var angle = instance.m_viewAngle;
       var text = GetNameText(character) + "\nView range: " + TextUtils.Int(range) + "\nView angle: " + TextUtils.Int(angle);
-      if (instance.m_hearRange > 100) text += "\n Hear range: " + TextUtils.String("Infinite");
+      if (instance.m_hearRange > 100) text += "\nHear range: " + TextUtils.String("Infinite");
       Drawer.DrawConeY(instance.gameObject, character.m_eye.position - character.transform.position, range, angle, Color.white, 0.1f, text);
       Drawer.DrawConeX(instance.gameObject, character.m_eye.position - character.transform.position, range, angle, Color.white, 0.1f, text);
     }

@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace ESP
 {
@@ -10,7 +11,7 @@ namespace ESP
     {
       int near, total;
       Patch.SpawnArea_GetInstances(instance, out near, out total);
-      var lines = new string[]{
+      var lines = new List<string>(){
         TextUtils.String(instance.name),
         TextUtils.ProgressPercent("Timer", spawnTimer, instance.m_spawnIntervalSec),
         "Area: " + TextUtils.Int(instance.m_spawnRadius) + " m",
@@ -21,19 +22,17 @@ namespace ESP
       };
       if (instance.m_onGroundOnly)
       {
-        lines.AddItem("Only on ground");
+        lines.Add("Only on ground");
       }
 
-      lines.AddItem("");
+      lines.Add("");
       var totalWeight = 0f;
       foreach (var data in instance.m_prefabs)
-      {
         totalWeight += data.m_weight;
-      }
       foreach (var data in instance.m_prefabs)
       {
         var level = TextUtils.Range(data.m_minLevel, data.m_maxLevel);
-        lines.AddItem(TextUtils.String(data.m_prefab.name) + TextUtils.Percent(data.m_weight / totalWeight) + " Level: " + level);
+        lines.Add(data.m_prefab.name + ": " + TextUtils.Percent(data.m_weight / totalWeight) + " with level " + level);
       }
       return lines.Join(null, "\n");
     }
