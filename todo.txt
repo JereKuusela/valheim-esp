@@ -3,11 +3,18 @@ Drawer:
  - Some kind of color customization (rgb + string to color).
  * List of priority names (different color and width can be set).
 
-Ship:
- - Forward velocity (and over 30 seconds).
- - Total velocity (and over 30 seconds).
- - Sail power, wind power, wind direction (relative to ship)
- - Global wind direction and strength.
+DPS tool:
+ - Start tracking at start of attack. Timestamp at latest end of attack. (if possible).
+ - Alternatively, track hits and give range when excluding first or last hit.
+ - Track caused damage, base damage (without skill or rng), damage taken (with and without defenses), used stamina, damage per stamina.
+ - Sit down to reset?
+
+Quick hide:
+ - Investigate hiding drawn things with a keypress.
+
+Hud:
+ - Player current speed and noise.
+ - DPS tool
 
 Creatures:
  - Move speed (depending how it moves?), with current speed

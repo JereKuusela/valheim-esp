@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace ESP
 {
@@ -23,33 +24,32 @@ namespace ESP
       var timerString = timer == 0 ? "Alive" : timer.ToString("N0");
       return timerString + " / " + (60 * instance.m_respawnTimeMinuts).ToString("N0") + " seconds";
     }
+    private static string GetLevelText(CreatureSpawner instance)
+    {
+      if (instance.m_maxLevel < 2) return "No level up";
+      var level = TextUtils.Range(instance.m_minLevel, instance.m_maxLevel);
+      return "Level: " + level + " (" + TextUtils.Percent(instance.m_levelupChance / 100f) + " per level)";
+    }
+    private static string GetTimeText(CreatureSpawner instance)
+    {
+      if (!instance.m_spawnAtDay)
+        return "Only during " + TextUtils.String("night");
+      if (!instance.m_spawnAtNight)
+        return "Only during " + TextUtils.String("day");
+      return "";
+    }
     public static String GetText(CreatureSpawner instance, ZNetView nview)
     {
       var respawn = GetRespawnTime(instance, nview);
-      var level = TextUtils.Range(instance.m_minLevel, instance.m_maxLevel);
       var noise = instance.m_triggerNoise > 0 ? " with noise of " + TextUtils.Int(instance.m_triggerNoise) : "";
-      var lines = new string[]{
-        TextUtils.String(Localization.instance.Localize(instance.m_creaturePrefab.name)),
-        "Respawn: " + TextUtils.String(respawn),
-        "Level: " + level + " (" + TextUtils.Percent(instance.m_levelupChance / 100f) + " per level)"
-      };
-      if (!instance.m_spawnAtDay)
-      {
-        lines.AddItem("Only during " + TextUtils.String("night"));
-      }
-      if (!instance.m_spawnAtNight)
-      {
-        lines.AddItem("Only during " + TextUtils.String("day"));
-      }
-      if (instance.m_spawnInPlayerBase)
-      {
-        lines.AddItem("Can spawn inside player base");
-      }
-      if (instance.m_setPatrolSpawnPoint)
-      {
-        lines.AddItem("Patrol point is set at at the spawn point");
-      }
-      lines.AddItem("Activates within " + TextUtils.Int(instance.m_triggerDistance) + " meters" + noise);
+      var lines = new List<string>();
+      lines.Add(TextUtils.String(Localization.instance.Localize(instance.m_creaturePrefab.name)));
+      lines.Add("Respawn: " + TextUtils.String(respawn));
+      lines.Add(GetLevelText(instance));
+      var timeText = GetTimeText(instance);
+      if (timeText.Length > 0) lines.Add(timeText);
+      if (instance.m_setPatrolSpawnPoint) lines.Add("Patrol point");
+      lines.Add("Activates within " + TextUtils.Int(instance.m_triggerDistance) + " meters" + noise);
       return lines.Join(null, "\n");
     }
     public static Color GetColor(CreatureSpawner __instance)

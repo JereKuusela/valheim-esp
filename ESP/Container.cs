@@ -8,7 +8,7 @@ namespace ESP
   {
     public static void Postfix(Container __instance, Piece ___m_piece)
     {
-      if (!Settings.showChests || ___m_piece.IsPlacedByPlayer())
+      if (!Settings.showChests || !___m_piece || ___m_piece.IsPlacedByPlayer())
         return;
       var text = TextUtils.String(__instance.GetHoverName());
       Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.white, Settings.chestRayWidth, text);

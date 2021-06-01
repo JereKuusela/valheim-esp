@@ -81,6 +81,10 @@ namespace ESP
     public static bool showNoise => configshowNoise.Value;
     public static ConfigEntry<bool> configShowProgress;
     public static bool showProgress => configShowProgress.Value;
+    public static ConfigEntry<bool> configShowShipStats;
+    public static bool showShipStats => configShowShipStats.Value;
+    public static ConfigEntry<bool> configShowShipStatsOnHud;
+    public static bool showShipStatsOnHud => configShowShipStatsOnHud.Value;
   }
 
 
@@ -129,6 +133,8 @@ namespace ESP
       Settings.configShowEffectAreas = Config.Bind("General", "Show area effects", true, "Visualize structure area effects");
       Settings.configshowNoise = Config.Bind("General", "Show noise", true, "Visualuze noise");
       Settings.configShowProgress = Config.Bind("General", "Show progress", true, "Show progress for plants and structures");
+      Settings.configShowShipStats = Config.Bind("General", "Show ship stats", true, "Show ship speed and wind direction on the ship");
+      Settings.configShowShipStatsOnHud = Config.Bind("General", "Show ship stats on the hud", true, "Show ship speed and wind direction on the UI");
       var harmony = new Harmony("valheim.jerekuusela.esp");
       harmony.PatchAll();
     }
