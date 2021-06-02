@@ -29,6 +29,8 @@ namespace ESP
 
     public static ConfigEntry<bool> configShowSpawnSystems;
     public static bool showSpawnSystems => configShowSpawnSystems.Value;
+    public static ConfigEntry<bool> configShowRandEventSystem;
+    public static bool showRandEventSystem => configShowRandEventSystem.Value;
     public static ConfigEntry<bool> configShowSpawnAreas;
     public static bool showSpawnAreas => configShowSpawnAreas.Value;
     public static ConfigEntry<bool> configShowCreatureSpawners;
@@ -85,6 +87,8 @@ namespace ESP
     public static bool showShipStats => configShowShipStats.Value;
     public static ConfigEntry<bool> configShowShipStatsOnHud;
     public static bool showShipStatsOnHud => configShowShipStatsOnHud.Value;
+    public static ConfigEntry<bool> configFixInvalidLevelData;
+    public static bool fixInvalidLevelData => configFixInvalidLevelData.Value;
   }
 
 
@@ -109,6 +113,7 @@ namespace ESP
       Settings.configShowSpawnAreas = Config.Bind("Spawners", "Show creature spawners", true, "Visualize physical creature spawners");
       Settings.configShowSpawnSystems = Config.Bind("Spawners", "Show spawn zones", true, "Visualize spawn zone system");
       Settings.configShowBiomes = Config.Bind("Spawners", "Show zone corner rays", true, "Visualize zone corners and their biomes");
+      Settings.configShowRandEventSystem = Config.Bind("Spawners", "Show random event system", true, "Visualize random event system");
 
       Settings.configShowPickables = Config.Bind("Pickables", "ShowPickables", true, "Enable for pickables");
       Settings.configExcludedPickables = Config.Bind("Pickables", "ExcludedPickables", "Wood,Stone", "List of items separated by , that are not visualized");
@@ -135,6 +140,7 @@ namespace ESP
       Settings.configShowProgress = Config.Bind("General", "Show progress", true, "Show progress for plants and structures");
       Settings.configShowShipStats = Config.Bind("General", "Show ship stats", true, "Show ship speed and wind direction on the ship");
       Settings.configShowShipStatsOnHud = Config.Bind("General", "Show ship stats on the hud", true, "Show ship speed and wind direction on the UI");
+      Settings.configFixInvalidLevelData = Config.Bind("General", "Fix invalid creature star ranges", true, "Some spawners have higher minimum stars than maximum stars. If true, these are displayed like the code handles them.");
       var harmony = new Harmony("valheim.jerekuusela.esp");
       harmony.PatchAll();
     }

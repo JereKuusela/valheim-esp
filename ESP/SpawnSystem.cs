@@ -1,41 +1,9 @@
 using HarmonyLib;
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 namespace ESP
 {
-  public class BiomeUtils
-  {
-    public static Color GetColor(Heightmap.Biome biome)
-    {
-      if (biome == Heightmap.Biome.AshLands) return Color.red;
-      if (biome == Heightmap.Biome.BlackForest) return Color.magenta;
-      if (biome == Heightmap.Biome.DeepNorth) return Color.gray;
-      if (biome == Heightmap.Biome.Meadows) return Color.green;
-      if (biome == Heightmap.Biome.Mistlands) return Color.gray;
-      if (biome == Heightmap.Biome.Mountain) return Color.white;
-      if (biome == Heightmap.Biome.Ocean) return Color.blue;
-      if (biome == Heightmap.Biome.Plains) return Color.yellow;
-      if (biome == Heightmap.Biome.Swamp) return Color.cyan;
-      return Color.black;
-    }
-
-    public static string GetName(Heightmap.Biome biome)
-    {
-      var names = new List<string>();
-      if ((biome & Heightmap.Biome.AshLands) > 0) names.Add("Ash Lands");
-      if ((biome & Heightmap.Biome.BlackForest) > 0) names.Add("Black Forest");
-      if ((biome & Heightmap.Biome.DeepNorth) > 0) names.Add("Deep North");
-      if ((biome & Heightmap.Biome.Meadows) > 0) names.Add("Meadows");
-      if ((biome & Heightmap.Biome.Mistlands) > 0) names.Add("Mistlands");
-      if ((biome & Heightmap.Biome.Mountain) > 0) names.Add("Mountain");
-      if ((biome & Heightmap.Biome.Ocean) > 0) names.Add("Ocean");
-      if ((biome & Heightmap.Biome.Plains) > 0) names.Add("Plains");
-      if ((biome & Heightmap.Biome.Swamp) > 0) names.Add("Swamp");
-      return TextUtils.String(names.Join(null, ", "));
-    }
-  }
 
   [HarmonyPatch(typeof(SpawnSystem), "Awake")]
   public class SpawnSystem_Awake
@@ -99,10 +67,23 @@ namespace ESP
         counter++;
       }
     }
+    private static void DrawRandEventSystem(SpawnSystem instance, Heightmap heightmap, ZNetView nview)
+    {
+      if (!Settings.showRandEventSystem) return;
+      Action<GameObject> action = (GameObject obj) =>
+        {
+          var text = obj.AddComponent<RandEventSystemText>();
+          text.spawnSystem = instance;
+          text.heightmap = heightmap;
+          text.nview = nview;
+        };
+      Drawer.DrawMarkerLine(instance.gameObject, new Vector3(0, 0, 5), Color.black, 1f, action);
+    }
     public static void Postfix(SpawnSystem __instance, Heightmap ___m_heightmap, ZNetView ___m_nview)
     {
       DrawBiomes(__instance, ___m_heightmap);
       DrawSpawnSystems(__instance, ___m_heightmap, ___m_nview);
+      DrawRandEventSystem(__instance, ___m_heightmap, ___m_nview);
     }
   }
 
@@ -153,15 +134,11 @@ namespace ESP
       }
 
       var instances = SpawnSystem.GetNrOfInstances(spawnData.m_prefab, Vector3.zero, 0f, false, false);
-      var progress = TextUtils.ProgressPercent("Attempt", timeSinceSpawned, spawnData.m_spawnInterval);
-      var chance = TextUtils.Percent(spawnData.m_spawnChance / 100.0) + " chance";
-      var biomeArea = ((spawnData.m_biomeArea == Heightmap.BiomeArea.Median) ? ", only full biomes" : "");
       var weather = spawnData.m_requiredEnvironments.Count > 0 ? (", Weather: " + TextUtils.String(spawnData.m_requiredEnvironments.Join(null, ", "))) : "";
       var global = spawnData.m_requiredGlobalKey != "" ? (", Bosses: " + TextUtils.String(spawnData.m_requiredGlobalKey)) : "";
       var spawns = TextUtils.Progress(instances, spawnData.m_maxSpawned);
       var spawnDistance = TextUtils.Int(spawnData.m_spawnDistance) + " meters";
-      var level = TextUtils.Range(spawnData.m_minLevel, spawnData.m_maxLevel);
-      var levelLimit = (spawnData.m_levelUpMinCenterDistance > 0) ? " after " + TextUtils.Int(spawnData.m_levelUpMinCenterDistance) + " meters" : "";
+      var level = TextUtils.GetLevel(spawnData.m_minLevel, spawnData.m_maxLevel, spawnSystem.m_levelupChance, spawnData.m_levelUpMinCenterDistance);
       var group = TextUtils.Range(spawnData.m_groupSizeMin, spawnData.m_groupSizeMax);
       var groupRadius = (spawnData.m_groupSizeMax > spawnData.m_groupSizeMin) ? " within " + TextUtils.Int(spawnData.m_groupRadius) + " meters" : "";
       var altitude = TextUtils.Range(spawnData.m_minAltitude, spawnData.m_maxAltitude);
@@ -170,10 +147,11 @@ namespace ESP
       var ocean = TextUtils.Range(spawnData.m_minOceanDepth, spawnData.m_maxOceanDepth);
       var hunt = spawnData.m_huntPlayer ? ", forces hunt mode" : "";
       text += "\nCreature: " + TextUtils.String(spawnData.m_prefab.name) + hunt;
-      text += "\n" + progress + ", " + chance;
-      text += "\nBiome: " + BiomeUtils.GetName(spawnData.m_biome) + biomeArea + forest + weather + global + time;
+      text += "\n" + TextUtils.GetAttempt(timeSinceSpawned, spawnData.m_spawnInterval, spawnData.m_spawnChance);
+      var biomeString = TextUtils.GetBiomes(spawnData.m_biome, spawnData.m_biomeArea);
+      text += "\n" + biomeString + forest + forest + weather + global + time;
       text += "\nCreature limit: " + spawns + ", Distance limit: " + spawnDistance;
-      text += "\nLevel: " + level + levelLimit + ", Group size: " + group + groupRadius;
+      text += "\n" + level + ", Group size: " + group + groupRadius;
       text += "\nAltitude: " + altitude + offset + ", Tilt: " + tilt + ", Water: " + ocean;
       return text;
     }

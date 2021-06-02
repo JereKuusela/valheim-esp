@@ -68,5 +68,17 @@ namespace ESP
     {
       throw new NotImplementedException("Dummy");
     }
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(RandEventSystem), "HaveGlobalKeys")]
+    public static bool RandEventSystem_HaveGlobalKeys(RandEventSystem instance, RandomEvent ev)
+    {
+      throw new NotImplementedException("Dummy");
+    }
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(RandEventSystem), "CheckBase")]
+    public static bool RandEventSystem_CheckBase(RandEventSystem instance, RandomEvent ev, ZDO zdo)
+    {
+      throw new NotImplementedException("Dummy");
+    }
   }
 }
