@@ -60,7 +60,7 @@ namespace ESP
       if (!__instance.IsPlayerInBoat(Player.m_localPlayer.GetZDOID())) return;
       ShipUtils.text = GetShipText(__instance, ___m_body);
       if (Settings.showShipStatsOnHud)
-        MessageHud_UpdateMessage.ForcedMessage = "\n" + ShipUtils.text;
+        MessageHud_UpdateMessage.CustomMessage = "\n" + ShipUtils.text;
     }
   }
   [HarmonyPatch(typeof(Ship), "OnTriggerExit")]
@@ -69,7 +69,7 @@ namespace ESP
     public static void Postfix()
     {
       ShipUtils.text = "";
-      MessageHud_UpdateMessage.ForcedMessage = "";
+      MessageHud_UpdateMessage.CustomMessage = "";
     }
   }
 }

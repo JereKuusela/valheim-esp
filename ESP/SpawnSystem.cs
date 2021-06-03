@@ -41,6 +41,14 @@ namespace ESP
       }
       return totalAmount;
     }
+    private static bool IsEnabled(SpawnSystem.SpawnData instance)
+    {
+      if (!Settings.showSpawnSystems) return false;
+      var name = Utils.GetPrefabName(instance.m_prefab).ToLower();
+      var excluded = Settings.excludedSpawnSystems.ToLower().Split(',');
+      if (Array.Exists(excluded, item => item == name)) return false;
+      return true;
+    }
     private static void DrawSpawnSystems(SpawnSystem instance, Heightmap heightmap, ZNetView nview)
     {
       if (!Settings.showSpawnSystems) return;
@@ -48,11 +56,12 @@ namespace ESP
       var counter = -totalAmount / 2;
       var num = 0;
       var biome = heightmap.GetBiome(instance.transform.position);
-      foreach (SpawnSystem.SpawnData spawnData in instance.m_spawners)
+      instance.m_spawners.ForEach(spawnData =>
       {
         num++;
-        if (!spawnData.m_enabled || !heightmap.HaveBiome(spawnData.m_biome)) continue;
+        if (!spawnData.m_enabled || !heightmap.HaveBiome(spawnData.m_biome)) return;
         if (!spawnData.m_spawnAtDay && !spawnData.m_spawnAtNight) return;
+        if (!IsEnabled(spawnData)) return;
         var stableHashCode = ("b_" + spawnData.m_prefab.name + num.ToString()).GetStableHashCode();
         Action<GameObject> action = (GameObject obj) =>
         {
@@ -65,7 +74,7 @@ namespace ESP
         };
         Drawer.DrawMarkerLine(instance.gameObject, new Vector3(counter * 2, 0, 0), BiomeUtils.GetColor(biome), 1f, action);
         counter++;
-      }
+      });
     }
     private static void DrawRandEventSystem(SpawnSystem instance, Heightmap heightmap, ZNetView nview)
     {
@@ -97,10 +106,9 @@ namespace ESP
       var text = "Zone: " + TextUtils.String(zone.x + ";" + zone.y);
       var biome = heightmap.GetBiome(spawnSystem.transform.position);
       var biomeArea = heightmap.GetBiomeArea();
-      var biomeAreaString = ((biomeArea == Heightmap.BiomeArea.Median) ? " (full)" : "");
+      var biomeAreaString = ((biomeArea == Heightmap.BiomeArea.Median) ? ", full" : "");
       var area = heightmap.GetBiomeArea();
-      text += " Biome: " + BiomeUtils.GetName(biome) + biomeAreaString;
-      text += " Weather: " + TextUtils.String(EnvMan.instance.GetCurrentEnvironment().m_name);
+      text += " (" + TextUtils.String(BiomeUtils.GetName(biome)) + biomeAreaString + ")";
       text += "\n";
       return text;
     }

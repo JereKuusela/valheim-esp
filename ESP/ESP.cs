@@ -37,6 +37,8 @@ namespace ESP
     public static bool showCreatureSpawners => configShowCreatureSpawners.Value;
     public static ConfigEntry<string> configExcludedCreatureSpawners;
     public static string excludedCreatureSpawners => configExcludedCreatureSpawners.Value;
+    public static ConfigEntry<string> configExcludedSpawnSystems;
+    public static string excludedSpawnSystems => configExcludedSpawnSystems.Value;
     public static ConfigEntry<bool> configShowBiomes;
     public static bool showBiomes => configShowBiomes.Value;
 
@@ -87,6 +89,8 @@ namespace ESP
     public static bool showShipStats => configShowShipStats.Value;
     public static ConfigEntry<bool> configShowShipStatsOnHud;
     public static bool showShipStatsOnHud => configShowShipStatsOnHud.Value;
+    public static ConfigEntry<bool> configShowTimeAndWeather;
+    public static bool showTimeAndWeather => configShowTimeAndWeather.Value;
     public static ConfigEntry<bool> configFixInvalidLevelData;
     public static bool fixInvalidLevelData => configFixInvalidLevelData.Value;
   }
@@ -111,6 +115,7 @@ namespace ESP
       Settings.configShowCreatureSpawners = Config.Bind("Spawners", "Show spawn points", true, "Visualize fixed creature spawn points");
       Settings.configExcludedCreatureSpawners = Config.Bind("Spawners", "Excluded spawn points", "", "List of creatures separated by , that are not visualized");
       Settings.configShowSpawnAreas = Config.Bind("Spawners", "Show creature spawners", true, "Visualize physical creature spawners");
+      Settings.configExcludedSpawnSystems = Config.Bind("Spawners", "Excluded spawn systems", "Seagal,FireFlies", "List of creatures separated by , that are not visualized");
       Settings.configShowSpawnSystems = Config.Bind("Spawners", "Show spawn zones", true, "Visualize spawn zone system");
       Settings.configShowBiomes = Config.Bind("Spawners", "Show zone corner rays", true, "Visualize zone corners and their biomes");
       Settings.configShowRandEventSystem = Config.Bind("Spawners", "Show random event system", true, "Visualize random event system");
@@ -132,14 +137,15 @@ namespace ESP
       Settings.configShowAllDamageTypes = Config.Bind("Combat", "Show all damage types", true, "Show all damage types on weapon tooltips");
       Settings.configSetSkills = Config.Bind("Combat", "Set skill levels", "", "Sets all skill levels to a given number");
       Settings.configPlayerDamageRange = Config.Bind("Combat", "Player damage range", 0.15f, "Damage variance for players");
-      Settings.configCreatureDamageRange = Config.Bind("Combat", "Creaute damage range", 0.25f, "Damage variance for creatures");
+      Settings.configCreatureDamageRange = Config.Bind("Combat", "Creature damage range", 0.25f, "Damage variance for creatures");
 
+      Settings.configShowTimeAndWeather = Config.Bind("HUD", "Show current time and weather", true, "Show current time and weather on the hud");
+      Settings.configShowShipStatsOnHud = Config.Bind("HUD", "Show ship stats", true, "Show ship stats on the hud");
 
       Settings.configShowEffectAreas = Config.Bind("General", "Show area effects", true, "Visualize structure area effects");
-      Settings.configshowNoise = Config.Bind("General", "Show noise", true, "Visualuze noise");
+      Settings.configshowNoise = Config.Bind("General", "Show noise", false, "Visualize noise");
       Settings.configShowProgress = Config.Bind("General", "Show progress", true, "Show progress for plants and structures");
-      Settings.configShowShipStats = Config.Bind("General", "Show ship stats", true, "Show ship speed and wind direction on the ship");
-      Settings.configShowShipStatsOnHud = Config.Bind("General", "Show ship stats on the hud", true, "Show ship speed and wind direction on the UI");
+      Settings.configShowShipStats = Config.Bind("General", "Show ship stats", false, "Show ship speed and wind direction on the ship");
       Settings.configFixInvalidLevelData = Config.Bind("General", "Fix invalid creature star ranges", true, "Some spawners have higher minimum stars than maximum stars. If true, these are displayed like the code handles them.");
       var harmony = new Harmony("valheim.jerekuusela.esp");
       harmony.PatchAll();

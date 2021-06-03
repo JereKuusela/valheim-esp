@@ -61,5 +61,8 @@ namespace ESP
       var keys = required.Concat(notRequired);
       return System.String.Join(", ", keys);
     }
+    public static string GetHealth(double health, double limit)
+      => "Health: " + TextUtils.Progress(health, limit) + " (" + TextUtils.Percent(health / limit) + ")";
+
   }
 }

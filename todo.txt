@@ -1,3 +1,6 @@
+General:
+ - Text system refactored. Add functions that require a dictionary (enum to text). Then the caller function can decide what to show and in what order.
+
 Drawer:
  - Setting for line widths per type.
  - Some kind of color customization (rgb + string to color).
@@ -14,9 +17,9 @@ Quick hide:
 
 Hud:
  - Player current speed and noise.
- - Time of the day, weather (perhaps a custom canvas?)
  - DPS tool
 
 Creatures:
+ - Eating cooldown and range (+spheres).
  - Move speed (depending how it moves?), with current speed
  - Targeting system (current status, target, last known location, etc.)

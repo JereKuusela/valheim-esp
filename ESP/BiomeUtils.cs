@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ESP
 {
@@ -44,7 +45,11 @@ namespace ESP
       if (biome == Heightmap.Biome.Swamp) return "Swamp";
       return "";
     }
-    public static string GetNames(Heightmap.Biome biomes, Heightmap.Biome validBiome = Heightmap.Biome.None)
+    private const Heightmap.Biome BIOME_MAX = Heightmap.Biome.AshLands | Heightmap.Biome.BlackForest
+     | Heightmap.Biome.DeepNorth | Heightmap.Biome.Meadows | Heightmap.Biome.Mistlands
+     | Heightmap.Biome.Mountain | Heightmap.Biome.Ocean | Heightmap.Biome.Plains | Heightmap.Biome.Swamp;
+
+    public static string GetNames(Heightmap.Biome biomes, Heightmap.Biome validBiome = BIOME_MAX)
     {
       var names = new List<string>();
       foreach (var biome in BIOMES)

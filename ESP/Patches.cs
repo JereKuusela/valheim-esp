@@ -80,5 +80,11 @@ namespace ESP
     {
       throw new NotImplementedException("Dummy");
     }
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(EnvMan), "GetDayFraction")]
+    public static float EnvMan_GetDayFraction(EnvMan instance)
+    {
+      throw new NotImplementedException("Dummy");
+    }
   }
 }

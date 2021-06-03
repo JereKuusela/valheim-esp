@@ -2,6 +2,7 @@ using HarmonyLib;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ESP
 {
@@ -59,39 +60,6 @@ namespace ESP
   [HarmonyPatch(typeof(Character), "GetHoverText")]
   public class Character_GetHoverText
   {
-    private static string DamageTypeToString(HitData.DamageType damageType)
-    {
-      if (damageType == HitData.DamageType.Blunt) return "Blunt";
-      if (damageType == HitData.DamageType.Chop) return "Chop";
-      if (damageType == HitData.DamageType.Elemental) return "Elemental";
-      if (damageType == HitData.DamageType.Fire) return "Fire";
-      if (damageType == HitData.DamageType.Frost) return "Frost";
-      if (damageType == HitData.DamageType.Lightning) return "Lightning";
-      if (damageType == HitData.DamageType.Physical) return "Physical";
-      if (damageType == HitData.DamageType.Pickaxe) return "Pickaxe";
-      if (damageType == HitData.DamageType.Pierce) return "Pierce";
-      if (damageType == HitData.DamageType.Poison) return "Poison";
-      if (damageType == HitData.DamageType.Slash) return "Slash";
-      if (damageType == HitData.DamageType.Spirit) return "Spirit";
-      return "";
-    }
-    private static string ModifierToText(HitData.DamageModifiers modifiers, HitData.DamageType damageType)
-    {
-      var name = DamageTypeToString(damageType);
-      var modifier = modifiers.GetModifier(damageType);
-      if (modifier == HitData.DamageModifier.Immune) return name + ": " + TextUtils.String("x0");
-      if (modifier == HitData.DamageModifier.Resistant) return name + ": " + TextUtils.String("x0.5");
-      if (modifier == HitData.DamageModifier.VeryResistant) return name + ": " + TextUtils.String("x0.25");
-      if (modifier == HitData.DamageModifier.Weak) return name + ": " + TextUtils.String("x1.5");
-      if (modifier == HitData.DamageModifier.VeryWeak) return name + ": " + TextUtils.String("x2");
-      return "";
-    }
-    private static string GetText(HitData.DamageModifiers modifiers, HitData.DamageType damageType)
-    {
-      var text = ModifierToText(modifiers, damageType);
-      if (text == "") return "";
-      return "\n" + text;
-    }
     private static string GetStaggerText(float health, float staggerDamageFactor, float staggerDamage)
     {
       var staggerLimit = staggerDamageFactor * health;
@@ -100,7 +68,7 @@ namespace ESP
       else
         return "\n" + "Stagger: " + TextUtils.String("Immune");
     }
-    private static string GetCreatureStats(Character instance, MonsterAI monsterAI, float staggerDamage, Rigidbody body)
+    private static string GetCreatureStats(Character instance, BaseAI baseAI, MonsterAI monsterAI, float staggerDamage, Rigidbody body)
     {
       if (!Settings.showCreatureStats)
         return "";
@@ -117,22 +85,24 @@ namespace ESP
         stats += "\n<color=red>" + mode + "</color>";
       }
       var health = instance.GetMaxHealth();
-      stats += "\n" + "Health: " + TextUtils.Progress(instance.GetHealth(), health);
+      stats += "\n" + TextUtils.GetHealth(instance.GetHealth(), health);
       stats += GetStaggerText(health, instance.m_staggerDamageFactor, staggerDamage);
       stats += "\n" + "Mass: " + TextUtils.Int(body.mass) + " (" + TextUtils.Percent(1f - 5f / body.mass) + " knockback resistance)";
       var damageModifiers = Patch.Character_GetDamageModifiers(instance);
-      stats += GetText(damageModifiers, HitData.DamageType.Blunt);
-      stats += GetText(damageModifiers, HitData.DamageType.Chop);
-      stats += GetText(damageModifiers, HitData.DamageType.Elemental);
-      stats += GetText(damageModifiers, HitData.DamageType.Fire);
-      stats += GetText(damageModifiers, HitData.DamageType.Frost);
-      stats += GetText(damageModifiers, HitData.DamageType.Lightning);
-      stats += GetText(damageModifiers, HitData.DamageType.Physical);
-      stats += GetText(damageModifiers, HitData.DamageType.Pickaxe);
-      stats += GetText(damageModifiers, HitData.DamageType.Pierce);
-      stats += GetText(damageModifiers, HitData.DamageType.Poison);
-      stats += GetText(damageModifiers, HitData.DamageType.Slash);
-      stats += GetText(damageModifiers, HitData.DamageType.Spirit);
+      stats += DamageModifierUtils.GetText(damageModifiers);
+      if (baseAI)
+      {
+        Vector3 patrolPoint;
+        var patrol = baseAI.GetPatrolPoint(out patrolPoint);
+        var patrolText = patrol ? patrolPoint.ToString("F0") : "No patrol";
+        stats += "\nPatrol: " + TextUtils.String(patrolText);
+      }
+      if (monsterAI.m_consumeItems.Count > 0)
+      {
+        var heal = " (" + TextUtils.Int(monsterAI.m_consumeHeal) + " health)";
+        var items = monsterAI.m_consumeItems.Select(item => TextUtils.String(Utils.GetPrefabName(item.gameObject)));
+        stats += "\n" + string.Join(", ", items) + heal;
+      }
       return stats;
     }
 
@@ -208,7 +178,7 @@ namespace ESP
       var tameable = __instance.GetComponent<Tameable>();
       var monsterAI = __instance.GetComponent<MonsterAI>();
       var characterDrop = __instance.GetComponent<CharacterDrop>();
-      __result += GetCreatureStats(__instance, monsterAI, ___m_staggerDamage, ___m_body);
+      __result += GetCreatureStats(__instance, baseAI, monsterAI, ___m_staggerDamage, ___m_body);
       __result += GetStatusStats(__instance);
       __result += GetGrowupStats(baseAI, growup);
       __result += GetDropStats(characterDrop, __instance);
@@ -217,7 +187,7 @@ namespace ESP
   [HarmonyPatch(typeof(Character), "GetRandomSkillFactor")]
   public class Character_GetRandomSkillFactor
   {
-    public static void Postfix(float __result)
+    public static void Postfix(ref float __result)
     {
       __result = UnityEngine.Random.Range(1f - Settings.creatureDamageRange, 1f);
     }
