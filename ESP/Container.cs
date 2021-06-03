@@ -14,4 +14,13 @@ namespace ESP
       Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.white, Settings.chestRayWidth, text);
     }
   }
+  [HarmonyPatch(typeof(Container), "GetHoverText")]
+  public class Container_GetHoverText
+  {
+    public static void Postfix(Container __instance, ref string __result)
+    {
+      var wearNTear = __instance.GetComponent<WearNTear>();
+      __result += WearNTearUtils.GetText(wearNTear);
+    }
+  }
 }

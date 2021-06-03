@@ -17,6 +17,8 @@ namespace ESP
     {
       var ship = __instance.gameObject.GetComponentInParent<Ship>();
       __result += GetShipHoverText(ship);
+      var wearNTear = __instance.GetComponent<WearNTear>();
+      __result += WearNTearUtils.GetText(wearNTear);
     }
   }
 }

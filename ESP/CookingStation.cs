@@ -9,6 +9,7 @@ namespace ESP
     private static float GetTime(ZNetView nview, int slot) => nview.GetZDO().GetFloat("slot" + slot, 0f);
     private static string GetSlotText(CookingStation instance, ZNetView nview, int slot)
     {
+      if (!Settings.showProgress) return "";
       var itemName = GetItem(nview, slot);
       var cookedTime = GetTime(nview, slot);
       if (itemName == "") return "";
@@ -21,14 +22,12 @@ namespace ESP
     }
     public static void Postfix(CookingStation __instance, ZNetView ___m_nview, ref string __result)
     {
-      if (!Settings.showProgress)
-        return;
-
       for (var slot = 0; slot < __instance.m_slots.Length; slot++)
       {
         __result += GetSlotText(__instance, ___m_nview, slot);
-
       }
+      var wearNTear = __instance.GetComponent<WearNTear>();
+      __result += WearNTearUtils.GetText(wearNTear);
     }
   }
 }

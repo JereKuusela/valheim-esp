@@ -9,6 +9,7 @@ namespace ESP
   {
     private static string GetProgressText(Fermenter instance)
     {
+      if (!Settings.showProgress) return "";
       var limit = instance.m_fermentationDuration;
       if (limit == 0) return "";
       var value = Patch.Fermenter_GetFermentationTime(instance);
@@ -16,10 +17,10 @@ namespace ESP
     }
     public static void Postfix(Fermenter __instance, ref string __result)
     {
-      if (!Settings.showProgress)
-        return;
-
       __result += GetProgressText(__instance);
+
+      var wearNTear = __instance.GetComponent<WearNTear>();
+      __result += WearNTearUtils.GetText(wearNTear);
     }
   }
 }

@@ -7,6 +7,7 @@ namespace ESP
   {
     private static string GetProgressText(Beehive instance, ZNetView nview)
     {
+      if (!Settings.showProgress) return "";
       var limit = instance.m_secPerUnit;
       if (limit == 0) return "";
       var value = nview.GetZDO().GetFloat("product", 0f);
@@ -14,10 +15,8 @@ namespace ESP
     }
     public static void Postfix(Beehive __instance, ZNetView ___m_nview, ref string __result)
     {
-      if (!Settings.showProgress)
-        return;
-
-      __result += GetProgressText(__instance, ___m_nview);
+      var wearNTear = __instance.GetComponent<WearNTear>();
+      __result += GetProgressText(__instance, ___m_nview) + WearNTearUtils.GetText(wearNTear);
     }
   }
 }

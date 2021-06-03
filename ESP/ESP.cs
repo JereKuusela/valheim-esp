@@ -81,10 +81,13 @@ namespace ESP
     public static ConfigEntry<float> configCreatureDamageRange;
     public static float creatureDamageRange => configCreatureDamageRange.Value;
 
-    public static ConfigEntry<bool> configshowNoise;
-    public static bool showNoise => configshowNoise.Value;
     public static ConfigEntry<bool> configShowProgress;
     public static bool showProgress => configShowProgress.Value;
+    public static ConfigEntry<bool> configShowStructureHealth;
+    public static bool showStructureHealth => configShowStructureHealth.Value;
+
+    public static ConfigEntry<bool> configshowNoise;
+    public static bool showNoise => configshowNoise.Value;
     public static ConfigEntry<bool> configShowShipStats;
     public static bool showShipStats => configShowShipStats.Value;
     public static ConfigEntry<bool> configShowShipStatsOnHud;
@@ -142,9 +145,11 @@ namespace ESP
       Settings.configShowTimeAndWeather = Config.Bind("HUD", "Show current time and weather", true, "Show current time and weather on the hud");
       Settings.configShowShipStatsOnHud = Config.Bind("HUD", "Show ship stats", true, "Show ship stats on the hud");
 
+      Settings.configShowProgress = Config.Bind("Structures", "Show progress", true, "Show progress for plants and structures");
+      Settings.configShowStructureHealth = Config.Bind("Structures", "Show health and resistances", true, "Show health and resistances for structures");
+
       Settings.configShowEffectAreas = Config.Bind("General", "Show area effects", true, "Visualize structure area effects");
       Settings.configshowNoise = Config.Bind("General", "Show noise", false, "Visualize noise");
-      Settings.configShowProgress = Config.Bind("General", "Show progress", true, "Show progress for plants and structures");
       Settings.configShowShipStats = Config.Bind("General", "Show ship stats", false, "Show ship speed and wind direction on the ship");
       Settings.configFixInvalidLevelData = Config.Bind("General", "Fix invalid creature star ranges", true, "Some spawners have higher minimum stars than maximum stars. If true, these are displayed like the code handles them.");
       var harmony = new Harmony("valheim.jerekuusela.esp");

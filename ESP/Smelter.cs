@@ -7,6 +7,8 @@ namespace ESP
   {
     private static string GetProgressText(Smelter instance)
     {
+      if (!Settings.showProgress) return "";
+
       var limit = instance.m_secPerProduct;
       if (limit == 0) return "";
       var value = Patch.Smelter_GetBakeTimer(instance);
@@ -14,6 +16,8 @@ namespace ESP
     }
     private static string GetFuelText(Smelter instance)
     {
+      if (!Settings.showProgress) return "";
+
       var maxFuel = instance.m_maxFuel;
       var secPerFuel = instance.m_secPerProduct / instance.m_fuelPerProduct;
       if (maxFuel == 0) return "";
@@ -24,6 +28,7 @@ namespace ESP
     }
     private static string GetPowerText(Smelter instance)
     {
+      if (!Settings.showProgress) return "";
       if (!instance.m_windmill) return "";
       return "\n" + "Power:" + TextUtils.Percent(instance.m_windmill.GetPowerOutput());
     }
@@ -38,11 +43,11 @@ namespace ESP
     }
     public static void Postfix(Smelter __instance)
     {
-      if (!Settings.showProgress)
-        return;
-
       var text = GetProgressText(__instance) + GetFuelText(__instance) + GetPowerText(__instance);
+      var wearNTear = __instance.GetComponent<WearNTear>();
+      text += WearNTearUtils.GetText(wearNTear);
       UpdateSwitches(__instance, text);
+
     }
   }
 }
