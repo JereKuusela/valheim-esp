@@ -5,21 +5,29 @@ Drawer:
  - Setting for line widths per type.
  - Some kind of color customization (rgb + string to color).
  * List of priority names (different color and width can be set).
+ - Cover lines (with different color if they get hit): windmills, crafting stations.
 
-DPS tool:
- - Start tracking at start of attack. Timestamp at latest end of attack. (if possible).
- - Alternatively, track hits and give range when excluding first or last hit.
- - Track caused damage, base damage (without skill or rng), damage taken (with and without defenses), used stamina, damage per stamina.
- - Sit down to reset?
+Weapon tooltips:
+ - Add stamina cost (with skill based cost too)
+ - Add attack speed (copy from wiki)
+ - Add bow draw time
+ - Add stagger
+ - Add skill based value to knockback
+ - Add secondary multipliers
 
 Quick hide:
  - Investigate hiding drawn things with a keypress.
 
 Hud:
  - Player current speed and noise.
- - DPS tool
+ - Wind direction and strength.
+
+Biomes:
+ - Weather, available weathers
+ - Time of the day,
+ - Wind direction + power
 
 Creatures:
  - Eating cooldown and range (+spheres).
  - Move speed (depending how it moves?), with current speed
- - Targeting system (current status, target, last known location, etc.)
+ - Targeting system (current status, target, last known location, retreat limit, retreat when struch, etc.)

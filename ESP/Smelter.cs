@@ -26,11 +26,16 @@ namespace ESP
       var value = Patch.Smelter_GetFuel(instance) * secPerFuel;
       return "\n" + TextUtils.ProgressPercent("Fuel", value, limit);
     }
-    private static string GetPowerText(Smelter instance)
+    private static string GetPowerText(Windmill windmill)
     {
       if (!Settings.showProgress) return "";
-      if (!instance.m_windmill) return "";
-      return "\n" + "Power:" + TextUtils.Percent(instance.m_windmill.GetPowerOutput());
+      if (!windmill) return "";
+      var cover = Patch.Windmill_m_cover(windmill);
+      var speed = Utils.LerpStep(windmill.m_minWindSpeed, 1f, EnvMan.instance.GetWindIntensity());
+      var powerText = "Power: " + TextUtils.Percent(windmill.GetPowerOutput());
+      var speedText = TextUtils.Percent(speed) + " speed";
+      var coverText = TextUtils.Percent(cover) + " cover";
+      return "\n" + powerText + " from " + speedText + " and " + coverText;
     }
     private static void UpdateSwitches(Smelter instance, string text)
     {
@@ -43,7 +48,7 @@ namespace ESP
     }
     public static void Postfix(Smelter __instance)
     {
-      var text = GetProgressText(__instance) + GetFuelText(__instance) + GetPowerText(__instance);
+      var text = GetProgressText(__instance) + GetFuelText(__instance) + GetPowerText(__instance.m_windmill);
       var wearNTear = __instance.GetComponent<WearNTear>();
       text += WearNTearUtils.GetText(wearNTear);
       UpdateSwitches(__instance, text);

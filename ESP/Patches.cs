@@ -6,6 +6,7 @@ namespace ESP
   [HarmonyPatch]
   public class Patch
   {
+    public static float Windmill_m_cover(Windmill instance) => Traverse.Create(instance).Field<float>("m_cover").Value;
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(SpawnArea), "GetInstances")]
     public static void SpawnArea_GetInstances(SpawnArea instance, out int near, out int total)

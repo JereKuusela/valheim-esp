@@ -86,14 +86,18 @@ namespace ESP
     public static ConfigEntry<bool> configShowStructureHealth;
     public static bool showStructureHealth => configShowStructureHealth.Value;
 
-    public static ConfigEntry<bool> configshowNoise;
-    public static bool showNoise => configshowNoise.Value;
-    public static ConfigEntry<bool> configShowShipStats;
-    public static bool showShipStats => configShowShipStats.Value;
     public static ConfigEntry<bool> configShowShipStatsOnHud;
     public static bool showShipStatsOnHud => configShowShipStatsOnHud.Value;
     public static ConfigEntry<bool> configShowTimeAndWeather;
     public static bool showTimeAndWeather => configShowTimeAndWeather.Value;
+    public static ConfigEntry<bool> configShowDPS;
+    public static bool showDPS => configShowDPS.Value;
+
+
+    public static ConfigEntry<bool> configshowNoise;
+    public static bool showNoise => configshowNoise.Value;
+    public static ConfigEntry<bool> configShowShipStats;
+    public static bool showShipStats => configShowShipStats.Value;
     public static ConfigEntry<bool> configFixInvalidLevelData;
     public static bool fixInvalidLevelData => configFixInvalidLevelData.Value;
   }
@@ -144,6 +148,7 @@ namespace ESP
 
       Settings.configShowTimeAndWeather = Config.Bind("HUD", "Show current time and weather", true, "Show current time and weather on the hud");
       Settings.configShowShipStatsOnHud = Config.Bind("HUD", "Show ship stats", true, "Show ship stats on the hud");
+      Settings.configShowShipStatsOnHud = Config.Bind("HUD", "Show DPS", true, "Show combat stats on the hud");
 
       Settings.configShowProgress = Config.Bind("Structures", "Show progress", true, "Show progress for plants and structures");
       Settings.configShowStructureHealth = Config.Bind("Structures", "Show health and resistances", true, "Show health and resistances for structures");

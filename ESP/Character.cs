@@ -49,14 +49,6 @@ namespace ESP
     }
   }
 
-  struct DropChance
-  {
-    public float chance;
-    public int min;
-    public int max;
-    public bool perPlayer;
-  }
-
   [HarmonyPatch(typeof(Character), "GetHoverText")]
   public class Character_GetHoverText
   {
@@ -147,13 +139,7 @@ namespace ESP
             min *= num;
             max *= num;
           }
-          var dropChance = new DropChance()
-          {
-            chance = chance,
-            max = max,
-            min = min,
-            perPlayer = drop.m_onePerPlayer
-          };
+          max--; // -1 because exclusive on the random range.
           var text = "";
           if (max > 1 || (max == 1 && chance >= 1.0)) text += TextUtils.Range(min, max) + " ";
           text += drop.m_prefab.name;
@@ -190,6 +176,29 @@ namespace ESP
     public static void Postfix(ref float __result)
     {
       __result = UnityEngine.Random.Range(1f - Settings.creatureDamageRange, 1f);
+    }
+  }
+
+  [HarmonyPatch(typeof(Character), "RPC_Damage")]
+  public class Character_RPC_Damage
+  {
+    public static void Prefix(HitData hit)
+    {
+      if (hit.GetAttacker() == Player.m_localPlayer)
+        DPSMeter.AddRawHit(hit);
+    }
+  }
+  [HarmonyPatch(typeof(Character), "ApplyDamage")]
+  public class Character_ApplyDamage
+  {
+    public static void Prefix(Character __instance, HitData hit)
+    {
+      if (hit.GetAttacker() == Player.m_localPlayer)
+        DPSMeter.AddDamage(hit, __instance);
+      if (hit.GetAttacker() == null)
+        DPSMeter.AddDot(hit);
+      if (__instance == Player.m_localPlayer)
+        DPSMeter.AddDamageTaken(hit);
     }
   }
 }

@@ -7,7 +7,7 @@ namespace ESP
   {
     public static string GetText(WearNTear wearNTear)
     {
-      if (!wearNTear) return null;
+      if (!wearNTear || !Settings.showStructureHealth) return "";
       var text = "";
       var health = wearNTear.GetHealthPercentage();
 

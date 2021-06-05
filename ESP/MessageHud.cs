@@ -24,6 +24,14 @@ namespace ESP
       var time = EnvMan.instance.IsCold() ? "Night" : "Day";
       return TextUtils.String(GetTime()) + " (" + TextUtils.String(time) + "), " + TextUtils.String(weather) + "\n";
     }
+
+    private static string GetCustomMessage()
+    {
+      var dps = DPSMeter.GetText();
+      if (dps != "") return dps;
+      if (CustomMessage != "") return CustomMessage;
+      return "";
+    }
     private static bool baseGameMessage = false;
     public static string CustomMessage = "";
 
@@ -31,13 +39,15 @@ namespace ESP
     public static bool Prefix(out string __state)
     {
       __state = MessageHud.instance.m_messageText.text;
-      return CustomMessage == "";
+      return GetCustomMessage() == "";
     }
     // Keeps the message always visible and shows any base game messages.
     public static void Postfix(float ___m_msgQueueTimer, string __state)
     {
       var hud = MessageHud.instance;
-      var customMessage = CustomMessage == "" ? GetStatusText() : CustomMessage;
+      var customMessage = GetCustomMessage();
+      if (customMessage == "")
+        customMessage = GetStatusText();
       // New base game message.
       if (hud.m_messageText.text != __state)
         baseGameMessage = true;
