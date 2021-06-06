@@ -30,7 +30,7 @@ namespace ESP
     {
       if (!Settings.showProgress) return "";
       if (!windmill) return "";
-      var cover = Patch.Windmill_m_cover(windmill);
+      var cover = Patch.m_cover(windmill);
       var speed = Utils.LerpStep(windmill.m_minWindSpeed, 1f, EnvMan.instance.GetWindIntensity());
       var powerText = "Power: " + TextUtils.Percent(windmill.GetPowerOutput());
       var speedText = TextUtils.Percent(speed) + " speed";

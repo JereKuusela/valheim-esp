@@ -148,7 +148,7 @@ namespace ESP
 
       Settings.configShowTimeAndWeather = Config.Bind("HUD", "Show current time and weather", true, "Show current time and weather on the hud");
       Settings.configShowShipStatsOnHud = Config.Bind("HUD", "Show ship stats", true, "Show ship stats on the hud");
-      Settings.configShowShipStatsOnHud = Config.Bind("HUD", "Show DPS", true, "Show combat stats on the hud");
+      Settings.configShowDPS = Config.Bind("HUD", "Show DPS", true, "Show combat stats on the hud");
 
       Settings.configShowProgress = Config.Bind("Structures", "Show progress", true, "Show progress for plants and structures");
       Settings.configShowStructureHealth = Config.Bind("Structures", "Show health and resistances", true, "Show health and resistances for structures");

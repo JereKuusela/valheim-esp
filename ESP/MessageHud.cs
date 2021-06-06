@@ -15,11 +15,15 @@ namespace ESP
       if (CustomMessage != "") return CustomMessage;
       return "";
     }
+    private static string GetSpeed() => "Speed: " + TextUtils.Float(Patch.m_currentVel(Player.m_localPlayer).magnitude, "0.#") + " m/s";
+    private static string GetNoise() => "Noise: " + TextUtils.Int(Player.m_localPlayer.GetNoiseRange()) + " meters";
     private static string GetStatusText()
     {
       // Local player exists when the game is loaded (during loading shows arbitrary time).
       if (!Settings.showTimeAndWeather || Player.m_localPlayer == null) return "";
-      return EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment();
+
+      var time = EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment();
+      return time + "\n" + GetSpeed() + "\n" + GetNoise();
     }
 
     private static bool baseGameMessage = false;

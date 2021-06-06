@@ -41,17 +41,17 @@ namespace ESP
       text += " (" + TextUtils.Percent(env.m_weight / totalWeight) + "): ";
       text += TextUtils.Range(env.m_env.m_windMin, env.m_env.m_windMax) + " wind";
       if (env.m_env.m_alwaysDark)
-        text += ", " + TextUtils.String("Always dark");
+        text += ", " + TextUtils.String("Dark");
       if (env.m_env.m_isFreezing)
         text += ", " + TextUtils.String("Freezing");
       if (env.m_env.m_isFreezingAtNight)
         text += ", " + TextUtils.String("Freezing at night");
       if (env.m_env.m_isCold)
         text += ", " + TextUtils.String("Cold");
-      if (env.m_env.m_isColdAtNight)
-        text += ", " + TextUtils.String("Cold at night");
+      if (!env.m_env.m_isColdAtNight)
+        text += ", " + TextUtils.String("Never cold");
       if (env.m_env.m_isWet)
-        text += ", " + TextUtils.String("Rain");
+        text += ", " + TextUtils.String("Wet");
       return text;
     }
     public static string GetWind()

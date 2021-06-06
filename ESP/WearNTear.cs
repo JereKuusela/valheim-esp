@@ -21,7 +21,7 @@ namespace ESP
   {
     public static void Postfix(WearNTear __instance)
     {
-      if (!Settings.showProgress)
+      if (!Settings.showStructureHealth)
         return;
       // Hover text supports only one text so no point adding another.
       if (__instance.gameObject.GetComponent<Hoverable>() != null) return;
@@ -31,7 +31,7 @@ namespace ESP
   }
   public class WearNTearText : MonoBehaviour, Hoverable
   {
-    public string GetHoverText() => TextUtils.String(Utils.GetPrefabName(wearNTear.gameObject)) + WearNTearUtils.GetText(wearNTear);
+    public string GetHoverText() => TextUtils.Name(wearNTear.gameObject) + WearNTearUtils.GetText(wearNTear);
     public string GetHoverName() => wearNTear.name;
     public WearNTear wearNTear;
   }

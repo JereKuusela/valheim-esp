@@ -1,0 +1,37 @@
+using HarmonyLib;
+using UnityEngine;
+
+namespace ESP
+{
+  public class MineRockUtils
+  {
+    public static string GetText(MineRock mineRock)
+    {
+      if (!mineRock || !Settings.showStructureHealth) return "";
+      var text = "";
+      var maxHealth = mineRock.m_health;
+
+      text += "\nHealth per area: " + TextUtils.Int(maxHealth);
+      text += DamageModifierUtils.GetText(mineRock.m_damageModifiers, false);
+      text += "\nHit noise: " + TextUtils.Int(100);
+      return text;
+    }
+  }
+  [HarmonyPatch(typeof(MineRock), "RPC_Hit")]
+  public class MineRock_RPC_Hit
+  {
+    public static void Postfix(MineRock __instance, HitData hit)
+    {
+      if (hit.GetAttacker() == Player.m_localPlayer)
+        DPSMeter.AddStructureDamage(hit, __instance);
+    }
+  }
+  [HarmonyPatch(typeof(MineRock), "GetHoverText")]
+  public class MineRock_GetHoverText
+  {
+    public static void Postfix(MineRock __instance, ref string __result)
+    {
+      __result += MineRockUtils.GetText(__instance);
+    }
+  }
+}

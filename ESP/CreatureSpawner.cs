@@ -37,7 +37,7 @@ namespace ESP
       var respawn = GetRespawnTime(instance, nview);
       var noise = instance.m_triggerNoise > 0 ? " with noise of " + TextUtils.Int(instance.m_triggerNoise) : "";
       var lines = new List<string>();
-      lines.Add(TextUtils.String(Utils.GetPrefabName(instance.m_creaturePrefab)));
+      lines.Add(TextUtils.Name(instance.m_creaturePrefab));
       lines.Add("Respawn: " + TextUtils.String(respawn));
       lines.Add(TextUtils.GetLevel(instance.m_minLevel, instance.m_maxLevel, instance.m_levelupChance));
       var timeText = GetTimeText(instance);

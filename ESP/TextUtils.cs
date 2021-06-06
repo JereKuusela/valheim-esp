@@ -1,7 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using UnityEngine;
+
 
 namespace ESP
 {
@@ -70,5 +71,6 @@ namespace ESP
     public static string GetHealth(double health, double limit)
       => "Health: " + TextUtils.Progress(health, limit) + " (" + TextUtils.Percent(health / limit) + ")";
 
+    public static string Name(GameObject gameObject) => String(Localization.instance.Localize(Utils.GetPrefabName(gameObject)));
   }
 }

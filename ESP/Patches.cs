@@ -1,13 +1,18 @@
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ESP
 {
   [HarmonyPatch]
   public class Patch
   {
-    public static float Windmill_m_cover(Windmill instance) => Traverse.Create(instance).Field<float>("m_cover").Value;
+    public static float m_cover(Windmill instance) => Traverse.Create(instance).Field<float>("m_cover").Value;
+    public static Vector3 m_currentVel(Player instance) => Traverse.Create(instance).Field<Vector3>("m_currentVel").Value;
+    public static ZNetView m_nview(TreeLog instance) => Traverse.Create(instance).Field<ZNetView>("m_nview").Value;
+    public static ZNetView m_nview(TreeBase instance) => Traverse.Create(instance).Field<ZNetView>("m_nview").Value;
+    public static ZNetView m_nview(Destructible instance) => Traverse.Create(instance).Field<ZNetView>("m_nview").Value;
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(SpawnArea), "GetInstances")]
     public static void SpawnArea_GetInstances(SpawnArea instance, out int near, out int total)

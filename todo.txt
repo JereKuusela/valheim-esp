@@ -6,6 +6,7 @@ Drawer:
  - Some kind of color customization (rgb + string to color).
  * List of priority names (different color and width can be set).
  - Cover lines (with different color if they get hit): windmills, crafting stations.
+ - Rocks and their support somehow visualized
 
 Weapon tooltips:
  - Add stamina cost (with skill based cost too)
@@ -17,10 +18,6 @@ Weapon tooltips:
 
 Quick hide:
  - Investigate hiding drawn things with a keypress.
-
-Hud:
- - Player current speed and noise.
- - Wind direction and strength.
 
 Creatures:
  - Eating cooldown and range (+spheres).

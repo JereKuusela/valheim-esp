@@ -92,7 +92,7 @@ namespace ESP
       if (monsterAI.m_consumeItems.Count > 0)
       {
         var heal = " (" + TextUtils.Int(monsterAI.m_consumeHeal) + " health)";
-        var items = monsterAI.m_consumeItems.Select(item => TextUtils.String(Utils.GetPrefabName(item.gameObject)));
+        var items = monsterAI.m_consumeItems.Select(item => TextUtils.Name(item.gameObject));
         stats += "\n" + string.Join(", ", items) + heal;
       }
       return stats;
@@ -133,13 +133,12 @@ namespace ESP
             chance *= (float)num;
           }
           int min = drop.m_amountMin;
-          int max = drop.m_amountMax;
+          int max = drop.m_amountMax - 1;  // -1 because exclusive on the random range.
           if (drop.m_levelMultiplier)
           {
             min *= num;
             max *= num;
           }
-          max--; // -1 because exclusive on the random range.
           var text = "";
           if (max > 1 || (max == 1 && chance >= 1.0)) text += TextUtils.Range(min, max) + " ";
           text += drop.m_prefab.name;
