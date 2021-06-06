@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using System;
+using System.Linq;
 
 namespace ESP
 {
@@ -28,7 +29,12 @@ namespace ESP
     }
     private static void DrawMarker(GameObject parent, Vector3 position, Heightmap.Biome biome)
     {
-      Drawer.DrawMarkerLine(parent, position, BiomeUtils.GetColor(biome), 0.25f, BiomeUtils.GetName(biome));
+      Action<GameObject> action = (GameObject obj) =>
+        {
+          var text = obj.AddComponent<BiomeText>();
+          text.biome = biome;
+        };
+      Drawer.DrawMarkerLine(parent, position, BiomeUtils.GetColor(biome), 0.25f, action);
     }
     private static int GetTotalAmountOfSpawnSystems(SpawnSystem instance, Heightmap heightmap)
     {
@@ -169,5 +175,23 @@ namespace ESP
     public ZNetView nview;
     public SpawnSystem.SpawnData spawnData;
     public int stableHashCode;
+  }
+
+  public class BiomeText : MonoBehaviour, Hoverable
+  {
+    public string GetHoverText()
+    {
+      var text = TextUtils.String(BiomeUtils.GetName(biome)) + "\n" + EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment();
+      var envs = Patch.EnvMan_GetAvailableEnvironments(EnvMan.instance, biome);
+      var totalWeight = envs.Sum(env => env.m_weight);
+      var avgWind = envs.Sum(EnvUtils.GetAvgWind) / totalWeight;
+      text += "\n" + EnvUtils.GetWind() + " (" + TextUtils.Percent(avgWind) + " on average)";
+      text += "\n\n" + EnvUtils.GetProgress() + ", Current roll: " + EnvUtils.GetEnvironmentRoll(totalWeight);
+      var texts = envs.Select(env => EnvUtils.GetEnvironment(env, totalWeight));
+      return text + "\n" + string.Join("\n", texts);
+    }
+    public string GetHoverName() => BiomeUtils.GetName(biome);
+
+    public Heightmap.Biome biome;
   }
 }

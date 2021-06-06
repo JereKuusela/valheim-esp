@@ -11,13 +11,7 @@ namespace ESP
   [HarmonyPatch(typeof(Ship), "FixedUpdate")]
   public class Ship_FixedUpdate
   {
-    private static string GetWindText()
-    {
-      var windDir = EnvMan.instance.GetWindDir();
-      var angle = Mathf.Atan2(windDir.x, windDir.z) / Math.PI * 180f;
-      var windIntensity = EnvMan.instance.GetWindIntensity();
-      return "\nWind: " + TextUtils.Percent(windIntensity) + " from " + TextUtils.Int(angle) + " degrees";
-    }
+
     private static float GetRelativeAngle(Ship ship)
     {
       var forward = ship.transform.forward * 1f;
@@ -47,7 +41,7 @@ namespace ESP
       var angle = 90f - Mathf.Atan2(velocity.z, velocity.x) / Math.PI * 180f;
       var speed = velocity.magnitude;
       text += "\nSpeed: " + TextUtils.Fixed(speed) + " m/s towards " + TextUtils.Int(angle) + " degrees";
-      text += GetWindText();
+      text += "\n" + EnvUtils.GetWind();
       text += "\nWind power: " + TextUtils.Percent(GetWindPower(ship)) + " from " + TextUtils.Int(GetRelativeAngle(ship)) + " degrees";
       //text += "\nSail force: " + TextUtils.Percent(ship.m_sailForceFactor);
       //text += "\nRudderSpeed: " + TextUtils.Float(ship.m_rudderSpeed) + " m/s";

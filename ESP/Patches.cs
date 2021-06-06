@@ -1,5 +1,6 @@
 using HarmonyLib;
 using System;
+using System.Collections.Generic;
 
 namespace ESP
 {
@@ -84,6 +85,12 @@ namespace ESP
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(EnvMan), "GetDayFraction")]
     public static float EnvMan_GetDayFraction(EnvMan instance)
+    {
+      throw new NotImplementedException("Dummy");
+    }
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(EnvMan), "GetAvailableEnvironments")]
+    public static List<EnvEntry> EnvMan_GetAvailableEnvironments(EnvMan instance, Heightmap.Biome biome)
     {
       throw new NotImplementedException("Dummy");
     }

@@ -22,11 +22,6 @@ Hud:
  - Player current speed and noise.
  - Wind direction and strength.
 
-Biomes:
- - Weather, available weathers
- - Time of the day,
- - Wind direction + power
-
 Creatures:
  - Eating cooldown and range (+spheres).
  - Move speed (depending how it moves?), with current speed

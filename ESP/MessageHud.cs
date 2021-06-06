@@ -8,23 +8,6 @@ namespace ESP
   [HarmonyPatch(typeof(MessageHud), "UpdateMessage")]
   public class MessageHud_UpdateMessage : MonoBehaviour
   {
-    private static string GetTime()
-    {
-      var fraction = Patch.EnvMan_GetDayFraction(EnvMan.instance);
-      var seconds = fraction * 3600 * 24;
-      var hours = Math.Floor(seconds / 3600);
-      var minutes = Math.Floor((seconds - hours * 3600) / 60);
-      return hours.ToString().PadLeft(2, '0') + ":" + minutes.ToString().PadLeft(2, '0');
-    }
-    private static string GetStatusText()
-    {
-      // Local player exists when the game is loaded (during loading shows arbitrary time).
-      if (!Settings.showTimeAndWeather || Player.m_localPlayer == null) return "";
-      var weather = EnvMan.instance.GetCurrentEnvironment().m_name;
-      var time = EnvMan.instance.IsCold() ? "Night" : "Day";
-      return TextUtils.String(GetTime()) + " (" + TextUtils.String(time) + "), " + TextUtils.String(weather) + "\n";
-    }
-
     private static string GetCustomMessage()
     {
       var dps = DPSMeter.GetText();
@@ -32,6 +15,13 @@ namespace ESP
       if (CustomMessage != "") return CustomMessage;
       return "";
     }
+    private static string GetStatusText()
+    {
+      // Local player exists when the game is loaded (during loading shows arbitrary time).
+      if (!Settings.showTimeAndWeather || Player.m_localPlayer == null) return "";
+      return EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment();
+    }
+
     private static bool baseGameMessage = false;
     public static string CustomMessage = "";
 

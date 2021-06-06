@@ -26,6 +26,12 @@ namespace ESP
       return min.ToString(FORMAT, CultureInfo.InvariantCulture) + "-" + max.ToString(FORMAT, CultureInfo.InvariantCulture);
     }
     public static string Range(double min, double max) => String(PlainRange(min, max));
+    public static string PercentRange(double min, double max)
+    {
+      if (min == max)
+        return max.ToString("P0", CultureInfo.InvariantCulture);
+      return min.ToString("P0", CultureInfo.InvariantCulture) + "-" + max.ToString("P0", CultureInfo.InvariantCulture);
+    }
     public static string Progress(double value, double limit) => String(value.ToString("N0")) + "/" + String(limit.ToString("N0"));
     public static string Int(double value) => String(value.ToString("N0"));
     public static string ProgressPercent(string header, double value, double limit) => header + ": " + Progress(value, limit) + " seconds (" + Percent(value / limit) + ")";
