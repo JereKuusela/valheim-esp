@@ -14,6 +14,7 @@ namespace ESP
     public static ZNetView m_nview(TreeBase instance) => Traverse.Create(instance).Field<ZNetView>("m_nview").Value;
     public static ZNetView m_nview(Destructible instance) => Traverse.Create(instance).Field<ZNetView>("m_nview").Value;
     public static ZNetView m_nview(Pickable instance) => Traverse.Create(instance).Field<ZNetView>("m_nview").Value;
+    public static ZNetView m_nview(CreatureSpawner instance) => Traverse.Create(instance).Field<ZNetView>("m_nview").Value;
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(SpawnArea), "GetInstances")]
     public static void SpawnArea_GetInstances(SpawnArea instance, out int near, out int total)

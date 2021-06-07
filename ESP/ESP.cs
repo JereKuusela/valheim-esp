@@ -70,6 +70,10 @@ namespace ESP
     public static bool useGodMode => configUseGodMode.Value;
     public static ConfigEntry<bool> configUseFreeBuild;
     public static bool useFreeBuild => configUseFreeBuild.Value;
+    public static ConfigEntry<bool> configShowVisualization;
+    public static bool showVisualization => configShowVisualization.Value;
+    public static ConfigEntry<bool> configShowDPS;
+    public static bool showDPS => configShowDPS.Value;
 
 
     public static ConfigEntry<bool> configShowAllDamageTypes;
@@ -90,8 +94,6 @@ namespace ESP
     public static bool showShipStatsOnHud => configShowShipStatsOnHud.Value;
     public static ConfigEntry<bool> configShowTimeAndWeather;
     public static bool showTimeAndWeather => configShowTimeAndWeather.Value;
-    public static ConfigEntry<bool> configShowDPS;
-    public static bool showDPS => configShowDPS.Value;
 
 
     public static ConfigEntry<bool> configshowNoise;
@@ -140,6 +142,8 @@ namespace ESP
       Settings.configUseGodMode = Config.Bind("Dev", "Use god mode", true, "Enable god mode automatically");
       Settings.configUseFreeBuild = Config.Bind("Dev", "Use free build", true, "Enable free build automatically");
       Settings.configUseFreeFly = Config.Bind("Dev", "Use free fly", true, "Enable free fly automatically");
+      Settings.configShowVisualization = Config.Bind("Dev", "Show visualization", true, "Show visualization (toggle with H button in the game)");
+      Settings.configShowDPS = Config.Bind("Dev", "Show DPS meter", false, "Show DPS meter (toggle with J button in the game)");
 
       Settings.configShowAllDamageTypes = Config.Bind("Combat", "Show all damage types", true, "Show all damage types on weapon tooltips");
       Settings.configSetSkills = Config.Bind("Combat", "Set skill levels", "", "Sets all skill levels to a given number");
@@ -148,7 +152,6 @@ namespace ESP
 
       Settings.configShowTimeAndWeather = Config.Bind("HUD", "Show current time and weather", true, "Show current time and weather on the hud");
       Settings.configShowShipStatsOnHud = Config.Bind("HUD", "Show ship stats", true, "Show ship stats on the hud");
-      Settings.configShowDPS = Config.Bind("HUD", "Show DPS", true, "Show combat stats on the hud");
 
       Settings.configShowProgress = Config.Bind("Structures", "Show progress", true, "Show progress for plants and structures");
       Settings.configShowStructureHealth = Config.Bind("Structures", "Show health and resistances", true, "Show health and resistances for structures");

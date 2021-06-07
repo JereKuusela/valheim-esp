@@ -16,8 +16,6 @@ Weapon tooltips:
  - Add skill based value to knockback
  - Add secondary multipliers
 
-Quick hide:
- - Investigate hiding drawn things with a keypress.
 
 Creatures:
  - Eating cooldown and range (+spheres).

@@ -30,16 +30,30 @@ namespace ESP
     }
   }
 
-  public class Drawer
+  public class Drawer : Component
   {
+    private static bool Shown = Settings.showVisualization;
+    public static void ToggleVisibility()
+    {
+      Shown = !Shown;
+      foreach (var gameObj in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
+      {
+        if (gameObj.name == "ESP")
+        {
+          gameObj.SetActive(Shown);
+        }
+      }
+    }
     private static int GetSegments(float angle) => (int)Math.Floor(32 * angle / 360);
     private static GameObject CreateObject(GameObject parent)
     {
       var obj = new GameObject();
       obj.layer = LayerMask.NameToLayer("character_trigger");
+      obj.name = "ESP";
       obj.transform.parent = parent.transform;
       obj.transform.localPosition = Vector3.zero;
       obj.transform.localRotation = Quaternion.identity;
+      obj.SetActive(Shown);
       return obj;
     }
     private static LineRenderer CreateComponent(GameObject obj, Color color, float width)

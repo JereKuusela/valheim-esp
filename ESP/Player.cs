@@ -26,6 +26,10 @@ namespace ESP
             Settings.configShowDPS.Value = !Settings.configShowDPS.Value;
             if (!Settings.showDPS) DPSMeter.Reset();
           }
+          if (Input.GetKeyDown(KeyCode.H))
+          {
+            Drawer.ToggleVisibility();
+          }
         }
       }
     }
