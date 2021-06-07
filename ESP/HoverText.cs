@@ -1,9 +1,32 @@
 using HarmonyLib;
+using System;
 
 namespace ESP
 {
   public class HoverTextUtils
   {
+    private static string GetRespawnTime(Pickable pickable, ZNetView zNetView)
+    {
+      if (!pickable.m_hideWhenPicked || pickable.m_respawnTimeMinutes == 0) return "Never";
+      var time = ZNet.instance.GetTime();
+      var d = new DateTime(zNetView.GetZDO().GetLong("picked_time", 0L));
+      var timer = (time - d).TotalMinutes;
+      var picked = zNetView.GetZDO().GetBool("picked", false); ;
+      var timerString = picked ? timer.ToString("N0") : "Not picked";
+      return timerString + " / " + pickable.m_respawnTimeMinutes.ToString("N0") + " minutes";
+    }
+    public static string GetText(Pickable pickable)
+    {
+      if (!pickable || !Settings.showStructureHealth) return "";
+      var zNetView = Patch.m_nview(pickable);
+      var respawn = GetRespawnTime(pickable, zNetView);
+      var lines = new string[]{
+        "Respawn: " + TextUtils.String(respawn)
+      };
+      if (pickable.m_amount > 0)
+        lines.AddItem("Amount: " + TextUtils.String(pickable.m_amount.ToString()));
+      return "\n" + lines.Join(null, "\n");
+    }
     public static string GetText(TreeLog treeLog)
     {
       if (!treeLog || !Settings.showStructureHealth) return "";
@@ -52,6 +75,7 @@ namespace ESP
       __result += HoverTextUtils.GetText(__instance.GetComponent<TreeLog>());
       __result += HoverTextUtils.GetText(__instance.GetComponent<TreeBase>());
       __result += HoverTextUtils.GetText(__instance.GetComponent<Destructible>());
+      __result += HoverTextUtils.GetText(__instance.GetComponent<Pickable>());
     }
   }
 }

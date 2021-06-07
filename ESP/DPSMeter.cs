@@ -47,6 +47,7 @@ namespace ESP
     }
     public static void AddBaseDamage(HitData.DamageTypes hit)
     {
+      if (!startTime.HasValue) return;
       // Base damage is only available at start of the attack so it must be stored when the actual hits are resolved.
       pendingBaseDamageTypes = hit;
     }
@@ -55,41 +56,48 @@ namespace ESP
     }
     public static void AddStructureDamage(HitData hit, TreeLog treeLog)
     {
+      if (!startTime.HasValue) return;
       if (hit.m_toolTier < treeLog.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
       AddPendingBaseStructureDamage(treeLog.m_damages);
     }
     public static void AddStructureDamage(HitData hit, TreeBase treeBase)
     {
+      if (!startTime.HasValue) return;
       if (hit.m_toolTier < treeBase.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
       AddPendingBaseStructureDamage(treeBase.m_damageModifiers);
     }
     public static void AddStructureDamage(HitData hit, MineRock5 mineRock5)
     {
+      if (!startTime.HasValue) return;
       if (hit.m_toolTier < mineRock5.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
       AddPendingBaseStructureDamage(mineRock5.m_damageModifiers);
     }
     public static void AddStructureDamage(HitData hit, MineRock mineRock)
     {
+      if (!startTime.HasValue) return;
       if (hit.m_toolTier < mineRock.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
       AddPendingBaseStructureDamage(mineRock.m_damageModifiers);
     }
     public static void AddStructureDamage(HitData hit, Destructible destructible)
     {
+      if (!startTime.HasValue) return;
       if (hit.m_toolTier < destructible.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
       AddPendingBaseStructureDamage(destructible.m_damages);
     }
     public static void AddDamageTaken(HitData hit)
     {
+      if (!startTime.HasValue) return;
       damageTaken += hit.GetTotalDamage();
       SetTime();
     }
     private static void AddPendingBaseDamage(Character target)
     {
+      if (!startTime.HasValue) return;
       var hit = new HitData()
       {
         m_damage = pendingBaseDamageTypes.Value.Clone()
@@ -105,6 +113,7 @@ namespace ESP
     }
     private static void AddPendingBaseStructureDamage(HitData.DamageModifiers modifiers)
     {
+      if (!startTime.HasValue) return;
       var hit = new HitData()
       {
         m_damage = pendingBaseDamageTypes.Value.Clone()
@@ -114,6 +123,7 @@ namespace ESP
     }
     public static void AddDamage(HitData hit, Character target)
     {
+      if (!startTime.HasValue) return;
       AddPendingBaseDamage(target);
       pendingDamage += hit.GetTotalDamage();
       stagger += hit.m_damage.GetTotalPhysicalDamage() * hit.m_staggerMultiplier;
@@ -121,14 +131,17 @@ namespace ESP
     }
     public static void AddDot(HitData hit)
     {
+      if (!startTime.HasValue) return;
       pendingDamage += hit.GetTotalDamage();
     }
     public static void AddStamina(float stamina)
     {
+      if (!startTime.HasValue) return;
       DPSMeter.stamina += stamina;
     }
     public static void SetTime()
     {
+      if (!startTime.HasValue) return;
       endTime = DateTime.Now;
       damage += pendingDamage;
       pendingDamage = 0;
@@ -138,17 +151,18 @@ namespace ESP
       pendingStructureDamage = 0;
       baseStructureDamage += pendingBaseStructureDamage;
       pendingBaseStructureDamage = 0;
-
     }
     public static string GetText()
     {
-      if (!startTime.HasValue || !endTime.HasValue) return "";
-      var time = endTime.Value.Subtract(startTime.Value).TotalMilliseconds;
+      if (!Settings.showDPS) return "";
+      var time = 1.0;
+      if (startTime.HasValue && endTime.HasValue)
+        time = endTime.Value.Subtract(startTime.Value).TotalMilliseconds;
       var damagePerSecond = damage * 1000.0 / time;
       var baseDamagePerSecond = baseDamage * 1000.0 / time;
       var staminaPerSecond = stamina * 1000.0 / time;
-      var damagePerStamina = (damage + pendingDamage) / stamina;
-      var baseDamagePerStamina = (baseDamage + pendingBaseDamage) / stamina;
+      var damagePerStamina = stamina > 0 ? (damage + pendingDamage) / stamina : 0;
+      var baseDamagePerStamina = stamina > 0 ? (baseDamage + pendingBaseDamage) / stamina : 0;
       var staggerPerSecond = stagger * 1000.0 / time;
       var hitsPerSecond = hits * 1000.0 / time;
       var attackSpeed = hits > 0 ? time / hits / 1000.0 : 0;

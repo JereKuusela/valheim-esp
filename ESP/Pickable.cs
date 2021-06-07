@@ -29,40 +29,23 @@ namespace ESP
         {
           var text = obj.AddComponent<PickableText>();
           text.pickable = __instance;
-          text.nview = ___m_nview;
         };
       Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, color, Settings.pickableRayWidth, action);
     }
   }
 
+  [HarmonyPatch(typeof(Pickable), "GetHoverText")]
+  public class Pickable_GetHoverText
+  {
+    public static void Postfix(Pickable __instance, ref string __result)
+    {
+      __result += HoverTextUtils.GetText(__instance);
+    }
+  }
   public class PickableText : MonoBehaviour, Hoverable
   {
-    private String GetRespawnTime()
-    {
-      if (!pickable.m_hideWhenPicked || pickable.m_respawnTimeMinutes == 0) return "Never";
-      DateTime time = ZNet.instance.GetTime();
-      DateTime d = new DateTime(nview.GetZDO().GetLong("picked_time", 0L));
-      var timer = (time - d).TotalMinutes;
-      var picked = nview.GetZDO().GetBool("picked", false); ;
-      var timerString = picked ? timer.ToString("N0") : "Not picked";
-      return timerString + " / " + pickable.m_respawnTimeMinutes.ToString("N0") + " minutes";
-    }
-    public string GetHoverText()
-    {
-      var respawn = GetRespawnTime();
-      var lines = new string[]{
-        TextUtils.String(pickable.m_itemPrefab.name),
-        "Respawn: " + TextUtils.String(respawn)
-      };
-      if (pickable.m_amount > 0)
-      {
-        lines.AddItem("Amount: " + TextUtils.String(pickable.m_amount.ToString()));
-      }
-      return lines.Join(null, "\n");
-    }
-    public string GetHoverName() => pickable.m_itemPrefab.name;
-
+    public string GetHoverText() => GetHoverName() + HoverTextUtils.GetText(pickable);
+    public string GetHoverName() => TextUtils.Name(pickable.m_itemPrefab);
     public Pickable pickable;
-    public ZNetView nview;
   }
 }
