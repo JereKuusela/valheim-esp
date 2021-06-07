@@ -8,13 +8,22 @@ namespace ESP
   [HarmonyPatch]
   public class Patch
   {
+    public static double GetElapsed(MonoBehaviour obj, string key, long defaultValue = 0)
+    {
+      var time = ZNet.instance.GetTime();
+      var d = GetDateTime(obj, "alive_time", defaultValue);
+      return (time - d).TotalSeconds;
+    }
+    public static DateTime GetDateTime(MonoBehaviour obj, string key, long defaultValue = 0) => new DateTime(GetLong(obj, key, defaultValue));
+    public static float GetFloat(MonoBehaviour obj, string key, float defaultValue = 0) => m_nview(obj).GetZDO().GetFloat(key, defaultValue);
+    public static long GetLong(MonoBehaviour obj, string key, long defaultValue = 0) => m_nview(obj).GetZDO().GetLong(key, defaultValue);
+    public static int GetInt(MonoBehaviour obj, string key, int defaultValue = 0) => m_nview(obj).GetZDO().GetInt(key, defaultValue);
+    public static bool GetBool(MonoBehaviour obj, string key, bool defaultValue = false) => m_nview(obj).GetZDO().GetBool(key, defaultValue);
+    public static string GetString(MonoBehaviour obj, string key, string defaultValue = "") => m_nview(obj).GetZDO().GetString(key, defaultValue);
+    public static GameObject GetPrefab(MonoBehaviour obj) => ZNetScene.instance.GetPrefab(m_nview(obj).GetZDO().GetPrefab());
     public static float m_cover(Windmill instance) => Traverse.Create(instance).Field<float>("m_cover").Value;
     public static Vector3 m_currentVel(Player instance) => Traverse.Create(instance).Field<Vector3>("m_currentVel").Value;
-    public static ZNetView m_nview(TreeLog instance) => Traverse.Create(instance).Field<ZNetView>("m_nview").Value;
-    public static ZNetView m_nview(TreeBase instance) => Traverse.Create(instance).Field<ZNetView>("m_nview").Value;
-    public static ZNetView m_nview(Destructible instance) => Traverse.Create(instance).Field<ZNetView>("m_nview").Value;
-    public static ZNetView m_nview(Pickable instance) => Traverse.Create(instance).Field<ZNetView>("m_nview").Value;
-    public static ZNetView m_nview(CreatureSpawner instance) => Traverse.Create(instance).Field<ZNetView>("m_nview").Value;
+    public static ZNetView m_nview(MonoBehaviour obj) => Traverse.Create(obj).Field<ZNetView>("m_nview").Value;
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(SpawnArea), "GetInstances")]
     public static void SpawnArea_GetInstances(SpawnArea instance, out int near, out int total)

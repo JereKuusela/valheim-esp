@@ -111,6 +111,13 @@ namespace ESP
       collider.isTrigger = true;
       collider.radius = radius;
     }
+    private static void AddSphereText(GameObject obj, float radius, Action<GameObject> textCallback)
+    {
+      textCallback(obj);
+      var collider = obj.AddComponent<SphereCollider>();
+      collider.isTrigger = true;
+      collider.radius = radius;
+    }
     public static void UpdateArcX(LineRenderer renderer, Vector3 position, float radius, float angle)
     {
       var currentAngle = -angle / 2f;
@@ -128,6 +135,13 @@ namespace ESP
     {
       var obj = CreateObject(parent);
       AddSphereText(obj, radius, text);
+      var component = CreateComponent(obj, color, width);
+      UpdateArcX(component, position, radius, angle);
+    }
+    public static void DrawArcX(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, Action<GameObject> textCallback)
+    {
+      var obj = CreateObject(parent);
+      AddSphereText(obj, radius, textCallback);
       var component = CreateComponent(obj, color, width);
       UpdateArcX(component, position, radius, angle);
     }
@@ -179,6 +193,10 @@ namespace ESP
     {
       DrawArcX(parent, position, radius, 360f, color, width, text);
     }
+    private static void DrawCircleX(GameObject parent, Vector3 position, float radius, Color color, float width, Action<GameObject> textCallback)
+    {
+      DrawArcX(parent, position, radius, 360f, color, width, textCallback);
+    }
     private static void UpdateCircleY(LineRenderer renderer, Vector3 position, float radius)
     {
       UpdateArcY(renderer, position, radius, 360f);
@@ -211,6 +229,12 @@ namespace ESP
     public static void DrawSphere(GameObject parent, Vector3 position, float radius, Color color, float width, string text = "")
     {
       DrawCircleX(parent, position, radius, color, width, text);
+      DrawCircleY(parent, position, radius, color, width);
+      DrawCircleZ(parent, position, radius, color, width);
+    }
+    public static void DrawSphere(GameObject parent, Vector3 position, float radius, Color color, float width, Action<GameObject> textCallback)
+    {
+      DrawCircleX(parent, position, radius, color, width, textCallback);
       DrawCircleY(parent, position, radius, color, width);
       DrawCircleZ(parent, position, radius, color, width);
     }

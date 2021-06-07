@@ -1,5 +1,5 @@
 General:
- - Text system refactored. Add functions that require a dictionary (enum to text). Then the caller function can decide what to show and in what order.
+ * Text system refactored. Add functions that require a dictionary (enum to text). Then the caller function can decide what to show and in what order.
 
 Drawer:
  - Setting for line widths per type.
@@ -16,6 +16,8 @@ Weapon tooltips:
  - Add skill based value to knockback
  - Add secondary multipliers
 
+Effect areas:
+ - Add to general text system so things show their effects.
 
 Creatures:
  - Eating cooldown and range (+spheres).

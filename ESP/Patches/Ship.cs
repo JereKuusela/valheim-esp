@@ -43,8 +43,6 @@ namespace ESP
       text += "\nSpeed: " + TextUtils.Fixed(speed) + " m/s towards " + TextUtils.Int(angle) + " degrees";
       text += "\n" + EnvUtils.GetWind();
       text += "\nWind power: " + TextUtils.Percent(GetWindPower(ship)) + " from " + TextUtils.Int(GetRelativeAngle(ship)) + " degrees";
-      //text += "\nSail force: " + TextUtils.Percent(ship.m_sailForceFactor);
-      //text += "\nRudderSpeed: " + TextUtils.Float(ship.m_rudderSpeed) + " m/s";
       return text;
     }
     public static void Postfix(Ship __instance, Rigidbody ___m_body)

@@ -25,27 +25,9 @@ namespace ESP
       if (!IsEnabled(__instance))
         return;
       var color = GetColor(__instance);
-      Action<GameObject> action = (GameObject obj) =>
-        {
-          var text = obj.AddComponent<PickableText>();
-          text.pickable = __instance;
-        };
-      Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, color, Settings.pickableRayWidth, action);
+      var text = TextUtils.Name(__instance.m_itemPrefab);
+      Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, color, Settings.pickableRayWidth, text);
     }
   }
 
-  [HarmonyPatch(typeof(Pickable), "GetHoverText")]
-  public class Pickable_GetHoverText
-  {
-    public static void Postfix(Pickable __instance, ref string __result)
-    {
-      __result += HoverTextUtils.GetText(__instance);
-    }
-  }
-  public class PickableText : MonoBehaviour, Hoverable
-  {
-    public string GetHoverText() => GetHoverName() + HoverTextUtils.GetText(pickable);
-    public string GetHoverName() => TextUtils.Name(pickable.m_itemPrefab);
-    public Pickable pickable;
-  }
 }
