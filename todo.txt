@@ -8,18 +8,19 @@ Drawer:
  - Cover lines (with different color if they get hit): windmills, crafting stations.
  - Rocks and their support somehow visualized
 
-Weapon tooltips:
- - Add stamina cost (with skill based cost too)
- - Add attack speed (copy from wiki)
- - Add bow draw time
- - Add stagger
- - Add skill based value to knockback
- - Add secondary multipliers
+HUD:
+ - Current stamina consumption
 
-Effect areas:
- - Add to general text system so things show their effects.
+Structures:
+ - Dimensions? Hitboxes visualized?
 
 Creatures:
  - Eating cooldown and range (+spheres).
- - Move speed (depending how it moves?), with current speed
+ - Move speed (depending how it moves?)
  - Targeting system (current status, target, last known location, retreat limit, retreat when struch, etc.)
+
+Before release:
+ - Add bow draw time
+ - Fix colliders for lines (better if matches only the line, instead of full sphere).
+ - Structural strength to structures (text + color)
+ - Enemy attack hitboxes, damages?

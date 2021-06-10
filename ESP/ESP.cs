@@ -74,6 +74,8 @@ namespace ESP
     public static bool showVisualization => configShowVisualization.Value;
     public static ConfigEntry<bool> configShowDPS;
     public static bool showDPS => configShowDPS.Value;
+    public static ConfigEntry<bool> configShowExtraInfo;
+    public static bool showExtraInfo => configShowExtraInfo.Value;
 
 
     public static ConfigEntry<bool> configShowAllDamageTypes;
@@ -142,8 +144,9 @@ namespace ESP
       Settings.configUseGodMode = Config.Bind("Dev", "Use god mode", true, "Enable god mode automatically");
       Settings.configUseFreeBuild = Config.Bind("Dev", "Use free build", true, "Enable free build automatically");
       Settings.configUseFreeFly = Config.Bind("Dev", "Use free fly", true, "Enable free fly automatically");
-      Settings.configShowVisualization = Config.Bind("Dev", "Show visualization", true, "Show visualization (toggle with H button in the game)");
-      Settings.configShowDPS = Config.Bind("Dev", "Show DPS meter", false, "Show DPS meter (toggle with J button in the game)");
+      Settings.configShowVisualization = Config.Bind("Dev", "Show visualization", false, "Show visualization (toggle with O button in the game)");
+      Settings.configShowDPS = Config.Bind("Dev", "Show DPS meter", false, "Show DPS meter (toggle with P button in the game)");
+      Settings.configShowExtraInfo = Config.Bind("Dev", "Show extra info", false, "Show extra info on tooltips and hover texts (toggle with I button in the game)");
 
       Settings.configShowAllDamageTypes = Config.Bind("Combat", "Show all damage types", true, "Show all damage types on weapon tooltips");
       Settings.configSetSkills = Config.Bind("Combat", "Set skill levels", "", "Sets all skill levels to a given number");

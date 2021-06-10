@@ -36,8 +36,9 @@ namespace ESP
     {
       if (!Settings.showBreedingStats || !obj || obj.IsPregnant()) return "";
       var prefab = Patch.GetPrefab(obj);
+      var all = SpawnSystem.GetNrOfInstances(prefab, obj.transform.position, obj.m_partnerCheckRange, false, false) - 1;
       var partners = SpawnSystem.GetNrOfInstances(prefab, obj.transform.position, obj.m_partnerCheckRange, false, true) - 1;
-      return "\nPartners: " + TextUtils.Int(partners) + " within " + obj.m_partnerCheckRange + " meters";
+      return "\nPartners: " + TextUtils.Int(partners) + " within " + obj.m_partnerCheckRange + " meters (" + TextUtils.Int(all) + " possible)";
     }
     private static string GetLimitText(Procreation obj)
     {

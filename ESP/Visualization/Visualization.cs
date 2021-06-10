@@ -55,45 +55,33 @@ namespace ESP
   [HarmonyPatch(typeof(EffectArea), "Awake")]
   public class EffectArea_Awake
   {
-    private static Color GetEffectColor(EffectArea.Type type)
-    {
-      if ((type & EffectArea.Type.Burning) != 0) return Color.yellow;
-      if ((type & EffectArea.Type.Heat) != 0) return Color.magenta;
-      if ((type & EffectArea.Type.Fire) != 0) return Color.red;
-      if ((type & EffectArea.Type.NoMonsters) != 0) return Color.green;
-      if ((type & EffectArea.Type.Teleport) != 0) return Color.blue;
-      if ((type & EffectArea.Type.PlayerBase) != 0) return Color.white;
-      return Color.black;
-    }
-    private static String GetTypeText(EffectArea.Type type)
-    {
-      var types = new List<string>();
-      if ((type & EffectArea.Type.Burning) != 0) types.Add("Burning");
-      if ((type & EffectArea.Type.Heat) != 0) types.Add("Heat");
-      if ((type & EffectArea.Type.Fire) != 0) types.Add("Fire");
-      if ((type & EffectArea.Type.NoMonsters) != 0) types.Add("No monsters");
-      if ((type & EffectArea.Type.Teleport) != 0) types.Add("Teleport");
-      if ((type & EffectArea.Type.PlayerBase) != 0) types.Add("Base");
-      return types.Join(null, ", ");
-    }
-    private static String GetRadiusText(float radius)
-    {
-      return "Radius: " + TextUtils.Float(radius);
-    }
     public static void Postfix(EffectArea __instance)
     {
       if (!Settings.showEffectAreas)
         return;
-      var color = GetEffectColor(__instance.m_type);
+      var color = EffectAreaUtils.GetEffectColor(__instance.m_type);
       var radius = Math.Max(0.5f, __instance.GetRadius());
-      var text = GetTypeText(__instance.m_type) + "\n" + GetRadiusText(__instance.GetRadius());
       Action<GameObject> action = (GameObject obj) =>
         {
-          var effectText = obj.AddComponent<EffectAreaText>();
-          effectText.hoverText = text;
-          effectText.hoverName = GetTypeText(__instance.m_type);
+          var text = obj.AddComponent<EffectAreaText>();
+          text.obj = __instance; ;
         };
       Drawer.DrawSphere(__instance.gameObject, Vector3.zero, radius, color, 0.1f, action);
+    }
+  }
+  [HarmonyPatch(typeof(PrivateArea), "Awake")]
+  public class PrivateArea_Awake
+  {
+    public static void Postfix(PrivateArea __instance)
+    {
+      if (!Settings.showEffectAreas)
+        return;
+      Action<GameObject> action = (GameObject obj) =>
+        {
+          var text = obj.AddComponent<PrivateAreaText>();
+          text.obj = __instance; ;
+        };
+      Drawer.DrawSphere(__instance.gameObject, Vector3.zero, __instance.m_radius, Color.gray, 0.1f, action);
     }
   }
 
@@ -101,9 +89,16 @@ namespace ESP
   public class EffectAreaText : MonoBehaviour, Hoverable
   {
 
-    public string GetHoverText() => hoverText;
-    public string GetHoverName() => hoverName;
-    public string hoverName;
-    public string hoverText;
+    public string GetHoverText() => GetHoverName() + "\n" + TextUtils.Radius(obj.GetRadius());
+    public string GetHoverName() => EffectAreaUtils.GetTypeText(obj.m_type);
+    public EffectArea obj;
+  }
+  // Custom hover text to prevent showing base object information.
+  public class PrivateAreaText : MonoBehaviour, Hoverable
+  {
+
+    public string GetHoverText() => GetHoverName() + "\n" + TextUtils.Radius(obj.m_radius);
+    public string GetHoverName() => "Protection";
+    public PrivateArea obj;
   }
 }

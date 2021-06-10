@@ -11,6 +11,7 @@ namespace ESP
     }
     public static void AddTexts(GameObject obj, ref string __result)
     {
+      if (!Settings.showExtraInfo) return;
       __result += HoverTextUtils.GetText(obj.GetComponentInParent<TreeLog>());
       __result += HoverTextUtils.GetText(obj.GetComponentInParent<TreeBase>());
       __result += HoverTextUtils.GetText(obj.GetComponentInParent<Destructible>());
@@ -23,10 +24,12 @@ namespace ESP
       __result += HoverTextUtils.GetText(obj.GetComponentInParent<Smelter>());
       __result += HoverTextUtils.GetText(obj.GetComponentInParent<WearNTear>());
       __result += HoverTextUtils.GetText(obj.GetComponentInParent<Plant>());
+      __result += HoverTextUtils.GetText(obj.GetComponentInParent<PrivateArea>());
       __result += HoverTextUtils.GetText(obj.GetComponentInParent<Tameable>());
       __result += HoverTextUtils.GetText(obj.GetComponentInParent<MineRock>());
       __result += HoverTextUtils.GetText(obj.GetComponentInParent<MineRock5>());
       __result += HoverTextUtils.GetText(obj.GetComponentInParent<Ship>());
+      __result += HoverTextUtils.GetText(obj.GetComponentInParent<EffectArea>());
     }
   }
 }

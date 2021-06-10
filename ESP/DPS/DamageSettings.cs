@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ESP
 {
+  #region Damage related settings
   [HarmonyPatch(typeof(Skills), "GetSkillFactor")]
   public class Skills_GetSkillFactor
   {
@@ -42,4 +43,13 @@ namespace ESP
       __result = Mathf.Lerp(a, b, UnityEngine.Random.value);
     }
   }
+  [HarmonyPatch(typeof(Character), "GetRandomSkillFactor")]
+  public class Character_GetRandomSkillFactor
+  {
+    public static void Postfix(ref float __result)
+    {
+      __result = UnityEngine.Random.Range(1f - Settings.creatureDamageRange, 1f);
+    }
+  }
+  #endregion
 }

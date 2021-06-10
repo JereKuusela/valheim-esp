@@ -182,6 +182,16 @@ namespace ESP
       var value = Patch.Plant_TimeSincePlanted(obj);
       return "\n" + TextUtils.ProgressPercent("Progress", value, limit);
     }
+    public static string GetText(EffectArea obj)
+    {
+      if (!obj || !Settings.showEffectAreas) return "";
+      return "\n" + EffectAreaUtils.GetTypeText(obj.m_type) + " " + TextUtils.Radius(obj.GetRadius());
+    }
+    public static string GetText(PrivateArea obj)
+    {
+      if (!obj || !Settings.showEffectAreas) return "";
+      return "\nProtection " + TextUtils.Radius(obj.m_radius);
+    }
   }
 }
 

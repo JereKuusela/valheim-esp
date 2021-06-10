@@ -11,7 +11,7 @@ namespace ESP
     public static double GetElapsed(MonoBehaviour obj, string key, long defaultValue = 0)
     {
       var time = ZNet.instance.GetTime();
-      var d = GetDateTime(obj, "alive_time", defaultValue);
+      var d = GetDateTime(obj, key, defaultValue);
       return (time - d).TotalSeconds;
     }
     public static DateTime GetDateTime(MonoBehaviour obj, string key, long defaultValue = 0) => new DateTime(GetLong(obj, key, defaultValue));

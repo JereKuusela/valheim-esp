@@ -45,7 +45,7 @@ namespace ESP
       if (!Settings.showNoise || CharacterUtils.IsExcluded(__instance))
         return;
       var text = CharacterUtils.GetNameText(__instance) + "\n" + CharacterUtils.GetNameText(___m_noiseRange);
-      Drawer.UpdateSphere(__instance.gameObject, Vector3.zero, ___m_noiseRange, text);
+      Drawer.UpdateSphere(__instance.gameObject, Vector3.zero, ___m_noiseRange, 0.1f, text);
     }
   }
 
@@ -158,6 +158,7 @@ namespace ESP
     }
     public static void Postfix(Character __instance, ref string __result, float ___m_staggerDamage, Rigidbody ___m_body)
     {
+      if (!Settings.showExtraInfo) return;
       var baseAI = __instance.GetComponent<BaseAI>();
       var growup = __instance.GetComponent<Growup>();
       var tameable = __instance.GetComponent<Tameable>();
@@ -167,37 +168,7 @@ namespace ESP
       __result += GetStatusStats(__instance);
       __result += GetGrowupStats(baseAI, growup);
       __result += GetDropStats(characterDrop, __instance);
-    }
-  }
-  [HarmonyPatch(typeof(Character), "GetRandomSkillFactor")]
-  public class Character_GetRandomSkillFactor
-  {
-    public static void Postfix(ref float __result)
-    {
-      __result = UnityEngine.Random.Range(1f - Settings.creatureDamageRange, 1f);
-    }
-  }
-
-  [HarmonyPatch(typeof(Character), "RPC_Damage")]
-  public class Character_RPC_Damage
-  {
-    public static void Prefix(HitData hit)
-    {
-      if (hit.GetAttacker() == Player.m_localPlayer)
-        DPSMeter.AddRawHit(hit);
-    }
-  }
-  [HarmonyPatch(typeof(Character), "ApplyDamage")]
-  public class Character_ApplyDamage
-  {
-    public static void Prefix(Character __instance, HitData hit)
-    {
-      if (hit.GetAttacker() == Player.m_localPlayer)
-        DPSMeter.AddDamage(hit, __instance);
-      if (hit.GetAttacker() == null)
-        DPSMeter.AddDot(hit);
-      if (__instance == Player.m_localPlayer)
-        DPSMeter.AddDamageTaken(hit);
+      HoverableUtils.AddTexts(__instance.gameObject, ref __result);
     }
   }
 }

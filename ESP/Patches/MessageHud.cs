@@ -15,7 +15,9 @@ namespace ESP
       var dps = DPSMeter.GetText();
       if (dps != "") return dps;
       if (CustomMessage != "") return CustomMessage;
-      return GetStatusText();
+      var status = GetStatusText();
+      status += "\nExtra info: " + TextUtils.String("I") + ", Visuals " + TextUtils.String("O") + ", DPS meter: " + TextUtils.String("P");
+      return status;
     }
     private static string GetSpeed() => "Speed: " + TextUtils.Float(Patch.m_currentVel(Player.m_localPlayer).magnitude, "0.#") + " m/s";
     private static string GetNoise() => "Noise: " + TextUtils.Int(Player.m_localPlayer.GetNoiseRange()) + " meters";

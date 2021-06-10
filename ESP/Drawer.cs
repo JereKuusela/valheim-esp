@@ -118,11 +118,12 @@ namespace ESP
       collider.isTrigger = true;
       collider.radius = radius;
     }
-    public static void UpdateArcX(LineRenderer renderer, Vector3 position, float radius, float angle)
+    private static void UpdateArcX(LineRenderer renderer, Vector3 position, float radius, float angle, float width)
     {
       var currentAngle = -angle / 2f;
       var segments = GetSegments(angle);
       renderer.positionCount = segments + 1;
+      radius -= width / 2f;
       for (int i = 0; i < (segments + 1); i++)
       {
         var y = position.y + Mathf.Sin(Mathf.Deg2Rad * currentAngle) * radius;
@@ -136,20 +137,21 @@ namespace ESP
       var obj = CreateObject(parent);
       AddSphereText(obj, radius, text);
       var component = CreateComponent(obj, color, width);
-      UpdateArcX(component, position, radius, angle);
+      UpdateArcX(component, position, radius, angle, width);
     }
     public static void DrawArcX(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, Action<GameObject> textCallback)
     {
       var obj = CreateObject(parent);
       AddSphereText(obj, radius, textCallback);
       var component = CreateComponent(obj, color, width);
-      UpdateArcX(component, position, radius, angle);
+      UpdateArcX(component, position, radius, angle, width);
     }
-    public static void UpdateArcY(LineRenderer renderer, Vector3 position, float radius, float angle)
+    private static void UpdateArcY(LineRenderer renderer, Vector3 position, float radius, float angle, float width)
     {
       var currentAngle = -angle / 2f;
       var segments = GetSegments(angle);
       renderer.positionCount = segments + 1;
+      radius -= width / 2f;
       for (int i = 0; i < (segments + 1); i++)
       {
         var x = position.x + Mathf.Sin(Mathf.Deg2Rad * currentAngle) * radius;
@@ -163,13 +165,14 @@ namespace ESP
       var obj = CreateObject(parent);
       AddSphereText(obj, radius, text);
       var component = CreateComponent(obj, color, width);
-      UpdateArcY(component, position, radius, angle);
+      UpdateArcY(component, position, radius, angle, width);
     }
-    public static void UpdateArcZ(LineRenderer renderer, Vector3 position, float radius, float angle)
+    private static void UpdateArcZ(LineRenderer renderer, Vector3 position, float radius, float angle, float width)
     {
       var currentAngle = -angle / 2f;
       var segments = GetSegments(angle);
       renderer.positionCount = segments + 1;
+      radius -= width / 2f;
       for (int i = 0; i < (segments + 1); i++)
       {
         var x = position.x + Mathf.Sin(Mathf.Deg2Rad * currentAngle) * radius;
@@ -183,11 +186,11 @@ namespace ESP
       var obj = CreateObject(parent);
       AddSphereText(obj, radius, text);
       var component = CreateComponent(obj, color, width);
-      UpdateArcZ(component, position, radius, angle);
+      UpdateArcZ(component, position, radius, angle, width);
     }
-    private static void UpdateCircleX(LineRenderer renderer, Vector3 position, float radius)
+    private static void UpdateCircleX(LineRenderer renderer, Vector3 position, float radius, float width)
     {
-      UpdateArcX(renderer, position, radius, 360f);
+      UpdateArcX(renderer, position, radius, 360f, width);
     }
     private static void DrawCircleX(GameObject parent, Vector3 position, float radius, Color color, float width, string text = "")
     {
@@ -197,17 +200,17 @@ namespace ESP
     {
       DrawArcX(parent, position, radius, 360f, color, width, textCallback);
     }
-    private static void UpdateCircleY(LineRenderer renderer, Vector3 position, float radius)
+    private static void UpdateCircleY(LineRenderer renderer, Vector3 position, float radius, float width)
     {
-      UpdateArcY(renderer, position, radius, 360f);
+      UpdateArcY(renderer, position, radius, 360f, width);
     }
     private static void DrawCircleY(GameObject parent, Vector3 position, float radius, Color color, float width, string text = "")
     {
       DrawArcY(parent, position, radius, 360f, color, width, text);
     }
-    private static void UpdateCircleZ(LineRenderer renderer, Vector3 position, float radius)
+    private static void UpdateCircleZ(LineRenderer renderer, Vector3 position, float radius, float width)
     {
-      UpdateArcZ(renderer, position, radius, 360f);
+      UpdateArcZ(renderer, position, radius, 360f, width);
     }
     private static void DrawCircleZ(GameObject parent, Vector3 position, float radius, Color color, float width, string text = "")
     {
@@ -217,14 +220,14 @@ namespace ESP
     {
       DrawCircleY(parent, position, radius, color, width, text);
     }
-    public static void UpdateSphere(GameObject parent, Vector3 position, float radius, string text = "")
+    public static void UpdateSphere(GameObject parent, Vector3 position, float radius, float width, string text = "")
     {
       UpdateSphereText(parent, radius, text);
       var renderers = parent.GetComponentsInChildren<LineRenderer>();
       if (renderers.Length != 3) return;
-      UpdateCircleX(renderers[0], position, radius);
-      UpdateCircleY(renderers[1], position, radius);
-      UpdateCircleZ(renderers[2], position, radius);
+      UpdateCircleX(renderers[0], position, radius, width);
+      UpdateCircleY(renderers[1], position, radius, width);
+      UpdateCircleZ(renderers[2], position, radius, width);
     }
     public static void DrawSphere(GameObject parent, Vector3 position, float radius, Color color, float width, string text = "")
     {
