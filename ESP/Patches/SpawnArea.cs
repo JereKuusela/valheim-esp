@@ -46,9 +46,12 @@ namespace ESP
       if (!Settings.showSpawnAreas)
         return;
       var text = SpawnAreaUtils.GetText(__instance, ___m_spawnTimer);
-      Drawer.DrawSphere(__instance.gameObject, Vector3.zero, __instance.m_triggerDistance, Color.red, 0.5f, text);
-      Drawer.DrawSphere(__instance.gameObject, Vector3.zero, __instance.m_nearRadius, Color.white, 0.5f, text);
-      Drawer.DrawSphere(__instance.gameObject, Vector3.zero, __instance.m_spawnRadius, Color.cyan, 0.5f, text);
+      var obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_triggerDistance, Color.red, 0.5f);
+      Drawer.AddText(obj, text);
+      obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_nearRadius, Color.white, 0.5f);
+      Drawer.AddText(obj, text);
+      obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_spawnRadius, Color.cyan, 0.5f);
+      Drawer.AddText(obj, text);
     }
   }
 

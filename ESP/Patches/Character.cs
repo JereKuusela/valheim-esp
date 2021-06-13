@@ -16,7 +16,7 @@ namespace ESP
       var excluded = Settings.excludedCreatures.ToLower().Split(',');
       return Array.Exists(excluded, item => item == name || item == m_name || item == localized);
     }
-    public static string GetNameText(float range) => "Noise: " + TextUtils.Int(range);
+    public static string GetNoiseText(float range) => "Noise: " + TextUtils.Int(range);
     public static string GetNameText(Character character) => TextUtils.String(Localization.instance.Localize(character.m_name));
 
   }
@@ -27,9 +27,8 @@ namespace ESP
     {
       if (!Settings.showNoise || CharacterUtils.IsExcluded(instance))
         return;
-      var text = CharacterUtils.GetNameText(instance) + "\n" + CharacterUtils.GetNameText(noiseRange);
-      Drawer.DrawSphere(instance.gameObject, instance.transform.position, noiseRange, Color.cyan, 0.1f, text);
-
+      var obj = Drawer.DrawSphere(instance.gameObject, noiseRange, Color.cyan, 0.1f);
+      Drawer.AddText(obj, CharacterUtils.GetNameText(instance), CharacterUtils.GetNoiseText(noiseRange));
     }
     public static void Postfix(Character __instance, float ___m_noiseRange)
     {
@@ -44,8 +43,8 @@ namespace ESP
     {
       if (!Settings.showNoise || CharacterUtils.IsExcluded(__instance))
         return;
-      var text = CharacterUtils.GetNameText(__instance) + "\n" + CharacterUtils.GetNameText(___m_noiseRange);
-      Drawer.UpdateSphere(__instance.gameObject, Vector3.zero, ___m_noiseRange, 0.1f, text);
+      var text = CharacterUtils.GetNameText(__instance) + "\n" + CharacterUtils.GetNoiseText(___m_noiseRange);
+      Drawer.UpdateSphere(__instance.gameObject, ___m_noiseRange, 0.1f, text);
     }
   }
 

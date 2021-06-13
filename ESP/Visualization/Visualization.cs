@@ -13,7 +13,9 @@ namespace ESP
       if (!Settings.showLocations)
         return;
       var text = TextUtils.Name(__instance.gameObject);
-      Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.black, Settings.locationRayWidth, text);
+      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.black, Settings.locationRayWidth);
+      Drawer.AddText(obj, text);
+      Drawer.AddBoxCollider(obj);
     }
   }
   [HarmonyPatch(typeof(Container), "Awake")]
@@ -24,7 +26,9 @@ namespace ESP
       if (!Settings.showChests || !___m_piece || ___m_piece.IsPlacedByPlayer())
         return;
       var text = TextUtils.String(__instance.GetHoverName());
-      Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.white, Settings.chestRayWidth, text);
+      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.white, Settings.chestRayWidth);
+      Drawer.AddText(obj, text);
+      Drawer.AddBoxCollider(obj);
     }
   }
   [HarmonyPatch(typeof(CreatureSpawner), "Awake")]
@@ -49,7 +53,9 @@ namespace ESP
         return;
       var color = GetColor(obj);
       var text = TextUtils.Name(obj.m_creaturePrefab);
-      Drawer.DrawMarkerLine(obj.gameObject, Vector3.zero, color, 0.5f, text);
+      var line = Drawer.DrawMarkerLine(obj.gameObject, Vector3.zero, color, 0.5f);
+      Drawer.AddText(line, text);
+      Drawer.AddBoxCollider(line);
     }
   }
   [HarmonyPatch(typeof(EffectArea), "Awake")]
@@ -61,12 +67,9 @@ namespace ESP
         return;
       var color = EffectAreaUtils.GetEffectColor(__instance.m_type);
       var radius = Math.Max(0.5f, __instance.GetRadius());
-      Action<GameObject> action = (GameObject obj) =>
-        {
-          var text = obj.AddComponent<EffectAreaText>();
-          text.obj = __instance; ;
-        };
-      Drawer.DrawSphere(__instance.gameObject, Vector3.zero, radius, color, 0.1f, action);
+
+      var obj = Drawer.DrawSphere(__instance.gameObject, radius, color, 0.1f);
+      Drawer.AddText(obj, EffectAreaUtils.GetTypeText(__instance.m_type), TextUtils.Radius(__instance.GetRadius()));
     }
   }
   [HarmonyPatch(typeof(PrivateArea), "Awake")]
@@ -76,29 +79,9 @@ namespace ESP
     {
       if (!Settings.showEffectAreas)
         return;
-      Action<GameObject> action = (GameObject obj) =>
-        {
-          var text = obj.AddComponent<PrivateAreaText>();
-          text.obj = __instance; ;
-        };
-      Drawer.DrawSphere(__instance.gameObject, Vector3.zero, __instance.m_radius, Color.gray, 0.1f, action);
+
+      var obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_radius, Color.gray, 0.1f);
+      Drawer.AddText(obj, "Protection", TextUtils.Radius(__instance.m_radius));
     }
-  }
-
-  // Custom hover text to prevent showing base object information.
-  public class EffectAreaText : MonoBehaviour, Hoverable
-  {
-
-    public string GetHoverText() => GetHoverName() + "\n" + TextUtils.Radius(obj.GetRadius());
-    public string GetHoverName() => EffectAreaUtils.GetTypeText(obj.m_type);
-    public EffectArea obj;
-  }
-  // Custom hover text to prevent showing base object information.
-  public class PrivateAreaText : MonoBehaviour, Hoverable
-  {
-
-    public string GetHoverText() => GetHoverName() + "\n" + TextUtils.Radius(obj.m_radius);
-    public string GetHoverName() => "Protection";
-    public PrivateArea obj;
   }
 }

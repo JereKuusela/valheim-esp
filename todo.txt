@@ -21,6 +21,9 @@ Creatures:
 
 Before release:
  - Add bow draw time
- - Fix colliders for lines (better if matches only the line, instead of full sphere).
  - Structural strength to structures (text + color)
  - Enemy attack hitboxes, damages?
+ - 
+
+
+ 

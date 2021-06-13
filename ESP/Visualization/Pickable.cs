@@ -26,7 +26,9 @@ namespace ESP
         return;
       var color = GetColor(__instance);
       var text = TextUtils.Name(__instance.m_itemPrefab);
-      Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, color, Settings.pickableRayWidth, text);
+      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, color, Settings.pickableRayWidth);
+      Drawer.AddText(obj, text);
+      Drawer.AddBoxCollider(obj);
     }
   }
 

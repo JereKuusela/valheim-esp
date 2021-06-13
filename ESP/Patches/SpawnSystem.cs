@@ -29,12 +29,10 @@ namespace ESP
     }
     private static void DrawMarker(GameObject parent, Vector3 position, Heightmap.Biome biome)
     {
-      Action<GameObject> action = (GameObject obj) =>
-        {
-          var text = obj.AddComponent<BiomeText>();
-          text.biome = biome;
-        };
-      Drawer.DrawMarkerLine(parent, position, BiomeUtils.GetColor(biome), 0.25f, action);
+      var obj = Drawer.DrawMarkerLine(parent, position, BiomeUtils.GetColor(biome), 0.25f);
+      var text = obj.AddComponent<BiomeText>();
+      text.biome = biome;
+      Drawer.AddBoxCollider(obj);
     }
     private static int GetTotalAmountOfSpawnSystems(SpawnSystem instance, Heightmap heightmap)
     {
@@ -69,30 +67,26 @@ namespace ESP
         if (!spawnData.m_spawnAtDay && !spawnData.m_spawnAtNight) return;
         if (!IsEnabled(spawnData)) return;
         var stableHashCode = ("b_" + spawnData.m_prefab.name + num.ToString()).GetStableHashCode();
-        Action<GameObject> action = (GameObject obj) =>
-        {
-          var text = obj.AddComponent<SpawnSystemText>();
-          text.spawnSystem = instance;
-          text.heightmap = heightmap;
-          text.nview = nview;
-          text.spawnData = spawnData;
-          text.stableHashCode = stableHashCode;
-        };
-        Drawer.DrawMarkerLine(instance.gameObject, new Vector3(counter * 2, 0, 0), BiomeUtils.GetColor(biome), 1f, action);
+        var obj = Drawer.DrawMarkerLine(instance.gameObject, new Vector3(counter * 2, 0, 0), BiomeUtils.GetColor(biome), 1f);
+        var text = obj.AddComponent<SpawnSystemText>();
+        text.spawnSystem = instance;
+        text.heightmap = heightmap;
+        text.nview = nview;
+        text.spawnData = spawnData;
+        text.stableHashCode = stableHashCode;
+        Drawer.AddBoxCollider(obj);
         counter++;
       });
     }
     private static void DrawRandEventSystem(SpawnSystem instance, Heightmap heightmap, ZNetView nview)
     {
       if (!Settings.showRandEventSystem) return;
-      Action<GameObject> action = (GameObject obj) =>
-        {
-          var text = obj.AddComponent<RandEventSystemText>();
-          text.spawnSystem = instance;
-          text.heightmap = heightmap;
-          text.nview = nview;
-        };
-      Drawer.DrawMarkerLine(instance.gameObject, new Vector3(0, 0, 5), Color.black, 1f, action);
+      var obj = Drawer.DrawMarkerLine(instance.gameObject, new Vector3(0, 0, 5), Color.black, 1f);
+      var text = obj.AddComponent<RandEventSystemText>();
+      text.spawnSystem = instance;
+      text.heightmap = heightmap;
+      text.nview = nview;
+      Drawer.AddBoxCollider(obj);
     }
     public static void Postfix(SpawnSystem __instance, Heightmap ___m_heightmap, ZNetView ___m_nview)
     {
