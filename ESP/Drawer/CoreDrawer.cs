@@ -33,7 +33,7 @@ namespace ESP
   public class StaticText : MonoBehaviour, Hoverable
   {
 
-    public string GetHoverText() => TextUtils.String(title) + "\n" + text;
+    public string GetHoverText() => Format.String(title) + "\n" + text;
     public string GetHoverName() => title;
     public string title;
     public string text;

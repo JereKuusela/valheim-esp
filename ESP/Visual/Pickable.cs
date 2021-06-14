@@ -25,7 +25,7 @@ namespace ESP
       if (!IsEnabled(__instance))
         return;
       var color = GetColor(__instance);
-      var text = TextUtils.Name(__instance.m_itemPrefab);
+      var text = Format.Name(__instance.m_itemPrefab);
       var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, color, Settings.pickableRayWidth);
       Drawer.AddText(obj, text);
       Drawer.AddBoxCollider(obj);

@@ -1,0 +1,162 @@
+using System.Linq;
+using UnityEngine;
+using System.Collections.Generic;
+
+namespace ESP
+{
+  public partial class Texts
+  {
+    public static string GetSense(MonsterAI obj)
+    {
+      var range = obj.m_alertRange;
+      var angle = obj.m_viewAngle;
+      return "Alert range: " + Format.Int(range) + "\nAlert angle: " + Format.Int(angle);
+    }
+
+    private static string GetTargetName(ItemDrop.ItemData.AiTarget target)
+    {
+      if (target == ItemDrop.ItemData.AiTarget.Enemy) return "Damage";
+      if (target == ItemDrop.ItemData.AiTarget.Friend) return "Support";
+      if (target == ItemDrop.ItemData.AiTarget.FriendHurt) return "Heal";
+      return "";
+    }
+    private static string GetDamages(HitData.DamageTypes target) => target.GetTooltipString().Replace("\n", ", ");
+    public static string GetAttack(Humanoid obj)
+    {
+      var weapons = obj.GetInventory().GetAllItems().Where(item => item.IsWeapon());
+      var texts = weapons.Select(weapon =>
+      {
+        var data = weapon.m_shared;
+        var header = Format.Name(weapon) + " (" + Format.String(GetTargetName(data.m_aiTargetType));
+        var text = Format.ProgressPercent(header, weapon.m_lastAttackTime, data.m_aiAttackInterval);
+        text += "Range: " + Format.Range(data.m_aiAttackRangeMin, data.m_aiAttackRange) + "(" + Format.Int(data.m_aiAttackMaxAngle) + " degrees)";
+        if (data.m_aiPrioritized)
+          text += ", " + Format.String("priority");
+        text += GetDamages(weapon.GetDamage());
+        if (!data.m_blockable || !data.m_dodgeable)
+        {
+          text += "\n";
+          if (!data.m_blockable)
+            text += "Can't be blocked";
+          if (!data.m_blockable && !data.m_dodgeable)
+            text += ", ";
+          if (!data.m_dodgeable)
+            text += "Can't be dodged";
+        }
+        text += Texts.GetHitboxText(data.m_attack);
+        return text;
+      });
+      return string.Join("\n", weapons);
+    }
+
+    public static string GetNoise(Character obj) => "Noise: " + Format.Int(Patch.m_noiseRange(obj));
+
+    public static string GetStaggerText(float health, float staggerDamageFactor, float staggerDamage)
+    {
+      var staggerLimit = staggerDamageFactor * health;
+      if (staggerLimit > 0)
+        return "\n" + "Stagger: " + Format.Progress(staggerDamage, staggerLimit);
+      else
+        return "\n" + "Stagger: " + Format.String("Immune");
+    }
+    public static string Get(Character instance, BaseAI baseAI, MonsterAI monsterAI)
+    {
+      if (!Settings.showCreatureStats)
+        return "";
+      var staggerDamage = Patch.m_staggerDamage(instance);
+      var body = Patch.m_body(instance);
+      var stats = "";
+      if (monsterAI && (monsterAI.IsAlerted() || monsterAI.HuntPlayer()))
+      {
+        var mode = "";
+        if (monsterAI.IsAlerted())
+          mode += "Alerted";
+        if (monsterAI.IsAlerted() && monsterAI.HuntPlayer())
+          mode += ", ";
+        if (monsterAI.HuntPlayer())
+          mode += "Hunt mode";
+        stats += "\n<color=red>" + mode + "</color>";
+      }
+      var health = instance.GetMaxHealth();
+      stats += "\n" + Format.GetHealth(instance.GetHealth(), health);
+      stats += GetStaggerText(health, instance.m_staggerDamageFactor, staggerDamage);
+      stats += "\n" + "Mass: " + Format.Int(body.mass) + " (" + Format.Percent(1f - 5f / body.mass) + " knockback resistance)";
+      var damageModifiers = Patch.Character_GetDamageModifiers(instance);
+      stats += DamageModifierUtils.Get(damageModifiers);
+      if (baseAI)
+      {
+        Vector3 patrolPoint;
+        var patrol = baseAI.GetPatrolPoint(out patrolPoint);
+        var patrolText = patrol ? patrolPoint.ToString("F0") : "No patrol";
+        stats += "\nPatrol: " + Format.String(patrolText);
+      }
+      if (monsterAI.m_consumeItems.Count > 0)
+      {
+        var heal = " (" + Format.Int(monsterAI.m_consumeHeal) + " health)";
+        var items = monsterAI.m_consumeItems.Select(item => Format.Name(item.gameObject));
+        stats += "\n" + string.Join(", ", items) + heal;
+      }
+      return stats;
+    }
+
+    public static string GetStatusStats(Character character)
+    {
+      if (!Settings.showStatusEffects || !character)
+        return "";
+      var statusEffects = character.GetSEMan().GetStatusEffects();
+      var text = "";
+      foreach (var status in statusEffects)
+      {
+        text += "\n" + Localization.instance.Localize(status.m_name) + ": " + Format.Progress(status.GetRemaningTime(), status.m_ttl) + " seconds";
+      }
+      return text;
+    }
+    public static string Get(BaseAI baseAI, Growup growup)
+    {
+      if (!Settings.showBreedingStats || !baseAI || !growup)
+        return "";
+      var value = baseAI.GetTimeSinceSpawned().TotalSeconds;
+      var limit = growup.m_growTime;
+      return "\n" + Format.ProgressPercent("Progress", value, limit);
+    }
+
+    private static List<string> GetDropTexts(CharacterDrop characterDrop, Character character)
+    {
+      var list = new List<string>();
+      int num = character ? Mathf.Max(1, (int)Mathf.Pow(2f, (float)(character.GetLevel() - 1))) : 1;
+      foreach (CharacterDrop.Drop drop in characterDrop.m_drops)
+      {
+        if (!(drop.m_prefab == null))
+        {
+          float chance = drop.m_chance;
+          if (drop.m_levelMultiplier)
+          {
+            chance *= (float)num;
+          }
+          int min = drop.m_amountMin;
+          int max = drop.m_amountMax - 1;  // -1 because exclusive on the random range.
+          if (drop.m_levelMultiplier)
+          {
+            min *= num;
+            max *= num;
+          }
+          var text = "";
+          if (max > 1 || (max == 1 && chance >= 1.0)) text += Format.Range(min, max) + " ";
+          text += drop.m_prefab.name;
+          if (drop.m_onePerPlayer) text += " (per player)";
+          if (chance < 1.0) text += " (" + Format.Percent(chance) + ")";
+          list.Add(text);
+        }
+      }
+      return list;
+    }
+    public static string Get(CharacterDrop characterDrop, Character character)
+    {
+      if (!Settings.showDropStats || !characterDrop)
+        return "";
+      var dropTexts = string.Join(", ", GetDropTexts(characterDrop, character));
+      return "\nDrops: " + dropTexts;
+    }
+  }
+}
+

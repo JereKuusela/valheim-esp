@@ -1,10 +1,11 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ESP
 {
-  public class BiomeUtils
+  public partial class Texts
   {
     public static Color GetColor(Heightmap.Biome biome)
     {
@@ -52,9 +53,27 @@ namespace ESP
     {
       var names = new List<string>();
       foreach (var biome in BIOMES)
-        if ((biomes & biome) > 0) names.Add(TextUtils.String(GetName(biome), ((validBiome & biome) > 0)));
+        if ((biomes & biome) > 0) names.Add(Format.String(GetName(biome), ((validBiome & biome) > 0)));
       if (names.Count == BIOMES.Length) return "";
       return String.Join(", ", names);
+    }
+    public static string Get(Heightmap.Biome obj)
+    {
+      var text = Format.Name(obj) + "\n" + EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment();
+      var envs = Patch.EnvMan_GetAvailableEnvironments(EnvMan.instance, obj);
+      var totalWeight = envs.Sum(env => env.m_weight);
+      var avgWind = envs.Sum(EnvUtils.GetAvgWind) / totalWeight;
+      text += "\n" + EnvUtils.GetWind() + " (" + Format.Percent(avgWind) + " on average)";
+      text += "\n\n" + EnvUtils.GetProgress() + ", Current roll: " + EnvUtils.GetEnvironmentRoll(totalWeight);
+      var texts = envs.Select(env => EnvUtils.GetEnvironment(env, totalWeight));
+      return text + "\n" + string.Join("\n", texts);
+    }
+    public static string GetBiomes(Heightmap.Biome biome, Heightmap.BiomeArea area = Heightmap.BiomeArea.Edge)
+    {
+      var biomeText = GetNames(biome);
+      if (biomeText.Length == 0) return "";
+      var biomeArea = (area == Heightmap.BiomeArea.Median) ? ", only full biomes" : "";
+      return "Biomes: " + biomeText + biomeArea;
     }
   }
 }

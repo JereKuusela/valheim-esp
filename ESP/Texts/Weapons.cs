@@ -10,22 +10,22 @@ namespace ESP
       var maxStamina = attack.m_attackStamina;
       var skillFactor = Player.m_localPlayer.GetSkillFactor(skillType);
       var stamina = maxStamina * (1 - 0.33f * skillFactor);
-      return "Stamina: " + TextUtils.Int(maxStamina, "orange") + " " + TextUtils.String("(" + TextUtils.Float(stamina) + ")");
+      return "Stamina: " + Format.Int(maxStamina, "orange") + " " + Format.String("(" + Format.Float(stamina) + ")");
     }
     public static string GetHitboxText(Attack attack)
     {
       if (attack == null) return "";
       var texts = new List<string>();
       if (attack.m_attackRange > 0)
-        texts.Add(TextUtils.Float(attack.m_attackRange, TextUtils.FORMAT, "orange") + " m");
+        texts.Add(Format.Float(attack.m_attackRange, Format.FORMAT, "orange") + " m");
       if (attack.m_attackAngle > 0)
-        texts.Add(TextUtils.Float(attack.m_attackAngle, TextUtils.FORMAT, "orange") + " deg");
+        texts.Add(Format.Float(attack.m_attackAngle, Format.FORMAT, "orange") + " deg");
       if (attack.m_attackHeight > 0)
-        texts.Add(TextUtils.Float(attack.m_attackHeight, TextUtils.FORMAT, "orange") + " h");
+        texts.Add(Format.Float(attack.m_attackHeight, Format.FORMAT, "orange") + " h");
       if (attack.m_attackRayWidth > 0)
-        texts.Add(TextUtils.Float(attack.m_attackRayWidth, TextUtils.FORMAT, "orange") + " ray");
+        texts.Add(Format.Float(attack.m_attackRayWidth, Format.FORMAT, "orange") + " ray");
       if (attack.m_attackOffset > 0)
-        texts.Add(TextUtils.Float(attack.m_attackOffset, TextUtils.FORMAT, "orange") + " offset");
+        texts.Add(Format.Float(attack.m_attackOffset, Format.FORMAT, "orange") + " offset");
       return "Hit: " + string.Join(", ", texts);
     }
     public static string GetAttackSpeed(string animation)
@@ -59,7 +59,7 @@ namespace ESP
       if (text == "") return "";
       text = text.Replace("(", "<color=yellow>(");
       text = text.Replace(")", ")</color>");
-      return "Speed: " + TextUtils.String(text, "orange");
+      return "Speed: " + Format.String(text, "orange");
     }
   }
 }

@@ -34,15 +34,15 @@ namespace ESP
     {
       var name = DamageTypeToString(damageType);
       var modifier = modifiers.GetModifier(damageType);
-      if (ignoreNeutral && modifier == HitData.DamageModifier.Immune) return name + ": " + TextUtils.String("x0");
-      if (ignoreNeutral && modifier == HitData.DamageModifier.Resistant) return name + ": " + TextUtils.String("x0.5");
-      if (modifier == HitData.DamageModifier.VeryResistant) return name + ": " + TextUtils.String("x0.25");
-      if (modifier == HitData.DamageModifier.Weak) return name + ": " + TextUtils.String("x1.5");
-      if (modifier == HitData.DamageModifier.VeryWeak) return name + ": " + TextUtils.String("x2");
-      if (!ignoreNeutral && modifier == HitData.DamageModifier.Normal) return name + ": " + TextUtils.String("x1");
+      if (ignoreNeutral && modifier == HitData.DamageModifier.Immune) return name + ": " + Format.String("x0");
+      if (ignoreNeutral && modifier == HitData.DamageModifier.Resistant) return name + ": " + Format.String("x0.5");
+      if (modifier == HitData.DamageModifier.VeryResistant) return name + ": " + Format.String("x0.25");
+      if (modifier == HitData.DamageModifier.Weak) return name + ": " + Format.String("x1.5");
+      if (modifier == HitData.DamageModifier.VeryWeak) return name + ": " + Format.String("x2");
+      if (!ignoreNeutral && modifier == HitData.DamageModifier.Normal) return name + ": " + Format.String("x1");
       return "";
     }
-    public static string GetText(HitData.DamageModifiers modifiers, bool ignoreNeutral = true)
+    public static string Get(HitData.DamageModifiers modifiers, bool ignoreNeutral = true)
     {
       var texts = DAMAGE_TYPES.Select(type => GetModifierText(modifiers, type, ignoreNeutral)).Where(text => text.Length > 0);
       if (texts.Count() > 0)

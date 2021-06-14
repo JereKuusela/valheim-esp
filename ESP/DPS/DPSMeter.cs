@@ -152,7 +152,7 @@ namespace ESP
       baseStructureDamage += pendingBaseStructureDamage;
       pendingBaseStructureDamage = 0;
     }
-    public static string GetText()
+    public static string Get()
     {
       if (!Settings.showDPS) return "";
       var time = 1.0;
@@ -170,25 +170,25 @@ namespace ESP
       var text = "\n\n\n";
       if (structureDamage > 0)
         text += "\n\n";
-      text += "\nTime: " + TextUtils.Float(time / 1000.0) + " seconds with " + TextUtils.Float(hits) + " hits";
-      text += "\nDPS: " + TextUtils.Float(damagePerSecond) + " (total " + TextUtils.Float(damage + pendingDamage) + ")";
-      text += ", per stamina: " + TextUtils.Float(damagePerStamina);
-      text += "\nBase DPS: " + TextUtils.Float(baseDamagePerSecond) + " (total " + TextUtils.Float(baseDamage + pendingBaseDamage) + ")";
-      text += ", per stamina: " + TextUtils.Float(baseDamagePerStamina);
-      text += "\nSPS: " + TextUtils.Float(staminaPerSecond) + " (total " + TextUtils.Float(stamina) + ")";
-      text += "\nStagger per second: " + TextUtils.Float(staggerPerSecond) + " (" + TextUtils.Float(stagger) + ")";
-      text += "\nAttack speed: " + TextUtils.Float(attackSpeed) + " s (" + TextUtils.Float(hitsPerSecond) + " per second)";
-      text += "\nDamage taken: " + TextUtils.Float(damageTakenPerSecond) + " (total " + TextUtils.Float(damageTaken) + ")";
+      text += "\nTime: " + Format.Float(time / 1000.0) + " seconds with " + Format.Float(hits) + " hits";
+      text += "\nDPS: " + Format.Float(damagePerSecond) + " (total " + Format.Float(damage + pendingDamage) + ")";
+      text += ", per stamina: " + Format.Float(damagePerStamina);
+      text += "\nBase DPS: " + Format.Float(baseDamagePerSecond) + " (total " + Format.Float(baseDamage + pendingBaseDamage) + ")";
+      text += ", per stamina: " + Format.Float(baseDamagePerStamina);
+      text += "\nSPS: " + Format.Float(staminaPerSecond) + " (total " + Format.Float(stamina) + ")";
+      text += "\nStagger per second: " + Format.Float(staggerPerSecond) + " (" + Format.Float(stagger) + ")";
+      text += "\nAttack speed: " + Format.Float(attackSpeed) + " s (" + Format.Float(hitsPerSecond) + " per second)";
+      text += "\nDamage taken: " + Format.Float(damageTakenPerSecond) + " (total " + Format.Float(damageTaken) + ")";
       if (structureDamage > 0)
       {
         var structureDamagePerSecond = structureDamage * 1000.0 / time;
         var structureDamagePerStamina = (structureDamage + pendingStructureDamage) / stamina;
         var baseStructureDamagePerSecond = baseStructureDamage * 1000.0 / time;
         var baseStructureDamagePerStamina = (baseStructureDamage + pendingBaseStructureDamage) / stamina;
-        text += "\nStructures DPS: " + TextUtils.Float(structureDamagePerSecond) + " (total " + TextUtils.Float(structureDamage + pendingStructureDamage) + ")";
-        text += ", per stamina: " + TextUtils.Float(structureDamagePerStamina);
-        text += "\nBase DPS: " + TextUtils.Float(baseStructureDamagePerSecond) + " (total " + TextUtils.Float(baseStructureDamage + pendingBaseStructureDamage) + ")";
-        text += ", per stamina: " + TextUtils.Float(baseStructureDamagePerStamina);
+        text += "\nStructures DPS: " + Format.Float(structureDamagePerSecond) + " (total " + Format.Float(structureDamage + pendingStructureDamage) + ")";
+        text += ", per stamina: " + Format.Float(structureDamagePerStamina);
+        text += "\nBase DPS: " + Format.Float(baseStructureDamagePerSecond) + " (total " + Format.Float(baseStructureDamage + pendingBaseStructureDamage) + ")";
+        text += ", per stamina: " + Format.Float(baseStructureDamagePerStamina);
 
       }
       return text;

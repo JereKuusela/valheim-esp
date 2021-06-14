@@ -2,7 +2,6 @@ using HarmonyLib;
 using System;
 using System.Linq;
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace ESP
 {
@@ -59,11 +58,11 @@ namespace ESP
       {
         var attack = item.m_shared.m_attack;
         if (attack.m_damageMultiplier != 1.0)
-          split.Add("Damage: " + TextUtils.Multiplier(attack.m_damageMultiplier, "orange"));
+          split.Add("Damage: " + Format.Multiplier(attack.m_damageMultiplier, "orange"));
         if (attack.m_staggerMultiplier != 1.0)
-          split.Add("Stagger: " + TextUtils.Multiplier(attack.m_staggerMultiplier, "orange"));
+          split.Add("Stagger: " + Format.Multiplier(attack.m_staggerMultiplier, "orange"));
         if (attack.m_forceMultiplier != 1.0)
-          split.Add("Knockback: " + TextUtils.Multiplier(attack.m_forceMultiplier, "orange"));
+          split.Add("Knockback: " + Format.Multiplier(attack.m_forceMultiplier, "orange"));
         split.Add(Texts.GetStaminaText(attack, item.m_shared.m_skillType));
         if (!attack.m_lowerDamagePerHit)
           split.Add("No multitarget penalty");
@@ -75,11 +74,11 @@ namespace ESP
         var attack = item.m_shared.m_secondaryAttack;
         split.Add("Secondary");
         if (attack.m_damageMultiplier != 1.0)
-          split.Add("Damage: " + TextUtils.Multiplier(attack.m_damageMultiplier, "orange"));
+          split.Add("Damage: " + Format.Multiplier(attack.m_damageMultiplier, "orange"));
         if (attack.m_staggerMultiplier != 1.0)
-          split.Add("Stagger: " + TextUtils.Multiplier(attack.m_staggerMultiplier, "orange"));
+          split.Add("Stagger: " + Format.Multiplier(attack.m_staggerMultiplier, "orange"));
         if (attack.m_forceMultiplier != 1.0)
-          split.Add("Knockback: " + TextUtils.Multiplier(attack.m_forceMultiplier, "orange"));
+          split.Add("Knockback: " + Format.Multiplier(attack.m_forceMultiplier, "orange"));
         split.Add(Texts.GetStaminaText(attack, item.m_shared.m_skillType));
         if (!attack.m_lowerDamagePerHit)
           split.Add("No multitarget penalty");

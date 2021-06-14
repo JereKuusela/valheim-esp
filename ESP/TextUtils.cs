@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ESP
 {
-  public class TextUtils
+  public class Format
   {
     public const string FORMAT = "0.##";
 
@@ -44,23 +44,16 @@ namespace ESP
       max--;
       var level = "";
       if (max < min && Settings.fixInvalidLevelData)
-        level = TextUtils.PlainRange(max, min);
+        level = Format.PlainRange(max, min);
       else
-        level = TextUtils.PlainRange(min, max);
-      var chanceText = level.Contains("-") ? " (" + TextUtils.Percent(chance / 100f) + " per star)" : "";
-      var levelLimit = (limit > 0) ? " after " + TextUtils.Int(limit) + " meters" : "";
+        level = Format.PlainRange(min, max);
+      var chanceText = level.Contains("-") ? " (" + Format.Percent(chance / 100f) + " per star)" : "";
+      var levelLimit = (limit > 0) ? " after " + Format.Int(limit) + " meters" : "";
       return "Stars: " + String(level) + chanceText + levelLimit;
     }
 
-    public static string GetBiomes(Heightmap.Biome biome, Heightmap.BiomeArea area = Heightmap.BiomeArea.Edge)
-    {
-      var biomeText = BiomeUtils.GetNames(biome);
-      if (biomeText.Length == 0) return "";
-      var biomeArea = (area == Heightmap.BiomeArea.Median) ? ", only full biomes" : "";
-      return "Biomes: " + biomeText + biomeArea;
-    }
     public static string GetAttempt(double time, double limit, double chance) =>
-      TextUtils.ProgressPercent("Attempt", time, limit) + ", " + TextUtils.Percent(chance / 100.0) + " chance";
+      Format.ProgressPercent("Attempt", time, limit) + ", " + Format.Percent(chance / 100.0) + " chance";
 
     public static string GetGlobalKeys(List<string> required, List<string> notRequired)
     {
@@ -70,13 +63,14 @@ namespace ESP
       return System.String.Join(", ", keys);
     }
     public static string GetHealth(double health, double limit)
-      => "Health: " + TextUtils.Progress(health, limit) + " (" + TextUtils.Percent(health / limit) + ")";
+      => "Health: " + Format.Progress(health, limit) + " (" + Format.Percent(health / limit) + ")";
 
     public static string Name(string name) => String(Localization.instance.Localize(name));
     public static string Name(GameObject obj) => Name(Utils.GetPrefabName(obj));
     public static string Name(Character obj) => Name(obj.m_name);
     public static string Name(ItemDrop.ItemData obj) => Name(obj.m_shared.m_name);
+    public static string Name(Heightmap.Biome obj) => Name(Texts.GetName(obj));
 
-    public static string Radius(float radius) => "Radius: " + TextUtils.Float(radius);
+    public static string Radius(float radius) => "Radius: " + Format.Float(radius);
   }
 }

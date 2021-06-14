@@ -14,9 +14,17 @@ namespace ESP
       var d = GetDateTime(obj, key, defaultValue);
       return (time - d).TotalSeconds;
     }
+    public static double GetElapsed(MonoBehaviour obj, int key, long defaultValue = 0)
+    {
+      var time = ZNet.instance.GetTime();
+      var d = GetDateTime(obj, key, defaultValue);
+      return (time - d).TotalSeconds;
+    }
     public static DateTime GetDateTime(MonoBehaviour obj, string key, long defaultValue = 0) => new DateTime(GetLong(obj, key, defaultValue));
+    public static DateTime GetDateTime(MonoBehaviour obj, int key, long defaultValue = 0) => new DateTime(GetLong(obj, key, defaultValue));
     public static float GetFloat(MonoBehaviour obj, string key, float defaultValue = 0) => m_nview(obj).GetZDO().GetFloat(key, defaultValue);
     public static long GetLong(MonoBehaviour obj, string key, long defaultValue = 0) => m_nview(obj).GetZDO().GetLong(key, defaultValue);
+    public static long GetLong(MonoBehaviour obj, int key, long defaultValue = 0) => m_nview(obj).GetZDO().GetLong(key, defaultValue);
     public static int GetInt(MonoBehaviour obj, string key, int defaultValue = 0) => m_nview(obj).GetZDO().GetInt(key, defaultValue);
     public static bool GetBool(MonoBehaviour obj, string key, bool defaultValue = false) => m_nview(obj).GetZDO().GetBool(key, defaultValue);
     public static string GetString(MonoBehaviour obj, string key, string defaultValue = "") => m_nview(obj).GetZDO().GetString(key, defaultValue);
@@ -24,6 +32,11 @@ namespace ESP
     public static float m_cover(Windmill obj) => Traverse.Create(obj).Field<float>("m_cover").Value;
     public static float m_spawnTimer(SpawnArea obj) => Traverse.Create(obj).Field<float>("m_spawnTimer").Value;
     public static float m_noiseRange(Character obj) => Traverse.Create(obj).Field<float>("m_noiseRange").Value;
+    public static float m_staggerDamage(Character obj) => Traverse.Create(obj).Field<float>("m_staggerDamage").Value;
+    public static float m_eventTime(RandEventSystem obj) => Traverse.Create(obj).Field<float>("m_eventTime").Value;
+    public static Heightmap m_heightmap(SpawnSystem obj) => Traverse.Create(obj).Field<Heightmap>("m_heightmap").Value;
+    public static Rigidbody m_body(Character obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;
+    public static Rigidbody m_body(Ship obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;
     public static Vector3 m_currentVel(Player obj) => Traverse.Create(obj).Field<Vector3>("m_currentVel").Value;
     public static ZNetView m_nview(MonoBehaviour obj) => Traverse.Create(obj).Field<ZNetView>("m_nview").Value;
     [HarmonyReversePatch]

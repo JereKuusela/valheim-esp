@@ -12,7 +12,7 @@ namespace ESP
     {
       if (!Settings.showLocations)
         return;
-      var text = TextUtils.Name(__instance.gameObject);
+      var text = Format.Name(__instance.gameObject);
       var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.black, Settings.locationRayWidth);
       Drawer.AddText(obj, text);
       Drawer.AddBoxCollider(obj);
@@ -25,7 +25,7 @@ namespace ESP
     {
       if (!Settings.showChests || !___m_piece || ___m_piece.IsPlacedByPlayer())
         return;
-      var text = TextUtils.String(__instance.GetHoverName());
+      var text = Format.String(__instance.GetHoverName());
       var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.white, Settings.chestRayWidth);
       Drawer.AddText(obj, text);
       Drawer.AddBoxCollider(obj);
@@ -52,7 +52,7 @@ namespace ESP
       if (!IsEnabled(obj))
         return;
       var color = GetColor(obj);
-      var text = TextUtils.Name(obj.m_creaturePrefab);
+      var text = Format.Name(obj.m_creaturePrefab);
       var line = Drawer.DrawMarkerLine(obj.gameObject, Vector3.zero, color, 0.5f);
       Drawer.AddText(line, text);
       Drawer.AddBoxCollider(line);
@@ -69,7 +69,7 @@ namespace ESP
       var radius = Math.Max(0.5f, __instance.GetRadius());
 
       var obj = Drawer.DrawSphere(__instance.gameObject, radius, color, 0.1f);
-      Drawer.AddText(obj, EffectAreaUtils.GetTypeText(__instance.m_type), TextUtils.Radius(__instance.GetRadius()));
+      Drawer.AddText(obj, EffectAreaUtils.GetTypeText(__instance.m_type), Format.Radius(__instance.GetRadius()));
     }
   }
   [HarmonyPatch(typeof(PrivateArea), "Awake")]
@@ -81,7 +81,7 @@ namespace ESP
         return;
 
       var obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_radius, Color.gray, 0.1f);
-      Drawer.AddText(obj, "Protection", TextUtils.Radius(__instance.m_radius));
+      Drawer.AddText(obj, "Protection", Format.Radius(__instance.m_radius));
     }
   }
 }

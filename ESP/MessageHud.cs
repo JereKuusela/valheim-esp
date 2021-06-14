@@ -1,5 +1,4 @@
 using HarmonyLib;
-using System;
 using UnityEngine;
 
 namespace ESP
@@ -12,15 +11,15 @@ namespace ESP
     {
       // Wait for the game to load.
       if (Player.m_localPlayer == null) return "";
-      var dps = DPSMeter.GetText();
+      var dps = DPSMeter.Get();
       if (dps != "") return dps;
       if (CustomMessage != "") return CustomMessage;
       var status = GetStatusText();
-      status += "\nExtra info: " + TextUtils.String("I") + ", Visuals " + TextUtils.String("O") + ", DPS meter: " + TextUtils.String("P");
+      status += "\nExtra info: " + Format.String("I") + ", Visuals " + Format.String("O") + ", DPS meter: " + Format.String("P");
       return status;
     }
-    private static string GetSpeed() => "Speed: " + TextUtils.Float(Patch.m_currentVel(Player.m_localPlayer).magnitude, "0.#") + " m/s";
-    private static string GetNoise() => "Noise: " + TextUtils.Int(Player.m_localPlayer.GetNoiseRange()) + " meters";
+    private static string GetSpeed() => "Speed: " + Format.Float(Patch.m_currentVel(Player.m_localPlayer).magnitude, "0.#") + " m/s";
+    private static string GetNoise() => "Noise: " + Format.Int(Player.m_localPlayer.GetNoiseRange()) + " meters";
     private static string GetStatusText()
     {
       if (!Settings.showTimeAndWeather) return "";
@@ -60,6 +59,25 @@ namespace ESP
         hud.m_messageText.text = "\n" + customMessage;
 
       }
+    }
+  }
+
+  [HarmonyPatch(typeof(Ship), "FixedUpdate")]
+  public class Ship_FixedUpdate_Hud
+  {
+    public static void Postfix(Ship __instance)
+    {
+      if (!Settings.showShipStatsOnHud || !Player.m_localPlayer) return;
+      if (!__instance.IsPlayerInBoat(Player.m_localPlayer.GetZDOID())) return;
+      MessageHud_UpdateMessage.CustomMessage = "\n" + Texts.Get(__instance);
+    }
+  }
+  [HarmonyPatch(typeof(Ship), "OnTriggerExit")]
+  public class Ship_OnTriggerExit_Hud
+  {
+    public static void Postfix()
+    {
+      MessageHud_UpdateMessage.CustomMessage = "";
     }
   }
 }

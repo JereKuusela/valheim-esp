@@ -7,18 +7,18 @@ namespace ESP
 {
   public class SpawnAreaUtils
   {
-    public static String GetText(SpawnArea obj)
+    public static String Get(SpawnArea obj)
     {
       var spawnTimer = Patch.m_spawnTimer(obj);
       int near, total;
       Patch.SpawnArea_GetInstances(obj, out near, out total);
       var lines = new List<string>(){
-        TextUtils.ProgressPercent("Timer", spawnTimer, obj.m_spawnIntervalSec),
-        "Area: " + TextUtils.Int(obj.m_spawnRadius) + " m",
-        "Level up: " + TextUtils.Percent(obj.m_levelupChance / 100f),
-        "Trigger: " + TextUtils.Int(obj.m_triggerDistance) + " m",
-        "Near limit: " + TextUtils.Progress(near, obj.m_maxNear) + " within " + TextUtils.Int(obj.m_nearRadius) + " m",
-        "Far limit: " +  TextUtils.Progress(total, obj.m_maxTotal) + " within " + TextUtils.Int(obj.m_farRadius) + " m"
+        Format.ProgressPercent("Timer", spawnTimer, obj.m_spawnIntervalSec),
+        "Area: " + Format.Int(obj.m_spawnRadius) + " m",
+        "Level up: " + Format.Percent(obj.m_levelupChance / 100f),
+        "Trigger: " + Format.Int(obj.m_triggerDistance) + " m",
+        "Near limit: " + Format.Progress(near, obj.m_maxNear) + " within " + Format.Int(obj.m_nearRadius) + " m",
+        "Far limit: " +  Format.Progress(total, obj.m_maxTotal) + " within " + Format.Int(obj.m_farRadius) + " m"
       };
       if (obj.m_onGroundOnly)
       {
@@ -31,8 +31,8 @@ namespace ESP
         totalWeight += data.m_weight;
       foreach (var data in obj.m_prefabs)
       {
-        var level = TextUtils.Range(data.m_minLevel, data.m_maxLevel);
-        lines.Add(data.m_prefab.name + ": " + TextUtils.Percent(data.m_weight / totalWeight) + " with level " + level);
+        var level = Format.Range(data.m_minLevel, data.m_maxLevel);
+        lines.Add(data.m_prefab.name + ": " + Format.Percent(data.m_weight / totalWeight) + " with level " + level);
       }
       return lines.Join(null, "\n");
     }
@@ -56,8 +56,8 @@ namespace ESP
 
   public class SpawnAreaText : MonoBehaviour, Hoverable
   {
-    public string GetHoverText() => GetHoverName() + "\n" + SpawnAreaUtils.GetText(spawnArea);
-    public string GetHoverName() => TextUtils.String(spawnArea.name);
+    public string GetHoverText() => GetHoverName() + "\n" + SpawnAreaUtils.Get(spawnArea);
+    public string GetHoverName() => Format.String(spawnArea.name);
     public SpawnArea spawnArea;
   }
 }

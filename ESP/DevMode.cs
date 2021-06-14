@@ -34,7 +34,7 @@ namespace ESP
   {
     public static bool Prefix(ref bool __result)
     {
-      __result = Cheats.Enabled;
+      __result = true;
       return false;
     }
   }
