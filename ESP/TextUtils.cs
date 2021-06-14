@@ -72,8 +72,10 @@ namespace ESP
     public static string GetHealth(double health, double limit)
       => "Health: " + TextUtils.Progress(health, limit) + " (" + TextUtils.Percent(health / limit) + ")";
 
-    public static string Name(GameObject obj) => String(Localization.instance.Localize(Utils.GetPrefabName(obj)));
-    public static string Name(Character obj) => Name(obj.gameObject);
+    public static string Name(string name) => String(Localization.instance.Localize(name));
+    public static string Name(GameObject obj) => Name(Utils.GetPrefabName(obj));
+    public static string Name(Character obj) => Name(obj.m_name);
+    public static string Name(ItemDrop.ItemData obj) => Name(obj.m_shared.m_name);
 
     public static string Radius(float radius) => "Radius: " + TextUtils.Float(radius);
   }

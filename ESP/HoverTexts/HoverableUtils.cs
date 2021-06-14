@@ -30,6 +30,8 @@ namespace ESP
       __result += HoverTextUtils.GetText(obj.GetComponentInParent<MineRock5>());
       __result += HoverTextUtils.GetText(obj.GetComponentInParent<Ship>());
       __result += HoverTextUtils.GetText(obj.GetComponentInParent<EffectArea>());
+      if (obj.GetComponentInParent<BaseAI>())
+        __result += HoverTextUtils.GetAttackText(obj.GetComponentInParent<Humanoid>());
     }
   }
 }

@@ -21,8 +21,6 @@ Creatures:
 
 Before release:
  - Add bow draw time
- - Enemy attack hitboxes, damages?
- - 
 
 
  
