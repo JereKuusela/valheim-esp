@@ -15,24 +15,29 @@ namespace ESP
 
     private static string GetTargetName(ItemDrop.ItemData.AiTarget target)
     {
-      if (target == ItemDrop.ItemData.AiTarget.Enemy) return "Damage";
+      if (target == ItemDrop.ItemData.AiTarget.Enemy) return "";
       if (target == ItemDrop.ItemData.AiTarget.Friend) return "Support";
       if (target == ItemDrop.ItemData.AiTarget.FriendHurt) return "Heal";
       return "";
     }
-    private static string GetDamages(HitData.DamageTypes target) => target.GetTooltipString().Replace("\n", ", ");
+    private static string GetDamages(HitData.DamageTypes target) => Localization.instance.Localize(target.GetTooltipString().Replace("\n", ", ")).Substring(2);
     public static string GetAttack(Humanoid obj)
     {
       var weapons = obj.GetInventory().GetAllItems().Where(item => item.IsWeapon());
+      var time = Time.time;
       var texts = weapons.Select(weapon =>
       {
         var data = weapon.m_shared;
-        var header = Format.Name(weapon) + " (" + Format.String(GetTargetName(data.m_aiTargetType));
-        var text = Format.ProgressPercent(header, weapon.m_lastAttackTime, data.m_aiAttackInterval);
-        text += "Range: " + Format.Range(data.m_aiAttackRangeMin, data.m_aiAttackRange) + "(" + Format.Int(data.m_aiAttackMaxAngle) + " degrees)";
+        var header = Format.Name(weapon);
+        var target = GetTargetName(data.m_aiTargetType);
+        if (target != "")
+          header += " (" + target + ")";
+        var timer = Mathf.Min(time - weapon.m_lastAttackTime, data.m_aiAttackInterval);
+        var text = Format.ProgressPercent(header, timer, data.m_aiAttackInterval);
+        text += "\nRange: " + Format.Range(data.m_aiAttackRangeMin, data.m_aiAttackRange) + " meters (" + Format.Int(data.m_aiAttackMaxAngle) + " degrees)";
         if (data.m_aiPrioritized)
           text += ", " + Format.String("priority");
-        text += GetDamages(weapon.GetDamage());
+        text += "\n" + GetDamages(weapon.GetDamage());
         if (!data.m_blockable || !data.m_dodgeable)
         {
           text += "\n";
@@ -43,10 +48,10 @@ namespace ESP
           if (!data.m_dodgeable)
             text += "Can't be dodged";
         }
-        text += Texts.GetHitboxText(data.m_attack);
+        text += "\n" + Texts.GetHitboxText(data.m_attack);
         return text;
       });
-      return string.Join("\n", weapons);
+      return "\n" + string.Join("\n", texts);
     }
 
     public static string GetNoise(Character obj) => "Noise: " + Format.Int(Patch.m_noiseRange(obj));
@@ -59,12 +64,12 @@ namespace ESP
       else
         return "\n" + "Stagger: " + Format.String("Immune");
     }
-    public static string Get(Character instance, BaseAI baseAI, MonsterAI monsterAI)
+    public static string Get(Character obj, BaseAI baseAI, MonsterAI monsterAI)
     {
-      if (!Settings.showCreatureStats)
+      if (!Settings.showCreatureStats || !obj || !baseAI || !monsterAI)
         return "";
-      var staggerDamage = Patch.m_staggerDamage(instance);
-      var body = Patch.m_body(instance);
+      var staggerDamage = Patch.m_staggerDamage(obj);
+      var body = Patch.m_body(obj);
       var stats = "";
       if (monsterAI && (monsterAI.IsAlerted() || monsterAI.HuntPlayer()))
       {
@@ -77,11 +82,11 @@ namespace ESP
           mode += "Hunt mode";
         stats += "\n<color=red>" + mode + "</color>";
       }
-      var health = instance.GetMaxHealth();
-      stats += "\n" + Format.GetHealth(instance.GetHealth(), health);
-      stats += GetStaggerText(health, instance.m_staggerDamageFactor, staggerDamage);
+      var health = obj.GetMaxHealth();
+      stats += "\n" + Format.GetHealth(obj.GetHealth(), health);
+      stats += GetStaggerText(health, obj.m_staggerDamageFactor, staggerDamage);
       stats += "\n" + "Mass: " + Format.Int(body.mass) + " (" + Format.Percent(1f - 5f / body.mass) + " knockback resistance)";
-      var damageModifiers = Patch.Character_GetDamageModifiers(instance);
+      var damageModifiers = Patch.Character_GetDamageModifiers(obj);
       stats += DamageModifierUtils.Get(damageModifiers);
       if (baseAI)
       {
@@ -152,7 +157,7 @@ namespace ESP
     }
     public static string Get(CharacterDrop characterDrop, Character character)
     {
-      if (!Settings.showDropStats || !characterDrop)
+      if (!Settings.showDropStats || !characterDrop || !character)
         return "";
       var dropTexts = string.Join(", ", GetDropTexts(characterDrop, character));
       return "\nDrops: " + dropTexts;

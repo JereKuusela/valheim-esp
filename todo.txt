@@ -20,7 +20,7 @@ Creatures:
  - Targeting system (current status, target, last known location, retreat limit, retreat when struch, etc.)
 
 Before release:
- - Add bow draw time
+ - Bow accuracy stuff (instead of hitbox)
 
 
  

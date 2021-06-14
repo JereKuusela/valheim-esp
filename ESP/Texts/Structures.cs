@@ -51,7 +51,7 @@ namespace ESP
     }
     public static string Get(WearNTear obj)
     {
-      if (!obj || !Settings.showStructureStats) return "";
+      if (!Settings.showStructureStats || !obj) return "";
       var text = "";
       var health = obj.GetHealthPercentage();
 
@@ -60,7 +60,7 @@ namespace ESP
 
       float maxSupport, minSupport, horizontalLoss, verticalLoss;
       Patch.WearNTear_GetMaterialProperties(obj, out maxSupport, out minSupport, out horizontalLoss, out verticalLoss);
-      var support = Math.Min(Patch.WearNTear_GetSupport(obj), maxSupport);
+      var support = Math.Min(Patch.GetFloat(obj, "support", maxSupport), maxSupport);
       text += "\n" + Format.String(GetMaterialName(obj.m_materialType)) + ": " + Format.Progress(support, minSupport) + " support";
       text += "\n" + Format.Percent(horizontalLoss) + " horizontal loss, " + Format.Percent(verticalLoss) + " vertical loss";
       return text;

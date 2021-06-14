@@ -11,9 +11,7 @@ namespace ESP
       var range = instance.m_alertRange;
       var angle = instance.m_viewAngle;
       var text = Texts.GetSense(instance);
-      var obj = Drawer.CreateObject(instance.gameObject);
-      Drawer.DrawArcY(obj, character.m_eye.position - character.transform.position, range, angle, Color.red, 0.1f);
-      Drawer.DrawArcX(obj, character.m_eye.position - character.transform.position, range, angle, Color.red, 0.1f);
+      var obj = Drawer.DrawArc(instance.gameObject, character.m_eye.position - character.transform.position, range, angle, Color.red, 0.1f);
       Drawer.AddText(obj, Format.Name(character), text);
       Drawer.AddMeshCollider(obj);
     }

@@ -50,10 +50,13 @@ namespace ESP
       float minFactor;
       float maxFactor;
       Player.m_localPlayer.GetSkills().GetRandomSkillRange(out minFactor, out maxFactor, item.m_shared.m_skillType);
+      var skillFactor = Player.m_localPlayer.GetSkillFactor(item.m_shared.m_skillType);
       int minKnockback = Mathf.RoundToInt(item.m_shared.m_attackForce * minFactor);
       int maxKnockback = Mathf.RoundToInt(item.m_shared.m_attackForce * maxFactor);
       var knockback = " <color=yellow>(" + minKnockback + "-" + maxKnockback + ")</color>";
       var split = __result.Split('\n').ToList();
+
+      var holdDuration = item.m_shared.m_holdDurationMin * (1f - skillFactor);
       if (item.m_shared.m_attack != null && Texts.GetAttackSpeed(item.m_shared.m_attack) != "")
       {
         var attack = item.m_shared.m_attack;
@@ -66,7 +69,7 @@ namespace ESP
         split.Add(Texts.GetStaminaText(attack, item.m_shared.m_skillType));
         if (!attack.m_lowerDamagePerHit)
           split.Add("No multitarget penalty");
-        split.Add(Texts.GetAttackSpeed(attack));
+        split.Add(Texts.GetAttackSpeed(attack, holdDuration));
         split.Add(Texts.GetHitboxText(attack));
       }
       if (item.m_shared.m_secondaryAttack != null && Texts.GetAttackSpeed(item.m_shared.m_secondaryAttack) != "")
@@ -82,10 +85,10 @@ namespace ESP
         split.Add(Texts.GetStaminaText(attack, item.m_shared.m_skillType));
         if (!attack.m_lowerDamagePerHit)
           split.Add("No multitarget penalty");
-        split.Add(Texts.GetAttackSpeed(attack));
+        split.Add(Texts.GetAttackSpeed(attack, holdDuration));
         split.Add(Texts.GetHitboxText(attack));
       }
-      __result = string.Join("\n", split.Select(line => line.StartsWith("$item_knockback") ? line + knockback : line));
+      __result = string.Join("\n", split.Where(line => line != "").Select(line => line.StartsWith("$item_knockback") ? line + knockback : line));
     }
   }
 }

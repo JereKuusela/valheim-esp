@@ -137,11 +137,5 @@ namespace ESP
     {
       throw new NotImplementedException("Dummy");
     }
-    [HarmonyReversePatch]
-    [HarmonyPatch(typeof(WearNTear), "GetSupport")]
-    public static float WearNTear_GetSupport(WearNTear instance)
-    {
-      throw new NotImplementedException("Dummy");
-    }
   }
 }

@@ -1,5 +1,4 @@
 using HarmonyLib;
-using UnityEngine;
 
 namespace ESP
 {
@@ -10,8 +9,8 @@ namespace ESP
     {
       if (!Settings.showSupport) return;
       Shown = !Shown;
-      foreach (var obj in Resources.FindObjectsOfTypeAll(typeof(WearNTear)) as WearNTear[])
-        obj.Highlight(); // Automatically calls reset after a delay.
+      // Automatically calls reset after a delay.
+      WearNTear.GetAllInstaces().ForEach(item => item.Highlight());
     }
   }
 

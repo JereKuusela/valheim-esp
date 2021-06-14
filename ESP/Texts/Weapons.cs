@@ -14,7 +14,7 @@ namespace ESP
     }
     public static string GetHitboxText(Attack attack)
     {
-      if (attack == null) return "";
+      if (attack == null || attack.m_attackType == Attack.AttackType.Projectile) return "";
       var texts = new List<string>();
       if (attack.m_attackRange > 0)
         texts.Add(Format.Float(attack.m_attackRange, Format.FORMAT, "orange") + " m");
@@ -28,13 +28,13 @@ namespace ESP
         texts.Add(Format.Float(attack.m_attackOffset, Format.FORMAT, "orange") + " offset");
       return "Hit: " + string.Join(", ", texts);
     }
-    public static string GetAttackSpeed(string animation)
+    public static string GetAttackSpeed(string animation, float holdDuration)
     {
       if (animation == "atgeir_attack") return "2.98 s (0.84 + 0.86 + 1.28)";
       if (animation == "atgeir_secondary") return "1.74 s";
       if (animation == "battleaxe_attack") return "3.44 s (1.82 + 0.92 + 0.7)";
       if (animation == "battleaxe_secondary") return "";
-      if (animation == "bow_fire") return "0.94 s";
+      if (animation == "bow_fire") return (0.8 + holdDuration).ToString(Format.FORMAT) + " s";
       if (animation == "emote_drink") return "";
       if (animation == "knife_stab") return "2.04 s (0.88 + 0.54 + 0.62)";
       if (animation == "knife_secondary") return "1.72 s";
@@ -51,11 +51,11 @@ namespace ESP
       if (animation == "sword_secondary") return "1.84 s";
       return "";
     }
-    public static string GetAttackSpeed(Attack attack)
+    public static string GetAttackSpeed(Attack attack, float holdDuration = 0)
     {
       if (attack == null) return "";
       var animation = attack.m_attackAnimation;
-      var text = GetAttackSpeed(animation);
+      var text = GetAttackSpeed(animation, holdDuration);
       if (text == "") return "";
       text = text.Replace("(", "<color=yellow>(");
       text = text.Replace(")", ")</color>");

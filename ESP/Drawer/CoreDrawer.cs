@@ -51,7 +51,7 @@ namespace ESP
           gameObj.SetActive(Shown);
       }
     }
-    public static GameObject CreateObject(GameObject parent)
+    private static GameObject CreateObject(GameObject parent)
     {
       var obj = new GameObject();
       obj.layer = LayerMask.NameToLayer("character_trigger");

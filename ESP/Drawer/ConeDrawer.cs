@@ -38,8 +38,8 @@ namespace ESP
     public static GameObject DrawCone(GameObject parent, Vector3 position, float radius, float angle, Color color, float width)
     {
       var obj = Drawer.CreateObject(parent);
-      Drawer.DrawConeY(obj, position, radius, angle, color, width);
-      Drawer.DrawConeX(obj, position, radius, angle, color, width);
+      Drawer.DrawConeY(Drawer.CreateObject(obj), position, radius, angle, color, width);
+      Drawer.DrawConeX(Drawer.CreateObject(obj), position, radius, angle, color, width);
       Drawer.AddMeshCollider(obj);
       return obj;
     }
