@@ -23,6 +23,7 @@ namespace ESP
     private static string GetDamages(HitData.DamageTypes target) => Localization.instance.Localize(target.GetTooltipString().Replace("\n", ", ")).Substring(2);
     public static string GetAttack(Humanoid obj)
     {
+      if (!obj) return "";
       var weapons = obj.GetInventory().GetAllItems().Where(item => item.IsWeapon());
       var time = Time.time;
       var texts = weapons.Select(weapon =>
