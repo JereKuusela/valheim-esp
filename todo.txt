@@ -21,7 +21,6 @@ Creatures:
 
 Before release:
  - Add bow draw time
- - Structural strength to structures (text + color)
  - Enemy attack hitboxes, damages?
  - 
 

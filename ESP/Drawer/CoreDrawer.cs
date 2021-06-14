@@ -48,12 +48,9 @@ namespace ESP
       foreach (var gameObj in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
       {
         if (gameObj.name == "ESP")
-        {
           gameObj.SetActive(Shown);
-        }
       }
     }
-    private static int GetSegments(float angle) => (int)Math.Floor(32 * angle / 360);
     public static GameObject CreateObject(GameObject parent)
     {
       var obj = new GameObject();
@@ -86,39 +83,6 @@ namespace ESP
         collider.isTrigger = true;
       });
     }
-    public static void AddBoxCollider(GameObject obj)
-    {
-      var renderers = obj.GetComponents<LineRenderer>();
-      Array.ForEach(renderers, renderer =>
-      {
-        var start = renderer.GetPosition(0);
-        var end = renderer.GetPosition(renderer.positionCount - 1);
-        var width = renderer.widthMultiplier;
-        var collider = obj.AddComponent<BoxCollider>();
-        collider.isTrigger = true;
-        collider.center = start + (end - start) / 2;
-        collider.size = (end - start) + 2 * new Vector3(width, width, width);
-      });
-    }
-    public static void AddSphereCollider(GameObject obj, float radius)
-    {
-      var renderers = obj.GetComponents<LineRenderer>();
-      Array.ForEach(renderers, renderer =>
-      {
-        var collider = obj.AddComponent<SphereCollider>();
-        collider.isTrigger = true;
-        collider.center = Vector3.zero;
-        collider.radius = radius;
-      });
-    }
-    private static void UpdateMeshCollider(GameObject obj)
-    {
-      var renderer = obj.GetComponent<LineRenderer>();
-      if (renderer == null) return;
-      var collider = obj.GetComponent<MeshCollider>();
-      renderer.BakeMesh(collider.sharedMesh, true);
-      collider.isTrigger = true;
-    }
     public static void AddText(GameObject obj, string text)
     {
       obj.AddComponent<HoverText>().m_text = text;
@@ -128,22 +92,6 @@ namespace ESP
       var component = obj.AddComponent<StaticText>();
       component.text = text;
       component.title = title;
-    }
-    private static void UpdateText(GameObject obj, string text)
-    {
-      obj.GetComponent<HoverText>().m_text = text;
-      UpdateMeshCollider(obj);
-    }
-    public static void UpdateTexts(GameObject parent, string text)
-    {
-      Array.ForEach(parent.GetComponentsInChildren<HoverText>(), item => item.m_text = text);
-    }
-
-    public static void UpdateTexts(GameObject parent, List<string> texts)
-    {
-      var items = parent.GetComponentsInChildren<HoverText>();
-      for (var i = 0; i < items.Length && i < texts.Count; i++)
-        items[i].m_text = texts[i];
     }
   }
 }

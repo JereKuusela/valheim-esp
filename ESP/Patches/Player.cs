@@ -20,6 +20,7 @@ namespace ESP
           if (Input.GetKeyDown(KeyCode.O))
           {
             Drawer.ToggleVisibility();
+            SupportUtils.ToggleVisibility();
           }
           if (Input.GetKeyDown(KeyCode.P))
           {

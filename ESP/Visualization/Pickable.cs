@@ -6,7 +6,7 @@ namespace ESP
 {
 
   [HarmonyPatch(typeof(Pickable), "Awake")]
-  public class Pickabler_Awake
+  public class Pickable_Awake
   {
     private static bool IsEnabled(Pickable instance)
     {

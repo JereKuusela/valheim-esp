@@ -89,8 +89,11 @@ namespace ESP
 
     public static ConfigEntry<bool> configShowProgress;
     public static bool showProgress => configShowProgress.Value;
-    public static ConfigEntry<bool> configShowStructureHealth;
-    public static bool showStructureHealth => configShowStructureHealth.Value;
+    public static ConfigEntry<bool> configShowStructureStats;
+    public static bool showStructureStats => configShowStructureStats.Value;
+    public static ConfigEntry<bool> configShowSupport;
+    public static bool showSupport => configShowSupport.Value;
+
 
     public static ConfigEntry<bool> configShowShipStatsOnHud;
     public static bool showShipStatsOnHud => configShowShipStatsOnHud.Value;
@@ -157,7 +160,8 @@ namespace ESP
       Settings.configShowShipStatsOnHud = Config.Bind("HUD", "Show ship stats", true, "Show ship stats on the hud");
 
       Settings.configShowProgress = Config.Bind("Structures", "Show progress", true, "Show progress for plants and structures");
-      Settings.configShowStructureHealth = Config.Bind("Structures", "Show health and resistances", true, "Show health and resistances for structures");
+      Settings.configShowStructureStats = Config.Bind("Structures", "Show stats", true, "Show health, resistances and support for structures");
+      Settings.configShowSupport = Config.Bind("Structures", "Show support", true, "Always show support color for structures");
 
       Settings.configShowEffectAreas = Config.Bind("General", "Show area effects", true, "Visualize structure area effects");
       Settings.configshowNoise = Config.Bind("General", "Show noise", false, "Visualize noise");

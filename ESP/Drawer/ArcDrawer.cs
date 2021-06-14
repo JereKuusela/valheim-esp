@@ -1,9 +1,11 @@
 using UnityEngine;
+using System;
 
 namespace ESP
 {
   public partial class Drawer
   {
+    private static int GetSegments(float angle) => (int)Math.Floor(32 * angle / 360);
     private static Vector3 GetArcSegmentX(float angle, float radius) =>
      new Vector3(0f, Mathf.Sin(Mathf.Deg2Rad * angle) * radius, Mathf.Cos(Mathf.Deg2Rad * angle) * radius);
     private static Vector3 GetArcSegmentY(float angle, float radius) =>

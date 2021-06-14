@@ -16,23 +16,22 @@ namespace ESP
       var excluded = Settings.excludedCreatures.ToLower().Split(',');
       return Array.Exists(excluded, item => item == name || item == m_name || item == localized);
     }
-    public static string GetNoiseText(float range) => "Noise: " + TextUtils.Int(range);
-    public static string GetNameText(Character character) => TextUtils.String(Localization.instance.Localize(character.m_name));
+    public static string GetNoiseText(Character obj) => "Noise: " + TextUtils.Int(Patch.m_noiseRange(obj));
 
   }
   [HarmonyPatch(typeof(Character), "Awake")]
   public class Character_Awake
   {
-    private static void DrawNoise(Character instance, float noiseRange)
+    private static void DrawNoise(Character instance)
     {
       if (!Settings.showNoise || CharacterUtils.IsExcluded(instance))
         return;
-      var obj = Drawer.DrawSphere(instance.gameObject, noiseRange, Color.cyan, 0.1f);
-      Drawer.AddText(obj, CharacterUtils.GetNameText(instance), CharacterUtils.GetNoiseText(noiseRange));
+      var obj = Drawer.DrawSphere(instance.gameObject, Patch.m_noiseRange(instance), Color.cyan, 0.1f);
+      obj.AddComponent<NoiseText>().character = instance;
     }
-    public static void Postfix(Character __instance, float ___m_noiseRange)
+    public static void Postfix(Character __instance)
     {
-      DrawNoise(__instance, ___m_noiseRange);
+      DrawNoise(__instance);
     }
   }
 
@@ -43,11 +42,15 @@ namespace ESP
     {
       if (!Settings.showNoise || CharacterUtils.IsExcluded(__instance))
         return;
-      var text = CharacterUtils.GetNameText(__instance) + "\n" + CharacterUtils.GetNoiseText(___m_noiseRange);
-      Drawer.UpdateSphere(__instance.gameObject, ___m_noiseRange, 0.1f, text);
+      Drawer.UpdateSphere(__instance.gameObject, ___m_noiseRange, 0.1f);
     }
   }
-
+  public class NoiseText : MonoBehaviour, Hoverable
+  {
+    public string GetHoverText() => GetHoverName() + "\n" + CharacterUtils.GetNoiseText(character);
+    public string GetHoverName() => TextUtils.Name(character);
+    public Character character;
+  }
   [HarmonyPatch(typeof(Character), "GetHoverText")]
   public class Character_GetHoverText
   {

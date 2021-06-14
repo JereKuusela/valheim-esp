@@ -21,8 +21,10 @@ namespace ESP
     public static bool GetBool(MonoBehaviour obj, string key, bool defaultValue = false) => m_nview(obj).GetZDO().GetBool(key, defaultValue);
     public static string GetString(MonoBehaviour obj, string key, string defaultValue = "") => m_nview(obj).GetZDO().GetString(key, defaultValue);
     public static GameObject GetPrefab(MonoBehaviour obj) => ZNetScene.instance.GetPrefab(m_nview(obj).GetZDO().GetPrefab());
-    public static float m_cover(Windmill instance) => Traverse.Create(instance).Field<float>("m_cover").Value;
-    public static Vector3 m_currentVel(Player instance) => Traverse.Create(instance).Field<Vector3>("m_currentVel").Value;
+    public static float m_cover(Windmill obj) => Traverse.Create(obj).Field<float>("m_cover").Value;
+    public static float m_spawnTimer(SpawnArea obj) => Traverse.Create(obj).Field<float>("m_spawnTimer").Value;
+    public static float m_noiseRange(Character obj) => Traverse.Create(obj).Field<float>("m_noiseRange").Value;
+    public static Vector3 m_currentVel(Player obj) => Traverse.Create(obj).Field<Vector3>("m_currentVel").Value;
     public static ZNetView m_nview(MonoBehaviour obj) => Traverse.Create(obj).Field<ZNetView>("m_nview").Value;
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(SpawnArea), "GetInstances")]
@@ -113,6 +115,18 @@ namespace ESP
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(Player), "TakeInput")]
     public static bool Player_TakeInput(Player instance)
+    {
+      throw new NotImplementedException("Dummy");
+    }
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(WearNTear), "GetMaterialProperties")]
+    public static void WearNTear_GetMaterialProperties(WearNTear instance, out float maxSupport, out float minSupport, out float horizontalLoss, out float verticalLoss)
+    {
+      throw new NotImplementedException("Dummy");
+    }
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(WearNTear), "GetSupport")]
+    public static float WearNTear_GetSupport(WearNTear instance)
     {
       throw new NotImplementedException("Dummy");
     }

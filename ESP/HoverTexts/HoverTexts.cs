@@ -8,12 +8,12 @@ namespace ESP
     public static void Postfix(HoverText __instance, ref string __result) => HoverableUtils.AddTexts(__instance.gameObject, ref __result);
   }
   [HarmonyPatch(typeof(Destructible), "Awake")]
-  public class Destructible_Awake
+  public class Destructible_Awake_AddHover
   {
     public static void Postfix(Destructible __instance) => HoverableUtils.AddHoverText(__instance.gameObject);
   }
   [HarmonyPatch(typeof(WearNTear), "Awake")]
-  public class WearNTear_Awake
+  public class WearNTear_Awake_AddHover
   {
     public static void Postfix(WearNTear __instance) => HoverableUtils.AddHoverText(__instance.gameObject);
   }

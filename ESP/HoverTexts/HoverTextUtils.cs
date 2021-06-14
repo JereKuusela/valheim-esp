@@ -31,7 +31,7 @@ namespace ESP
     }
     public static string GetText(Pickable obj)
     {
-      if (!obj || !Settings.showStructureHealth) return "";
+      if (!obj || !Settings.showStructureStats) return "";
       var respawn = GetRespawnTime(obj);
       var text = "\nRespawn: " + TextUtils.String(respawn);
       if (obj.m_amount > 0)
@@ -40,7 +40,7 @@ namespace ESP
     }
     public static string GetText(TreeLog obj)
     {
-      if (!obj || !Settings.showStructureHealth) return "";
+      if (!obj || !Settings.showStructureStats) return "";
       var text = "";
       var maxHealth = obj.m_health;
       var health = Patch.GetFloat(obj, "health", maxHealth);
@@ -52,7 +52,7 @@ namespace ESP
     }
     public static string GetText(TreeBase obj)
     {
-      if (!obj || !Settings.showStructureHealth) return "";
+      if (!obj || !Settings.showStructureStats) return "";
       var text = "";
       var maxHealth = obj.m_health;
       var health = Patch.GetFloat(obj, "health", maxHealth);
@@ -64,7 +64,7 @@ namespace ESP
     }
     public static string GetText(Destructible obj)
     {
-      if (!obj || !Settings.showStructureHealth) return "";
+      if (!obj || !Settings.showStructureStats) return "";
       var text = "";
       var health = Patch.GetFloat(obj, "health", obj.m_health);
       var maxHealth = obj.m_health;
@@ -89,14 +89,28 @@ namespace ESP
       lines.Add("Activates within " + TextUtils.Int(obj.m_triggerDistance) + " meters" + noise);
       return string.Join("\n", lines);
     }
+    private static string GetMaterialName(WearNTear.MaterialType material)
+    {
+      if (material == WearNTear.MaterialType.HardWood) return "Hard wood";
+      if (material == WearNTear.MaterialType.Stone) return "Stone";
+      if (material == WearNTear.MaterialType.Iron) return "Iron";
+      if (material == WearNTear.MaterialType.Wood) return "Wood";
+      return "Unknown";
+    }
     public static string GetText(WearNTear obj)
     {
-      if (!obj || !Settings.showStructureHealth) return "";
+      if (!obj || !Settings.showStructureStats) return "";
       var text = "";
       var health = obj.GetHealthPercentage();
 
       text += "\n" + TextUtils.GetHealth(health * obj.m_health, obj.m_health);
       text += DamageModifierUtils.GetText(obj.m_damages);
+
+      float maxSupport, minSupport, horizontalLoss, verticalLoss;
+      Patch.WearNTear_GetMaterialProperties(obj, out maxSupport, out minSupport, out horizontalLoss, out verticalLoss);
+      var support = Math.Min(Patch.WearNTear_GetSupport(obj), maxSupport);
+      text += "\n" + TextUtils.String(GetMaterialName(obj.m_materialType)) + ": " + TextUtils.Progress(support, minSupport) + " support";
+      text += "\n" + TextUtils.Percent(horizontalLoss) + " horizontal loss, " + TextUtils.Percent(verticalLoss) + " vertical loss";
       return text;
     }
     public static string GetText(Beehive obj)
@@ -154,7 +168,7 @@ namespace ESP
     }
     public static string GetText(MineRock obj)
     {
-      if (!obj || !Settings.showStructureHealth) return "";
+      if (!obj || !Settings.showStructureStats) return "";
       var text = "";
       var maxHealth = obj.m_health;
 
@@ -165,7 +179,7 @@ namespace ESP
     }
     public static string GetText(MineRock5 obj)
     {
-      if (!obj || !Settings.showStructureHealth) return "";
+      if (!obj || !Settings.showStructureStats) return "";
       var text = "";
       var maxHealth = obj.m_health;
 

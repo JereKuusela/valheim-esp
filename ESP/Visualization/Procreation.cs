@@ -23,7 +23,7 @@ namespace ESP
     {
       if (!Settings.showBreedingLimits || CharacterUtils.IsExcluded(___m_character))
         return;
-      var name = CharacterUtils.GetNameText(___m_character);
+      var name = TextUtils.Name(___m_character.gameObject);
       DrawTotalLimit(__instance, name);
       DrawPartnerCheck(__instance, name);
     }
