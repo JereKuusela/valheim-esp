@@ -6,13 +6,6 @@ namespace ESP
 {
   public partial class Texts
   {
-    public static string GetSense(MonsterAI obj)
-    {
-      var range = obj.m_alertRange;
-      var angle = obj.m_viewAngle;
-      return "Alert range: " + Format.Int(range) + "\nAlert angle: " + Format.Int(angle);
-    }
-
     private static string GetTargetName(ItemDrop.ItemData.AiTarget target)
     {
       if (target == ItemDrop.ItemData.AiTarget.Enemy) return "";

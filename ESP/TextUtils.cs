@@ -15,6 +15,8 @@ namespace ESP
     public static string String(string value, bool valid) => "<color=" + GetValidColor(valid) + ">" + value + "</color>";
     public static string Float(double value, string format = FORMAT, string color = "yellow") => String(value.ToString(format, CultureInfo.InvariantCulture), color);
     public static string Multiplier(double value, string color = "yellow") => String(value.ToString(FORMAT, CultureInfo.InvariantCulture) + "x", color);
+    public static string Meters(double value, string color = "yellow") => String(value.ToString(FORMAT, CultureInfo.InvariantCulture) + " meters", color);
+    public static string Degrees(double value, string color = "yellow") => String(value.ToString(FORMAT, CultureInfo.InvariantCulture) + " degrees", color);
     public static string Fixed(double value)
     {
       return String(value.ToString("N2", CultureInfo.InvariantCulture).PadLeft(5, '0'));

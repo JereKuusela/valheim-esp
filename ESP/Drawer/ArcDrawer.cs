@@ -51,6 +51,7 @@ namespace ESP
     private static void UpdateArcX(LineRenderer renderer, Vector3 position, float radius, float angle, float width)
     {
       var segments = GetArcSegmentsX(position, angle, radius - width / 2f);
+      renderer.positionCount = segments.Length;
       renderer.SetPositions(segments);
     }
     public static void DrawArcX(GameObject obj, Vector3 position, float radius, float angle, Color color, float width)
@@ -61,6 +62,7 @@ namespace ESP
     private static void UpdateArcY(LineRenderer renderer, Vector3 position, float radius, float angle, float width)
     {
       var segments = GetArcSegmentsY(position, angle, radius - width / 2f);
+      renderer.positionCount = segments.Length;
       renderer.SetPositions(segments);
     }
     public static void DrawArcY(GameObject obj, Vector3 position, float radius, float angle, Color color, float width)
@@ -72,6 +74,7 @@ namespace ESP
     private static void UpdateArcZ(LineRenderer renderer, Vector3 position, float radius, float angle, float width)
     {
       var segments = GetArcSegmentsZ(position, angle, radius - width / 2f);
+      renderer.positionCount = segments.Length;
       renderer.SetPositions(segments);
     }
     public static void DrawArcZ(GameObject obj, Vector3 position, float radius, float angle, Color color, float width)

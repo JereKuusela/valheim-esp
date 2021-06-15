@@ -4,9 +4,23 @@ using System;
 
 namespace ESP
 {
-
+  [HarmonyPatch(typeof(BaseAI), "Awake")]
+  public class BaseAI_Awake_Ray
+  {
+    private static void DrawRay(Character obj)
+    {
+      if (!Settings.showCreatureRays || !obj) return;
+      var line = Drawer.DrawMarkerLine(obj.gameObject, Vector3.zero, Color.magenta, Settings.characterRayWidth);
+      Drawer.AddText(line);
+    }
+    public static void Postfix(Character ___m_character)
+    {
+      if (CharacterUtils.IsExcluded(___m_character)) return;
+      DrawRay(___m_character);
+    }
+  }
   [HarmonyPatch(typeof(Pickable), "Awake")]
-  public class Pickable_Awake
+  public class Pickable_Awake_Ray
   {
     private static bool IsEnabled(Pickable instance)
     {
@@ -28,8 +42,6 @@ namespace ESP
       var text = Format.Name(__instance.m_itemPrefab);
       var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, color, Settings.pickableRayWidth);
       Drawer.AddText(obj, text);
-      Drawer.AddBoxCollider(obj);
     }
   }
-
 }

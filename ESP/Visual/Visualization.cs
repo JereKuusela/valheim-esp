@@ -15,7 +15,6 @@ namespace ESP
       var text = Format.Name(__instance.gameObject);
       var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.black, Settings.locationRayWidth);
       Drawer.AddText(obj, text);
-      Drawer.AddBoxCollider(obj);
     }
   }
   [HarmonyPatch(typeof(Container), "Awake")]
@@ -28,7 +27,6 @@ namespace ESP
       var text = Format.String(__instance.GetHoverName());
       var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.white, Settings.chestRayWidth);
       Drawer.AddText(obj, text);
-      Drawer.AddBoxCollider(obj);
     }
   }
   [HarmonyPatch(typeof(CreatureSpawner), "Awake")]
@@ -55,7 +53,6 @@ namespace ESP
       var text = Format.Name(obj.m_creaturePrefab);
       var line = Drawer.DrawMarkerLine(obj.gameObject, Vector3.zero, color, 0.5f);
       Drawer.AddText(line, text);
-      Drawer.AddBoxCollider(line);
     }
   }
   [HarmonyPatch(typeof(EffectArea), "Awake")]

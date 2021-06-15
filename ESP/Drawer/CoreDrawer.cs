@@ -73,17 +73,18 @@ namespace ESP
     }
     public static void AddMeshCollider(GameObject obj)
     {
-      var renderers = obj.GetComponents<LineRenderer>();
+      var renderers = obj.GetComponentsInChildren<LineRenderer>();
       Array.ForEach(renderers, renderer =>
       {
         var collider = obj.AddComponent<MeshCollider>();
-        var mesh = new Mesh();
-        renderer.BakeMesh(mesh, true);
-        collider.sharedMesh = mesh;
+        collider.convex = true;
         collider.isTrigger = true;
+        var mesh = new Mesh();
+        renderer.BakeMesh(mesh);
+        collider.sharedMesh = mesh;
       });
     }
-    public static void AddText(GameObject obj, string text)
+    public static void AddText(GameObject obj, string text = "")
     {
       obj.AddComponent<HoverText>().m_text = text;
     }

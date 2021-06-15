@@ -15,12 +15,14 @@ Structures:
  - Dimensions? Hitboxes visualized?
 
 Creatures:
- - Eating cooldown and range (+spheres).
+ - Eating cooldown.
  - Move speed (depending how it moves?)
  - Targeting system (current status, target, last known location, retreat limit, retreat when struch, etc.)
 
 Before release:
  - Bow accuracy stuff (instead of hitbox)
+ - Extra info to also affect tooltips (also show is on or off).
+ - Separate line for turning on/off zone/biome visuals, creature visuals, others.
 
 
  

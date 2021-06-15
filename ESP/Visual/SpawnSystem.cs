@@ -32,7 +32,6 @@ namespace ESP
       var obj = Drawer.DrawMarkerLine(parent, position, Texts.GetColor(biome), 0.25f);
       var text = obj.AddComponent<BiomeText>();
       text.biome = biome;
-      Drawer.AddBoxCollider(obj);
     }
     private static int GetTotalAmountOfSpawnSystems(SpawnSystem instance, Heightmap heightmap)
     {
@@ -73,7 +72,6 @@ namespace ESP
         text.spawnSystem = instance;
         text.spawnData = spawnData;
         text.stableHashCode = stableHashCode;
-        Drawer.AddBoxCollider(obj);
         counter++;
       });
     }
@@ -82,7 +80,6 @@ namespace ESP
       if (!Settings.showRandEventSystem) return;
       var obj = Drawer.DrawMarkerLine(instance.gameObject, new Vector3(0, 0, 5), Color.black, 1f);
       obj.AddComponent<RandEventSystemText>().spawnSystem = instance;
-      Drawer.AddBoxCollider(obj);
     }
     public static void Postfix(SpawnSystem __instance)
     {

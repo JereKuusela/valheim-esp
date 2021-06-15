@@ -5,9 +5,9 @@ namespace ESP
 {
   public partial class Drawer
   {
-    public static void AddBoxCollider(GameObject obj)
+    private static void AddBoxCollider(GameObject obj)
     {
-      var renderers = obj.GetComponents<LineRenderer>();
+      var renderers = obj.GetComponentsInChildren<LineRenderer>();
       Array.ForEach(renderers, renderer =>
       {
         var start = renderer.GetPosition(0);
@@ -19,7 +19,7 @@ namespace ESP
         collider.size = (end - start) + 2 * new Vector3(width, width, width);
       });
     }
-    public static GameObject DrawLine(GameObject parent, Vector3 start, Vector3 end, Color color, float width)
+    private static GameObject DrawLine(GameObject parent, Vector3 start, Vector3 end, Color color, float width)
     {
       var obj = CreateObject(parent);
       var renderer = CreateRenderer(obj, color, width);
@@ -30,7 +30,9 @@ namespace ESP
     public static GameObject DrawMarkerLine(GameObject parent, Vector3 start, Color color, float width)
     {
       var end = new Vector3(start.x, 500f, start.z);
-      return DrawLine(parent, start, end, color, width);
+      var obj = DrawLine(parent, start, end, color, width);
+      Drawer.AddBoxCollider(obj);
+      return obj;
     }
   }
 }
