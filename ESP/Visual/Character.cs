@@ -23,7 +23,7 @@ namespace ESP
     {
       if (!Settings.showNoise || CharacterUtils.IsExcluded(instance))
         return;
-      var obj = Drawer.DrawSphere(instance.gameObject, Patch.m_noiseRange(instance), Color.cyan, 0.1f);
+      var obj = Drawer.DrawSphere(instance.gameObject, Patch.m_noiseRange(instance), Color.cyan, 0.1f, Drawer.CREATURE);
       obj.AddComponent<NoiseText>().character = instance;
     }
     public static void Postfix(Character __instance)

@@ -35,11 +35,11 @@ namespace ESP
       renderer.SetPosition(segments.Length + 1, position);
     }
 
-    public static GameObject DrawCone(GameObject parent, Vector3 position, float radius, float angle, Color color, float width)
+    public static GameObject DrawCone(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, string name)
     {
-      var obj = Drawer.CreateObject(parent);
-      Drawer.DrawConeY(Drawer.CreateObject(obj), position, radius, angle, color, width);
-      Drawer.DrawConeX(Drawer.CreateObject(obj), position, radius, angle, color, width);
+      var obj = Drawer.CreateObject(parent, name);
+      Drawer.DrawConeY(Drawer.CreateObject(obj, name), position, radius, angle, color, width);
+      Drawer.DrawConeX(Drawer.CreateObject(obj, name), position, radius, angle, color, width);
       Drawer.AddMeshCollider(obj);
       return obj;
     }

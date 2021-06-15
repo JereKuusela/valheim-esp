@@ -10,7 +10,7 @@ namespace ESP
     private static void DrawRay(Character obj)
     {
       if (!Settings.showCreatureRays || !obj) return;
-      var line = Drawer.DrawMarkerLine(obj.gameObject, Vector3.zero, Color.magenta, Settings.characterRayWidth);
+      var line = Drawer.DrawMarkerLine(obj.gameObject, Vector3.zero, Color.magenta, Settings.characterRayWidth, Drawer.CREATURE);
       Drawer.AddText(line);
     }
     public static void Postfix(Character ___m_character)
@@ -40,7 +40,7 @@ namespace ESP
         return;
       var color = GetColor(__instance);
       var text = Format.Name(__instance.m_itemPrefab);
-      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, color, Settings.pickableRayWidth);
+      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, color, Settings.pickableRayWidth, Drawer.OTHER);
       Drawer.AddText(obj, text);
     }
   }

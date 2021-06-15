@@ -19,18 +19,18 @@ namespace ESP
         collider.size = (end - start) + 2 * new Vector3(width, width, width);
       });
     }
-    private static GameObject DrawLine(GameObject parent, Vector3 start, Vector3 end, Color color, float width)
+    private static GameObject DrawLine(GameObject parent, Vector3 start, Vector3 end, Color color, float width, string name)
     {
-      var obj = CreateObject(parent);
+      var obj = CreateObject(parent, name);
       var renderer = CreateRenderer(obj, color, width);
       renderer.SetPosition(0, start);
       renderer.SetPosition(1, end);
       return obj;
     }
-    public static GameObject DrawMarkerLine(GameObject parent, Vector3 start, Color color, float width)
+    public static GameObject DrawMarkerLine(GameObject parent, Vector3 start, Color color, float width, string name)
     {
       var end = new Vector3(start.x, 500f, start.z);
-      var obj = DrawLine(parent, start, end, color, width);
+      var obj = DrawLine(parent, start, end, color, width, name);
       Drawer.AddBoxCollider(obj);
       return obj;
     }

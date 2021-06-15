@@ -29,7 +29,7 @@ namespace ESP
         return max.ToString(FORMAT, CultureInfo.InvariantCulture);
       return min.ToString(FORMAT, CultureInfo.InvariantCulture) + "-" + max.ToString(FORMAT, CultureInfo.InvariantCulture);
     }
-    public static string Range(double min, double max) => String(PlainRange(min, max));
+    public static string Range(double min, double max, string color = "yellow") => String(PlainRange(min, max), color);
     public static string PercentRange(double min, double max)
     {
       if (min == max)

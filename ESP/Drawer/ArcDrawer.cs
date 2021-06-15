@@ -82,11 +82,11 @@ namespace ESP
       var renderer = CreateRenderer(obj, color, width);
       UpdateArcZ(renderer, position, radius, angle, width);
     }
-    public static GameObject DrawArc(GameObject parent, Vector3 position, float radius, float angle, Color color, float width)
+    public static GameObject DrawArc(GameObject parent, Vector3 position, float radius, float angle, Color color, float width, string name)
     {
-      var obj = Drawer.CreateObject(parent);
-      Drawer.DrawArcY(Drawer.CreateObject(obj), position, radius, angle, color, width);
-      Drawer.DrawArcX(Drawer.CreateObject(obj), position, radius, angle, color, width);
+      var obj = Drawer.CreateObject(parent, name);
+      Drawer.DrawArcY(Drawer.CreateObject(obj, name), position, radius, angle, color, width);
+      Drawer.DrawArcX(Drawer.CreateObject(obj, name), position, radius, angle, color, width);
       Drawer.AddMeshCollider(obj);
       return obj;
     }

@@ -7,6 +7,7 @@ namespace ESP
   [HarmonyPatch(typeof(MessageHud), "UpdateMessage")]
   public class MessageHud_UpdateMessage : MonoBehaviour
   {
+    private static string GetShowHide(bool value) => value ? "Hide" : "Show";
     private static string GetCustomMessage()
     {
       // Wait for the game to load.
@@ -14,8 +15,14 @@ namespace ESP
       var dps = DPSMeter.Get();
       if (dps != "") return dps;
       if (CustomMessage != "") return CustomMessage;
-      var status = GetStatusText();
-      status += "\nExtra info: " + Format.String("I") + ", Visuals " + Format.String("O") + ", DPS meter: " + Format.String("P");
+      var status = "\n" + GetStatusText();
+      status += "\n";
+      status += Format.String("Y") + ": " + GetShowHide(Drawer.ZonesShown) + " zones, ";
+      status += Format.String("U") + ": " + GetShowHide(Drawer.CreaturesShown) + " creatures, ";
+      status += Format.String("I") + ": " + GetShowHide(Drawer.Shown) + " other";
+      status += "\n";
+      status += Format.String("O") + ": " + GetShowHide(Settings.showExtraInfo) + " extra info on tooltips, ";
+      status += Format.String("P") + ": " + GetShowHide(Settings.showDPS) + " DPS meter";
       return status;
     }
     private static string GetSpeed() => "Speed: " + Format.Float(Patch.m_currentVel(Player.m_localPlayer).magnitude, "0.#") + " m/s";

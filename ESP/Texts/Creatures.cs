@@ -42,7 +42,12 @@ namespace ESP
           if (!data.m_dodgeable)
             text += "Can't be dodged";
         }
-        text += "\n" + Texts.GetHitboxText(data.m_attack);
+        var hitbox = Texts.GetHitboxText(data.m_attack);
+        if (hitbox != "")
+          text += "\n" + hitbox;
+        var projectile = Texts.GetProjectileText(data.m_attack);
+        if (projectile != "")
+          text += "\n" + projectile;
         return text;
       });
       return "\n" + string.Join("\n", texts);

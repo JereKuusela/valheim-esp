@@ -41,25 +41,54 @@ namespace ESP
 
   public partial class Drawer : Component
   {
-    private static bool Shown = Settings.showVisualization;
+    public const string OTHER = "ESP_Other";
+    public const string ZONE = "ESP_Zone";
+    public const string CREATURE = "ESP_Creature";
+    public static bool Shown = Settings.showVisualization;
     public static void ToggleVisibility()
     {
       Shown = !Shown;
       foreach (var gameObj in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
       {
-        if (gameObj.name == "ESP")
+        if (gameObj.name == OTHER)
           gameObj.SetActive(Shown);
       }
     }
-    private static GameObject CreateObject(GameObject parent)
+    public static bool ZonesShown = Settings.showVisualization;
+    public static void ToggleZoneVisibility()
+    {
+      ZonesShown = !ZonesShown;
+      foreach (var gameObj in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
+      {
+        if (gameObj.name == ZONE)
+          gameObj.SetActive(ZonesShown);
+      }
+    }
+    public static bool CreaturesShown = Settings.showVisualization;
+    public static void ToggleCreatureVisibility()
+    {
+      CreaturesShown = !CreaturesShown;
+      foreach (var gameObj in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
+      {
+        if (gameObj.name == CREATURE)
+          gameObj.SetActive(CreaturesShown);
+      }
+    }
+    private static bool IsShown(string name)
+    {
+      if (name == ZONE) return ZonesShown;
+      if (name == CREATURE) return CreaturesShown;
+      return Shown;
+    }
+    private static GameObject CreateObject(GameObject parent, string name)
     {
       var obj = new GameObject();
       obj.layer = LayerMask.NameToLayer("character_trigger");
-      obj.name = "ESP";
+      obj.name = name;
       obj.transform.parent = parent.transform;
       obj.transform.localPosition = Vector3.zero;
       obj.transform.localRotation = Quaternion.identity;
-      obj.SetActive(Shown);
+      obj.SetActive(IsShown(name));
       return obj;
     }
     private static LineRenderer CreateRenderer(GameObject obj, Color color, float width)

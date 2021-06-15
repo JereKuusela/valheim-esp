@@ -1,7 +1,6 @@
 using HarmonyLib;
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 namespace ESP
 {
@@ -13,7 +12,7 @@ namespace ESP
       if (!Settings.showLocations)
         return;
       var text = Format.Name(__instance.gameObject);
-      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.black, Settings.locationRayWidth);
+      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.black, Settings.locationRayWidth, Drawer.OTHER);
       Drawer.AddText(obj, text);
     }
   }
@@ -25,7 +24,7 @@ namespace ESP
       if (!Settings.showChests || !___m_piece || ___m_piece.IsPlacedByPlayer())
         return;
       var text = Format.String(__instance.GetHoverName());
-      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.white, Settings.chestRayWidth);
+      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Vector3.zero, Color.white, Settings.chestRayWidth, Drawer.OTHER);
       Drawer.AddText(obj, text);
     }
   }
@@ -51,7 +50,7 @@ namespace ESP
         return;
       var color = GetColor(obj);
       var text = Format.Name(obj.m_creaturePrefab);
-      var line = Drawer.DrawMarkerLine(obj.gameObject, Vector3.zero, color, 0.5f);
+      var line = Drawer.DrawMarkerLine(obj.gameObject, Vector3.zero, color, 0.5f, Drawer.OTHER);
       Drawer.AddText(line, text);
     }
   }
@@ -65,7 +64,7 @@ namespace ESP
       var color = EffectAreaUtils.GetEffectColor(__instance.m_type);
       var radius = Math.Max(0.5f, __instance.GetRadius());
 
-      var obj = Drawer.DrawSphere(__instance.gameObject, radius, color, 0.1f);
+      var obj = Drawer.DrawSphere(__instance.gameObject, radius, color, 0.1f, Drawer.OTHER);
       Drawer.AddText(obj, EffectAreaUtils.GetTypeText(__instance.m_type), Format.Radius(__instance.GetRadius()));
     }
   }
@@ -77,7 +76,7 @@ namespace ESP
       if (!Settings.showEffectAreas)
         return;
 
-      var obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_radius, Color.gray, 0.1f);
+      var obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_radius, Color.gray, 0.1f, Drawer.OTHER);
       Drawer.AddText(obj, "Protection", Format.Radius(__instance.m_radius));
     }
   }

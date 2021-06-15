@@ -10,10 +10,8 @@ namespace ESP
   {
     public static void Postfix(Skills.SkillType skillType, HitData.DamageTypes __instance, ref string __result)
     {
-      if (!Settings.showAllDamageTypes)
-        return;
-      if (Player.m_localPlayer == null)
-        return;
+      if (!Settings.showExtraInfo || !Settings.showAllDamageTypes) return;
+      if (Player.m_localPlayer == null) return;
 
       float minFactor;
       float maxFactor;
@@ -29,8 +27,7 @@ namespace ESP
   {
     public static void Postfix(HitData.DamageTypes __instance, ref string __result)
     {
-      if (!Settings.showAllDamageTypes)
-        return;
+      if (!Settings.showExtraInfo || !Settings.showAllDamageTypes) return;
 
       if (__instance.m_chop != 0f)
         __result += "\n$inventory_chop: " + __instance.m_chop.ToString();
@@ -44,8 +41,7 @@ namespace ESP
 
     public static void Postfix(ItemDrop.ItemData item, ref string __result)
     {
-      if (!Settings.showAllDamageTypes)
-        return;
+      if (!Settings.showExtraInfo || !Settings.showAllDamageTypes) return;
 
       float minFactor;
       float maxFactor;
@@ -70,6 +66,7 @@ namespace ESP
         if (!attack.m_lowerDamagePerHit)
           split.Add("No multitarget penalty");
         split.Add(Texts.GetAttackSpeed(attack, holdDuration));
+        split.Add(Texts.GetProjectileText(attack, holdDuration));
         split.Add(Texts.GetHitboxText(attack));
       }
       if (item.m_shared.m_secondaryAttack != null && Texts.GetAttackSpeed(item.m_shared.m_secondaryAttack) != "")
@@ -86,6 +83,7 @@ namespace ESP
         if (!attack.m_lowerDamagePerHit)
           split.Add("No multitarget penalty");
         split.Add(Texts.GetAttackSpeed(attack, holdDuration));
+        split.Add(Texts.GetProjectileText(attack, holdDuration));
         split.Add(Texts.GetHitboxText(attack));
       }
       __result = string.Join("\n", split.Where(line => line != "").Select(line => line.StartsWith("$item_knockback") ? line + knockback : line));

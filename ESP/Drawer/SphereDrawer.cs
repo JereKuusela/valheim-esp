@@ -35,13 +35,13 @@ namespace ESP
       UpdateArcZ(renderers[2], Vector3.zero, radius, 360f, width);
       UpdateSphereCollider(parent, radius - width / 2f);
     }
-    public static GameObject DrawSphere(GameObject parent, float radius, Color color, float width)
+    public static GameObject DrawSphere(GameObject parent, float radius, Color color, float width, string name)
     {
-      var obj = CreateObject(parent);
-      DrawArcX(CreateObject(obj), Vector3.zero, radius, 360f, color, width);
+      var obj = CreateObject(parent, name);
+      DrawArcX(CreateObject(obj, name), Vector3.zero, radius, 360f, color, width);
       AddSphereCollider(obj, radius - width / 2f);
-      DrawArcY(CreateObject(obj), Vector3.zero, radius, 360f, color, width);
-      DrawArcZ(CreateObject(obj), Vector3.zero, radius, 360f, color, width);
+      DrawArcY(CreateObject(obj, name), Vector3.zero, radius, 360f, color, width);
+      DrawArcZ(CreateObject(obj, name), Vector3.zero, radius, 360f, color, width);
       return obj;
     }
   }

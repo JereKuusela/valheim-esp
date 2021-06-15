@@ -29,7 +29,7 @@ namespace ESP
     }
     private static void DrawMarker(GameObject parent, Vector3 position, Heightmap.Biome biome)
     {
-      var obj = Drawer.DrawMarkerLine(parent, position, Texts.GetColor(biome), 0.25f);
+      var obj = Drawer.DrawMarkerLine(parent, position, Texts.GetColor(biome), 0.25f, Drawer.ZONE);
       var text = obj.AddComponent<BiomeText>();
       text.biome = biome;
     }
@@ -67,7 +67,7 @@ namespace ESP
         if (!spawnData.m_spawnAtDay && !spawnData.m_spawnAtNight) return;
         if (!IsEnabled(spawnData)) return;
         var stableHashCode = ("b_" + spawnData.m_prefab.name + num.ToString()).GetStableHashCode();
-        var obj = Drawer.DrawMarkerLine(instance.gameObject, new Vector3(counter * 2, 0, 0), Texts.GetColor(biome), 1f);
+        var obj = Drawer.DrawMarkerLine(instance.gameObject, new Vector3(counter * 2, 0, 0), Texts.GetColor(biome), 1f, Drawer.ZONE);
         var text = obj.AddComponent<SpawnSystemText>();
         text.spawnSystem = instance;
         text.spawnData = spawnData;
@@ -78,7 +78,7 @@ namespace ESP
     private static void DrawRandEventSystem(SpawnSystem instance)
     {
       if (!Settings.showRandEventSystem) return;
-      var obj = Drawer.DrawMarkerLine(instance.gameObject, new Vector3(0, 0, 5), Color.black, 1f);
+      var obj = Drawer.DrawMarkerLine(instance.gameObject, new Vector3(0, 0, 5), Color.black, 1f, Drawer.ZONE);
       obj.AddComponent<RandEventSystemText>().spawnSystem = instance;
     }
     public static void Postfix(SpawnSystem __instance)

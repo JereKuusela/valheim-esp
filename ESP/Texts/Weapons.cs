@@ -28,6 +28,26 @@ namespace ESP
         texts.Add(Format.Float(attack.m_attackOffset, Format.FORMAT, "orange") + " offset");
       return "Hit: " + string.Join(", ", texts);
     }
+    public static string GetProjectileText(Attack attack, float holdDuration = 0)
+    {
+      if (attack == null || attack.m_attackType != Attack.AttackType.Projectile) return "";
+      var texts = new List<string>();
+      if (holdDuration > 0)
+      {
+        texts.Add("Spread: " + Format.Range(attack.m_projectileAccuracy, attack.m_projectileAccuracyMin, "orange"));
+        texts.Add("Velocity: " + Format.Range(attack.m_projectileVelMin, attack.m_projectileVel, "orange"));
+      }
+      else
+      {
+        texts.Add("Spread: " + Format.Int(attack.m_projectileAccuracy, "orange"));
+        texts.Add("Velocity: " + Format.Int(attack.m_projectileVel, "orange"));
+      }
+      if (attack.m_projectileBursts > 1)
+        texts.Add("Burst: " + Format.Int(attack.m_projectileBursts, "orange"));
+      if (attack.m_projectiles > 1)
+        texts.Add("Projectiles: " + Format.Int(attack.m_projectiles, "orange"));
+      return string.Join("\n", texts);
+    }
     public static string GetAttackSpeed(string animation, float holdDuration)
     {
       if (animation == "atgeir_attack") return "2.98 s (0.84 + 0.86 + 1.28)";

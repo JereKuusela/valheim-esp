@@ -173,14 +173,22 @@ namespace ESP
     {
       if (Patch.Player_TakeInput(__instance))
       {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.Y))
         {
-          Settings.configShowExtraInfo.Value = !Settings.configShowExtraInfo.Value;
+          Drawer.ToggleZoneVisibility();
         }
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+          Drawer.ToggleCreatureVisibility();
+        }
+        if (Input.GetKeyDown(KeyCode.I))
         {
           Drawer.ToggleVisibility();
           SupportUtils.ToggleVisibility();
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+          Settings.configShowExtraInfo.Value = !Settings.configShowExtraInfo.Value;
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
