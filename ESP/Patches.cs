@@ -137,5 +137,11 @@ namespace ESP
     {
       throw new NotImplementedException("Dummy");
     }
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(WearNTear), "ResetHighlight")]
+    public static void WearNTear_ResetHighlight(WearNTear instance)
+    {
+      throw new NotImplementedException("Dummy");
+    }
   }
 }

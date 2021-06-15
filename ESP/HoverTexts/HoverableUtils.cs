@@ -4,6 +4,16 @@ namespace ESP
 {
   public class Hoverables
   {
+    public static bool extraInfo
+    {
+      get => Settings.extraInfo && Cheats.IsAdmin;
+      set
+      {
+        if (value)
+          Cheats.CheckAdmin();
+        Settings.configExtraInfo.Value = value;
+      }
+    }
     public static void AddHoverText(GameObject obj)
     {
       if (obj.GetComponent<Hoverable>() == null)
@@ -11,7 +21,7 @@ namespace ESP
     }
     public static void AddTexts(GameObject obj, ref string __result)
     {
-      if (!Settings.extraInfo) return;
+      if (!extraInfo) return;
       var character = obj.GetComponentInParent<Character>();
       var baseAI = obj.GetComponentInParent<BaseAI>();
       __result += Texts.Get(obj.GetComponentInParent<TreeLog>());

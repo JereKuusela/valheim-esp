@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Linq;
 
 namespace ESP
 {
@@ -142,7 +143,13 @@ namespace ESP
       var limit = Patch.Plant_GetGrowTime(obj);
       if (limit == 0) return "";
       var value = Patch.Plant_TimeSincePlanted(obj);
-      return "\n" + Format.ProgressPercent("Progress", value, limit);
+      var text = "\n" + Format.ProgressPercent("Progress", value, limit);
+      var grows = obj.m_grownPrefabs.Select(prefab => Format.Name(prefab));
+      text += "\nRadius: " + Format.Meters(obj.m_growRadius);
+      text += "\nGrows: " + string.Join(", ", grows);
+      if (obj.m_destroyIfCantGrow)
+        text += "\nDestroyed if can't grow";
+      return text;
     }
     public static string Get(EffectArea obj)
     {

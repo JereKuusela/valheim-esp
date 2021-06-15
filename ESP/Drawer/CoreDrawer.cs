@@ -44,40 +44,71 @@ namespace ESP
     public const string OTHER = "ESP_Other";
     public const string ZONE = "ESP_Zone";
     public const string CREATURE = "ESP_Creature";
-    public static void ToggleVisibility()
+    public static bool showOthers
     {
-      Settings.configShowOthers.Value = !Settings.configShowOthers.Value;
-      foreach (var gameObj in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
+      get => Settings.showOthers && Cheats.IsAdmin;
+      set
       {
-        if (gameObj.name == OTHER)
-          gameObj.SetActive(Settings.showOthers);
+        if (value)
+          Cheats.CheckAdmin();
+        Settings.configShowOthers.Value = value;
       }
+    }
+    public static bool showCreatures
+    {
+      get => Settings.showCreatures && Cheats.IsAdmin;
+      set
+      {
+        if (value)
+          Cheats.CheckAdmin();
+        Settings.configShowCreatures.Value = value;
+      }
+    }
+    public static bool showZones
+    {
+      get => Settings.showZones && Cheats.IsAdmin;
+      set
+      {
+        if (value)
+          Cheats.CheckAdmin();
+        Settings.configShowZones.Value = value;
+      }
+    }
+    public static void ToggleOtherVisibility()
+    {
+      showOthers = !showOthers;
+      CheckVisibility(OTHER);
     }
     public static void ToggleZoneVisibility()
     {
-
-      Settings.configShowZones.Value = !Settings.configShowZones.Value;
-      foreach (var gameObj in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
-      {
-        if (gameObj.name == ZONE)
-          gameObj.SetActive(Settings.showZones);
-      }
+      showZones = !showZones;
+      CheckVisibility(ZONE);
     }
     public static void ToggleCreatureVisibility()
     {
-
-      Settings.configShowCreatures.Value = !Settings.configShowCreatures.Value;
+      showCreatures = !showCreatures;
+      CheckVisibility(CREATURE);
+    }
+    private static void CheckVisibility(string name)
+    {
+      var activate = IsShown(name);
       foreach (var gameObj in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
       {
-        if (gameObj.name == CREATURE)
-          gameObj.SetActive(Settings.showCreatures);
+        if (gameObj.name == name && gameObj.activeSelf != activate)
+          gameObj.SetActive(activate);
       }
+    }
+    public static void CheckVisibility()
+    {
+      CheckVisibility(OTHER);
+      CheckVisibility(CREATURE);
+      CheckVisibility(ZONE);
     }
     private static bool IsShown(string name)
     {
-      if (name == ZONE) return Settings.showZones;
-      if (name == CREATURE) return Settings.showCreatures;
-      return Settings.showOthers;
+      if (name == ZONE) return showZones;
+      if (name == CREATURE) return showCreatures;
+      return showOthers;
     }
     private static GameObject CreateObject(GameObject parent, string name)
     {

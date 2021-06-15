@@ -16,8 +16,8 @@ namespace ESP
     public static bool attacks => configAttacks.Value;
     public static ConfigEntry<bool> configResistances;
     public static bool resistances => configResistances.Value;
-    public static ConfigEntry<bool> configShowExtraInfo;
-    public static bool extraInfo => configShowExtraInfo.Value;
+    public static ConfigEntry<bool> configExtraInfo;
+    public static bool extraInfo => configExtraInfo.Value;
     public static ConfigEntry<bool> configAllDamageTypes;
     public static bool allDamageTypes => configAllDamageTypes.Value;
     public static ConfigEntry<bool> configShowProgress;
@@ -115,7 +115,7 @@ namespace ESP
 
     public static void Init(ConfigFile config)
     {
-      Settings.configShowExtraInfo = config.Bind("Tooltips", "Show extra info on tooltips", false, "Show extra info on tooltips and hover texts (toggle with O button in the game)");
+      Settings.configExtraInfo = config.Bind("Tooltips", "Show extra info on tooltips", false, "Show extra info on tooltips and hover texts (toggle with O button in the game)");
       Settings.configResistances = config.Bind("Tooltips", "Resistances", true, "Show resistances for creatures and structures");
       Settings.configAttacks = config.Bind("Tooltips", "Attacks", true, "Show creature attacks");
       Settings.configStructures = config.Bind("Tooltips", "Structures", true, "Show structure stats (health, resistances, support, etc.)");
@@ -190,12 +190,12 @@ namespace ESP
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
-          Drawer.ToggleVisibility();
-          SupportUtils.SetVisibility(Settings.showOthers);
+          Drawer.ToggleOtherVisibility();
+          SupportUtils.SetVisibility(Drawer.showOthers);
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
-          Settings.configShowExtraInfo.Value = !Settings.configShowExtraInfo.Value;
+          Hoverables.extraInfo = !Hoverables.extraInfo;
         }
         if (Input.GetKeyDown(KeyCode.P))
         {

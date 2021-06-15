@@ -25,19 +25,18 @@ namespace ESP
     private static string GetRespawnTime(Pickable obj)
     {
       if (!obj.m_hideWhenPicked || obj.m_respawnTimeMinutes == 0) return "Never";
-      var nView = Patch.m_nview(obj);
-      var elapsed = Patch.GetElapsed(obj, "picked_time");
+      var elapsed = Patch.GetElapsed(obj, "picked_time") / 60;
       var picked = Patch.GetBool(obj, "picked");
-      var elapsedText = picked ? elapsed.ToString("N0") : "Not picked";
-      return elapsedText + " / " + obj.m_respawnTimeMinutes.ToString("N0") + " minutes";
+      var elapsedText = picked ? Format.Int(elapsed) : Format.String("Not picked");
+      return elapsedText + " / " + Format.Int(obj.m_respawnTimeMinutes) + " minutes";
     }
     public static string Get(Pickable obj)
     {
       if (!obj || !Settings.support) return "";
       var respawn = GetRespawnTime(obj);
-      var text = "\nRespawn: " + Format.String(respawn);
-      if (obj.m_amount > 0)
-        text += "\nAmount: " + Format.String(obj.m_amount.ToString());
+      var text = "\nRespawn: " + respawn;
+      if (obj.m_amount > 1)
+        text += "\nAmount: " + Format.Int(obj.m_amount);
       return text;
     }
 

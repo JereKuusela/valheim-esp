@@ -5,13 +5,18 @@ namespace ESP
 {
   public static class SupportUtils
   {
-    public static bool Shown = Settings.showOthers;
+    public static bool Shown = Drawer.showOthers;
     public static void SetVisibility(bool shown)
     {
       if (!Settings.showSupport) return;
       Shown = shown;
-      // Automatically calls reset after a delay.
-      WearNTear.GetAllInstaces().Where(item => item.m_supports).ToList().ForEach(item => item.Highlight());
+      WearNTear.GetAllInstaces().Where(item => item.m_supports).ToList().ForEach(item =>
+      {
+        if (shown)
+          item.Highlight();
+        else
+          Patch.WearNTear_ResetHighlight(item);
+      });
     }
     public static bool Enabled(WearNTear obj)
     {

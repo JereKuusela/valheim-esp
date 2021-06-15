@@ -15,11 +15,11 @@ namespace ESP
       if (Player.m_localPlayer == null) return "";
       var status = "\n" + GetStatusText();
       status += "\n";
-      status += Format.String("Y") + ": " + GetShowHide(Settings.showZones) + " zones, ";
-      status += Format.String("U") + ": " + GetShowHide(Settings.showCreatures) + " creatures, ";
-      status += Format.String("I") + ": " + GetShowHide(Settings.showOthers) + " other visuals";
+      status += Format.String("Y") + ": " + GetShowHide(Drawer.showZones) + " zones, ";
+      status += Format.String("U") + ": " + GetShowHide(Drawer.showCreatures) + " creatures, ";
+      status += Format.String("I") + ": " + GetShowHide(Drawer.showOthers) + " other visuals";
       status += "\n";
-      status += Format.String("O") + ": " + GetShowHide(Settings.extraInfo) + " extra info on tooltips, ";
+      status += Format.String("O") + ": " + GetShowHide(Hoverables.extraInfo) + " extra info on tooltips, ";
       status += Format.String("P") + ": " + GetShowHide(Settings.showDPS) + " DPS meter";
       return status;
     }
