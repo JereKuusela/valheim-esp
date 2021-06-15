@@ -44,9 +44,10 @@ namespace ESP
     }
     public static string Get(HitData.DamageModifiers modifiers, bool ignoreNeutral = true)
     {
+      if (!Settings.resistances) return "";
       var texts = DAMAGE_TYPES.Select(type => GetModifierText(modifiers, type, ignoreNeutral)).Where(text => text.Length > 0);
       if (texts.Count() > 0)
-        return "\n" + string.Join("\n", texts);
+        return "\n" + string.Join(", ", texts);
       return "";
     }
   }

@@ -10,7 +10,7 @@ namespace ESP
   {
     private static void DrawBiomes(SpawnSystem instance)
     {
-      if (!Settings.showBiomes)
+      if (Settings.biomeCornerRayWidth == 0)
         return;
       var heightmap = Patch.m_heightmap(instance);
       var num = ZoneSystem.instance.m_zoneSize * 0.5f;
@@ -29,7 +29,7 @@ namespace ESP
     }
     private static void DrawMarker(GameObject parent, Vector3 position, Heightmap.Biome biome)
     {
-      var obj = Drawer.DrawMarkerLine(parent, position, Texts.GetColor(biome), 0.25f, Drawer.ZONE);
+      var obj = Drawer.DrawMarkerLine(parent, Texts.GetColor(biome), Settings.biomeCornerRayWidth, Drawer.ZONE, position);
       var text = obj.AddComponent<BiomeText>();
       text.biome = biome;
     }
@@ -46,7 +46,7 @@ namespace ESP
     }
     private static bool IsEnabled(SpawnSystem.SpawnData instance)
     {
-      if (!Settings.showSpawnSystems) return false;
+      if (Settings.spawnSystemRayWidth == 0) return false;
       var name = Utils.GetPrefabName(instance.m_prefab).ToLower();
       var excluded = Settings.excludedSpawnSystems.ToLower().Split(',');
       if (Array.Exists(excluded, item => item == name)) return false;
@@ -54,7 +54,7 @@ namespace ESP
     }
     private static void DrawSpawnSystems(SpawnSystem instance)
     {
-      if (!Settings.showSpawnSystems) return;
+      if (Settings.spawnSystemRayWidth == 0) return;
       var heightmap = Patch.m_heightmap(instance);
       var totalAmount = GetTotalAmountOfSpawnSystems(instance, heightmap);
       var counter = -totalAmount / 2;
@@ -67,7 +67,8 @@ namespace ESP
         if (!spawnData.m_spawnAtDay && !spawnData.m_spawnAtNight) return;
         if (!IsEnabled(spawnData)) return;
         var stableHashCode = ("b_" + spawnData.m_prefab.name + num.ToString()).GetStableHashCode();
-        var obj = Drawer.DrawMarkerLine(instance.gameObject, new Vector3(counter * 2, 0, 0), Texts.GetColor(biome), 1f, Drawer.ZONE);
+        var position = new Vector3(counter * 2 * Settings.spawnSystemRayWidth, 0, 0);
+        var obj = Drawer.DrawMarkerLine(instance.gameObject, Texts.GetColor(biome), Settings.spawnSystemRayWidth, Drawer.ZONE, position);
         var text = obj.AddComponent<SpawnSystemText>();
         text.spawnSystem = instance;
         text.spawnData = spawnData;
@@ -77,8 +78,8 @@ namespace ESP
     }
     private static void DrawRandEventSystem(SpawnSystem instance)
     {
-      if (!Settings.showRandEventSystem) return;
-      var obj = Drawer.DrawMarkerLine(instance.gameObject, new Vector3(0, 0, 5), Color.black, 1f, Drawer.ZONE);
+      if (Settings.randEventSystemRayWidth == 0) return;
+      var obj = Drawer.DrawMarkerLine(instance.gameObject, Color.black, Settings.randEventSystemRayWidth, Drawer.ZONE, new Vector3(0, 0, 5));
       obj.AddComponent<RandEventSystemText>().spawnSystem = instance;
     }
     public static void Postfix(SpawnSystem __instance)

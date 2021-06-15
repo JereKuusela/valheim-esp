@@ -43,13 +43,13 @@ namespace ESP
   {
     public static void Postfix(SpawnArea __instance, float ___m_spawnTimer)
     {
-      if (!Settings.showSpawnAreas)
+      if (Settings.spawnAreasLineWidth == 0)
         return;
-      var obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_triggerDistance, Color.red, 0.5f, Drawer.OTHER);
+      var obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_triggerDistance, Color.red, Settings.spawnAreasLineWidth, Drawer.OTHER);
       obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
-      obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_nearRadius, Color.white, 0.5f, Drawer.OTHER);
+      obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_nearRadius, Color.white, Settings.spawnAreasLineWidth, Drawer.OTHER);
       obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
-      obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_spawnRadius, Color.cyan, 0.5f, Drawer.OTHER);
+      obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_spawnRadius, Color.cyan, Settings.spawnAreasLineWidth, Drawer.OTHER);
       obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
     }
   }

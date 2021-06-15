@@ -8,52 +8,52 @@ namespace ESP
   {
     private static void DrawHearRange(BaseAI obj, string name, string text)
     {
-      if (!Settings.showBaseAI || !obj) return;
+      if (Settings.senseLineWidth == 0 || !obj) return;
       if (obj.m_hearRange > 100) return;
-      var line = Drawer.DrawSphere(obj.gameObject, obj.m_hearRange, Color.green, 0.1f, Drawer.CREATURE);
+      var line = Drawer.DrawSphere(obj.gameObject, obj.m_hearRange, Color.green, Settings.senseLineWidth, Drawer.CREATURE);
       Drawer.AddText(line, name, text);
     }
     private static void DrawViewRange(BaseAI obj, Vector3 eye, string name, string text)
     {
-      if (!Settings.showBaseAI || !obj) return;
-      var line = Drawer.DrawCone(obj.gameObject, eye, obj.m_viewRange, obj.m_viewAngle, Color.white, 0.1f, Drawer.CREATURE);
+      if (Settings.senseLineWidth == 0 || !obj) return;
+      var line = Drawer.DrawCone(obj.gameObject, eye, obj.m_viewRange, obj.m_viewAngle, Color.white, Settings.senseLineWidth, Drawer.CREATURE);
       Drawer.AddText(line, name, text);
     }
     private static void DrawFireLimit(BaseAI obj, string name, string text)
     {
-      if (!Settings.showCreatureFireLimits || !obj) return;
+      if (Settings.creatureFireLineWidth == 0 || !obj) return;
       if (!obj.m_afraidOfFire && !obj.m_avoidFire) return;
-      var line = Drawer.DrawSphere(obj.gameObject, 3f, Color.magenta, 0.1f, Drawer.CREATURE);
+      var line = Drawer.DrawSphere(obj.gameObject, 3f, Color.magenta, Settings.creatureFireLineWidth, Drawer.CREATURE);
       Drawer.AddText(line, name, text);
     }
     private static void DrawAlertRange(MonsterAI obj, Vector3 eye, string name, string text)
     {
-      if (!Settings.showBaseAI || !obj) return;
-      var line = Drawer.DrawArc(obj.gameObject, eye, obj.m_alertRange, obj.m_viewAngle, Color.red, 0.1f, Drawer.CREATURE);
+      if (Settings.senseLineWidth == 0 || !obj) return;
+      var line = Drawer.DrawArc(obj.gameObject, eye, obj.m_alertRange, obj.m_viewAngle, Color.red, Settings.senseLineWidth, Drawer.CREATURE);
       Drawer.AddText(line, name, text);
     }
     private static void DrawTotalLimit(Procreation obj, string name, string text)
     {
-      if (!Settings.showBreedingLimits || !obj) return;
-      var line = Drawer.DrawSphere(obj.gameObject, obj.m_totalCheckRange, Color.cyan, 0.1f, Drawer.CREATURE);
+      if (Settings.breedingLineWidth == 0 || !obj) return;
+      var line = Drawer.DrawSphere(obj.gameObject, obj.m_totalCheckRange, Color.cyan, Settings.breedingLineWidth, Drawer.CREATURE);
       Drawer.AddText(line, name, text);
     }
     private static void DrawPartnerCheck(Procreation obj, string name, string text)
     {
-      if (!Settings.showBreedingLimits || !obj) return;
-      var line = Drawer.DrawSphere(obj.gameObject, obj.m_partnerCheckRange, Color.magenta, 0.1f, Drawer.CREATURE);
+      if (Settings.breedingLineWidth == 0 || !obj) return;
+      var line = Drawer.DrawSphere(obj.gameObject, obj.m_partnerCheckRange, Color.magenta, Settings.breedingLineWidth, Drawer.CREATURE);
       Drawer.AddText(line, name, text);
     }
     private static void DrawFoodCheck(MonsterAI obj, string name, string text)
     {
-      if (!Settings.showBreedingLimits || !obj || obj.m_consumeItems.Count == 0) return;
-      var line = Drawer.DrawSphere(obj.gameObject, obj.m_consumeSearchRange, Color.gray, 0.1f, Drawer.CREATURE);
+      if (Settings.breedingLineWidth == 0 || !obj || obj.m_consumeItems.Count == 0) return;
+      var line = Drawer.DrawSphere(obj.gameObject, obj.m_consumeSearchRange, Color.gray, Settings.breedingLineWidth, Drawer.CREATURE);
       Drawer.AddText(line, name, text);
     }
     private static void DrawEatRange(MonsterAI obj, string name, string text)
     {
-      if (!Settings.showBreedingLimits || !obj || obj.m_consumeItems.Count == 0) return;
-      var line = Drawer.DrawSphere(obj.gameObject, obj.m_consumeRange, Color.black, 0.1f, Drawer.CREATURE);
+      if (Settings.breedingLineWidth == 0 || !obj || obj.m_consumeItems.Count == 0) return;
+      var line = Drawer.DrawSphere(obj.gameObject, obj.m_consumeRange, Color.black, Settings.breedingLineWidth, Drawer.CREATURE);
       Drawer.AddText(line, name, text);
     }
     public static void Postfix(BaseAI __instance, Character ___m_character)

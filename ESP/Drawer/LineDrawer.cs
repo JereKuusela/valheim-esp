@@ -27,7 +27,9 @@ namespace ESP
       renderer.SetPosition(1, end);
       return obj;
     }
-    public static GameObject DrawMarkerLine(GameObject parent, Vector3 start, Color color, float width, string name)
+    public static GameObject DrawMarkerLine(GameObject parent, Color color, float width, string name) => DrawMarkerLine(parent, color, width, name, Vector3.zero);
+
+    public static GameObject DrawMarkerLine(GameObject parent, Color color, float width, string name, Vector3 start)
     {
       var end = new Vector3(start.x, 500f, start.z);
       var obj = DrawLine(parent, start, end, color, width, name);

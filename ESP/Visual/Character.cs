@@ -21,9 +21,9 @@ namespace ESP
   {
     private static void DrawNoise(Character instance)
     {
-      if (!Settings.showNoise || CharacterUtils.IsExcluded(instance))
+      if (Settings.noiseLineWidth == 0 || CharacterUtils.IsExcluded(instance))
         return;
-      var obj = Drawer.DrawSphere(instance.gameObject, Patch.m_noiseRange(instance), Color.cyan, 0.1f, Drawer.CREATURE);
+      var obj = Drawer.DrawSphere(instance.gameObject, Patch.m_noiseRange(instance), Color.cyan, Settings.noiseLineWidth, Drawer.CREATURE);
       obj.AddComponent<NoiseText>().character = instance;
     }
     public static void Postfix(Character __instance)
@@ -37,9 +37,9 @@ namespace ESP
   {
     public static void Postfix(Character __instance, float ___m_noiseRange)
     {
-      if (!Settings.showNoise || CharacterUtils.IsExcluded(__instance))
+      if (Settings.noiseLineWidth == 0 || CharacterUtils.IsExcluded(__instance))
         return;
-      Drawer.UpdateSphere(__instance.gameObject, ___m_noiseRange, 0.1f);
+      Drawer.UpdateSphere(__instance.gameObject, ___m_noiseRange, Settings.noiseLineWidth);
     }
   }
   public class NoiseText : MonoBehaviour, Hoverable
@@ -54,7 +54,7 @@ namespace ESP
 
     public static void Postfix(Character __instance, ref string __result)
     {
-      if (!Settings.showExtraInfo) return;
+      if (!Settings.extraInfo) return;
       Hoverables.AddTexts(__instance.gameObject, ref __result);
     }
   }

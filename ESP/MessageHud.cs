@@ -8,22 +8,29 @@ namespace ESP
   public class MessageHud_UpdateMessage : MonoBehaviour
   {
     private static string GetShowHide(bool value) => value ? "Hide" : "Show";
-    private static string GetCustomMessage()
+    private static string GetInfo()
+    {
+      if (!Settings.showHud) return "";
+      // Wait for the game to load.
+      if (Player.m_localPlayer == null) return "";
+      var status = "\n" + GetStatusText();
+      status += "\n";
+      status += Format.String("Y") + ": " + GetShowHide(Settings.showZones) + " zones, ";
+      status += Format.String("U") + ": " + GetShowHide(Settings.showCreatures) + " creatures, ";
+      status += Format.String("I") + ": " + GetShowHide(Settings.showOthers) + " other visuals";
+      status += "\n";
+      status += Format.String("O") + ": " + GetShowHide(Settings.extraInfo) + " extra info on tooltips, ";
+      status += Format.String("P") + ": " + GetShowHide(Settings.showDPS) + " DPS meter";
+      return status;
+    }
+    private static string GetFixedMessage()
     {
       // Wait for the game to load.
       if (Player.m_localPlayer == null) return "";
       var dps = DPSMeter.Get();
       if (dps != "") return dps;
-      if (CustomMessage != "") return CustomMessage;
-      var status = "\n" + GetStatusText();
-      status += "\n";
-      status += Format.String("Y") + ": " + GetShowHide(Drawer.ZonesShown) + " zones, ";
-      status += Format.String("U") + ": " + GetShowHide(Drawer.CreaturesShown) + " creatures, ";
-      status += Format.String("I") + ": " + GetShowHide(Drawer.Shown) + " other";
-      status += "\n";
-      status += Format.String("O") + ": " + GetShowHide(Settings.showExtraInfo) + " extra info on tooltips, ";
-      status += Format.String("P") + ": " + GetShowHide(Settings.showDPS) + " DPS meter";
-      return status;
+      if (FixedMessage != "") return FixedMessage;
+      return "";
     }
     private static string GetSpeed() => "Speed: " + Format.Float(Patch.m_currentVel(Player.m_localPlayer).magnitude, "0.#") + " m/s";
     private static string GetNoise() => "Noise: " + Format.Int(Player.m_localPlayer.GetNoiseRange()) + " meters";
@@ -36,19 +43,21 @@ namespace ESP
     }
 
     private static bool baseGameMessage = false;
-    public static string CustomMessage = "";
+    public static string FixedMessage = "";
 
     // Space is limited so skip showing messages when manually showing something.
     public static bool Prefix(out string __state)
     {
       __state = MessageHud.instance.m_messageText.text;
-      return GetCustomMessage() == "";
+      return baseGameMessage || GetFixedMessage() == "";
     }
     // Keeps the message always visible and shows any base game messages.
     public static void Postfix(float ___m_msgQueueTimer, string __state)
     {
       var hud = MessageHud.instance;
-      var customMessage = GetCustomMessage();
+      var customMessage = GetFixedMessage();
+      if (customMessage == "")
+        customMessage = GetInfo();
       // New base game message.
       if (hud.m_messageText.text != __state)
         baseGameMessage = true;
@@ -76,7 +85,7 @@ namespace ESP
     {
       if (!Settings.showShipStatsOnHud || !Player.m_localPlayer) return;
       if (!__instance.IsPlayerInBoat(Player.m_localPlayer.GetZDOID())) return;
-      MessageHud_UpdateMessage.CustomMessage = "\n" + Texts.Get(__instance);
+      MessageHud_UpdateMessage.FixedMessage = "\n" + Texts.Get(__instance);
     }
   }
   [HarmonyPatch(typeof(Ship), "OnTriggerExit")]
@@ -84,7 +93,7 @@ namespace ESP
   {
     public static void Postfix()
     {
-      MessageHud_UpdateMessage.CustomMessage = "";
+      MessageHud_UpdateMessage.FixedMessage = "";
     }
   }
 }

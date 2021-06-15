@@ -1,16 +1,22 @@
 using HarmonyLib;
+using System.Linq;
 
 namespace ESP
 {
   public static class SupportUtils
   {
-    public static bool Shown = Settings.showVisualization;
-    public static void ToggleVisibility()
+    public static bool Shown = Settings.showOthers;
+    public static void SetVisibility(bool shown)
     {
       if (!Settings.showSupport) return;
-      Shown = !Shown;
+      Shown = shown;
       // Automatically calls reset after a delay.
-      WearNTear.GetAllInstaces().ForEach(item => item.Highlight());
+      WearNTear.GetAllInstaces().Where(item => item.m_supports).ToList().ForEach(item => item.Highlight());
+    }
+    public static bool Enabled(WearNTear obj)
+    {
+      var piece = obj.GetComponent<Piece>();
+      return SupportUtils.Shown && Settings.showSupport && obj.m_supports && (!piece || !piece.m_waterPiece);
     }
   }
 
@@ -19,8 +25,7 @@ namespace ESP
   {
     public static void Postfix(WearNTear __instance)
     {
-      if (!SupportUtils.Shown || !Settings.showSupport)
-        return;
+      if (!SupportUtils.Enabled(__instance)) return;
       __instance.Highlight();
     }
   }
@@ -29,8 +34,7 @@ namespace ESP
   {
     public static void Postfix(WearNTear __instance)
     {
-      if (!SupportUtils.Shown || !Settings.showSupport)
-        return;
+      if (!SupportUtils.Enabled(__instance)) return;
       __instance.CancelInvoke("ResetHighlight");
     }
   }

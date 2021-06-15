@@ -12,41 +12,41 @@ namespace ESP
       var stamina = maxStamina * (1 - 0.33f * skillFactor);
       return "Stamina: " + Format.Int(maxStamina, "orange") + " " + Format.String("(" + Format.Float(stamina) + ")");
     }
-    public static string GetHitboxText(Attack attack)
+    public static string GetHitboxText(Attack attack, string color = "yellow")
     {
       if (attack == null || attack.m_attackType == Attack.AttackType.Projectile) return "";
       var texts = new List<string>();
       if (attack.m_attackRange > 0)
-        texts.Add(Format.Float(attack.m_attackRange, Format.FORMAT, "orange") + " m");
+        texts.Add(Format.Float(attack.m_attackRange, Format.FORMAT, color) + " m");
       if (attack.m_attackAngle > 0)
-        texts.Add(Format.Float(attack.m_attackAngle, Format.FORMAT, "orange") + " deg");
+        texts.Add(Format.Float(attack.m_attackAngle, Format.FORMAT, color) + " deg");
       if (attack.m_attackHeight > 0)
-        texts.Add(Format.Float(attack.m_attackHeight, Format.FORMAT, "orange") + " h");
+        texts.Add(Format.Float(attack.m_attackHeight, Format.FORMAT, color) + " h");
       if (attack.m_attackRayWidth > 0)
-        texts.Add(Format.Float(attack.m_attackRayWidth, Format.FORMAT, "orange") + " ray");
+        texts.Add(Format.Float(attack.m_attackRayWidth, Format.FORMAT, color) + " ray");
       if (attack.m_attackOffset > 0)
-        texts.Add(Format.Float(attack.m_attackOffset, Format.FORMAT, "orange") + " offset");
+        texts.Add(Format.Float(attack.m_attackOffset, Format.FORMAT, color) + " offset");
       return "Hit: " + string.Join(", ", texts);
     }
-    public static string GetProjectileText(Attack attack, float holdDuration = 0)
+    public static string GetProjectileText(Attack attack, float holdDuration = 0, string color = "yellow")
     {
       if (attack == null || attack.m_attackType != Attack.AttackType.Projectile) return "";
       var texts = new List<string>();
       if (holdDuration > 0)
       {
-        texts.Add("Spread: " + Format.Range(attack.m_projectileAccuracy, attack.m_projectileAccuracyMin, "orange"));
-        texts.Add("Velocity: " + Format.Range(attack.m_projectileVelMin, attack.m_projectileVel, "orange"));
+        texts.Add("Spread: " + Format.Range(attack.m_projectileAccuracy, attack.m_projectileAccuracyMin, color));
+        texts.Add("Velocity: " + Format.Range(attack.m_projectileVelMin, attack.m_projectileVel, color));
       }
       else
       {
-        texts.Add("Spread: " + Format.Int(attack.m_projectileAccuracy, "orange"));
-        texts.Add("Velocity: " + Format.Int(attack.m_projectileVel, "orange"));
+        texts.Add("Spread: " + Format.Int(attack.m_projectileAccuracy, color));
+        texts.Add("Velocity: " + Format.Int(attack.m_projectileVel, color));
       }
       if (attack.m_projectileBursts > 1)
-        texts.Add("Burst: " + Format.Int(attack.m_projectileBursts, "orange"));
+        texts.Add("Burst: " + Format.Multiplier(attack.m_projectileBursts, color));
       if (attack.m_projectiles > 1)
-        texts.Add("Projectiles: " + Format.Int(attack.m_projectiles, "orange"));
-      return string.Join("\n", texts);
+        texts.Add("Projectiles: " + Format.Multiplier(attack.m_projectiles, color));
+      return string.Join(", ", texts);
     }
     public static string GetAttackSpeed(string animation, float holdDuration)
     {
@@ -71,7 +71,7 @@ namespace ESP
       if (animation == "sword_secondary") return "1.84 s";
       return "";
     }
-    public static string GetAttackSpeed(Attack attack, float holdDuration = 0)
+    public static string GetAttackSpeed(Attack attack, float holdDuration = 0, string color = "yellow")
     {
       if (attack == null) return "";
       var animation = attack.m_attackAnimation;
@@ -79,7 +79,7 @@ namespace ESP
       if (text == "") return "";
       text = text.Replace("(", "<color=yellow>(");
       text = text.Replace(")", ")</color>");
-      return "Speed: " + Format.String(text, "orange");
+      return "Speed: " + Format.String(text, color);
     }
   }
 }

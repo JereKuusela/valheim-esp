@@ -44,41 +44,40 @@ namespace ESP
     public const string OTHER = "ESP_Other";
     public const string ZONE = "ESP_Zone";
     public const string CREATURE = "ESP_Creature";
-    public static bool Shown = Settings.showVisualization;
     public static void ToggleVisibility()
     {
-      Shown = !Shown;
+      Settings.configShowOthers.Value = !Settings.configShowOthers.Value;
       foreach (var gameObj in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
       {
         if (gameObj.name == OTHER)
-          gameObj.SetActive(Shown);
+          gameObj.SetActive(Settings.showOthers);
       }
     }
-    public static bool ZonesShown = Settings.showVisualization;
     public static void ToggleZoneVisibility()
     {
-      ZonesShown = !ZonesShown;
+
+      Settings.configShowZones.Value = !Settings.configShowZones.Value;
       foreach (var gameObj in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
       {
         if (gameObj.name == ZONE)
-          gameObj.SetActive(ZonesShown);
+          gameObj.SetActive(Settings.showZones);
       }
     }
-    public static bool CreaturesShown = Settings.showVisualization;
     public static void ToggleCreatureVisibility()
     {
-      CreaturesShown = !CreaturesShown;
+
+      Settings.configShowCreatures.Value = !Settings.configShowCreatures.Value;
       foreach (var gameObj in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
       {
         if (gameObj.name == CREATURE)
-          gameObj.SetActive(CreaturesShown);
+          gameObj.SetActive(Settings.showCreatures);
       }
     }
     private static bool IsShown(string name)
     {
-      if (name == ZONE) return ZonesShown;
-      if (name == CREATURE) return CreaturesShown;
-      return Shown;
+      if (name == ZONE) return Settings.showZones;
+      if (name == CREATURE) return Settings.showCreatures;
+      return Settings.showOthers;
     }
     private static GameObject CreateObject(GameObject parent, string name)
     {

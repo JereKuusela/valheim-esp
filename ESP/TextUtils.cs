@@ -67,11 +67,12 @@ namespace ESP
     public static string GetHealth(double health, double limit)
       => "Health: " + Format.Progress(health, limit) + " (" + Format.Percent(health / limit) + ")";
 
-    public static string Name(string name) => String(Localization.instance.Localize(name));
-    public static string Name(GameObject obj) => Name(Utils.GetPrefabName(obj));
-    public static string Name(Character obj) => Name(obj.m_name);
-    public static string Name(ItemDrop.ItemData obj) => Name(obj.m_shared.m_name);
-    public static string Name(Heightmap.Biome obj) => Name(Texts.GetName(obj));
+    public static string Name(string name, string color = "yellow") => String(Localization.instance.Localize(name), color);
+    public static string Name(GameObject obj, string color = "yellow") => Name(Utils.GetPrefabName(obj), color);
+    public static string Name(Character obj, string color = "yellow") => Name(obj.m_name, color);
+    public static string Name(ItemDrop.ItemData obj, string color = "yellow") => Name(obj.m_shared.m_name, color);
+    public static string Name(Heightmap.Biome obj, string color = "yellow") => Name(Texts.GetName(obj), color);
+    public static string Name(Pickable obj, string color = "yellow") => Name(obj.m_itemPrefab.name, color);
 
     public static string Radius(float radius) => "Radius: " + Format.Float(radius);
   }

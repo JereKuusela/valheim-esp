@@ -4,7 +4,7 @@ namespace ESP
   {
     private static string GetFed(Tameable obj)
     {
-      if (!Settings.showBreedingStats) return "";
+      if (!Settings.breeding) return "";
       var feedingTime = Patch.GetLong(obj, "TameLastFeeding");
       var elapsed = Patch.GetElapsed(obj, "TameLastFeeding");
       var value = feedingTime == 0 ? 0 : obj.m_fedDuration - elapsed;
@@ -13,28 +13,28 @@ namespace ESP
     }
     private static string GetTaming(Tameable obj)
     {
-      if (!Settings.showBreedingStats) return "";
+      if (!Settings.breeding) return "";
       var value = obj.m_tamingTime - Patch.Tameable_GetRemainingTime(obj);
       var limit = obj.m_tamingTime;
       return "\n" + Format.ProgressPercent("Taming", value, limit);
     }
     private static string GetPregnancy(Procreation obj)
     {
-      if (!Settings.showBreedingStats || !obj || !obj.IsPregnant()) return "";
+      if (!Settings.breeding || !obj || !obj.IsPregnant()) return "";
       var value = Patch.GetElapsed(obj, "pregnant");
       var limit = obj.m_pregnancyDuration;
       return "\n" + Format.ProgressPercent("Pregnancy", value, limit);
     }
     private static string GetLove(Procreation obj)
     {
-      if (!Settings.showBreedingStats || !obj || obj.IsPregnant()) return "";
+      if (!Settings.breeding || !obj || obj.IsPregnant()) return "";
       var value = Patch.GetInt(obj, "lovePoints");
       var limit = obj.m_requiredLovePoints;
       return "\nBreeding: " + Format.Progress(value, limit) + ", " + Format.Percent(obj.m_pregnancyChance) + " chance every " + Format.Int(obj.m_updateInterval) + " seconds";
     }
     private static string GetPartners(Procreation obj)
     {
-      if (!Settings.showBreedingStats || !obj || obj.IsPregnant()) return "";
+      if (!Settings.breeding || !obj || obj.IsPregnant()) return "";
       var prefab = Patch.GetPrefab(obj);
       var all = SpawnSystem.GetNrOfInstances(prefab, obj.transform.position, obj.m_partnerCheckRange, false, false) - 1;
       var partners = SpawnSystem.GetNrOfInstances(prefab, obj.transform.position, obj.m_partnerCheckRange, false, true) - 1;
@@ -42,7 +42,7 @@ namespace ESP
     }
     private static string GetLimit(Procreation obj)
     {
-      if (!Settings.showBreedingStats || !obj) return "";
+      if (!Settings.breeding || !obj) return "";
       var offspring = ZNetScene.instance.GetPrefab(Utils.GetPrefabName(obj.m_offspring));
       var prefab = Patch.GetPrefab(obj);
       var ownAmount = SpawnSystem.GetNrOfInstances(prefab, obj.transform.position, obj.m_totalCheckRange, false, false);

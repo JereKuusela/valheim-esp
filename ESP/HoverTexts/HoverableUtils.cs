@@ -11,7 +11,7 @@ namespace ESP
     }
     public static void AddTexts(GameObject obj, ref string __result)
     {
-      if (!Settings.showExtraInfo) return;
+      if (!Settings.extraInfo) return;
       var character = obj.GetComponentInParent<Character>();
       var baseAI = obj.GetComponentInParent<BaseAI>();
       __result += Texts.Get(obj.GetComponentInParent<TreeLog>());
@@ -29,7 +29,8 @@ namespace ESP
       __result += Texts.Get(obj.GetComponentInParent<PrivateArea>());
       __result += Texts.Get(obj.GetComponentInParent<MineRock>());
       __result += Texts.Get(obj.GetComponentInParent<MineRock5>());
-      __result += Texts.Get(obj.GetComponentInParent<Ship>());
+      if (Settings.showShipStats)
+        __result += Texts.Get(obj.GetComponentInParent<Ship>());
       __result += Texts.Get(obj.GetComponentInParent<EffectArea>());
       __result += Texts.Get(character, baseAI, obj.GetComponentInParent<MonsterAI>());
       __result += Texts.GetStatusStats(character);

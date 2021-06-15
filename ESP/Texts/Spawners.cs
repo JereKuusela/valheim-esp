@@ -33,7 +33,7 @@ namespace ESP
     }
     public static string Get(Pickable obj)
     {
-      if (!obj || !Settings.showStructureStats) return "";
+      if (!obj || !Settings.support) return "";
       var respawn = GetRespawnTime(obj);
       var text = "\nRespawn: " + Format.String(respawn);
       if (obj.m_amount > 0)
@@ -47,20 +47,19 @@ namespace ESP
       var respawn = GetRespawnTime(obj);
       var noise = obj.m_triggerNoise > 0 ? " with noise of " + Format.Int(obj.m_triggerNoise) : "";
       var lines = new List<string>();
-      lines.Add(Format.Name(obj.m_creaturePrefab));
       lines.Add("Respawn: " + Format.String(respawn));
       lines.Add(Format.GetLevel(obj.m_minLevel, obj.m_maxLevel, obj.m_levelupChance));
       var timeText = GetTime(obj);
       if (timeText.Length > 0) lines.Add(timeText);
       if (obj.m_setPatrolSpawnPoint) lines.Add("Patrol point");
       lines.Add("Activates within " + Format.Int(obj.m_triggerDistance) + " meters" + noise);
-      return string.Join("\n", lines);
+      return "\n" + string.Join("\n", lines);
     }
 
     private static string GetEventText()
     {
       var instance = RandEventSystem.instance;
-      var timer = Patch.m_eventTime(instance);
+      var timer = Patch.m_eventTimer(instance);
       return Format.GetAttempt(timer, instance.m_eventIntervalMin * 60, instance.m_eventChance);
     }
     private static string GetEventsText()

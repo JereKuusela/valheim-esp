@@ -46,6 +46,15 @@ namespace ESP
         DPSMeter.AddStructureDamage(hit, __instance);
     }
   }
+  [HarmonyPatch(typeof(WearNTear), "RPC_Damage")]
+  public class WearNTear_RPC_Damage
+  {
+    public static void Postfix(WearNTear __instance, HitData hit)
+    {
+      if (hit.GetAttacker() == Player.m_localPlayer)
+        DPSMeter.AddStructureDamage(hit, __instance);
+    }
+  }
   [HarmonyPatch(typeof(MineRock5), "DamageArea")]
   public class MineRock5_DamageArea
   {

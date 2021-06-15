@@ -7,7 +7,7 @@ namespace ESP
   {
     public static string Get(TreeLog obj)
     {
-      if (!obj || !Settings.showStructureStats) return "";
+      if (!Settings.destructibles || !obj) return "";
       var text = "";
       var maxHealth = obj.m_health;
       var health = Patch.GetFloat(obj, "health", maxHealth);
@@ -19,7 +19,7 @@ namespace ESP
     }
     public static string Get(TreeBase obj)
     {
-      if (!obj || !Settings.showStructureStats) return "";
+      if (!Settings.destructibles || !obj) return "";
       var text = "";
       var maxHealth = obj.m_health;
       var health = Patch.GetFloat(obj, "health", maxHealth);
@@ -31,7 +31,7 @@ namespace ESP
     }
     public static string Get(Destructible obj)
     {
-      if (!obj || !Settings.showStructureStats) return "";
+      if (!Settings.destructibles || !obj) return "";
       var text = "";
       var health = Patch.GetFloat(obj, "health", obj.m_health);
       var maxHealth = obj.m_health;
@@ -51,23 +51,26 @@ namespace ESP
     }
     public static string Get(WearNTear obj)
     {
-      if (!Settings.showStructureStats || !obj) return "";
+      if (!Settings.structures || !obj) return "";
       var text = "";
       var health = obj.GetHealthPercentage();
 
       text += "\n" + Format.GetHealth(health * obj.m_health, obj.m_health);
       text += DamageModifierUtils.Get(obj.m_damages);
 
-      float maxSupport, minSupport, horizontalLoss, verticalLoss;
-      Patch.WearNTear_GetMaterialProperties(obj, out maxSupport, out minSupport, out horizontalLoss, out verticalLoss);
-      var support = Math.Min(Patch.GetFloat(obj, "support", maxSupport), maxSupport);
-      text += "\n" + Format.String(GetMaterialName(obj.m_materialType)) + ": " + Format.Progress(support, minSupport) + " support";
-      text += "\n" + Format.Percent(horizontalLoss) + " horizontal loss, " + Format.Percent(verticalLoss) + " vertical loss";
+      if (SupportUtils.Enabled(obj))
+      {
+        float maxSupport, minSupport, horizontalLoss, verticalLoss;
+        Patch.WearNTear_GetMaterialProperties(obj, out maxSupport, out minSupport, out horizontalLoss, out verticalLoss);
+        var support = Math.Min(Patch.GetFloat(obj, "support", maxSupport), maxSupport);
+        text += "\n" + Format.String(GetMaterialName(obj.m_materialType)) + ": " + Format.Progress(support, minSupport) + " support";
+        text += "\n" + Format.Percent(horizontalLoss) + " horizontal loss, " + Format.Percent(verticalLoss) + " vertical loss";
+      }
       return text;
     }
     public static string Get(Beehive obj)
     {
-      if (!obj || !Settings.showProgress) return "";
+      if (!Settings.structures || !Settings.progress || !obj) return "";
       var limit = obj.m_secPerUnit;
       if (limit == 0) return "";
       var value = Patch.GetFloat(obj, "product");
@@ -77,7 +80,6 @@ namespace ESP
     private static float GetTime(CookingStation obj, int slot) => Patch.GetFloat(obj, "slot" + slot);
     private static string GetSlotText(CookingStation obj, int slot)
     {
-      if (!Settings.showProgress) return "";
       var itemName = GetItem(obj, slot);
       var cookedTime = GetTime(obj, slot);
       if (itemName == "") return "";
@@ -90,7 +92,7 @@ namespace ESP
     }
     public static string Get(CookingStation obj)
     {
-      if (!obj || !Settings.showProgress) return "";
+      if (!Settings.structures || !Settings.progress || !obj) return "";
       var text = "";
       for (var slot = 0; slot < obj.m_slots.Length; slot++)
         text += GetSlotText(obj, slot);
@@ -98,7 +100,7 @@ namespace ESP
     }
     public static string Get(Fermenter obj)
     {
-      if (!obj || !Settings.showProgress) return "";
+      if (!Settings.structures || !Settings.progress || !obj) return "";
       var limit = obj.m_fermentationDuration;
       if (limit == 0) return "";
       var value = Patch.Fermenter_GetFermentationTime(obj);
@@ -106,7 +108,7 @@ namespace ESP
     }
     public static string Get(Fireplace obj)
     {
-      if (!obj || !Settings.showProgress) return "";
+      if (!Settings.structures || !Settings.progress || !obj) return "";
       var limit = obj.m_secPerFuel;
       if (limit == 0) return "";
       var value = Patch.GetFloat(obj, "fuel") * limit;
@@ -114,7 +116,7 @@ namespace ESP
     }
     public static string Get(MineRock obj)
     {
-      if (!obj || !Settings.showStructureStats) return "";
+      if (!Settings.destructibles || !obj) return "";
       var text = "";
       var maxHealth = obj.m_health;
 
@@ -125,7 +127,7 @@ namespace ESP
     }
     public static string Get(MineRock5 obj)
     {
-      if (!obj || !Settings.showStructureStats) return "";
+      if (!Settings.destructibles || !obj) return "";
       var text = "";
       var maxHealth = obj.m_health;
 
@@ -136,7 +138,7 @@ namespace ESP
     }
     public static string Get(Plant obj)
     {
-      if (!obj || !Settings.showProgress) return "";
+      if (!Settings.progress || !obj) return "";
       var limit = Patch.Plant_GetGrowTime(obj);
       if (limit == 0) return "";
       var value = Patch.Plant_TimeSincePlanted(obj);
@@ -144,12 +146,12 @@ namespace ESP
     }
     public static string Get(EffectArea obj)
     {
-      if (!obj || !Settings.showEffectAreas) return "";
+      if (Settings.effectAreaLineWidth == 0 || !obj) return "";
       return "\n" + EffectAreaUtils.GetTypeText(obj.m_type) + " " + Format.Radius(obj.GetRadius());
     }
     public static string Get(PrivateArea obj)
     {
-      if (!obj || !Settings.showEffectAreas) return "";
+      if (Settings.effectAreaLineWidth == 0 || !obj) return "";
       return "\nProtection " + Format.Radius(obj.m_radius);
     }
 
@@ -182,7 +184,7 @@ namespace ESP
     }
     public static string Get(Smelter obj)
     {
-      if (!obj || !Settings.showProgress) return "";
+      if (!Settings.structures || !Settings.progress || !obj) return "";
       return GetProgressText(obj) + GetFuelText(obj) + GetPowerText(obj.m_windmill);
     }
 
@@ -203,7 +205,7 @@ namespace ESP
     }
     public static string Get(Ship obj)
     {
-      if (!obj || !Settings.showShipStats) return "";
+      if (!obj) return "";
       var text = "";
       var body = Patch.m_body(obj);
       var forwardSpeed = obj.GetSpeed();

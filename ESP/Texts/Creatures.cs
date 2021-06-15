@@ -1,4 +1,5 @@
 using System.Linq;
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -13,25 +14,46 @@ namespace ESP
       if (target == ItemDrop.ItemData.AiTarget.FriendHurt) return "Heal";
       return "";
     }
-    private static string GetDamages(HitData.DamageTypes target) => Localization.instance.Localize(target.GetTooltipString().Replace("\n", ", ")).Substring(2);
+    private static string GetDamages(HitData.DamageTypes target)
+    {
+      var text = Localization.instance.Localize(target.GetTooltipString().Replace("\n", ", "));
+      if (text.Length > 0) return text.Substring(2);
+      return text;
+    }
     public static string GetAttack(Humanoid obj)
     {
-      if (!obj) return "";
+      if (!Settings.creatures || !Settings.attacks || !obj) return "";
       var weapons = obj.GetInventory().GetAllItems().Where(item => item.IsWeapon());
       var time = Time.time;
-      var texts = weapons.Select(weapon =>
+      // Some attacks have multiple instances so group them to reduce clutter.
+      var groups = weapons.GroupBy(weapon => GetDamages(weapon.GetDamage()) + weapon.m_shared.m_aiAttackInterval + weapon.m_shared.m_aiAttackRange);
+      var texts = groups.Select(group =>
       {
+        var weapon = group.First();
         var data = weapon.m_shared;
-        var header = Format.Name(weapon);
+        var text = Format.Name(weapon, "orange");
         var target = GetTargetName(data.m_aiTargetType);
         if (target != "")
-          header += " (" + target + ")";
-        var timer = Mathf.Min(time - weapon.m_lastAttackTime, data.m_aiAttackInterval);
-        var text = Format.ProgressPercent(header, timer, data.m_aiAttackInterval);
+          text += " (" + target + ")";
+        var timers = group.Select(item =>
+        {
+          var timer = Mathf.Min(time - item.m_lastAttackTime, data.m_aiAttackInterval);
+          return Format.Progress(timer, data.m_aiAttackInterval) + " s";
+        });
+        text += ": " + string.Join(", ", timers);
+        var damages = GetDamages(weapon.GetDamage());
+        if (damages != "")
+          text += "\n" + damages;
         text += "\nRange: " + Format.Range(data.m_aiAttackRangeMin, data.m_aiAttackRange) + " meters (" + Format.Int(data.m_aiAttackMaxAngle) + " degrees)";
         if (data.m_aiPrioritized)
           text += ", " + Format.String("priority");
-        text += "\n" + GetDamages(weapon.GetDamage());
+
+        var hitbox = Texts.GetHitboxText(data.m_attack);
+        if (hitbox != "")
+          text += ", " + hitbox;
+        var projectile = Texts.GetProjectileText(data.m_attack);
+        if (projectile != "")
+          text += ", " + projectile;
         if (!data.m_blockable || !data.m_dodgeable)
         {
           text += "\n";
@@ -42,15 +64,9 @@ namespace ESP
           if (!data.m_dodgeable)
             text += "Can't be dodged";
         }
-        var hitbox = Texts.GetHitboxText(data.m_attack);
-        if (hitbox != "")
-          text += "\n" + hitbox;
-        var projectile = Texts.GetProjectileText(data.m_attack);
-        if (projectile != "")
-          text += "\n" + projectile;
         return text;
       });
-      return "\n" + string.Join("\n", texts);
+      return "\n\n" + string.Join("\n", texts);
     }
 
     public static string GetNoise(Character obj) => "Noise: " + Format.Int(Patch.m_noiseRange(obj));
@@ -65,7 +81,7 @@ namespace ESP
     }
     public static string Get(Character obj, BaseAI baseAI, MonsterAI monsterAI)
     {
-      if (!Settings.showCreatureStats || !obj || !baseAI || !monsterAI)
+      if (!Settings.resistances || !obj || !baseAI || !monsterAI)
         return "";
       var staggerDamage = Patch.m_staggerDamage(obj);
       var body = Patch.m_body(obj);
@@ -91,8 +107,8 @@ namespace ESP
       {
         Vector3 patrolPoint;
         var patrol = baseAI.GetPatrolPoint(out patrolPoint);
-        var patrolText = patrol ? patrolPoint.ToString("F0") : "No patrol";
-        stats += "\nPatrol: " + Format.String(patrolText);
+        if (patrol)
+          stats += "\nPatrol: " + Format.String(patrolPoint.ToString("F0"));
       }
       if (monsterAI.m_consumeItems.Count > 0)
       {
@@ -105,7 +121,7 @@ namespace ESP
 
     public static string GetStatusStats(Character character)
     {
-      if (!Settings.showStatusEffects || !character)
+      if (!Settings.status || !character)
         return "";
       var statusEffects = character.GetSEMan().GetStatusEffects();
       var text = "";
@@ -117,7 +133,7 @@ namespace ESP
     }
     public static string Get(BaseAI baseAI, Growup growup)
     {
-      if (!Settings.showBreedingStats || !baseAI || !growup)
+      if (!Settings.breeding || !baseAI || !growup)
         return "";
       var value = baseAI.GetTimeSinceSpawned().TotalSeconds;
       var limit = growup.m_growTime;
@@ -138,7 +154,7 @@ namespace ESP
             chance *= (float)num;
           }
           int min = drop.m_amountMin;
-          int max = drop.m_amountMax - 1;  // -1 because exclusive on the random range.
+          int max = Math.Max(min, drop.m_amountMax - 1);  // -1 because exclusive on the random range.
           if (drop.m_levelMultiplier)
           {
             min *= num;
@@ -156,7 +172,7 @@ namespace ESP
     }
     public static string Get(CharacterDrop characterDrop, Character character)
     {
-      if (!Settings.showDropStats || !characterDrop || !character)
+      if (!Settings.drops || !characterDrop || !character)
         return "";
       var dropTexts = string.Join(", ", GetDropTexts(characterDrop, character));
       return "\nDrops: " + dropTexts;

@@ -2,7 +2,6 @@ General:
  * Text system refactored. Add functions that require a dictionary (enum to text). Then the caller function can decide what to show and in what order.
 
 Drawer:
- - Setting for line widths per type.
  - Some kind of color customization (rgb + string to color).
  * List of priority names (different color and width can be set).
  - Cover lines (with different color if they get hit): windmills, crafting stations.
@@ -18,7 +17,3 @@ Creatures:
  - Eating cooldown.
  - Move speed (depending how it moves?)
  - Targeting system (current status, target, last known location, retreat limit, retreat when struch, etc.)
-
-
-
- 

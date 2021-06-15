@@ -54,40 +54,46 @@ namespace ESP
     public static void AddRawHit(HitData hit)
     {
     }
-    public static void AddStructureDamage(HitData hit, TreeLog treeLog)
+    public static void AddStructureDamage(HitData hit, WearNTear obj)
     {
       if (!startTime.HasValue) return;
-      if (hit.m_toolTier < treeLog.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
-      AddPendingBaseStructureDamage(treeLog.m_damages);
+      AddPendingBaseStructureDamage(obj.m_damages);
     }
-    public static void AddStructureDamage(HitData hit, TreeBase treeBase)
+    public static void AddStructureDamage(HitData hit, TreeLog obj)
     {
       if (!startTime.HasValue) return;
-      if (hit.m_toolTier < treeBase.m_minToolTier) return;
+      if (hit.m_toolTier < obj.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
-      AddPendingBaseStructureDamage(treeBase.m_damageModifiers);
+      AddPendingBaseStructureDamage(obj.m_damages);
     }
-    public static void AddStructureDamage(HitData hit, MineRock5 mineRock5)
+    public static void AddStructureDamage(HitData hit, TreeBase obj)
     {
       if (!startTime.HasValue) return;
-      if (hit.m_toolTier < mineRock5.m_minToolTier) return;
+      if (hit.m_toolTier < obj.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
-      AddPendingBaseStructureDamage(mineRock5.m_damageModifiers);
+      AddPendingBaseStructureDamage(obj.m_damageModifiers);
     }
-    public static void AddStructureDamage(HitData hit, MineRock mineRock)
+    public static void AddStructureDamage(HitData hit, MineRock5 obj)
     {
       if (!startTime.HasValue) return;
-      if (hit.m_toolTier < mineRock.m_minToolTier) return;
+      if (hit.m_toolTier < obj.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
-      AddPendingBaseStructureDamage(mineRock.m_damageModifiers);
+      AddPendingBaseStructureDamage(obj.m_damageModifiers);
     }
-    public static void AddStructureDamage(HitData hit, Destructible destructible)
+    public static void AddStructureDamage(HitData hit, MineRock obj)
     {
       if (!startTime.HasValue) return;
-      if (hit.m_toolTier < destructible.m_minToolTier) return;
+      if (hit.m_toolTier < obj.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
-      AddPendingBaseStructureDamage(destructible.m_damages);
+      AddPendingBaseStructureDamage(obj.m_damageModifiers);
+    }
+    public static void AddStructureDamage(HitData hit, Destructible obj)
+    {
+      if (!startTime.HasValue) return;
+      if (hit.m_toolTier < obj.m_minToolTier) return;
+      pendingStructureDamage += hit.GetTotalDamage();
+      AddPendingBaseStructureDamage(obj.m_damages);
     }
     public static void AddDamageTaken(HitData hit)
     {

@@ -10,22 +10,70 @@ This mod provides tools to get a deeper understanding of the game mechanics.
 
 # Features
 
-- Lots of settings to tweak the tool as needed (most things can be turned off). Hotkeys to toggle modules on and off.
-- DPS tool to track damage done, damage taken, attack speed and stamina usage. Works much more accurately than the default DPS meter.
-- More information on weapon tooltips (including stamina usage, attack speed, hitbox, secondary attack, ...). This will be expanded for other items too.
-- Movement speed, noise, weather and time of the day visible on the UI.
-- Ship speed and wind information visible on the UI when sailing.
-- Health and damage resistances for creatures, structures and destructibles (trees, rocks. etc).
-- Drop data and attack information for creatures (range, cooldown, damage).
-- Taming and breeding information for creatures (food, timer, limits, etc).
-- Sight and hearing for creatures. Including a visualization for the ranges.
-- Effects for structures (and some creatures) like player base, heat and burning. Including a visualization for the radius.
-- Support values for structures. Including always showing the support color.
-- Fuel and other progression for smelters, windmills and plants.
-- Respawn times and other information for pickables (berries, flowers, etc). Including a visualization for their locations.
-- Generated structures and their related spawn points visualized with information (respawn, stars, etc). Including a visualization for hidden chests.
-- Zone based spawn system visualized with zone corners and spawners per zone. Including information like timers and conditions.
-- Random event system visualized with information like timers and conditions.
+- HUD to show time of day, weather, current speed and current noise.
+- HUD also shows hotkeys to toggle diferent module on and off.
+- Automatically enables devcommands, debugmode, god mode, free build and free fly when in single player.
+- Lots of settings to tweak the tool as needed (most things can be turned off).
+
+# DPS meter (toggle with P)
+
+- Can be toggle on and off with P key (which can also be used to reset the timer).
+- The DPS meter tracks start and end of attacks which makes it more accurate than the default DPS tool (which only tracks hits).
+- The DPS meter automatically stops when you stop attacking.
+- Message box on the left hide shows following statistics:
+  - Total time and amount of hits.
+  - DPS, total damage and damage per used stamina (includes all stamina usage).
+  - Also shows listed/base damage (what you see on weapon skills). This value ignores randomness and weapon skill (except for stamina usage).
+  - Used stamina per second and total used stamina.
+  - Caused staggering per second and total caused staggering.
+  - Attack speed and hits per second.
+  - Damage taken (per second and total).
+  - Damage to structures, trees, stones and other destructibles are tracked separately.
+
+# Zone visualization (toggle with Y)
+
+- Shows location of zone corners (color of the line depends on the biome) with following information:
+  - Biome, time of the day, current weather, current wind and average wind for the biome.
+  - Avalaible weathers including their chances, wind limits and other properties.
+  - Timer for the next weather chance.
+- Shows spawan zone system (colors depend on the biome) with following information:
+  - Name of the creature, spawn timer, conditions, limits, max stars, amount of spawned, etc. 
+- Shows random event system (black line) with following information:
+  - Timer for the next event attempt.
+  - Available events including their conditions. Grey color shows failed conditions and events that are not currently possible.
+  - If an event is going, shows event name, timer and event spawners.
+
+# Creature visualization (toggle with U)
+
+- Shows location of creatures.
+- Shows creature hearing range (unless infinite).
+- Shows creature vision range and angle (and also the alert range).
+- Shows fire radius for creatures that avoid or are afraid of fires.
+- Shows breeding limit range and parter check range for breedable creatures.
+- Shows food search check range and eating range for tameable creatures.
+
+# Other visualization (toggle with I)
+
+- Shows location of pickables (stones, berries, etc) and their respawn timers (green for respawnable, blue for one time).
+- Shows location of pregenerated structures (black color) and their internal names.
+- Shows location of fixed creature spawn points and their respawn timers (yellow for respawnable, red for one time).
+- Shows location of hidden chests (white color).
+- Shows structure support color for all structures.
+- Shows area effects from structures (and some creatures or weapons), including player base, fire and heat.
+
+# Tooltips (toggle with O)
+
+- Chop and pickaxe damages added to weapon tooltips.
+- Attack speed, stamina usage, hitbox, accuracy and secondary attack effects added to weapon tooltips.
+- Structure internal names, health, damage resistances, support stats (based on material) and current support.
+- Destructible, tree and rock internal names, health, hit noise and damage resistances.
+- Creature health, stagger limit, mass, knockback resistance, damage resistances and item drops.
+- Creature attacks with name, cooldown, damages, range, angle and hitbox.
+- Fireplace, torches and smelters fuel amount.
+- Beehive, smelter, kiln, etc. progression.
+- Plant growth time and progression.
+- Ship speed and wind conditions.
+- Creature spawner spawn timer, spawned enemies and ranges.
 
 # Changelog
 - v1.0.0: 
