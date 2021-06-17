@@ -59,6 +59,12 @@ namespace ESP
     public static float effectAreaLineWidth => configEffectAreaLineWidth.Value;
     public static ConfigEntry<float> configChestRayWidth;
     public static float chestRayWidth => configChestRayWidth.Value;
+    public static ConfigEntry<float> configOreRayWidth;
+    public static float oreRayWidth => configChestRayWidth.Value;
+    public static ConfigEntry<float> configTreeRayWidth;
+    public static float treeRayWidth => configTreeRayWidth.Value;
+    public static ConfigEntry<float> configDestructibleRayWidth;
+    public static float destructibleRayWidth => configDestructibleRayWidth.Value;
     public static ConfigEntry<float> configLocationRayWidth;
     public static float locationRayWidth => configLocationRayWidth.Value;
     public static ConfigEntry<bool> configShowSupport;
@@ -144,6 +150,9 @@ namespace ESP
       Settings.configRandEventSystemRayWidth = config.Bind("Visual", "Random event system", 1f, "Line width of random event system (0 to disable)");
       Settings.configPickableRayWidth = config.Bind("Visual", "Pickable rays", 0.5f, "Line width of pickable locations (0 to disable)");
       Settings.configChestRayWidth = config.Bind("Visual", "Chest rays", 0.5f, "Line width of hidden chest locations (0 to disable)");
+      Settings.configOreRayWidth = config.Bind("Visual", "Ore rays", 0f, "Line width of ore locations (0 to disable)");
+      Settings.configTreeRayWidth = config.Bind("Visual", "Tree rays", 0f, "Line width of tree locations (0 to disable)");
+      Settings.configDestructibleRayWidth = config.Bind("Visual", "Destructible rays", 0f, "Line width of destructible locations (0 to disable)");
       Settings.configLocationRayWidth = config.Bind("Visual", "Location rays", 0.5f, "Line width of pre-generated structure locations (0 to disable)");
       Settings.configShowSupport = config.Bind("Visual", "Support", true, "Always show support color for structures");
       Settings.configEffectAreaLineWidth = config.Bind("Visual", "Area effects", 0.1f, "Line width of area effect ranges(0 to disable)");

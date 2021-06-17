@@ -4,6 +4,15 @@ using System;
 
 namespace ESP
 {
+  public class LocationUtils
+  {
+    public static float GetRayWidth(HitData.DamageModifiers modifiers)
+    {
+      if (modifiers.m_chop == 0) return Settings.oreRayWidth;
+      if (modifiers.m_pickaxe == 0) return Settings.treeRayWidth;
+      return Settings.destructibleRayWidth;
+    }
+  }
   [HarmonyPatch(typeof(BaseAI), "Awake")]
   public class BaseAI_Ray
   {
@@ -46,9 +55,8 @@ namespace ESP
     {
       if (Settings.locationRayWidth == 0)
         return;
-      var text = Format.Name(__instance.gameObject);
       var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.black, Settings.locationRayWidth, Drawer.OTHER);
-      Drawer.AddText(obj, text);
+      Drawer.AddText(obj, Format.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(Container), "Awake")]
@@ -56,11 +64,65 @@ namespace ESP
   {
     public static void Postfix(Container __instance, Piece ___m_piece)
     {
-      if (Settings.chestRayWidth == 0 || !___m_piece || ___m_piece.IsPlacedByPlayer())
-        return;
+      if (Settings.chestRayWidth == 0 || !___m_piece || ___m_piece.IsPlacedByPlayer()) return;
       var text = Format.String(__instance.GetHoverName());
       var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.white, Settings.chestRayWidth, Drawer.OTHER);
       Drawer.AddText(obj, text);
+    }
+  }
+  [HarmonyPatch(typeof(MineRock), "Start")]
+  public class MineRock_Ray
+  {
+    public static void Postfix(MineRock __instance)
+    {
+      var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
+      if (width == 0) return;
+      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.gray, width, Drawer.OTHER);
+      Drawer.AddText(obj, Format.Name(__instance));
+    }
+  }
+  [HarmonyPatch(typeof(MineRock5), "Start")]
+  public class MineRock5_Ray
+  {
+    public static void Postfix(MineRock5 __instance)
+    {
+      var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
+      if (width == 0) return;
+      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.gray, width, Drawer.OTHER);
+      Drawer.AddText(obj, Format.Name(__instance));
+    }
+  }
+  [HarmonyPatch(typeof(Destructible), "Awake")]
+  public class Destructible_Ray
+  {
+    public static void Postfix(Destructible __instance)
+    {
+      var width = LocationUtils.GetRayWidth(__instance.m_damages);
+      if (width == 0) return;
+      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.gray, width, Drawer.OTHER);
+      Drawer.AddText(obj, Format.Name(__instance));
+    }
+  }
+  [HarmonyPatch(typeof(TreeBase), "Awake")]
+  public class TreeBase_Ray
+  {
+    public static void Postfix(TreeBase __instance)
+    {
+      var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
+      if (width == 0) return;
+      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.gray, width, Drawer.OTHER);
+      Drawer.AddText(obj, Format.Name(__instance));
+    }
+  }
+  [HarmonyPatch(typeof(TreeLog), "Awake")]
+  public class TreeLog_Ray
+  {
+    public static void Postfix(TreeLog __instance)
+    {
+      var width = LocationUtils.GetRayWidth(__instance.m_damages);
+      if (width == 0) return;
+      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.gray, width, Drawer.OTHER);
+      Drawer.AddText(obj, Format.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(CreatureSpawner), "Awake")]
@@ -81,11 +143,10 @@ namespace ESP
     public static void Postfix(CreatureSpawner __instance)
     {
       var obj = __instance;
-      if (!IsEnabled(obj))
-        return;
+      if (!IsEnabled(obj)) return;
       var color = GetColor(obj);
       var line = Drawer.DrawMarkerLine(obj.gameObject, color, Settings.creatureSpawnersRayWidth, Drawer.OTHER);
-      Drawer.AddText(line, Format.Name(obj.m_creaturePrefab));
+      Drawer.AddText(line, Format.Name(obj));
     }
   }
 }

@@ -14,10 +14,10 @@ namespace ESP
         Settings.configExtraInfo.Value = value;
       }
     }
-    public static void AddHoverText(GameObject obj)
+    public static void AddHoverText(MonoBehaviour obj)
     {
-      if (obj.GetComponent<Hoverable>() == null)
-        obj.AddComponent<HoverText>().m_text = Format.Name(obj);
+      if (obj.gameObject.GetComponent<Hoverable>() == null)
+        obj.gameObject.AddComponent<HoverText>().m_text = Format.Name(obj);
     }
     public static void AddTexts(GameObject obj, ref string __result)
     {

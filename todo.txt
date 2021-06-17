@@ -17,3 +17,20 @@ Creatures:
  - Eating cooldown.
  - Move speed (depending how it moves?)
  - Targeting system (current status, target, last known location, retreat limit, retreat when struch, etc.)
+
+
+TODO:
+ - Better tooltips (ammo, etc, if something is missing). Like for ammos to show +0 velocity.
+ - Some way to not show custom hovertexts when empty (own hovertext type with check instead of adding the default one?)
+ - Fix exiting ship doesnt work when creature ray comes up.
+ - Item drops on ground (despawn timer with conditions, stacksize?)
+ - Stacksize to item tooltips
+ - Excludion list for effects.
+ - Destructibl, etc item drops
+
+Changes:
+ - Trees, ores and other destructibles show minimum tool tier.
+ - Trees, ores and other destructibles now have a location ray.
+ - Enemy attacks no longer show damage, hit box or other info for non-attacks.
+ - Player weapons and enemy attacks show the hit box type.
+ - Player weapons and enemy attacks with chop or pickaxe show the tool tier.

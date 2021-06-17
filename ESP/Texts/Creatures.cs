@@ -14,9 +14,12 @@ namespace ESP
       if (target == ItemDrop.ItemData.AiTarget.FriendHurt) return "Heal";
       return "";
     }
-    private static string GetDamages(HitData.DamageTypes target)
+    private static string GetDamages(HitData.DamageTypes target, int tier = 0)
     {
-      var text = Localization.instance.Localize(target.GetTooltipString().Replace("\n", ", "));
+      var tooltip = target.GetTooltipString();
+      tooltip = tooltip.Replace("#CHOP_TIER", Texts.GetChopTier(tier));
+      tooltip = tooltip.Replace("#PICKAXE_TIER", Texts.GetPickaxeTier(tier));
+      var text = Localization.instance.Localize(tooltip.Replace("\n", ", "));
       if (text.Length > 0) return text.Substring(2);
       return text;
     }
@@ -31,6 +34,8 @@ namespace ESP
       {
         var weapon = group.First();
         var data = weapon.m_shared;
+        var attack = data.m_attack;
+        var isNonAttack = attack.m_attackType == Attack.AttackType.None;
         var text = Format.Name(weapon, "orange");
         var target = GetTargetName(data.m_aiTargetType);
         if (target != "")
@@ -41,20 +46,25 @@ namespace ESP
           return Format.Progress(timer, data.m_aiAttackInterval) + " s";
         });
         text += ": " + string.Join(", ", timers);
-        var damages = GetDamages(weapon.GetDamage());
-        if (damages != "")
+        var damage = weapon.GetDamage();
+        var damages = GetDamages(damage);
+        if (!isNonAttack && damages != "")
           text += "\n" + damages;
         text += "\nRange: " + Format.Range(data.m_aiAttackRangeMin, data.m_aiAttackRange) + " meters (" + Format.Int(data.m_aiAttackMaxAngle) + " degrees)";
         if (data.m_aiPrioritized)
           text += ", " + Format.String("priority");
 
-        var hitbox = Texts.GetHitboxText(data.m_attack);
-        if (hitbox != "")
+        if (!isNonAttack)
+          text += ", " + Texts.GetAttackType(attack);
+        var hitbox = Texts.GetHitboxText(attack);
+        if (!isNonAttack && hitbox != "")
           text += ", " + hitbox;
-        var projectile = Texts.GetProjectileText(data.m_attack);
-        if (projectile != "")
+        var projectile = Texts.GetProjectileText(attack);
+        if (!isNonAttack && projectile != "")
           text += ", " + projectile;
-        if (!data.m_blockable || !data.m_dodgeable)
+        if (!attack.m_lowerDamagePerHit)
+          text += ", " + Format.String("No multitarget penalty");
+        if (!isNonAttack && (!data.m_blockable || !data.m_dodgeable))
         {
           text += "\n";
           if (!data.m_blockable)
@@ -113,8 +123,8 @@ namespace ESP
       if (monsterAI.m_consumeItems.Count > 0)
       {
         var heal = " (" + Format.Int(monsterAI.m_consumeHeal) + " health)";
-        var items = monsterAI.m_consumeItems.Select(item => Format.Name(item.gameObject));
-        stats += "\n" + string.Join(", ", items) + heal;
+        var items = Format.Name(monsterAI.m_consumeItems);
+        stats += "\n" + items + heal;
       }
       return stats;
     }

@@ -10,12 +10,12 @@ namespace ESP
   [HarmonyPatch(typeof(Destructible), "Awake")]
   public class Destructible_Awake_AddHover
   {
-    public static void Postfix(Destructible __instance) => Hoverables.AddHoverText(__instance.gameObject);
+    public static void Postfix(Destructible __instance) => Hoverables.AddHoverText(__instance);
   }
   [HarmonyPatch(typeof(WearNTear), "Awake")]
   public class WearNTear_Awake_AddHover
   {
-    public static void Postfix(WearNTear __instance) => Hoverables.AddHoverText(__instance.gameObject);
+    public static void Postfix(WearNTear __instance) => Hoverables.AddHoverText(__instance);
   }
   [HarmonyPatch(typeof(Beehive), "GetHoverText")]
   public class Beehive_GetHoverText

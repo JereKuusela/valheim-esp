@@ -15,6 +15,7 @@ namespace ESP
 
       text += "\n" + Format.GetHealth(health, maxHealth);
       text += "\nHit noise: " + Format.Int(obj.m_hitNoise);
+      text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damages.m_chop != HitData.DamageModifier.Immune, obj.m_damages.m_pickaxe != HitData.DamageModifier.Immune);
       text += DamageModifierUtils.Get(obj.m_damages, false);
       return text;
     }
@@ -27,6 +28,7 @@ namespace ESP
 
       text += "\n" + Format.GetHealth(health, maxHealth);
       text += "\nHit noise: " + Format.Int(100);
+      text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_pickaxe != HitData.DamageModifier.Immune);
       text += DamageModifierUtils.Get(obj.m_damageModifiers, false);
       return text;
     }
@@ -39,6 +41,7 @@ namespace ESP
 
       text += "\n" + Format.GetHealth(health, maxHealth);
       text += "\nHit noise: " + Format.Int(obj.m_hitNoise);
+      text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damages.m_chop != HitData.DamageModifier.Immune, obj.m_damages.m_pickaxe != HitData.DamageModifier.Immune);
       text += DamageModifierUtils.Get(obj.m_damages, false);
       return text;
     }
@@ -122,8 +125,9 @@ namespace ESP
       var maxHealth = obj.m_health;
 
       text += "\nHealth per area: " + Format.Int(maxHealth);
-      text += DamageModifierUtils.Get(obj.m_damageModifiers, false);
       text += "\nHit noise: " + Format.Int(100);
+      text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_pickaxe != HitData.DamageModifier.Immune);
+      text += DamageModifierUtils.Get(obj.m_damageModifiers, false);
       return text;
     }
     public static string Get(MineRock5 obj)
@@ -133,8 +137,9 @@ namespace ESP
       var maxHealth = obj.m_health;
 
       text += "\nHealth per area: " + Format.Int(maxHealth);
-      text += DamageModifierUtils.Get(obj.m_damageModifiers, false);
       text += "\nHit noise: " + Format.Int(100);
+      text += Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune);
+      text += DamageModifierUtils.Get(obj.m_damageModifiers, false);
       return text;
     }
     public static string Get(Plant obj)
@@ -144,9 +149,8 @@ namespace ESP
       if (limit == 0) return "";
       var value = Patch.Plant_TimeSincePlanted(obj);
       var text = "\n" + Format.ProgressPercent("Progress", value, limit);
-      var grows = obj.m_grownPrefabs.Select(prefab => Format.Name(prefab));
       text += "\nRadius: " + Format.Meters(obj.m_growRadius);
-      text += "\nGrows: " + string.Join(", ", grows);
+      text += "\nGrows: " + Format.Name(obj.m_grownPrefabs);
       if (obj.m_destroyIfCantGrow)
         text += "\nDestroyed if can't grow";
       return text;

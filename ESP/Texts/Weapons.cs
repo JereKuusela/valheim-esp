@@ -4,6 +4,41 @@ namespace ESP
 {
   public partial class Texts
   {
+    public static string GetChopTier(int tier)
+    {
+      if (tier > 4) return "Blackmetal+";
+      if (tier == 4) return "Blackmetal";
+      if (tier == 3) return "Iron";
+      if (tier == 2) return "Bronze";
+      if (tier == 1) return "Flint";
+      return "Stone";
+    }
+    public static string GetPickaxeTier(int tier)
+    {
+      if (tier > 2) return "Iron+";
+      if (tier == 2) return "Iron";
+      if (tier == 1) return "Bronze";
+      return "Antler";
+    }
+    public static string GetToolTier(int tier, bool chop, bool pickaxe)
+    {
+      var text = "";
+      if (chop)
+        text += "\nAxe: " + Format.String(Texts.GetChopTier(tier));
+      if (pickaxe)
+        text += "\nPickaxe: " + Format.String(Texts.GetPickaxeTier(tier));
+      return text;
+    }
+    private static string GetAttackTypeName(Attack.AttackType type)
+    {
+      if (type == Attack.AttackType.Area) return "Horizontal";
+      if (type == Attack.AttackType.Horizontal) return "Horizontal";
+      if (type == Attack.AttackType.Projectile) return "Projectile";
+      if (type == Attack.AttackType.TriggerProjectile) return "TriggerProjectile";
+      if (type == Attack.AttackType.Vertical) return "Vertical";
+      return "";
+    }
+    public static string GetAttackType(Attack attack, string color = "yellow") => Format.String(GetAttackTypeName(attack.m_attackType), color);
     public static string GetStaminaText(Attack attack, Skills.SkillType skillType)
     {
       if (attack == null) return "";

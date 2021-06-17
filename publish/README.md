@@ -36,7 +36,7 @@ This mod provides tools to get a deeper understanding of the game mechanics.
   - Biome, time of the day, current weather, current wind and average wind for the biome.
   - Avalaible weathers including their chances, wind limits and other properties.
   - Timer for the next weather chance.
-- Shows spawan zone system (colors depend on the biome) with following information:
+- Shows spawn zone system (colors depend on the biome) with following information:
   - Name of the creature, spawn timer, conditions, limits, max stars, amount of spawned, etc. 
 - Shows random event system (black line) with following information:
   - Timer for the next event attempt.
@@ -49,7 +49,7 @@ This mod provides tools to get a deeper understanding of the game mechanics.
 - Shows creature hearing range (unless infinite).
 - Shows creature vision range and angle (and also the alert range).
 - Shows fire radius for creatures that avoid or are afraid of fires.
-- Shows breeding limit range and parter check range for breedable creatures.
+- Shows breeding limit range and partner check range for breedable creatures.
 - Shows food search check range and eating range for tameable creatures.
 
 # Other visualization (toggle with I)
