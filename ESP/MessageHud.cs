@@ -13,7 +13,7 @@ namespace ESP
       if (!Settings.showHud) return "";
       // Wait for the game to load.
       if (Player.m_localPlayer == null) return "";
-      var status = "\n" + GetStatusText();
+      var status = "\n\n" + GetStatusText();
       status += "\n";
       status += Format.String("Y") + ": " + GetShowHide(Drawer.showZones) + " zones, ";
       status += Format.String("U") + ": " + GetShowHide(Drawer.showCreatures) + " creatures, ";
@@ -39,7 +39,9 @@ namespace ESP
       if (!Settings.showTimeAndWeather) return "";
 
       var time = EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment();
-      return time + "\n" + GetSpeed() + "\n" + GetNoise();
+      var prefab = ZNetScene.instance.GetPrefab("Serpent");
+      var counts = prefab == null ? -1 : SpawnSystem.GetNrOfInstances(prefab);
+      return time + "\n" + GetSpeed() + "\n" + GetNoise() + "\n" + "Serpent: " + Format.Int(counts);
     }
 
     private static bool baseGameMessage = false;

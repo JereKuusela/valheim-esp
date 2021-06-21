@@ -4,6 +4,17 @@ using System;
 
 namespace ESP
 {
+  public class AreaEffectUtils
+  {
+    private static bool IsEnabled(EffectArea obj)
+    {
+      if (Settings.creatureSpawnersRayWidth == 0) return false;
+      var name = obj.name.ToLower();
+      var excluded = Settings.excludedCreatureSpawners.ToLower().Split(',');
+      if (Array.Exists(excluded, item => item == name)) return false;
+      return true;
+    }
+  }
   [HarmonyPatch(typeof(EffectArea), "Awake")]
   public class EffectArea_Awake
   {

@@ -8,8 +8,8 @@ namespace ESP
   {
     public static float GetRayWidth(HitData.DamageModifiers modifiers)
     {
-      if (modifiers.m_chop == 0) return Settings.oreRayWidth;
-      if (modifiers.m_pickaxe == 0) return Settings.treeRayWidth;
+      if (modifiers.m_chop == HitData.DamageModifier.Immune) return Settings.oreRayWidth;
+      if (modifiers.m_pickaxe == HitData.DamageModifier.Immune) return Settings.treeRayWidth;
       return Settings.destructibleRayWidth;
     }
   }

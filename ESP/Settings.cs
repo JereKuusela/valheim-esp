@@ -60,7 +60,7 @@ namespace ESP
     public static ConfigEntry<float> configChestRayWidth;
     public static float chestRayWidth => configChestRayWidth.Value;
     public static ConfigEntry<float> configOreRayWidth;
-    public static float oreRayWidth => configChestRayWidth.Value;
+    public static float oreRayWidth => configOreRayWidth.Value;
     public static ConfigEntry<float> configTreeRayWidth;
     public static float treeRayWidth => configTreeRayWidth.Value;
     public static ConfigEntry<float> configDestructibleRayWidth;
@@ -70,6 +70,8 @@ namespace ESP
     public static ConfigEntry<bool> configShowSupport;
     public static bool showSupport => configShowSupport.Value;
 
+    public static ConfigEntry<string> configExcludedAreaEffects;
+    public static string excludedAreaEffects => configExcludedAreaEffects.Value;
     public static ConfigEntry<string> configExcludedCreatures;
     public static string excludedCreatures => configExcludedCreatures.Value;
     public static ConfigEntry<string> configExcludedCreatureSpawners;
@@ -158,6 +160,7 @@ namespace ESP
       Settings.configEffectAreaLineWidth = config.Bind("Visual", "Area effects", 0.1f, "Line width of area effect ranges(0 to disable)");
       Settings.configNoiseLineWidth = config.Bind("Visual", "Noise", 0.0f, "Line width of noise range (0 to disable)");
 
+      Settings.configExcludedAreaEffects = config.Bind("Exclusions", "Area effects", "", "List of area effects separated by ,");
       Settings.configExcludedCreatures = config.Bind("Exclusions", "Creatures", "", "List of creatures separated by ,");
       Settings.configExcludedSpawnSystems = config.Bind("Exclusions", "Spawn systems", "Seagal,FireFlies", "List of creatures separated by , that are not visualized");
       Settings.configExcludedCreatureSpawners = config.Bind("Exclusions", "Spawn points", "", "List of creatures separated by , that are not visualized");

@@ -27,6 +27,8 @@ TODO:
  - Stacksize to item tooltips
  - Excludion list for effects.
  - Destructibl, etc item drops
+ - Enemy amount trackers (+ select which enemies)
+ - For staggering, check does the animation exist (like for Deathsquitos)
 
 Changes:
  - Trees, ores and other destructibles show minimum tool tier.
