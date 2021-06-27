@@ -1,11 +1,17 @@
 using System;
 using UnityEngine;
-using System.Linq;
 
 namespace ESP
 {
   public partial class Texts
   {
+    private static string Get(Piece.ComfortGroup group) {
+      if (group == Piece.ComfortGroup.Banner) return "Banne";
+      if (group == Piece.ComfortGroup.Bed) return "Bed";
+      if (group == Piece.ComfortGroup.Chair) return "Chair";
+      if (group == Piece.ComfortGroup.Fire) return "Fire";
+      return "None";
+    }
     public static string Get(TreeLog obj)
     {
       if (!Settings.destructibles || !obj) return "";
@@ -16,7 +22,7 @@ namespace ESP
       text += "\n" + Format.GetHealth(health, maxHealth);
       text += "\nHit noise: " + Format.Int(obj.m_hitNoise);
       text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damages.m_chop != HitData.DamageModifier.Immune, obj.m_damages.m_pickaxe != HitData.DamageModifier.Immune);
-      text += DamageModifierUtils.Get(obj.m_damages, false);
+      text += DamageModifierUtils.Get(obj.m_damages, false, false);
       return text;
     }
     public static string Get(TreeBase obj)
@@ -29,7 +35,7 @@ namespace ESP
       text += "\n" + Format.GetHealth(health, maxHealth);
       text += "\nHit noise: " + Format.Int(100);
       text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_pickaxe != HitData.DamageModifier.Immune);
-      text += DamageModifierUtils.Get(obj.m_damageModifiers, false);
+      text += DamageModifierUtils.Get(obj.m_damageModifiers, false, false);
       return text;
     }
     public static string Get(Destructible obj)
@@ -42,7 +48,7 @@ namespace ESP
       text += "\n" + Format.GetHealth(health, maxHealth);
       text += "\nHit noise: " + Format.Int(obj.m_hitNoise);
       text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damages.m_chop != HitData.DamageModifier.Immune, obj.m_damages.m_pickaxe != HitData.DamageModifier.Immune);
-      text += DamageModifierUtils.Get(obj.m_damages, false);
+      text += DamageModifierUtils.Get(obj.m_damages, false, false);
       return text;
     }
     private static string GetMaterialName(WearNTear.MaterialType material)
@@ -60,7 +66,7 @@ namespace ESP
       var health = obj.GetHealthPercentage();
 
       text += "\n" + Format.GetHealth(health * obj.m_health, obj.m_health);
-      text += DamageModifierUtils.Get(obj.m_damages);
+      text += DamageModifierUtils.Get(obj.m_damages, true, false);
 
       if (SupportUtils.Enabled(obj))
       {
@@ -69,6 +75,17 @@ namespace ESP
         var support = Math.Min(Patch.GetFloat(obj, "support", maxSupport), maxSupport);
         text += "\n" + Format.String(GetMaterialName(obj.m_materialType)) + ": " + Format.Progress(support, minSupport) + " support";
         text += "\n" + Format.Percent(horizontalLoss) + " horizontal loss, " + Format.Percent(verticalLoss) + " vertical loss";
+      }
+      return text;
+    }
+    public static string Get(Piece obj)
+    {
+      if (!Settings.structures || !obj) return "";
+      var text = "";
+      if (obj.m_comfort > 0) {
+        text += "\nComfort: " + Format.Int(obj.m_comfort);
+        if (obj.m_comfortGroup != Piece.ComfortGroup.None)
+          text += " (" + Get(obj.m_comfortGroup) + ")";
       }
       return text;
     }
@@ -127,7 +144,7 @@ namespace ESP
       text += "\nHealth per area: " + Format.Int(maxHealth);
       text += "\nHit noise: " + Format.Int(100);
       text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_pickaxe != HitData.DamageModifier.Immune);
-      text += DamageModifierUtils.Get(obj.m_damageModifiers, false);
+      text += DamageModifierUtils.Get(obj.m_damageModifiers, false, false);
       return text;
     }
     public static string Get(MineRock5 obj)
@@ -139,7 +156,7 @@ namespace ESP
       text += "\nHealth per area: " + Format.Int(maxHealth);
       text += "\nHit noise: " + Format.Int(100);
       text += Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune);
-      text += DamageModifierUtils.Get(obj.m_damageModifiers, false);
+      text += DamageModifierUtils.Get(obj.m_damageModifiers, false, false);
       return text;
     }
     public static string Get(Plant obj)

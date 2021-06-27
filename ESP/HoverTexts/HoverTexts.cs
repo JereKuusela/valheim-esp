@@ -92,6 +92,16 @@ namespace ESP
   {
     public static void Postfix(Sign __instance, ref string __result) => Hoverables.AddTexts(__instance.gameObject, ref __result);
   }
+  [HarmonyPatch(typeof(ItemStand), "GetHoverText")]
+  public class ItemStand_GetHoverText
+  {
+    public static void Postfix(ItemStand __instance, ref string __result) => Hoverables.AddTexts(__instance.gameObject, ref __result);
+  }
+  [HarmonyPatch(typeof(StationExtension), "GetHoverText")]
+  public class StationExtension_GetHoverText
+  {
+    public static void Postfix(StationExtension __instance, ref string __result) => Hoverables.AddTexts(__instance.gameObject, ref __result);
+  }
   [HarmonyPatch(typeof(Vagon), "GetHoverText")]
   public class Vagon_GetHoverText
   {

@@ -1,5 +1,6 @@
 General:
  * Text system refactored. Add functions that require a dictionary (enum to text). Then the caller function can decide what to show and in what order.
+ * Actions: E to freeze creature, numbers to start events when hovering the event ray, etc
 
 Drawer:
  - Some kind of color customization (rgb + string to color).
@@ -25,10 +26,10 @@ TODO:
  - Fix exiting ship doesnt work when creature ray comes up.
  - Item drops on ground (despawn timer with conditions, stacksize?)
  - Stacksize to item tooltips
- - Excludion list for effects.
  - Destructibl, etc item drops
  - Enemy amount trackers (+ select which enemies)
  - For staggering, check does the animation exist (like for Deathsquitos)
+ - Coordinates, forest factor, etc. to hud
 
 Changes:
  - Trees, ores and other destructibles show minimum tool tier.
@@ -36,3 +37,10 @@ Changes:
  - Enemy attacks no longer show damage, hit box or other info for non-attacks.
  - Player weapons and enemy attacks show the hit box type.
  - Player weapons and enemy attacks with chop or pickaxe show the tool tier.
+ - Item stands and crafting station upgrades now show additional information.
+ - Fixed visualization toggle affecting whether support data was shown on tooltips.
+ - Fixed ward damage resistances not showing chop and pickaxe immunity.
+ - Fixed resistant resistance not showing in some cases.
+ - Added setting for disabling visualization for certain structure effects.
+ - Added visualization for comfort range.
+ - Added comfort amount and comfort category to structure tooltips.

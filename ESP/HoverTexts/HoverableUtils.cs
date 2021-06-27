@@ -35,6 +35,7 @@ namespace ESP
       __result += Texts.Get(obj.GetComponentInParent<Fireplace>());
       __result += Texts.Get(obj.GetComponentInParent<Smelter>());
       __result += Texts.Get(obj.GetComponentInParent<WearNTear>());
+      __result += Texts.Get(obj.GetComponentInParent<Piece>());
       __result += Texts.Get(obj.GetComponentInParent<Plant>());
       __result += Texts.Get(obj.GetComponentInParent<PrivateArea>());
       __result += Texts.Get(obj.GetComponentInParent<MineRock>());

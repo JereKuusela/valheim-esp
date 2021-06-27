@@ -112,7 +112,7 @@ namespace ESP
       stats += GetStaggerText(health, obj.m_staggerDamageFactor, staggerDamage);
       stats += "\n" + "Mass: " + Format.Int(body.mass) + " (" + Format.Percent(1f - 5f / body.mass) + " knockback resistance)";
       var damageModifiers = Patch.Character_GetDamageModifiers(obj);
-      stats += DamageModifierUtils.Get(damageModifiers);
+      stats += DamageModifierUtils.Get(damageModifiers, true, true);
       if (baseAI)
       {
         Vector3 patrolPoint;

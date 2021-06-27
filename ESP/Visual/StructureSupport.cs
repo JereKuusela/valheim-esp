@@ -21,7 +21,7 @@ namespace ESP
     public static bool Enabled(WearNTear obj)
     {
       var piece = obj.GetComponent<Piece>();
-      return SupportUtils.Shown && Settings.showSupport && obj.m_supports && (!piece || !piece.m_waterPiece);
+      return Settings.showSupport && obj.m_supports && (!piece || !piece.m_waterPiece);
     }
   }
 
@@ -39,7 +39,7 @@ namespace ESP
   {
     public static void Postfix(WearNTear __instance)
     {
-      if (!SupportUtils.Enabled(__instance)) return;
+      if (!SupportUtils.Shown || !SupportUtils.Enabled(__instance)) return;
       __instance.CancelInvoke("ResetHighlight");
     }
   }
