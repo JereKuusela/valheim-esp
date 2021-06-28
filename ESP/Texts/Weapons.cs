@@ -88,7 +88,7 @@ namespace ESP
       if (animation == "atgeir_attack") return "2.98 s (0.84 + 0.86 + 1.28)";
       if (animation == "atgeir_secondary") return "1.74 s";
       if (animation == "battleaxe_attack") return "3.44 s (1.82 + 0.92 + 0.7)";
-      if (animation == "battleaxe_secondary") return "";
+      if (animation == "battleaxe_secondary") return "0.94 s";
       if (animation == "bow_fire") return (0.8 + holdDuration).ToString(Format.FORMAT) + " s";
       if (animation == "emote_drink") return "";
       if (animation == "knife_stab") return "2.04 s (0.88 + 0.54 + 0.62)";

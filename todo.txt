@@ -30,6 +30,7 @@ TODO:
  - Enemy amount trackers (+ select which enemies)
  - For staggering, check does the animation exist (like for Deathsquitos)
  - Coordinates, forest factor, etc. to hud
+ - Experience gains to HUD
 
 Changes:
  - Trees, ores and other destructibles show minimum tool tier.
@@ -44,3 +45,4 @@ Changes:
  - Added setting for disabling visualization for certain structure effects.
  - Added visualization for comfort range.
  - Added comfort amount and comfort category to structure tooltips.
+ - Fixed battleaxe not showing secondary attack stats.
