@@ -40,6 +40,7 @@ namespace ESP
       __result += Texts.Get(obj.GetComponentInParent<PrivateArea>());
       __result += Texts.Get(obj.GetComponentInParent<MineRock>());
       __result += Texts.Get(obj.GetComponentInParent<MineRock5>());
+      __result += Texts.Get(obj.GetComponentInParent<ItemDrop>());
       if (Settings.showShipStats)
         __result += Texts.Get(obj.GetComponentInParent<Ship>());
       __result += Texts.Get(obj.GetComponentInParent<EffectArea>());

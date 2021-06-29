@@ -5,7 +5,8 @@ namespace ESP
 {
   public partial class Texts
   {
-    private static string Get(Piece.ComfortGroup group) {
+    private static string Get(Piece.ComfortGroup group)
+    {
       if (group == Piece.ComfortGroup.Banner) return "Banne";
       if (group == Piece.ComfortGroup.Bed) return "Bed";
       if (group == Piece.ComfortGroup.Chair) return "Chair";
@@ -82,7 +83,8 @@ namespace ESP
     {
       if (!Settings.structures || !obj) return "";
       var text = "";
-      if (obj.m_comfort > 0) {
+      if (obj.m_comfort > 0)
+      {
         text += "\nComfort: " + Format.Int(obj.m_comfort);
         if (obj.m_comfortGroup != Piece.ComfortGroup.None)
           text += " (" + Get(obj.m_comfortGroup) + ")";
@@ -145,6 +147,17 @@ namespace ESP
       text += "\nHit noise: " + Format.Int(100);
       text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_pickaxe != HitData.DamageModifier.Immune);
       text += DamageModifierUtils.Get(obj.m_damageModifiers, false, false);
+
+
+      return text;
+    }
+    public static string Get(DropTable obj)
+    {
+      if (!Settings.destructibles) return "";
+      var text = "";
+      if (obj.m_dropChance < 1f)
+        text += Format.Percent(obj.m_dropChance) + " for ";
+      text += Format.Range(obj.m_dropMin, obj.m_dropMax) + " items";
       return text;
     }
     public static string Get(MineRock5 obj)

@@ -100,16 +100,22 @@ namespace ESP
       {
         var mode = "";
         if (monsterAI.IsAlerted())
-          mode += "Alerted";
+          mode += Format.String("Alerted", "red");
         if (monsterAI.IsAlerted() && monsterAI.HuntPlayer())
           mode += ", ";
         if (monsterAI.HuntPlayer())
-          mode += "Hunt mode";
-        stats += "\n<color=red>" + mode + "</color>";
+          mode += Format.String("Hunt mode", "red");
+        stats += "\n" + mode;
       }
+      if (obj.IsStaggering())
+        stats += ", " + Format.String("Staggering", "red");
       var health = obj.GetMaxHealth();
       stats += "\n" + Format.GetHealth(obj.GetHealth(), health);
-      stats += GetStaggerText(health, obj.m_staggerDamageFactor, staggerDamage);
+      var factor = obj.m_staggerDamageFactor;
+      // Doesn't have stagger animation so hardcoded to be immune.
+      if ((obj.m_name == "Deathsquite"))
+        factor = 0f;
+      stats += GetStaggerText(health, factor, staggerDamage);
       stats += "\n" + "Mass: " + Format.Int(body.mass) + " (" + Format.Percent(1f - 5f / body.mass) + " knockback resistance)";
       var damageModifiers = Patch.Character_GetDamageModifiers(obj);
       stats += DamageModifierUtils.Get(damageModifiers, true, true);

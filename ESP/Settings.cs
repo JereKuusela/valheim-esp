@@ -32,6 +32,8 @@ namespace ESP
     public static bool destructibles => configDestructibles.Value;
     public static ConfigEntry<bool> configPickables;
     public static bool pickables => configPickables.Value;
+    public static ConfigEntry<bool> configItemDrops;
+    public static bool itemDrops => configItemDrops.Value;
 
     public static ConfigEntry<float> configCreatureFireLineWidth;
     public static float creatureFireLineWidth => configCreatureFireLineWidth.Value;
@@ -130,6 +132,7 @@ namespace ESP
       Settings.configCreatures = config.Bind("Tooltips", "Creatures", true, "Show creature stats (health, resistances, drops, attacks, taming, etc.)");
       Settings.configDestructibles = config.Bind("Tooltips", "Destructibles", true, "Show destructible stats (health, resistances)");
       Settings.configPickables = config.Bind("Tooltips", "Pickables", true, "Show pickable stats (respawn, timer)");
+      Settings.configItemDrops = config.Bind("Tooltips", "Item drops", true, "Show item drop stats (stack size, despawn timer)");
       Settings.configDrops = config.Bind("Tooltips", "Drops", true, "Show creature drops");
       Settings.configBreeding = config.Bind("Tooltips", "Breeding", true, "Show taming and breeding related information");
       Settings.configStatus = config.Bind("Tooltips", "Status effects", true, "Show creature status effects");

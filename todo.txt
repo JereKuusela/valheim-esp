@@ -24,13 +24,12 @@ TODO:
  - Better tooltips (ammo, etc, if something is missing). Like for ammos to show +0 velocity.
  - Some way to not show custom hovertexts when empty (own hovertext type with check instead of adding the default one?)
  - Fix exiting ship doesnt work when creature ray comes up.
- - Item drops on ground (despawn timer with conditions, stacksize?)
  - Stacksize to item tooltips
- - Destructibl, etc item drops
+ - Destructibl, etc item drops: Tin has DropOnDestroyed, everything else if minerock5 without "one of each" and individual stack size of 1
  - Enemy amount trackers (+ select which enemies)
- - For staggering, check does the animation exist (like for Deathsquitos)
  - Coordinates, forest factor, etc. to hud
  - Experience gains to HUD
+ - Support visual doesn't update automatically if it changes (adding pieces below etc)
 
 Changes:
  - Trees, ores and other destructibles show minimum tool tier.
@@ -46,3 +45,6 @@ Changes:
  - Added visualization for comfort range.
  - Added comfort amount and comfort category to structure tooltips.
  - Fixed battleaxe not showing secondary attack stats.
+ - Added stack size and despawn timer to the item drop tooltips.
+ - Deathsquite hardcoded to be immune to staggering (no stagger animation).
+ - Creature tooltip now shows while the creature is staggering.

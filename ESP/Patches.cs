@@ -143,5 +143,17 @@ namespace ESP
     {
       throw new NotImplementedException("Dummy");
     }
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(ItemDrop), "GetTimeSinceSpawned")]
+    public static double ItemDrop_GetTimeSinceSpawned(ItemDrop instance)
+    {
+      throw new NotImplementedException("Dummy");
+    }
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(ItemDrop), "IsInsideBase")]
+    public static bool ItemDrop_IsInsideBase(ItemDrop instance)
+    {
+      throw new NotImplementedException("Dummy");
+    }
   }
 }
