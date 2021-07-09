@@ -20,7 +20,7 @@ namespace ESP
     {
       var obj = ___m_character;
       if (Settings.creatureRayWidth == 0 || CharacterUtils.IsExcluded(obj)) return;
-      var line = Drawer.DrawMarkerLine(obj.gameObject, Color.magenta, Settings.creatureRayWidth, Drawer.CREATURE);
+      var line = Drawer.DrawMarkerLine(obj, Color.magenta, Settings.creatureRayWidth, Drawer.CREATURE);
       Drawer.AddText(line);
     }
   }
@@ -44,7 +44,7 @@ namespace ESP
       if (!IsEnabled(__instance))
         return;
       var color = GetColor(__instance);
-      var obj = Drawer.DrawMarkerLine(__instance.gameObject, color, Settings.pickableRayWidth, Drawer.OTHER);
+      var obj = Drawer.DrawMarkerLine(__instance, color, Settings.pickableRayWidth, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
   }
@@ -55,7 +55,7 @@ namespace ESP
     {
       if (Settings.locationRayWidth == 0)
         return;
-      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.black, Settings.locationRayWidth, Drawer.OTHER);
+      var obj = Drawer.DrawMarkerLine(__instance, Color.black, Settings.locationRayWidth, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
   }
@@ -66,7 +66,7 @@ namespace ESP
     {
       if (Settings.chestRayWidth == 0 || !___m_piece || ___m_piece.IsPlacedByPlayer()) return;
       var text = Format.String(__instance.GetHoverName());
-      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.white, Settings.chestRayWidth, Drawer.OTHER);
+      var obj = Drawer.DrawMarkerLine(__instance, Color.white, Settings.chestRayWidth, Drawer.OTHER);
       Drawer.AddText(obj, text);
     }
   }
@@ -77,7 +77,7 @@ namespace ESP
     {
       var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
       if (width == 0) return;
-      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.gray, width, Drawer.OTHER);
+      var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
   }
@@ -88,7 +88,7 @@ namespace ESP
     {
       var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
       if (width == 0) return;
-      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.gray, width, Drawer.OTHER);
+      var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
   }
@@ -99,7 +99,7 @@ namespace ESP
     {
       var width = LocationUtils.GetRayWidth(__instance.m_damages);
       if (width == 0) return;
-      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.gray, width, Drawer.OTHER);
+      var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
   }
@@ -110,7 +110,7 @@ namespace ESP
     {
       var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
       if (width == 0) return;
-      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.gray, width, Drawer.OTHER);
+      var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
   }
@@ -121,7 +121,7 @@ namespace ESP
     {
       var width = LocationUtils.GetRayWidth(__instance.m_damages);
       if (width == 0) return;
-      var obj = Drawer.DrawMarkerLine(__instance.gameObject, Color.gray, width, Drawer.OTHER);
+      var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
   }
@@ -145,7 +145,7 @@ namespace ESP
       var obj = __instance;
       if (!IsEnabled(obj)) return;
       var color = GetColor(obj);
-      var line = Drawer.DrawMarkerLine(obj.gameObject, color, Settings.creatureSpawnersRayWidth, Drawer.OTHER);
+      var line = Drawer.DrawMarkerLine(obj, color, Settings.creatureSpawnersRayWidth, Drawer.OTHER);
       Drawer.AddText(line, Format.Name(obj));
     }
   }

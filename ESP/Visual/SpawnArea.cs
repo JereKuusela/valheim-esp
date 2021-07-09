@@ -45,11 +45,11 @@ namespace ESP
     {
       if (Settings.spawnAreasLineWidth == 0)
         return;
-      var obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_triggerDistance, Color.red, Settings.spawnAreasLineWidth, Drawer.OTHER);
+      var obj = Drawer.DrawSphere(__instance, __instance.m_triggerDistance, Color.red, Settings.spawnAreasLineWidth, Drawer.OTHER);
       obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
-      obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_nearRadius, Color.white, Settings.spawnAreasLineWidth, Drawer.OTHER);
+      obj = Drawer.DrawSphere(__instance, __instance.m_nearRadius, Color.white, Settings.spawnAreasLineWidth, Drawer.OTHER);
       obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
-      obj = Drawer.DrawSphere(__instance.gameObject, __instance.m_spawnRadius, Color.cyan, Settings.spawnAreasLineWidth, Drawer.OTHER);
+      obj = Drawer.DrawSphere(__instance, __instance.m_spawnRadius, Color.cyan, Settings.spawnAreasLineWidth, Drawer.OTHER);
       obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
     }
   }

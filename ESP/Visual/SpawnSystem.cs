@@ -22,12 +22,12 @@ namespace ESP
       var biome2 = heightmap.GetBiome(instance.transform.position + pos2);
       var biome3 = heightmap.GetBiome(instance.transform.position + pos3);
       var biome4 = heightmap.GetBiome(instance.transform.position + pos4);
-      DrawMarker(instance.gameObject, pos1, biome1);
-      DrawMarker(instance.gameObject, pos2, biome2);
-      DrawMarker(instance.gameObject, pos3, biome3);
-      DrawMarker(instance.gameObject, pos4, biome4);
+      DrawMarker(instance, pos1, biome1);
+      DrawMarker(instance, pos2, biome2);
+      DrawMarker(instance, pos3, biome3);
+      DrawMarker(instance, pos4, biome4);
     }
-    private static void DrawMarker(GameObject parent, Vector3 position, Heightmap.Biome biome)
+    private static void DrawMarker(MonoBehaviour parent, Vector3 position, Heightmap.Biome biome)
     {
       var obj = Drawer.DrawMarkerLine(parent, Texts.GetColor(biome), Settings.biomeCornerRayWidth, Drawer.ZONE, position);
       var text = obj.AddComponent<BiomeText>();
@@ -68,7 +68,7 @@ namespace ESP
         if (!IsEnabled(spawnData)) return;
         var stableHashCode = ("b_" + spawnData.m_prefab.name + num.ToString()).GetStableHashCode();
         var position = new Vector3(counter * 2 * Settings.spawnSystemRayWidth, 0, 0);
-        var obj = Drawer.DrawMarkerLine(instance.gameObject, Texts.GetColor(biome), Settings.spawnSystemRayWidth, Drawer.ZONE, position);
+        var obj = Drawer.DrawMarkerLine(instance, Texts.GetColor(biome), Settings.spawnSystemRayWidth, Drawer.ZONE, position);
         var text = obj.AddComponent<SpawnSystemText>();
         text.spawnSystem = instance;
         text.spawnData = spawnData;
@@ -79,7 +79,7 @@ namespace ESP
     private static void DrawRandEventSystem(SpawnSystem instance)
     {
       if (Settings.randEventSystemRayWidth == 0) return;
-      var obj = Drawer.DrawMarkerLine(instance.gameObject, Color.black, Settings.randEventSystemRayWidth, Drawer.ZONE, new Vector3(0, 0, 5));
+      var obj = Drawer.DrawMarkerLine(instance, Color.black, Settings.randEventSystemRayWidth, Drawer.ZONE, new Vector3(0, 0, 5));
       obj.AddComponent<RandEventSystemText>().spawnSystem = instance;
     }
     public static void Postfix(SpawnSystem __instance)

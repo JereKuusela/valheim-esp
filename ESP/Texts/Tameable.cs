@@ -2,14 +2,21 @@ namespace ESP
 {
   public partial class Texts
   {
-    private static string GetFed(Tameable obj)
+    private static string GetFed(Tameable obj, MonsterAI monsterAI)
     {
       if (!Settings.breeding) return "";
       var feedingTime = Patch.GetLong(obj, "TameLastFeeding");
       var elapsed = Patch.GetElapsed(obj, "TameLastFeeding");
       var value = feedingTime == 0 ? 0 : obj.m_fedDuration - elapsed;
-      var limit = obj.m_fedDuration;
-      return "\n" + Format.ProgressPercent("Food", value, limit);
+      var fed = value > 0;
+      if (fed)
+        return "\n" + Format.ProgressPercent("Food", value, obj.m_fedDuration);
+      if (monsterAI)
+      {
+        value = Patch.m_consumeSearchTimer(monsterAI);
+        return "\n" + Format.ProgressPercent("Searching food", value, monsterAI.m_consumeSearchInterval);
+      }
+      return "";
     }
     private static string GetTaming(Tameable obj)
     {
@@ -56,8 +63,9 @@ namespace ESP
       if (!obj) return "";
       var procreation = obj.GetComponent<Procreation>();
       var character = obj.GetComponent<Character>();
+      var monsterAI = obj.GetComponent<MonsterAI>();
       if (!character) return "";
-      var text = GetFed(obj);
+      var text = GetFed(obj, monsterAI);
       if (character.IsTamed())
       {
         text += GetLove(procreation);

@@ -21,7 +21,7 @@ namespace ESP
     {
       return String(value.ToString("N2", CultureInfo.InvariantCulture).PadLeft(5, '0'));
     }
-    public static string Percent(double value) => String(value.ToString("P0", CultureInfo.InvariantCulture));
+    public static string Percent(double value, string color = "yellow") => String(value.ToString("P0", CultureInfo.InvariantCulture), color);
 
     private static string PlainRange(double min, double max)
     {
@@ -36,7 +36,7 @@ namespace ESP
         return max.ToString("P0", CultureInfo.InvariantCulture);
       return min.ToString("P0", CultureInfo.InvariantCulture) + "-" + max.ToString("P0", CultureInfo.InvariantCulture);
     }
-    public static string Progress(double value, double limit) => String(value.ToString("N0")) + "/" + String(limit.ToString("N0"));
+    public static string Progress(double value, double limit, bool percent = false) => String(value.ToString("N0")) + "/" + String(limit.ToString("N0")) + (percent ? " (" + Percent(value / limit) + ")" : "");
     public static string Int(double value, string color = "yellow") => String(value.ToString("N0"), color);
     public static string ProgressPercent(string header, double value, double limit) => header + ": " + Progress(value, limit) + " seconds (" + Percent(value / limit) + ")";
 
@@ -68,7 +68,6 @@ namespace ESP
       => "Health: " + Format.Progress(health, limit) + " (" + Format.Percent(health / limit) + ")";
 
     public static string Name(string name, string color = "yellow") => String(Localization.instance.Localize(name), color);
-    private static string Name(GameObject obj, string color = "yellow") => Name(Utils.GetPrefabName(obj), color);
     public static string Name(Character obj, string color = "yellow") => Name(obj.m_name, color);
     public static string Name(ItemDrop.ItemData obj, string color = "yellow") => Name(obj.m_shared.m_name, color);
     public static string Name(Heightmap.Biome obj, string color = "yellow") => Name(Texts.GetName(obj), color);
@@ -76,7 +75,21 @@ namespace ESP
     public static string Name(CreatureSpawner obj, string color = "yellow") => Name(obj.m_creaturePrefab, color);
     public static string Name(IEnumerable<GameObject> objs, string color = "yellow") => string.Join(", ", objs.Select(prefab => Format.Name(prefab, color)));
     public static string Name(IEnumerable<ItemDrop> objs, string color = "yellow") => string.Join(", ", objs.Select(prefab => Format.Name(prefab, color)));
+    public static string Name(CraftingStation obj, string color = "yellow") => Name(obj.m_name, color);
+    public static string Name(Fireplace obj, string color = "yellow") => Name(obj.m_name, color);
+    public static string Name(Fermenter obj, string color = "yellow") => Name(obj.m_name, color);
+    public static string Name(Piece obj, string color = "yellow") => Name(obj.m_name, color);
+    public static string Name(Beehive obj, string color = "yellow") => Name(obj.m_name, color);
+    public static string Name(Bed obj, string color = "yellow") => Name(obj.GetHoverName(), color);
+    public static string Name(Windmill obj, string color = "yellow") => Name(obj.GetComponent<Smelter>().m_name, color);
+    public static string Name(TreeLog obj, string color = "yellow") => Name(obj.name, color);
+    public static string Name(Location obj, string color = "yellow") => Name(obj.name, color);
+    public static string Name(MineRock obj, string color = "yellow") => Name(obj.name, color);
+    public static string Name(MineRock5 obj, string color = "yellow") => Name(obj.name, color);
+    public static string Name(TreeBase obj, string color = "yellow") => Name(obj.name, color);
+    public static string Name(Destructible obj, string color = "yellow") => Name(obj.name, color);
     public static string Name(MonoBehaviour obj, string color = "yellow") => Name(obj.gameObject, color);
+    private static string Name(GameObject obj, string color = "yellow") => Name(Utils.GetPrefabName(obj), color);
 
     public static string Radius(float radius) => "Radius: " + Format.Float(radius);
   }

@@ -16,6 +16,9 @@
     <Reference Include="UnityEngine.PhysicsModule.dll">
       <HintPath>..\Libs\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Physics2DModule.dll">
+      <HintPath>..\Libs\UnityEngine.Physics2DModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI.dll">
       <HintPath>..\Libs\UnityEngine.UI.dll</HintPath>
     </Reference>

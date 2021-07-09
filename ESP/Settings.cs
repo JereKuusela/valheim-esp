@@ -41,6 +41,10 @@ namespace ESP
     public static float creatureRayWidth => configCreatureRayWidth.Value;
     public static ConfigEntry<float> configBreedingLineWidth;
     public static float breedingLineWidth => configBreedingLineWidth.Value;
+    public static ConfigEntry<float> configCoverRayWidth;
+    public static float coverRayWidth => configCoverRayWidth.Value;
+    public static ConfigEntry<float> configSmokeLineWidth;
+    public static float smokeLineWidth => configSmokeLineWidth.Value;
     public static ConfigEntry<float> configSenseLineWidth;
     public static float senseLineWidth => configSenseLineWidth.Value;
     public static ConfigEntry<float> configNoiseLineWidth;
@@ -147,6 +151,8 @@ namespace ESP
       Settings.configCreatureFireLineWidth = config.Bind("Visual", "Creature fire alert range", 0.1f, "Vsualize radius of fire fearing");
       Settings.configSenseLineWidth = config.Bind("Visual", "Creature senses", 0.1f, "Line width of sight and hear ranges (0 to disable)");
       Settings.configBreedingLineWidth = config.Bind("Visual", "Breeding limits", 0.1f, "Visualize breeding parther check and total limit ranges");
+      Settings.configCoverRayWidth = config.Bind("Visual", "Cover rays", 0.1f, "Visualize cover check rays");
+      Settings.configSmokeLineWidth = config.Bind("Visual", "Smoke", 0.1f, "Visualize smoke particles");
       Settings.configCreatureRayWidth = config.Bind("Visual", "Creature rays", 0.5f, "Line width for creature locations (0 to disable)");
       Settings.configCreatureSpawnersRayWidth = config.Bind("Visual", "Spawn points", 0.1f, "Line width of fixed creature spawn points (0 to disable)");
       Settings.configSpawnAreasLineWidth = config.Bind("Visual", "Creature spawners", 0.1f, "Line width of physical creature spawner ranges (0 to disable)");

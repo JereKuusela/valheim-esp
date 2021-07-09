@@ -202,11 +202,12 @@ namespace ESP
       var tilt = Format.Range(spawnData.m_minTilt, spawnData.m_maxTilt);
       var ocean = Format.Range(spawnData.m_minOceanDepth, spawnData.m_maxOceanDepth);
       var hunt = spawnData.m_huntPlayer ? ", forces hunt mode" : "";
+      var spawnRadius = Format.Range(spawnData.m_spawnRadiusMin > 0 ? spawnData.m_spawnRadiusMin : 40, spawnData.m_spawnRadiusMax > 0 ? spawnData.m_spawnRadiusMax : 80) + " meters";
       text += "\nCreature: " + Format.String(spawnData.m_prefab.name) + hunt;
       text += "\n" + Format.GetAttempt(timeSinceSpawned, spawnData.m_spawnInterval, spawnData.m_spawnChance);
       var biomeString = Texts.GetBiomes(spawnData.m_biome, spawnData.m_biomeArea);
       text += "\n" + biomeString + forest + forest + weather + global + time;
-      text += "\nCreature limit: " + spawns + ", Distance limit: " + spawnDistance;
+      text += "\nCreature limit: " + spawns + ", Distance limit: " + spawnDistance + ", From players: " + spawnRadius;
       text += "\n" + level + ", Group size: " + group + groupRadius;
       text += "\nAltitude: " + altitude + offset + ", Tilt: " + tilt + ", Water: " + ocean;
       return text;

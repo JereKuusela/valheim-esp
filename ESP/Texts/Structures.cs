@@ -97,7 +97,14 @@ namespace ESP
       var limit = obj.m_secPerUnit;
       if (limit == 0) return "";
       var value = Patch.GetFloat(obj, "product");
-      return "\n" + Format.ProgressPercent("Progress", value, limit);
+      var text = "\n" + Format.ProgressPercent("Progress", value, limit);
+      text += "\n" + GetCover(obj);
+      return text;
+    }
+    public static string GetCover(Beehive obj)
+    {
+      if (!obj) return "";
+      return GetCover(CoverUtils.GetCoverPoint(obj), obj.m_maxCover, false, false);
     }
     private static string GetItem(CookingStation obj, int slot) => Patch.GetString(obj, "slot" + slot);
     private static float GetTime(CookingStation obj, int slot) => Patch.GetFloat(obj, "slot" + slot);
@@ -127,7 +134,14 @@ namespace ESP
       var limit = obj.m_fermentationDuration;
       if (limit == 0) return "";
       var value = Patch.Fermenter_GetFermentationTime(obj);
-      return "\n" + Format.ProgressPercent("Progress", value, limit);
+      var text = "\n" + Format.ProgressPercent("Progress", value, limit);
+      text += "\n" + GetCover(obj);
+      return text;
+    }
+    public static string GetCover(Fermenter obj)
+    {
+      if (!obj) return "";
+      return GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverFermenterLimit);
     }
     public static string Get(Fireplace obj)
     {
@@ -135,7 +149,14 @@ namespace ESP
       var limit = obj.m_secPerFuel;
       if (limit == 0) return "";
       var value = Patch.GetFloat(obj, "fuel") * limit;
-      return "\n" + Format.ProgressPercent("Progress", value, limit);
+      var text = "\n" + Format.ProgressPercent("Progress", value, limit);
+      text += "\n" + GetCover(obj);
+      return text;
+    }
+    public static string GetCover(Fireplace obj)
+    {
+      if (!obj) return "";
+      return GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverFireplaceLimit, false);
     }
     public static string Get(MineRock obj)
     {
@@ -263,6 +284,48 @@ namespace ESP
       text += "\n" + EnvUtils.GetWind();
       text += "\nWind power: " + Format.Percent(GetWindPower(obj)) + " from " + Format.Int(GetRelativeAngle(obj)) + " degrees";
       return text;
+    }
+    private static string GetCover(Vector3 startPos, double limit, bool checkRoof = true, bool minLimit = true)
+    {
+      var cover = new Cover();
+      var start = Constants.CoverRaycastStart;
+      var total = 0;
+      var hits = 0;
+      Cover.GetCoverForPoint(startPos, out var percent, out var roof);
+
+      foreach (var vector in Patch.m_coverRays(cover))
+      {
+        total++;
+        RaycastHit raycastHit;
+        if (Physics.Raycast(startPos + vector * start, vector, out raycastHit, Constants.CoverRayCastLength - start, Patch.m_coverRayMask(cover)))
+          hits++;
+      }
+      var text = "Cover";
+      if (limit > 0)
+      {
+        var pastLimit = minLimit ? percent < limit : percent > limit;
+        text += " (" + Format.Percent(limit, pastLimit ? "red" : "yellow") + ")";
+      }
+      text += ": " + Format.Progress(hits, total, true);
+      if (checkRoof && !roof)
+        text += "\n" + Format.String("Not under roof!", "red");
+      if (Math.Abs(percent - (float)hits / total) > 0.01) text += "\n" + Format.String("Error with cover calculation (" + percent + ")!", "red");
+      return text;
+    }
+    public static string GetCover(Bed obj)
+    {
+      if (!obj) return "";
+      return GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverBedLimit);
+    }
+    public static string GetCover(CraftingStation obj)
+    {
+      if (!obj) return "";
+      return GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverCraftingStationLimit);
+    }
+    public static string GetCover(Windmill obj)
+    {
+      if (!obj) return "";
+      return GetCover(CoverUtils.GetCoverPoint(obj), 0, false);
     }
   }
 }

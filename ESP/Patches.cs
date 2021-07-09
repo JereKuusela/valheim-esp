@@ -33,12 +33,17 @@ namespace ESP
     public static float m_spawnTimer(SpawnArea obj) => Traverse.Create(obj).Field<float>("m_spawnTimer").Value;
     public static float m_noiseRange(Character obj) => Traverse.Create(obj).Field<float>("m_noiseRange").Value;
     public static float m_staggerDamage(Character obj) => Traverse.Create(obj).Field<float>("m_staggerDamage").Value;
+    public static float m_consumeSearchTimer(MonsterAI obj) => Traverse.Create(obj).Field<float>("m_consumeSearchTimer").Value;
+    public static string m_aiStatus(MonsterAI obj) => Traverse.Create(obj).Field<string>("m_aiStatus").Value;
     public static float m_eventTimer(RandEventSystem obj) => Traverse.Create(obj).Field<float>("m_eventTimer").Value;
     public static Heightmap m_heightmap(SpawnSystem obj) => Traverse.Create(obj).Field<Heightmap>("m_heightmap").Value;
     public static Rigidbody m_body(Character obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;
     public static Rigidbody m_body(Ship obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;
     public static Vector3 m_currentVel(Player obj) => Traverse.Create(obj).Field<Vector3>("m_currentVel").Value;
     public static ZNetView m_nview(MonoBehaviour obj) => Traverse.Create(obj).Field<ZNetView>("m_nview").Value;
+    public static Vector3[] m_coverRays(Cover obj) => Traverse.Create(obj).Field<Vector3[]>("m_coverRays").Value;
+    public static int m_coverRayMask(Cover obj) => Traverse.Create(obj).Field<int>("m_coverRayMask").Value;
+    public static float m_updateExtensionTimer(CraftingStation obj) => Traverse.Create(obj).Field<float>("m_updateExtensionTimer").Value;
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(SpawnArea), "GetInstances")]
     public static void SpawnArea_GetInstances(SpawnArea instance, out int near, out int total)

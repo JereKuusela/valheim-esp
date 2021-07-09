@@ -23,7 +23,7 @@ namespace ESP
     {
       if (Settings.noiseLineWidth == 0 || CharacterUtils.IsExcluded(instance))
         return;
-      var obj = Drawer.DrawSphere(instance.gameObject, Patch.m_noiseRange(instance), Color.cyan, Settings.noiseLineWidth, Drawer.CREATURE);
+      var obj = Drawer.DrawSphere(instance, Patch.m_noiseRange(instance), Color.cyan, Settings.noiseLineWidth, Drawer.CREATURE);
       obj.AddComponent<NoiseText>().character = instance;
     }
     public static void Postfix(Character __instance)
@@ -39,7 +39,7 @@ namespace ESP
     {
       if (Settings.noiseLineWidth == 0 || CharacterUtils.IsExcluded(__instance))
         return;
-      Drawer.UpdateSphere(__instance.gameObject, ___m_noiseRange, Settings.noiseLineWidth);
+      Drawer.UpdateSphere(__instance, ___m_noiseRange, Settings.noiseLineWidth);
     }
   }
   public class NoiseText : MonoBehaviour, Hoverable

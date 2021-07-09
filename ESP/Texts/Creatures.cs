@@ -105,10 +105,11 @@ namespace ESP
           mode += ", ";
         if (monsterAI.HuntPlayer())
           mode += Format.String("Hunt mode", "red");
-        stats += "\n" + mode;
+        stats += ", " + mode;
       }
       if (obj.IsStaggering())
         stats += ", " + Format.String("Staggering", "red");
+      stats += "\n" + Patch.m_aiStatus(monsterAI);
       var health = obj.GetMaxHealth();
       stats += "\n" + Format.GetHealth(obj.GetHealth(), health);
       var factor = obj.m_staggerDamageFactor;
