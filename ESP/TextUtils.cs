@@ -68,28 +68,39 @@ namespace ESP
       => "Health: " + Format.Progress(health, limit) + " (" + Format.Percent(health / limit) + ")";
 
     public static string Name(string name, string color = "yellow") => String(Localization.instance.Localize(name), color);
-    public static string Name(Character obj, string color = "yellow") => Name(obj.m_name, color);
-    public static string Name(ItemDrop.ItemData obj, string color = "yellow") => Name(obj.m_shared.m_name, color);
     public static string Name(Heightmap.Biome obj, string color = "yellow") => Name(Texts.GetName(obj), color);
-    public static string Name(Pickable obj, string color = "yellow") => Name(obj.m_itemPrefab.name, color);
-    public static string Name(CreatureSpawner obj, string color = "yellow") => Name(obj.m_creaturePrefab, color);
+    private static string Name(Character obj) => obj ? obj.m_name : "";
+    public static string Name(ItemDrop.ItemData obj, string color = "yellow") => obj != null ? Name(obj.m_shared.m_name, color) : "";
+    private static string Name(Pickable obj) => obj ? obj.m_itemPrefab.name : "";
+    public static string Name(CreatureSpawner obj) => obj ? Utils.GetPrefabName(obj.m_creaturePrefab) : "";
     public static string Name(IEnumerable<GameObject> objs, string color = "yellow") => string.Join(", ", objs.Select(prefab => Format.Name(prefab, color)));
     public static string Name(IEnumerable<ItemDrop> objs, string color = "yellow") => string.Join(", ", objs.Select(prefab => Format.Name(prefab, color)));
-    public static string Name(CraftingStation obj, string color = "yellow") => Name(obj.m_name, color);
-    public static string Name(Fireplace obj, string color = "yellow") => Name(obj.m_name, color);
-    public static string Name(Fermenter obj, string color = "yellow") => Name(obj.m_name, color);
-    public static string Name(Piece obj, string color = "yellow") => Name(obj.m_name, color);
-    public static string Name(Beehive obj, string color = "yellow") => Name(obj.m_name, color);
-    public static string Name(Bed obj, string color = "yellow") => Name(obj.GetHoverName(), color);
-    public static string Name(Windmill obj, string color = "yellow") => Name(obj.GetComponent<Smelter>().m_name, color);
-    public static string Name(TreeLog obj, string color = "yellow") => Name(obj.name, color);
-    public static string Name(Location obj, string color = "yellow") => Name(obj.name, color);
-    public static string Name(MineRock obj, string color = "yellow") => Name(obj.name, color);
-    public static string Name(MineRock5 obj, string color = "yellow") => Name(obj.name, color);
-    public static string Name(TreeBase obj, string color = "yellow") => Name(obj.name, color);
-    public static string Name(Destructible obj, string color = "yellow") => Name(obj.name, color);
-    public static string Name(MonoBehaviour obj, string color = "yellow") => Name(obj.gameObject, color);
-    private static string Name(GameObject obj, string color = "yellow") => Name(Utils.GetPrefabName(obj), color);
+    private static string Name(Bed obj) => obj ? obj.GetHoverName() : "";
+    private static string Name(Piece obj) => obj ? obj.m_name : "";
+    private static string Name(TreeLog obj) => obj ? obj.name : "";
+    private static string Name(Location obj) => obj ? obj.name : "";
+    private static string Name(MineRock obj) => obj ? obj.name : "";
+    private static string Name(MineRock5 obj) => obj ? obj.name : "";
+    private static string Name(TreeBase obj) => obj ? obj.name : "";
+    private static string Name(Destructible obj) => obj ? obj.name : "";
+    public static string Name(MonoBehaviour obj, string color = "yellow")
+    {
+      var text = "";
+      if (text == "") text = Format.Name(obj.GetComponentInParent<CreatureSpawner>());
+      if (text == "") text = Format.Name(obj.GetComponentInParent<Pickable>());
+      if (text == "") text = Format.Name(obj.GetComponentInParent<Bed>());
+      if (text == "") text = Format.Name(obj.GetComponentInParent<TreeLog>());
+      if (text == "") text = Format.Name(obj.GetComponentInParent<Location>());
+      if (text == "") text = Format.Name(obj.GetComponentInParent<MineRock>());
+      if (text == "") text = Format.Name(obj.GetComponentInParent<MineRock5>());
+      if (text == "") text = Format.Name(obj.GetComponentInParent<TreeBase>());
+      if (text == "") text = Format.Name(obj.GetComponentInParent<Destructible>());
+      if (text == "") text = Format.Name(obj.GetComponentInParent<Character>());
+      if (text == "") text = Format.Name(obj.GetComponentInParent<Piece>());
+      if (text == "") text = Name(obj.gameObject, color);
+      return Name(text, color);
+    }
+    private static string Name(GameObject obj, string color = "yellow") => obj ? Name(Utils.GetPrefabName(obj), color) : "";
 
     public static string Radius(float radius) => "Radius: " + Format.Float(radius);
   }

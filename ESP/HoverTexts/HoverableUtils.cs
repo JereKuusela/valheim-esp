@@ -2,6 +2,25 @@ using UnityEngine;
 
 namespace ESP
 {
+  /// <summary>Custom text that doesn't show anything without content.</summary>
+  public class CustomHoverText : MonoBehaviour, Hoverable
+  {
+
+    public string GetHoverText()
+    {
+      var text = "";
+      Hoverables.AddTexts(gameObject, ref text);
+      if (text == "") return "";
+      return GetHoverName() + text;
+    }
+    public string GetHoverName()
+    {
+      if (title == "")
+        title = Format.Name(this);
+      return title;
+    }
+    private string title = "";
+  }
   public class Hoverables
   {
     public static bool extraInfo
@@ -17,7 +36,7 @@ namespace ESP
     public static void AddHoverText(MonoBehaviour obj)
     {
       if (obj.gameObject.GetComponent<Hoverable>() == null)
-        obj.gameObject.AddComponent<HoverText>().m_text = Format.Name(obj);
+        obj.gameObject.AddComponent<CustomHoverText>();
     }
     public static void AddTexts(GameObject obj, ref string __result)
     {
