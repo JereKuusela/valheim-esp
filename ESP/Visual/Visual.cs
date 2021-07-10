@@ -102,11 +102,7 @@ namespace ESP
   [HarmonyPatch(typeof(Beehive), "GetHoverName")]
   public class Beehive_Visual_Update
   {
-    public static void Postfix(Beehive __instance)
-    {
-      UnityEngine.Debug.Log("UPDATING");
-      Visual.Update(__instance);
-    }
+    public static void Postfix(Beehive __instance) => Visual.Update(__instance);
   }
   [HarmonyPatch(typeof(Fireplace), "UpdateFireplace")]
   public class Fireplace_Visual_Update

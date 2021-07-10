@@ -25,16 +25,16 @@ TODO:
  - Smoke duration for each visualized smoke
  - Enemy amount trackers: Add setting for tracked enemies (only draw rays for them, show all on UI).
  - Test windmill cover!
+ - Marker lines fixed rotation upwards?
+ - Verify that cover texts appear on objects itself!
 
  - Better tooltips (ammo, etc, if something is missing). Like for ammos to show +0 velocity.
  - Some way to not show custom hovertexts when empty (own hovertext type with check instead of adding the default one?)
  - Fix exiting ship doesnt work when creature ray comes up.
  - Stacksize to item tooltips
  - Destructibl, etc item drops: Tin has DropOnDestroyed, everything else if minerock5 without "one of each" and individual stack size of 1
-
  - Coordinates, forest factor, etc. to hud
  - Experience gains to HUD
- - Support visual doesn't update automatically if it changes (adding pieces below etc)
  - Range format shouldn't color the line.
 
 Changes:
@@ -58,3 +58,4 @@ Changes:
  - Added visualization for bed, beehive, crafting station, fermenter, fireplace and windmill cover system.
  - Added cover texts for above structures with amount of rays and percentages.
  - Added visualization for smoke.
+ - Fixed the visualization of structure support not automatically updating.
