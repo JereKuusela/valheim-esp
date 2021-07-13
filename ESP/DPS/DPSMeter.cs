@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace ESP
 {
@@ -158,9 +159,9 @@ namespace ESP
       baseStructureDamage += pendingBaseStructureDamage;
       pendingBaseStructureDamage = 0;
     }
-    public static string Get()
+    public static List<string> Get()
     {
-      if (!Settings.showDPS) return "";
+      if (!Settings.showDPS) return null;
       var time = 1.0;
       if (startTime.HasValue && endTime.HasValue)
         time = endTime.Value.Subtract(startTime.Value).TotalMilliseconds;
@@ -173,31 +174,29 @@ namespace ESP
       var hitsPerSecond = hits * 1000.0 / time;
       var attackSpeed = hits > 0 ? time / hits / 1000.0 : 0;
       var damageTakenPerSecond = damageTaken * 1000.0 / time;
-      var text = "\n\n\n";
-      if (structureDamage > 0)
-        text += "\n\n";
-      text += "\nTime: " + Format.Float(time / 1000.0) + " seconds with " + Format.Float(hits) + " hits";
-      text += "\nDPS: " + Format.Float(damagePerSecond) + " (total " + Format.Float(damage + pendingDamage) + ")";
-      text += ", per stamina: " + Format.Float(damagePerStamina);
-      text += "\nBase DPS: " + Format.Float(baseDamagePerSecond) + " (total " + Format.Float(baseDamage + pendingBaseDamage) + ")";
-      text += ", per stamina: " + Format.Float(baseDamagePerStamina);
-      text += "\nSPS: " + Format.Float(staminaPerSecond) + " (total " + Format.Float(stamina) + ")";
-      text += "\nStagger per second: " + Format.Float(staggerPerSecond) + " (" + Format.Float(stagger) + ")";
-      text += "\nAttack speed: " + Format.Float(attackSpeed) + " s (" + Format.Float(hitsPerSecond) + " per second)";
-      text += "\nDamage taken: " + Format.Float(damageTakenPerSecond) + " (total " + Format.Float(damageTaken) + ")";
+      var lines = new List<string>();
+      lines.Add("Time: " + Format.Float(time / 1000.0) + " seconds with " + Format.Float(hits) + " hits");
+      lines.Add("DPS: " + Format.Float(damagePerSecond) + " (total " + Format.Float(damage + pendingDamage) + ")"
+        + ", per stamina: " + Format.Float(damagePerStamina));
+      lines.Add("Base DPS: " + Format.Float(baseDamagePerSecond) + " (total " + Format.Float(baseDamage + pendingBaseDamage) + ")"
+        + ", per stamina: " + Format.Float(baseDamagePerStamina));
+      lines.Add("SPS: " + Format.Float(staminaPerSecond) + " (total " + Format.Float(stamina) + ")");
+      lines.Add("Stagger per second: " + Format.Float(staggerPerSecond) + " (" + Format.Float(stagger) + ")");
+      lines.Add("Attack speed: " + Format.Float(attackSpeed) + " s (" + Format.Float(hitsPerSecond) + " per second)");
+      lines.Add("Damage taken: " + Format.Float(damageTakenPerSecond) + " (total " + Format.Float(damageTaken) + ")");
       if (structureDamage > 0)
       {
         var structureDamagePerSecond = structureDamage * 1000.0 / time;
         var structureDamagePerStamina = (structureDamage + pendingStructureDamage) / stamina;
         var baseStructureDamagePerSecond = baseStructureDamage * 1000.0 / time;
         var baseStructureDamagePerStamina = (baseStructureDamage + pendingBaseStructureDamage) / stamina;
-        text += "\nStructures DPS: " + Format.Float(structureDamagePerSecond) + " (total " + Format.Float(structureDamage + pendingStructureDamage) + ")";
-        text += ", per stamina: " + Format.Float(structureDamagePerStamina);
-        text += "\nBase DPS: " + Format.Float(baseStructureDamagePerSecond) + " (total " + Format.Float(baseStructureDamage + pendingBaseStructureDamage) + ")";
-        text += ", per stamina: " + Format.Float(baseStructureDamagePerStamina);
+        lines.Add("Structures DPS: " + Format.Float(structureDamagePerSecond) + " (total " + Format.Float(structureDamage + pendingStructureDamage) + ")"
+          + ", per stamina: " + Format.Float(structureDamagePerStamina));
+        lines.Add("Base DPS: " + Format.Float(baseStructureDamagePerSecond) + " (total " + Format.Float(baseStructureDamage + pendingBaseStructureDamage) + ")"
+          + ", per stamina: " + Format.Float(baseStructureDamagePerStamina));
 
       }
-      return text;
+      return lines;
     }
   }
 }

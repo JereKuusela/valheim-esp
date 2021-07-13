@@ -11,11 +11,11 @@ namespace ESP
   public class MessageHud_UpdateMessage : MonoBehaviour
   {
     private static string GetShowHide(bool value) => value ? "Hide" : "Show";
-    private static string GetInfo()
+    private static List<string> GetInfo()
     {
-      if (!Settings.showHud) return "";
+      if (!Settings.showHud) return null;
       // Wait for the game to load.
-      if (Player.m_localPlayer == null) return "";
+      if (Player.m_localPlayer == null) return null;
       var lines = new List<string>();
       lines.Add(GetEnvironment());
       lines.Add(GetLocation(Player.m_localPlayer.transform.position));
@@ -23,21 +23,18 @@ namespace ESP
       lines.Add(GetTrackedCreatures());
       lines.Add(GetVisualSettings());
       lines.Add(GetOtherSettings());
-      lines = lines.Where(item => item != "").ToList();
-      var padding = lines.Count - 3;
-      for (var i = 0; i < padding; i++) lines.Insert(0, "");
-      return string.Join("\n", lines);
+      return lines.Where(item => item != "").ToList();
     }
-    private static string GetFixedMessage()
+    private static List<string> GetFixedMessage()
     {
       // Wait for the game to load.
-      if (Player.m_localPlayer == null) return "";
+      if (Player.m_localPlayer == null) return null;
       var dps = DPSMeter.Get();
-      if (dps != "") return dps;
+      if (dps != null) return dps;
       var eps = ExperienceMeter.Get();
-      if (eps != "") return eps;
-      if (FixedMessage != "") return FixedMessage;
-      return "";
+      if (eps != null) return eps;
+      if (FixedMessage != null) return new List<string>(FixedMessage);
+      return null;
     }
     private static string GetVisualSettings()
     {
@@ -64,7 +61,7 @@ namespace ESP
     {
       return EnvUtils.GetLocation(location) + ", " + EnvUtils.GetForest(location);
     }
-    private static string GetTrackedCreatures()
+    public static string GetTrackedCreatures()
     {
       if (Settings.trackedCreatures == "") return "";
       var tracked = Settings.trackedCreatures.Split(',');
@@ -79,21 +76,28 @@ namespace ESP
     }
 
     private static bool baseGameMessage = false;
-    public static string FixedMessage = "";
+    public static List<string> FixedMessage = null;
 
     // Space is limited so skip showing messages when manually showing something.
     public static bool Prefix(out string __state)
     {
       __state = MessageHud.instance.m_messageText.text;
-      return baseGameMessage || GetFixedMessage() == "";
+      return baseGameMessage || (GetFixedMessage() == null);
     }
     // Keeps the message always visible and shows any base game messages.
     public static void Postfix(float ___m_msgQueueTimer, string __state)
     {
       var hud = MessageHud.instance;
-      var customMessage = GetFixedMessage();
-      if (customMessage == "")
-        customMessage = GetInfo();
+      var lines = GetFixedMessage();
+      if (lines == null)
+        lines = GetInfo();
+      var customMessage = "";
+      if (lines != null)
+      {
+        var padding = lines.Count - 2;
+        for (var i = 0; i < padding; i++) lines.Insert(0, "");
+        customMessage = string.Join("\n", lines);
+      }
       // New base game message.
       if (hud.m_messageText.text != __state)
         baseGameMessage = true;
@@ -108,8 +112,7 @@ namespace ESP
       else if (customMessage != "")
       {
         hud.m_messageText.CrossFadeAlpha(1f, 0f, true);
-        hud.m_messageText.text = "\n" + customMessage;
-
+        hud.m_messageText.text = customMessage;
       }
     }
   }
@@ -121,7 +124,9 @@ namespace ESP
     {
       if (!Settings.showShipStatsOnHud || !Player.m_localPlayer) return;
       if (!__instance.IsPlayerInBoat(Player.m_localPlayer.GetZDOID())) return;
-      MessageHud_UpdateMessage.FixedMessage = "\n" + Texts.Get(__instance);
+      var lines = Texts.Get(__instance).Split('\n').Where(line => line != "").ToList();
+      lines.Insert(0, MessageHud_UpdateMessage.GetTrackedCreatures());
+      MessageHud_UpdateMessage.FixedMessage = lines;
     }
   }
   [HarmonyPatch(typeof(Ship), "OnTriggerExit")]
@@ -129,7 +134,7 @@ namespace ESP
   {
     public static void Postfix()
     {
-      MessageHud_UpdateMessage.FixedMessage = "";
+      MessageHud_UpdateMessage.FixedMessage = null;
     }
   }
 }

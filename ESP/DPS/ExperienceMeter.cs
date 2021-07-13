@@ -28,15 +28,15 @@ namespace ESP
     {
       if (!Settings.showExperienceMeter) return;
       if (startTime.HasValue) return;
+      Reset();
       startTime = DateTime.Now;
-      endTime = null;
-      experienceModifier = 1.0f;
-      experiences.Clear();
     }
     public static void Reset()
     {
       startTime = null;
       endTime = null;
+      experienceModifier = 1.0f;
+      experiences.Clear();
     }
     public static void AddExperience(Skills.SkillType skill, float value = 1f)
     {
@@ -52,18 +52,16 @@ namespace ESP
       if (!startTime.HasValue) return;
       experienceModifier = value;
     }
-    public static string Get()
+    public static List<string> Get()
     {
-      if (!Settings.showExperienceMeter) return "";
+      if (!Settings.showExperienceMeter) return null;
       var time = 1.0;
       if (startTime.HasValue && endTime.HasValue)
         time = endTime.Value.Subtract(startTime.Value).TotalMilliseconds;
       time /= 60000.0;
-      var texts = experiences.Select(kvp =>
-      {
-        return kvp.Key.ToString() + ": " + Format.Float(kvp.Value) + " (" + Format.Float(kvp.Value / time) + " per minute)";
-      });
-      return "Experience gain: " + Format.Percent(experienceModifier) + "\n" + string.Join("\n", texts);
+      var lines = experiences.Select(kvp => kvp.Key.ToString() + ": " + Format.Float(kvp.Value) + " (" + Format.Float(kvp.Value / time) + " per minute)").ToList();
+      lines.Insert(0, "Experience gain: " + Format.Percent(experienceModifier));
+      return lines;
     }
   }
 }
