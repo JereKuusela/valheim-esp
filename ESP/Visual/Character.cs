@@ -14,6 +14,14 @@ namespace ESP
       var excluded = Settings.excludedCreatures.ToLower().Split(',');
       return Array.Exists(excluded, item => item == name || item == m_name || item == localized);
     }
+    public static bool IsTracked(Character instance)
+    {
+      var name = instance.name.ToLower();
+      var m_name = instance.m_name.ToLower();
+      var localized = Localization.instance.Localize(instance.m_name).ToLower();
+      var tracked = Settings.trackedCreatures.ToLower().Split(',');
+      return Array.Exists(tracked, item => item == name || item == m_name || item == localized);
+    }
 
   }
   [HarmonyPatch(typeof(Character), "Awake")]

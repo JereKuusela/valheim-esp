@@ -54,14 +54,31 @@ namespace ESP
         text += ", " + Format.String("Wet");
       return text;
     }
-    public static string GetWind()
+    public static string GetWindWithAngle()
     {
       var windDir = EnvMan.instance.GetWindDir();
       var angle = Mathf.Atan2(windDir.x, windDir.z) / Math.PI * 180f;
+      return GetWind() + " from " + Format.Int(angle) + " degrees";
+    }
+    public static string GetWind()
+    {
       var windIntensity = EnvMan.instance.GetWindIntensity();
-      return "Wind: " + Format.Percent(windIntensity) + " from " + Format.Int(angle) + " degrees";
+      return "Wind: " + Format.Percent(windIntensity);
+    }
+    public static string GetWindHud()
+    {
+      var windIntensity = EnvMan.instance.GetWindIntensity();
+      return Format.Percent(windIntensity) + " wind";
     }
     public static double GetAvgWind(EnvEntry env) => (env.m_env.m_windMin + env.m_env.m_windMax) / 2.0 * env.m_weight;
+
+    public static string GetLocation(Vector3 location) => "Location: " + location.ToString("F0");
+    public static string GetForest(Vector3 location)
+    {
+      var inForest = WorldGenerator.InForest(location);
+      return Format.String(inForest ? "Forest" : "No forest") + " (" + Format.Float(WorldGenerator.GetForestFactor(location)) + ")";
+    }
+
   }
 }
 

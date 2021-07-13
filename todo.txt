@@ -26,10 +26,8 @@ Creatures:
 
 
 TODO:
- - Enemy amount trackers: Add setting for tracked enemies (only draw rays for them, show all on UI).
  - Marker lines fixed rotation upwards?
  - Range format shouldn't color the line.
- - Coordinates, forest factor, wind, etc. to hud
  - Experience gains to HUD
 
 
@@ -60,3 +58,6 @@ Changes:
  - Fixed the visualization of structure support not automatically updating.
  - Added localization to many object names.
  - Improved custom tooltips that nothing is shown when extra info is turned off.
+ - Added creature tracker that shows amount of tracked creatures nearby.
+ - Changed creauture rays to only work for tracked creatures.
+ - Added wind strength, current coordinates and forest factor to the HUD.

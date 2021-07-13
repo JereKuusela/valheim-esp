@@ -80,6 +80,8 @@ namespace ESP
     public static string excludedAreaEffects => configExcludedAreaEffects.Value;
     public static ConfigEntry<string> configExcludedCreatures;
     public static string excludedCreatures => configExcludedCreatures.Value;
+    public static ConfigEntry<string> configTrackedCreatures;
+    public static string trackedCreatures => configTrackedCreatures.Value;
     public static ConfigEntry<string> configExcludedCreatureSpawners;
     public static string excludedCreatureSpawners => configExcludedCreatureSpawners.Value;
     public static ConfigEntry<string> configExcludedSpawnSystems;
@@ -153,7 +155,7 @@ namespace ESP
       Settings.configBreedingLineWidth = config.Bind("Visual", "Breeding limits", 0.1f, "Visualize breeding parther check and total limit ranges");
       Settings.configCoverRayWidth = config.Bind("Visual", "Cover rays", 0.1f, "Visualize cover check rays");
       Settings.configSmokeLineWidth = config.Bind("Visual", "Smoke", 0.1f, "Visualize smoke particles");
-      Settings.configCreatureRayWidth = config.Bind("Visual", "Creature rays", 0.5f, "Line width for creature locations (0 to disable)");
+      Settings.configCreatureRayWidth = config.Bind("Visual", "Creature rays", 0.5f, "Line width for tracked creature locations (0 to disable)");
       Settings.configCreatureSpawnersRayWidth = config.Bind("Visual", "Spawn points", 0.1f, "Line width of fixed creature spawn points (0 to disable)");
       Settings.configSpawnAreasLineWidth = config.Bind("Visual", "Creature spawners", 0.1f, "Line width of physical creature spawner ranges (0 to disable)");
       Settings.configSpawnSystemRayWidth = config.Bind("Visual", "Spawn zones", 1f, "Line width of spawn zone system (0 to disable)");
@@ -169,6 +171,7 @@ namespace ESP
       Settings.configEffectAreaLineWidth = config.Bind("Visual", "Area effects", 0.1f, "Line width of area effect ranges(0 to disable)");
       Settings.configNoiseLineWidth = config.Bind("Visual", "Noise", 0.0f, "Line width of noise range (0 to disable)");
 
+      Settings.configTrackedCreatures = config.Bind("Highlight", "Creatures", "Serpent", "List of creatures to track (separated by ,)");
       Settings.configExcludedAreaEffects = config.Bind("Exclusions", "Area effects", "", "List of area effects separated by ,");
       Settings.configExcludedCreatures = config.Bind("Exclusions", "Creatures", "", "List of creatures separated by ,");
       Settings.configExcludedSpawnSystems = config.Bind("Exclusions", "Spawn systems", "Seagal,FireFlies", "List of creatures separated by , that are not visualized");

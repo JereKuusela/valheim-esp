@@ -1,5 +1,8 @@
 using HarmonyLib;
 using UnityEngine;
+using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace ESP
 {
@@ -13,15 +16,17 @@ namespace ESP
       if (!Settings.showHud) return "";
       // Wait for the game to load.
       if (Player.m_localPlayer == null) return "";
-      var status = "\n\n" + GetStatusText();
-      status += "\n";
-      status += Format.String("Y") + ": " + GetShowHide(Drawer.showZones) + " zones, ";
-      status += Format.String("U") + ": " + GetShowHide(Drawer.showCreatures) + " creatures, ";
-      status += Format.String("I") + ": " + GetShowHide(Drawer.showOthers) + " other visuals";
-      status += "\n";
-      status += Format.String("O") + ": " + GetShowHide(Hoverables.extraInfo) + " extra info on tooltips, ";
-      status += Format.String("P") + ": " + GetShowHide(Settings.showDPS) + " DPS meter";
-      return status;
+      var lines = new List<string>();
+      lines.Add(GetEnvironment());
+      lines.Add(GetLocation(Player.m_localPlayer.transform.position));
+      lines.Add(GetSpeed() + ", " + GetNoise());
+      lines.Add(GetTrackedCreatures());
+      lines.Add(GetVisualSettings());
+      lines.Add(GetOtherSettings());
+      lines = lines.Where(item => item != "").ToList();
+      var padding = lines.Count - 3;
+      for (var i = 0; i < padding; i++) lines.Insert(0, "");
+      return string.Join("\n", lines);
     }
     private static string GetFixedMessage()
     {
@@ -32,16 +37,42 @@ namespace ESP
       if (FixedMessage != "") return FixedMessage;
       return "";
     }
+    private static string GetVisualSettings()
+    {
+      var text = Format.String("Y") + ": " + GetShowHide(Drawer.showZones) + " zones, ";
+      text += Format.String("U") + ": " + GetShowHide(Drawer.showCreatures) + " creatures, ";
+      text += Format.String("I") + ": " + GetShowHide(Drawer.showOthers) + " other visuals";
+      return text;
+    }
+    private static string GetOtherSettings()
+    {
+      var text = Format.String("O") + ": " + GetShowHide(Hoverables.extraInfo) + " extra info on tooltips, ";
+      text += Format.String("P") + ": " + GetShowHide(Settings.showDPS) + " DPS meter";
+      return text;
+    }
     private static string GetSpeed() => "Speed: " + Format.Float(Patch.m_currentVel(Player.m_localPlayer).magnitude, "0.#") + " m/s";
     private static string GetNoise() => "Noise: " + Format.Int(Player.m_localPlayer.GetNoiseRange()) + " meters";
-    private static string GetStatusText()
+    private static string GetEnvironment()
     {
       if (!Settings.showTimeAndWeather) return "";
+      return EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment() + " (" + EnvUtils.GetWind() + ")";
+    }
+    private static string GetLocation(Vector3 location)
+    {
+      return EnvUtils.GetLocation(location) + ", " + EnvUtils.GetForest(location);
+    }
+    private static string GetTrackedCreatures()
+    {
+      if (Settings.trackedCreatures == "") return "";
+      var tracked = Settings.trackedCreatures.Split(',');
+      var tracks = tracked.Select(name =>
+      {
+        var prefab = ZNetScene.instance.GetPrefab(name);
+        var counts = prefab == null ? -1 : SpawnSystem.GetNrOfInstances(prefab);
+        return name + ": " + Format.Int(counts);
+      });
 
-      var time = EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment();
-      var prefab = ZNetScene.instance.GetPrefab("Serpent");
-      var counts = prefab == null ? -1 : SpawnSystem.GetNrOfInstances(prefab);
-      return time + "\n" + GetSpeed() + "\n" + GetNoise() + "\n" + "Serpent: " + Format.Int(counts);
+      return string.Join(",", tracks);
     }
 
     private static bool baseGameMessage = false;

@@ -19,7 +19,7 @@ namespace ESP
     public static void Postfix(Character ___m_character)
     {
       var obj = ___m_character;
-      if (Settings.creatureRayWidth == 0 || CharacterUtils.IsExcluded(obj)) return;
+      if (Settings.creatureRayWidth == 0 || !CharacterUtils.IsTracked(obj)) return;
       var line = Drawer.DrawMarkerLine(obj, Color.magenta, Settings.creatureRayWidth, Drawer.CREATURE);
       Drawer.AddText(line);
     }
