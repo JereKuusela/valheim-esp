@@ -36,9 +36,12 @@ namespace ESP
     public static float m_consumeSearchTimer(MonsterAI obj) => Traverse.Create(obj).Field<float>("m_consumeSearchTimer").Value;
     public static string m_aiStatus(MonsterAI obj) => Traverse.Create(obj).Field<string>("m_aiStatus").Value;
     public static float m_eventTimer(RandEventSystem obj) => Traverse.Create(obj).Field<float>("m_eventTimer").Value;
+    public static int m_solidRayMask(Fireplace obj) => Traverse.Create(obj).Field<int>("m_solidRayMask").Value;
     public static Heightmap m_heightmap(SpawnSystem obj) => Traverse.Create(obj).Field<Heightmap>("m_heightmap").Value;
     public static Rigidbody m_body(Character obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;
     public static Rigidbody m_body(Ship obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;
+    public static Rigidbody m_body(Smoke obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;
+    public static float m_time(Smoke obj) => Traverse.Create(obj).Field<float>("m_time").Value;
     public static Vector3 m_currentVel(Player obj) => Traverse.Create(obj).Field<Vector3>("m_currentVel").Value;
     public static ZNetView m_nview(MonoBehaviour obj) => Traverse.Create(obj).Field<ZNetView>("m_nview").Value;
     public static Vector3[] m_coverRays(Cover obj) => Traverse.Create(obj).Field<Vector3[]>("m_coverRays").Value;

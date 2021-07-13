@@ -143,6 +143,31 @@ namespace ESP
       if (!obj) return "";
       return GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverFermenterLimit);
     }
+    public static string Get(SmokeSpawner obj)
+    {
+      if (!obj) return "";
+      var text = GetSmokeLimit();
+      text += "\nProduces smoke every " + Format.Float(obj.m_interval) + " s, unless smoke within " + Format.Float(obj.m_testRadius) + " m";
+      return text;
+    }
+    public static string Get(Smoke obj)
+    {
+      if (!obj) return "";
+      var text = ": " + Format.Progress(Smoke.GetTotalSmoke(), Constants.SmokeAmountLimit, true);
+      text += "\n" + Format.ProgressPercent("Expires", Patch.m_time(obj), obj.m_ttl);
+      var collider = obj.GetComponent<SphereCollider>();
+      if (collider)
+        text += "\nRadius: " + Format.Float(collider.radius * obj.transform.localScale.x);
+      var body = Patch.m_body(obj);
+      text += "\nMass: " + Format.Float(body.mass);
+      text += "\nVelocity: " + Format.String(body.velocity.ToString("F3"));
+      var ratio = 1f - Mathf.Clamp01(Patch.m_time(obj) / obj.m_ttl);
+      var vel = obj.m_vel;
+      vel.y *= ratio;
+      text += "\nTarget: " + Format.String(vel.ToString("F3"));
+      return text;
+    }
+    private static string GetSmokeLimit() => "\nSmoke: " + Format.Progress(Smoke.GetTotalSmoke(), Constants.SmokeAmountLimit, true);
     public static string Get(Fireplace obj)
     {
       if (!Settings.structures || !Settings.progress || !obj) return "";
@@ -151,12 +176,38 @@ namespace ESP
       var value = Patch.GetFloat(obj, "fuel") * limit;
       var text = "\n" + Format.ProgressPercent("Progress", value, limit);
       text += "\n" + GetCover(obj);
+      text += Get(obj.m_smokeSpawner);
       return text;
+    }
+    private static string GetWind(Fireplace obj)
+    {
+      if (!obj) return "";
+      var wind = EnvMan.instance.GetWindIntensity();
+      var limit = Constants.WindFireplaceLimit;
+      var pastLimit = wind >= limit;
+      var text = "Wind (" + Format.Percent(limit, pastLimit ? "red" : "yellow") + ")";
+      text += ": " + Format.Percent(wind);
+      return text;
+    }
+    private static string GetDistanceFromRoof(Fireplace obj)
+    {
+      if (!obj) return "";
+      if (Physics.Raycast(CoverUtils.GetCoverPoint(obj), Vector3.up, out var raycastHit, Constants.RoofFireplaceLimit, Patch.m_solidRayMask(obj)))
+      {
+        var distance = raycastHit.distance;
+        return "Roof (" + Format.Float(Constants.RoofFireplaceLimit, Format.FORMAT, "red") + " m): " + Format.Float(distance) + " m";
+      }
+      return "";
     }
     public static string GetCover(Fireplace obj)
     {
       if (!obj) return "";
-      return GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverFireplaceLimit, false);
+      var text = GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverFireplaceLimit, false);
+      text += "\n" + GetWind(obj);
+      var roofText = GetDistanceFromRoof(obj);
+      if (roofText != "")
+        text += "\n" + roofText;
+      return text;
     }
     public static string Get(MineRock obj)
     {
@@ -168,8 +219,6 @@ namespace ESP
       text += "\nHit noise: " + Format.Int(100);
       text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_pickaxe != HitData.DamageModifier.Immune);
       text += DamageModifierUtils.Get(obj.m_damageModifiers, false, false);
-
-
       return text;
     }
     public static string Get(DropTable obj)
@@ -247,7 +296,7 @@ namespace ESP
     public static string Get(Smelter obj)
     {
       if (!Settings.structures || !Settings.progress || !obj) return "";
-      return GetProgressText(obj) + GetFuelText(obj) + GetPowerText(obj.m_windmill);
+      return GetProgressText(obj) + GetFuelText(obj) + GetPowerText(obj.m_windmill) + "\n" + GetSmokeLimit();
     }
 
     private static float GetRelativeAngle(Ship ship)
@@ -312,10 +361,20 @@ namespace ESP
       if (Math.Abs(percent - (float)hits / total) > 0.01) text += "\n" + Format.String("Error with cover calculation (" + percent + ")!", "red");
       return text;
     }
+    public static string Get(Bed obj)
+    {
+      if (!obj) return "";
+      return "\n" + GetCover(obj);
+    }
     public static string GetCover(Bed obj)
     {
       if (!obj) return "";
       return GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverBedLimit);
+    }
+    public static string Get(CraftingStation obj)
+    {
+      if (!obj) return "";
+      return "\n" + GetCover(obj);
     }
     public static string GetCover(CraftingStation obj)
     {

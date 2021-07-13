@@ -1,11 +1,11 @@
 General:
+ * New text class for visuals that gets text based on the object? (onei issue is that then you would get all info)
  * Text system refactored. Add functions that require a dictionary (enum to text). Then the caller function can decide what to show and in what order.
  * Actions: E to freeze creature, numbers to start events when hovering the event ray, etc
 
 Drawer:
  - Some kind of color customization (rgb + string to color).
  * List of priority names (different color and width can be set).
- - Cover lines (with different color if they get hit): windmills, crafting stations.
  - Rocks and their support somehow visualized
 
 HUD:
@@ -19,22 +19,19 @@ Creatures:
  - Move speed (depending how it moves?)
  - Targeting system (current status, target, last known location, retreat limit, retreat when struch, etc.)
 
-
-TODO:
- - Smoke visualized, including smoke counter on fireplace/smelter/forge tooltips?, smoke timer for fireplaces (campfire, bonfire, hearth).
- - Smoke duration for each visualized smoke
- - Enemy amount trackers: Add setting for tracked enemies (only draw rays for them, show all on UI).
- - Marker lines fixed rotation upwards?
- - Verify that cover texts appear on objects itself!
- - Torch distancew to roof line ("cover")
-
  - Better tooltips (ammo, etc, if something is missing). Like for ammos to show +0 velocity.
  - Fix exiting ship doesnt work when creature ray comes up.
  - Stacksize to item tooltips
  - Destructibl, etc item drops: Tin has DropOnDestroyed, everything else if minerock5 without "one of each" and individual stack size of 1
- - Coordinates, forest factor, etc. to hud
- - Experience gains to HUD
+
+
+TODO:
+ - Enemy amount trackers: Add setting for tracked enemies (only draw rays for them, show all on UI).
+ - Marker lines fixed rotation upwards?
  - Range format shouldn't color the line.
+ - Coordinates, forest factor, wind, etc. to hud
+ - Experience gains to HUD
+
 
 Changes:
  - Trees, ores and other destructibles show minimum tool tier.
@@ -56,7 +53,10 @@ Changes:
  - Spawn zones now show the spawn radius from players.
  - Added visualization for bed, beehive, crafting station, fermenter, fireplace and windmill cover system.
  - Added cover texts for above structures with amount of rays and percentages.
- - Added visualization for smoke.
+ - Added wind limit and current amount to the fireplace/torch tooltips.
+ - Added roof limit text to the fireplace/torch tooltips.
+ - Added smoke stats to smelters and fireplaces.
+ - Added visualization for smoke, including custom tool tip.
  - Fixed the visualization of structure support not automatically updating.
  - Added localization to many object names.
  - Improved custom tooltips that nothing is shown when extra info is turned off.

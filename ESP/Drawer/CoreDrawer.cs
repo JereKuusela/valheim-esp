@@ -143,6 +143,7 @@ namespace ESP
     private static GameObject CreateLineRotater(GameObject parent, Vector3 start, Vector3 end)
     {
       var obj = new GameObject();
+      obj.layer = LayerMask.NameToLayer(Constants.TriggerLayer);
       obj.transform.parent = parent.transform;
       obj.transform.localPosition = start;
       obj.transform.localRotation = Quaternion.FromToRotation(Vector3.forward, end - start);
@@ -172,8 +173,13 @@ namespace ESP
         collider.sharedMesh = mesh;
       });
     }
+    ///<summary>Adds a self-updating text to a given object.</summary>
+    public static void AddText(GameObject obj)
+    {
+      obj.AddComponent<CustomHoverText>();
+    }
     ///<summary>Adds a text to a given object (uses the in-game text).</summary>
-    public static void AddText(GameObject obj, string text = "")
+    public static void AddText(GameObject obj, string text)
     {
       obj.AddComponent<HoverText>().m_text = text;
     }

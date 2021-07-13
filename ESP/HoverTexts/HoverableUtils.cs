@@ -5,7 +5,6 @@ namespace ESP
   /// <summary>Custom text that doesn't show anything without content.</summary>
   public class CustomHoverText : MonoBehaviour, Hoverable
   {
-
     public string GetHoverText()
     {
       var text = "";
@@ -48,7 +47,9 @@ namespace ESP
       __result += Texts.Get(obj.GetComponentInParent<Destructible>());
       __result += Texts.Get(obj.GetComponentInParent<Pickable>());
       __result += Texts.Get(obj.GetComponentInParent<CreatureSpawner>());
+      __result += Texts.Get(obj.GetComponentInParent<CraftingStation>());
       __result += Texts.Get(obj.GetComponentInParent<Beehive>());
+      __result += Texts.Get(obj.GetComponentInParent<Bed>());
       __result += Texts.Get(obj.GetComponentInParent<CookingStation>());
       __result += Texts.Get(obj.GetComponentInParent<Fermenter>());
       __result += Texts.Get(obj.GetComponentInParent<Fireplace>());
@@ -60,6 +61,9 @@ namespace ESP
       __result += Texts.Get(obj.GetComponentInParent<MineRock>());
       __result += Texts.Get(obj.GetComponentInParent<MineRock5>());
       __result += Texts.Get(obj.GetComponentInParent<ItemDrop>());
+      __result += Texts.Get(obj.GetComponentInParent<SmokeSpawner>());
+      __result += Texts.Get(obj.GetComponentInChildren<SmokeSpawner>());
+      __result += Texts.Get(obj.GetComponentInParent<Smoke>());
       if (Settings.showShipStats)
         __result += Texts.Get(obj.GetComponentInParent<Ship>());
       __result += Texts.Get(obj.GetComponentInParent<EffectArea>());

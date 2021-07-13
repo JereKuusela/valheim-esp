@@ -45,7 +45,10 @@ namespace ESP
       if (!obj || Settings.coverRayWidth == 0) return;
       var collider = obj.GetComponent<SphereCollider>();
       if (collider)
-        Drawer.DrawSphere(obj, collider.radius * obj.transform.localScale.x, Color.black, Settings.coverRayWidth, Drawer.OTHER);
+      {
+        var line = Drawer.DrawSphere(obj, collider.radius * obj.transform.localScale.x, Color.black, Settings.coverRayWidth, Drawer.OTHER);
+        Drawer.AddText(line);
+      }
     }
   }
   [HarmonyPatch(typeof(EffectArea), "Awake")]

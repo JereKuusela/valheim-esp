@@ -83,9 +83,11 @@ namespace ESP
     private static string Name(MineRock5 obj) => obj ? obj.name : "";
     private static string Name(TreeBase obj) => obj ? obj.name : "";
     private static string Name(Destructible obj) => obj ? obj.name : "";
+    private static string Name(Smoke obj) => obj ? "Smoke" : "";
     public static string Name(MonoBehaviour obj, string color = "yellow")
     {
       var text = "";
+      if (text == "") text = Format.Name(obj.GetComponentInParent<Smoke>());
       if (text == "") text = Format.Name(obj.GetComponentInParent<CreatureSpawner>());
       if (text == "") text = Format.Name(obj.GetComponentInParent<Pickable>());
       if (text == "") text = Format.Name(obj.GetComponentInParent<Bed>());
