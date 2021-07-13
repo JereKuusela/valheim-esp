@@ -23,13 +23,12 @@ namespace ESP
     }
     public static string Percent(double value, string color = "yellow") => String(value.ToString("P0", CultureInfo.InvariantCulture), color);
 
-    private static string PlainRange(double min, double max)
+    public static string Range(double min, double max, string color = "yellow")
     {
       if (min == max)
-        return max.ToString(FORMAT, CultureInfo.InvariantCulture);
-      return min.ToString(FORMAT, CultureInfo.InvariantCulture) + "-" + max.ToString(FORMAT, CultureInfo.InvariantCulture);
+        return String(max.ToString(FORMAT, CultureInfo.InvariantCulture), color);
+      return String(min.ToString(FORMAT, CultureInfo.InvariantCulture), color) + "-" + String(max.ToString(FORMAT, CultureInfo.InvariantCulture), color);
     }
-    public static string Range(double min, double max, string color = "yellow") => String(PlainRange(min, max), color);
     public static string PercentRange(double min, double max)
     {
       if (min == max)
@@ -46,12 +45,12 @@ namespace ESP
       max--;
       var level = "";
       if (max < min && Settings.fixInvalidLevelData)
-        level = Format.PlainRange(max, min);
+        level = Format.Range(max, min);
       else
-        level = Format.PlainRange(min, max);
+        level = Format.Range(min, max);
       var chanceText = level.Contains("-") ? " (" + Format.Percent(chance / 100f) + " per star)" : "";
       var levelLimit = (limit > 0) ? " after " + Format.Int(limit) + " meters" : "";
-      return "Stars: " + String(level) + chanceText + levelLimit;
+      return "Stars: " + level + chanceText + levelLimit;
     }
 
     public static string GetAttempt(double time, double limit, double chance) =>

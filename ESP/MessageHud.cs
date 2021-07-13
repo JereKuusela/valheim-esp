@@ -43,14 +43,14 @@ namespace ESP
     {
       var text = Format.String("Y") + ": " + GetShowHide(Drawer.showZones) + " zones, ";
       text += Format.String("U") + ": " + GetShowHide(Drawer.showCreatures) + " creatures, ";
-      text += Format.String("I") + ": " + GetShowHide(Drawer.showOthers) + " other visuals";
+      text += Format.String("I") + ": " + GetShowHide(Drawer.showOthers) + " other";
       return text;
     }
     private static string GetOtherSettings()
     {
-      var text = Format.String("O") + ": " + GetShowHide(Hoverables.extraInfo) + " extra info on tooltips, ";
-      text += Format.String("P") + ": " + GetShowHide(Settings.showDPS) + " DPS meter, ";
-      text += Format.String("L") + ": " + GetShowHide(Settings.showExperienceMeter) + " experience meter";
+      var text = Format.String("O") + ": " + GetShowHide(Hoverables.extraInfo) + " extra info, ";
+      text += Format.String("P") + ": " + GetShowHide(Settings.showDPS) + " DPS, ";
+      text += Format.String("L") + ": " + GetShowHide(Settings.showExperienceMeter) + " experience";
       return text;
     }
     private static string GetSpeed() => "Speed: " + Format.Float(Patch.m_currentVel(Player.m_localPlayer).magnitude, "0.#") + " m/s";
@@ -58,7 +58,7 @@ namespace ESP
     private static string GetEnvironment()
     {
       if (!Settings.showTimeAndWeather) return "";
-      return EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment() + " (" + EnvUtils.GetWind() + ")";
+      return EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment() + " (" + EnvUtils.GetWindHud() + ")";
     }
     private static string GetLocation(Vector3 location)
     {

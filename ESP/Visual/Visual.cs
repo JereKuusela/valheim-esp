@@ -20,10 +20,10 @@ namespace ESP
       var text = EffectAreaUtils.GetTypeText(obj.m_type);
       if (IsDisabled(text)) return;
       var color = EffectAreaUtils.GetEffectColor(obj.m_type);
-      var radius = Math.Max(0.5f, obj.GetRadius());
+      var radius = obj.GetRadius() * obj.transform.lossyScale.x;
 
-      var line = Drawer.DrawSphere(obj, radius, color, Settings.effectAreaLineWidth, Drawer.OTHER);
-      Drawer.AddText(line, text, Format.Radius(obj.GetRadius()));
+      var line = Drawer.DrawSphere(obj, Math.Max(0.5f, radius), color, Settings.effectAreaLineWidth, Drawer.OTHER);
+      Drawer.AddText(line, text, Format.Radius(radius));
     }
     public static void Draw(PrivateArea obj)
     {
@@ -46,7 +46,7 @@ namespace ESP
       var collider = obj.GetComponent<SphereCollider>();
       if (collider)
       {
-        var line = Drawer.DrawSphere(obj, collider.radius * obj.transform.localScale.x, Color.black, Settings.coverRayWidth, Drawer.OTHER);
+        var line = Drawer.DrawSphere(obj, collider.radius * obj.transform.lossyScale.x, Color.black, Settings.coverRayWidth, Drawer.OTHER);
         Drawer.AddText(line);
       }
     }

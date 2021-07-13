@@ -24,12 +24,6 @@ Creatures:
  - Stacksize to item tooltips
  - Destructibl, etc item drops: Tin has DropOnDestroyed, everything else if minerock5 without "one of each" and individual stack size of 1
 
-
-TODO:
- - Marker lines fixed rotation upwards?
- - Range format shouldn't color the line.
-
-
 Changes:
  - Trees, ores and other destructibles show minimum tool tier.
  - Trees, ores and other destructibles now have a location ray.
@@ -61,3 +55,5 @@ Changes:
  - Changed creauture rays to only work for tracked creatures.
  - Added wind strength, current coordinates and forest factor to the HUD.
  - Added experience meter which can be used to track experience gain.
+ - Fixed marker lines not always being vertical.
+ - Fixed no monsters area of the trader being the wrong size.

@@ -49,7 +49,7 @@ namespace ESP
     public static GameObject DrawMarkerLine(MonoBehaviour parent, Color color, float width, string name, Vector3 start)
     {
       var end = new Vector3(start.x, 500f, start.z);
-      var obj = DrawLineSub(CreateObject(parent.gameObject, name), start, end, color, width, name);
+      var obj = DrawLineSub(CreateObject(parent.gameObject, name, true), start, end, color, width, name);
       Drawer.AddBoxCollider(obj);
       return obj;
     }

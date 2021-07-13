@@ -157,7 +157,7 @@ namespace ESP
       text += "\n" + Format.ProgressPercent("Expires", Patch.m_time(obj), obj.m_ttl);
       var collider = obj.GetComponent<SphereCollider>();
       if (collider)
-        text += "\nRadius: " + Format.Float(collider.radius * obj.transform.localScale.x);
+        text += "\nRadius: " + Format.Float(collider.radius * obj.transform.lossyScale.x);
       var body = Patch.m_body(obj);
       text += "\nMass: " + Format.Float(body.mass);
       text += "\nVelocity: " + Format.String(body.velocity.ToString("F3"));
