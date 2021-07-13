@@ -108,6 +108,8 @@ namespace ESP
     public static bool useFreeBuild => configUseFreeBuild.Value;
     public static ConfigEntry<bool> configShowDPS;
     public static bool showDPS => configShowDPS.Value;
+    public static ConfigEntry<bool> configShowExperienceMeter;
+    public static bool showExperienceMeter => configShowExperienceMeter.Value;
 
     public static ConfigEntry<string> configSetSkills;
     public static string setSkills => configSetSkills.Value;
@@ -185,6 +187,7 @@ namespace ESP
       Settings.configFixInvalidLevelData = config.Bind("Dev", "Fix invalid creature star ranges", true, "Some spawners have higher minimum stars than maximum stars. If true, these are displayed like the code handles them.");
 
       Settings.configShowDPS = config.Bind("DPS", "Show DPS meter", false, "Show DPS meter (toggle with P button in the game)");
+      Settings.configShowExperienceMeter = config.Bind("DPS", "Show experience meter", false, "Show experience meter (toggle with L button in the game)");
       Settings.configSetSkills = config.Bind("DPS", "Set skill levels", "", "Sets all skill levels to a given number");
       Settings.configPlayerDamageRange = config.Bind("DPS", "Player damage range", 0.15f, "Damage variance for players");
       Settings.configCreatureDamageRange = config.Bind("DPS", "Creature damage range", 0.25f, "Damage variance for creatures");
@@ -225,6 +228,11 @@ namespace ESP
         {
           Settings.configShowDPS.Value = !Settings.configShowDPS.Value;
           if (!Settings.showDPS) DPSMeter.Reset();
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+          Settings.configShowExperienceMeter.Value = !Settings.configShowExperienceMeter.Value;
+          if (!Settings.showExperienceMeter) ExperienceMeter.Reset();
         }
       }
     }

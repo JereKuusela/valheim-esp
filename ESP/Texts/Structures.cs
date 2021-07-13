@@ -176,7 +176,6 @@ namespace ESP
       var value = Patch.GetFloat(obj, "fuel") * limit;
       var text = "\n" + Format.ProgressPercent("Progress", value, limit);
       text += "\n" + GetCover(obj);
-      text += Get(obj.m_smokeSpawner);
       return text;
     }
     private static string GetWind(Fireplace obj)

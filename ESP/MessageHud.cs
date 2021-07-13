@@ -34,6 +34,8 @@ namespace ESP
       if (Player.m_localPlayer == null) return "";
       var dps = DPSMeter.Get();
       if (dps != "") return dps;
+      var eps = ExperienceMeter.Get();
+      if (eps != "") return eps;
       if (FixedMessage != "") return FixedMessage;
       return "";
     }
@@ -47,7 +49,8 @@ namespace ESP
     private static string GetOtherSettings()
     {
       var text = Format.String("O") + ": " + GetShowHide(Hoverables.extraInfo) + " extra info on tooltips, ";
-      text += Format.String("P") + ": " + GetShowHide(Settings.showDPS) + " DPS meter";
+      text += Format.String("P") + ": " + GetShowHide(Settings.showDPS) + " DPS meter, ";
+      text += Format.String("L") + ": " + GetShowHide(Settings.showExperienceMeter) + " experience meter";
       return text;
     }
     private static string GetSpeed() => "Speed: " + Format.Float(Patch.m_currentVel(Player.m_localPlayer).magnitude, "0.#") + " m/s";

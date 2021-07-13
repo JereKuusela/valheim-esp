@@ -28,7 +28,6 @@ Creatures:
 TODO:
  - Marker lines fixed rotation upwards?
  - Range format shouldn't color the line.
- - Experience gains to HUD
 
 
 Changes:
@@ -61,3 +60,4 @@ Changes:
  - Added creature tracker that shows amount of tracked creatures nearby.
  - Changed creauture rays to only work for tracked creatures.
  - Added wind strength, current coordinates and forest factor to the HUD.
+ - Added experience meter which can be used to track experience gain.
