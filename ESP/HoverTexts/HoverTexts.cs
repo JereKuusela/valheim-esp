@@ -22,6 +22,11 @@ namespace ESP
   {
     public static void Postfix(Beehive __instance, ref string __result) => Hoverables.AddTexts(__instance.gameObject, ref __result);
   }
+  [HarmonyPatch(typeof(ItemDrop), "GetHoverText")]
+  public class ItemDrop_GetHoverText
+  {
+    public static void Postfix(Beehive __instance, ref string __result) => Hoverables.AddTexts(__instance.gameObject, ref __result);
+  }
   [HarmonyPatch(typeof(Chair), "GetHoverText")]
   public class Chair_GetHoverText
   {

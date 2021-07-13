@@ -12,10 +12,10 @@ namespace ESP
       text += "\n" + Format.ProgressPercent("Despawn timer", timer, 3600);
       if (inBase)
         text += "\n" + Format.String("Despawn prevented by player base", "green");
+      else if (timer > 3600 && !inBase && playerInRange)
+        text += "\n" + Format.String("Despawn prevented by a nearby player (25 meters)", "green");
       else
         text += "\n" + Format.String("Despawning", "red");
-      if (timer > 3600 && !inBase && playerInRange)
-        text += "\n" + Format.String("Despawn prevented by a nearby player (25 meters)", "green");
 
       return text;
     }
