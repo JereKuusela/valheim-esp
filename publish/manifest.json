@@ -1,8 +1,8 @@
 {
   "name": "ESP",
-  "version_number": "1.1.0",
+  "version_number": "1.2.1",
   "website_url": "https://github.com/JereKuusela/valheim-esp",
-  "description": "Shows underlying game mechanics.",
+  "description": "This mod adds lots of new information to tooltips and visualizes many hidden mechanics which can be used to improve your gameplay and perfect your build. Also includes a DPS meter.",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.1100"
   ]
