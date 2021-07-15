@@ -10,6 +10,7 @@ namespace ESP
   {
     public static void Postfix(ref float __result)
     {
+      if (!Cheats.IsAdmin) return;
       if (Settings.setSkills.Length == 0) return;
       int amount;
       if (!Int32.TryParse(Settings.setSkills, out amount)) return;
@@ -21,13 +22,15 @@ namespace ESP
   [HarmonyPatch(typeof(Skills), "GetRandomSkillRange")]
   public class Skills_GetRandomSkillRange
   {
-    public static void Postfix(Skills __instance, out float min, out float max, Skills.SkillType skillType)
+    public static bool Prefix(Skills __instance, out float min, out float max, Skills.SkillType skillType)
     {
       // Copy paste from decompiled.
       var skillFactor = __instance.GetSkillFactor(skillType);
       var num = Mathf.Lerp(0.4f, 1f, skillFactor);
       min = Mathf.Clamp01(num - Settings.playerDamageRange);
       max = Mathf.Clamp01(num + Settings.playerDamageRange);
+      // Out parameters don't allow returning early so overwrite with default implementation when not admin.
+      return !Cheats.IsAdmin;
     }
   }
   [HarmonyPatch(typeof(Skills), "GetRandomSkillFactor")]
@@ -35,6 +38,7 @@ namespace ESP
   {
     public static void Postfix(Skills __instance, ref float __result, Skills.SkillType skillType)
     {
+      if (!Cheats.IsAdmin) return;
       // Copy paste from decompiled.
       float skillFactor = __instance.GetSkillFactor(skillType);
       float num = Mathf.Lerp(0.4f, 1f, skillFactor);
@@ -48,6 +52,7 @@ namespace ESP
   {
     public static void Postfix(ref float __result)
     {
+      if (!Cheats.IsAdmin) return;
       __result = UnityEngine.Random.Range(1f - Settings.creatureDamageRange, 1f);
     }
   }

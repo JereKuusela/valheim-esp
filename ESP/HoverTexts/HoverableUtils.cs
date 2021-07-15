@@ -40,6 +40,7 @@ namespace ESP
     public static void AddTexts(GameObject obj, ref string __result)
     {
       if (!extraInfo) return;
+      __result += "\nCoordinates: " + Format.Coordinates(obj.transform.position);
       var character = obj.GetComponentInParent<Character>();
       var baseAI = obj.GetComponentInParent<BaseAI>();
       __result += Texts.Get(obj.GetComponentInParent<TreeLog>());

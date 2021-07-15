@@ -22,7 +22,7 @@ namespace ESP
 
       text += "\n" + Format.GetHealth(health, maxHealth);
       text += "\nHit noise: " + Format.Int(obj.m_hitNoise);
-      text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damages.m_chop != HitData.DamageModifier.Immune, obj.m_damages.m_pickaxe != HitData.DamageModifier.Immune);
+      text += Texts.GetToolTier(obj.m_minToolTier, obj.m_damages.m_chop != HitData.DamageModifier.Immune, obj.m_damages.m_pickaxe != HitData.DamageModifier.Immune);
       text += DamageModifierUtils.Get(obj.m_damages, false, false);
       return text;
     }

@@ -39,6 +39,8 @@ Changes:
  - Added smoke stats to smelters and fireplaces.
  - Added visualization for smoke, including custom tool tip.
  - Added creature tracker that shows amount of tracked creatures nearby.
+ - Added object coordinates to tooltips.
+ - Improved message system to show everything at the same time (including messages from the game).
  - Changed creauture rays to only work for tracked creatures.
  - Added wind strength, current coordinates and forest factor to the HUD.
  - Added experience meter which can be used to track experience gain.

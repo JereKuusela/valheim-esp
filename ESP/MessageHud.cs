@@ -1,6 +1,5 @@
 using HarmonyLib;
 using UnityEngine;
-using System;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -13,9 +12,6 @@ namespace ESP
     private static string GetShowHide(bool value) => value ? "Hide" : "Show";
     private static List<string> GetInfo()
     {
-      if (!Settings.showHud) return null;
-      // Wait for the game to load.
-      if (Player.m_localPlayer == null) return null;
       var lines = new List<string>();
       lines.Add(GetEnvironment());
       lines.Add(GetLocation(Player.m_localPlayer.transform.position));
@@ -27,14 +23,28 @@ namespace ESP
     }
     private static List<string> GetFixedMessage()
     {
+      var lines = new List<string>();
       // Wait for the game to load.
-      if (Player.m_localPlayer == null) return null;
+      if (Player.m_localPlayer == null) return lines;
+      lines.AddRange(GetInfo());
       var dps = DPSMeter.Get();
-      if (dps != null) return dps;
+      if (dps != null)
+      {
+        lines.Add("");
+        lines.AddRange(dps);
+      }
       var eps = ExperienceMeter.Get();
-      if (eps != null) return eps;
-      if (FixedMessage != null) return new List<string>(FixedMessage);
-      return null;
+      if (eps != null)
+      {
+        lines.Add("");
+        lines.AddRange(eps);
+      }
+      if (PlayerShip != null)
+      {
+        lines.Add("");
+        lines.AddRange(Texts.Get(PlayerShip).Split('\n').Where(line => line != ""));
+      }
+      return lines;
     }
     private static string GetVisualSettings()
     {
@@ -59,7 +69,7 @@ namespace ESP
     }
     private static string GetLocation(Vector3 location)
     {
-      return EnvUtils.GetLocation(location) + ", " + EnvUtils.GetForest(location);
+      return EnvUtils.GetLocation(location) + ", " + EnvUtils.GetAltitude(location) + ", " + EnvUtils.GetForest(location);
     }
     public static string GetTrackedCreatures()
     {
@@ -75,48 +85,47 @@ namespace ESP
       return string.Join(",", tracks);
     }
 
-    private static bool baseGameMessage = false;
-    public static List<string> FixedMessage = null;
+    private static string baseGameMessage = "";
+    public static Ship PlayerShip = null;
 
-    // Space is limited so skip showing messages when manually showing something.
-    public static bool Prefix(out string __state)
+    // Use state to track when a default in game message arrives.
+    public static void Prefix(out string __state)
     {
       __state = MessageHud.instance.m_messageText.text;
-      return baseGameMessage || (GetFixedMessage() == null);
     }
     // Keeps the message always visible and shows any base game messages.
     public static void Postfix(float ___m_msgQueueTimer, string __state)
     {
+      if (!Settings.showHud) return;
       var hud = MessageHud.instance;
       var lines = GetFixedMessage();
-      if (lines == null)
-        lines = GetInfo();
-      var customMessage = "";
-      if (lines != null)
-      {
-        var padding = lines.Count - 2;
-        for (var i = 0; i < padding; i++) lines.Insert(0, "");
-        customMessage = string.Join("\n", lines);
-      }
+      var isCustomMessage = lines.Count > 0;
       // New base game message.
       if (hud.m_messageText.text != __state)
-        baseGameMessage = true;
-      if (baseGameMessage)
+        baseGameMessage = hud.m_messageText.text;
+      if (baseGameMessage != "")
       {
         // No more base game messages.
         if (___m_msgQueueTimer >= 4f)
-          baseGameMessage = false;
-        if (customMessage != "" && ___m_msgQueueTimer >= 1f)
-          baseGameMessage = false;
+          baseGameMessage = "";
       }
-      else if (customMessage != "")
+      if (baseGameMessage != "")
       {
-        hud.m_messageText.CrossFadeAlpha(1f, 0f, true);
-        hud.m_messageText.text = customMessage;
+        lines.Add("");
+        lines.Add(baseGameMessage);
       }
+      if (lines.Count == 0) return;
+      var padding = lines.Count - 2;
+      for (var i = 0; i < padding; i++) lines.Insert(0, "");
+      hud.m_messageText.CrossFadeAlpha(1f, 0f, true);
+      hud.m_messageText.text = string.Join("\n", lines);
+      // Icon is not very relevant information and will pop up over the text.
+      if (isCustomMessage)
+        hud.m_messageIcon.canvasRenderer.SetAlpha(0f);
     }
   }
 
+  // No easy way to find the player's ship so must be done indirectly.
   [HarmonyPatch(typeof(Ship), "FixedUpdate")]
   public class Ship_FixedUpdate_Hud
   {
@@ -124,9 +133,7 @@ namespace ESP
     {
       if (!Settings.showShipStatsOnHud || !Player.m_localPlayer) return;
       if (!__instance.IsPlayerInBoat(Player.m_localPlayer.GetZDOID())) return;
-      var lines = Texts.Get(__instance).Split('\n').Where(line => line != "").ToList();
-      lines.Insert(0, MessageHud_UpdateMessage.GetTrackedCreatures());
-      MessageHud_UpdateMessage.FixedMessage = lines;
+      MessageHud_UpdateMessage.PlayerShip = __instance;
     }
   }
   [HarmonyPatch(typeof(Ship), "OnTriggerExit")]
@@ -134,7 +141,7 @@ namespace ESP
   {
     public static void Postfix()
     {
-      MessageHud_UpdateMessage.FixedMessage = null;
+      MessageHud_UpdateMessage.PlayerShip = null;
     }
   }
 }

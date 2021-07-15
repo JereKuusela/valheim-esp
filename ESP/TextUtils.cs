@@ -63,6 +63,11 @@ namespace ESP
       var keys = required.Concat(notRequired);
       return System.String.Join(", ", keys);
     }
+    public static string Coordinates(Vector3 coordinates, string color = "yellow")
+    {
+      var values = coordinates.ToString("F0").Replace("(", "").Replace(")", "").Split(',').Select(value => String(value.Trim(), color));
+      return string.Join(", ", values);
+    }
     public static string GetHealth(double health, double limit)
       => "Health: " + Format.Progress(health, limit) + " (" + Format.Percent(health / limit) + ")";
 

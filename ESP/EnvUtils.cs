@@ -72,7 +72,8 @@ namespace ESP
     }
     public static double GetAvgWind(EnvEntry env) => (env.m_env.m_windMin + env.m_env.m_windMax) / 2.0 * env.m_weight;
 
-    public static string GetLocation(Vector3 location) => "Location: " + Format.String(location.ToString("F0"));
+    public static string GetLocation(Vector3 location) => "Location: " + Format.Coordinates(location);
+    public static string GetAltitude(Vector3 location) => "Altitude: " + Format.Int(location.y - ZoneSystem.instance.m_waterLevel);
     public static string GetForest(Vector3 location)
     {
       var inForest = WorldGenerator.InForest(location);
