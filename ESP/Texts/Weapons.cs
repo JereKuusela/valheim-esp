@@ -61,7 +61,7 @@ namespace ESP
         texts.Add(Format.Float(attack.m_attackRayWidth, Format.FORMAT, color) + " ray");
       if (attack.m_attackOffset > 0)
         texts.Add(Format.Float(attack.m_attackOffset, Format.FORMAT, color) + " offset");
-      return "Hit: " + string.Join(", ", texts);
+      return "Hit: " + Format.JoinRow(texts);
     }
     public static string GetProjectileText(Attack attack, float holdDuration = 0, string color = "yellow")
     {
@@ -81,7 +81,7 @@ namespace ESP
         texts.Add("Burst: " + Format.Multiplier(attack.m_projectileBursts, color));
       if (attack.m_projectiles > 1)
         texts.Add("Projectiles: " + Format.Multiplier(attack.m_projectiles, color));
-      return string.Join(", ", texts);
+      return Format.JoinRow(texts);
     }
     public static string GetAttackSpeed(string animation, float holdDuration)
     {

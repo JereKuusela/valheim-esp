@@ -1,7 +1,6 @@
 General:
  * New text class for visuals that gets text based on the object? (onei issue is that then you would get all info)
- * Text system refactored. Add functions that require a dictionary (enum to text). Then the caller function can decide what to show and in what order.
- * Actions: E to freeze creature, numbers to start events when hovering the event ray, etc
+  * Actions: E to freeze creature, numbers to start events when hovering the event ray, etc
 
 Drawer:
  - Some kind of color customization (rgb + string to color).
@@ -21,8 +20,20 @@ Creatures:
 
  - Better tooltips (ammo, etc, if something is missing). Like for ammos to show +0 velocity.
  - Fix exiting ship doesnt work when creature ray comes up.
- - Stacksize to item tooltips
+
+
+Todo:
  - Destructibl, etc item drops: Tin has DropOnDestroyed, everything else if minerock5 without "one of each" and individual stack size of 1
- - Able to set reference point at current location? To make coordinates also show distance
+ - Stacksize to item tooltips
+ - Add "spawn blocked" to HUD for current location?
+ - Windmill base line cover comparison (since 4-5 are blocked by the propeller).
+ - Change text functions to use list of lines instead of concanation (cleaner and works better with empty values).
+ - In game setting menu on the HUD (would hide settings under one line and enable more finely tuned approach).
 
 Changes:
+ - Fixed tool tiers being always stone / antler for creature attacks.
+ - Torches no longer show cover system as they don't use it.
+ - Windmills no longer show amount of smoke.
+ - Fixed ward protection radius shown as sphere instead of a cylinder.
+ - Improved experience meter to automatically update the experience gain percentage.
+ - Added ruler. Ruler point can be set at the current location. HUD shows distance to the set location.

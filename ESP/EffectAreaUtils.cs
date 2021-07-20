@@ -26,7 +26,7 @@ namespace ESP
       if ((type & EffectArea.Type.NoMonsters) != 0) types.Add("No monsters");
       if ((type & EffectArea.Type.Teleport) != 0) types.Add("Teleport");
       if ((type & EffectArea.Type.PlayerBase) != 0) types.Add("Base");
-      return string.Join(", ", types);
+      return Format.JoinRow(types);
     }
   }
 }

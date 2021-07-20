@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ESP
@@ -171,16 +172,19 @@ namespace ESP
     public static string Get(Fireplace obj)
     {
       if (!Settings.structures || !Settings.progress || !obj) return "";
+      var lines = new List<string>();
       var limit = obj.m_secPerFuel;
-      if (limit == 0) return "";
-      var value = Patch.GetFloat(obj, "fuel") * limit;
-      var text = "\n" + Format.ProgressPercent("Progress", value, limit);
-      text += "\n" + GetCover(obj);
-      return text;
+      if (limit > 0)
+      {
+        var value = Patch.GetFloat(obj, "fuel") * limit;
+        lines.Add(Format.ProgressPercent("Progress", value, limit));
+      }
+      lines.Add(GetCover(obj));
+      return Format.JoinLines(lines);
     }
     private static string GetWind(Fireplace obj)
     {
-      if (!obj) return "";
+      if (!obj || !CoverUtils.ChecksCover(obj)) return "";
       var wind = EnvMan.instance.GetWindIntensity();
       var limit = Constants.WindFireplaceLimit;
       var pastLimit = wind >= limit;
@@ -201,12 +205,11 @@ namespace ESP
     public static string GetCover(Fireplace obj)
     {
       if (!obj) return "";
-      var text = GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverFireplaceLimit, false);
-      text += "\n" + GetWind(obj);
-      var roofText = GetDistanceFromRoof(obj);
-      if (roofText != "")
-        text += "\n" + roofText;
-      return text;
+      var lines = new List<string>();
+      if (CoverUtils.ChecksCover(obj)) lines.Add(GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverFireplaceLimit, false));
+      lines.Add(GetWind(obj));
+      lines.Add(GetDistanceFromRoof(obj));
+      return Format.JoinLines(lines);
     }
     public static string Get(MineRock obj)
     {
@@ -270,7 +273,7 @@ namespace ESP
       var limit = instance.m_secPerProduct;
       if (limit == 0) return "";
       var value = Patch.Smelter_GetBakeTimer(instance);
-      return "\n" + Format.ProgressPercent("Progress", value, limit);
+      return Format.ProgressPercent("Progress", value, limit);
     }
     private static string GetFuelText(Smelter instance)
     {
@@ -280,7 +283,7 @@ namespace ESP
       var limit = maxFuel * secPerFuel;
       if (limit == 0) return "";
       var value = Patch.Smelter_GetFuel(instance) * secPerFuel;
-      return "\n" + Format.ProgressPercent("Fuel", value, limit);
+      return Format.ProgressPercent("Fuel", value, limit);
     }
     private static string GetPowerText(Windmill windmill)
     {
@@ -290,12 +293,19 @@ namespace ESP
       var powerText = "Power: " + Format.Percent(windmill.GetPowerOutput());
       var speedText = Format.Percent(speed) + " speed";
       var coverText = Format.Percent(cover) + " cover";
-      return "\n" + powerText + " from " + speedText + " and " + coverText;
+      return powerText + " from " + speedText + " and " + coverText;
     }
     public static string Get(Smelter obj)
     {
       if (!Settings.structures || !Settings.progress || !obj) return "";
-      return GetProgressText(obj) + GetFuelText(obj) + GetPowerText(obj.m_windmill) + "\n" + GetSmokeLimit();
+      var lines = new List<string>();
+      lines.Add(GetProgressText(obj));
+      lines.Add(GetFuelText(obj));
+      if (obj.m_windmill)
+        lines.Add(GetPowerText(obj.m_windmill));
+      else
+        lines.Add(GetSmokeLimit());
+      return Format.JoinLines(lines);
     }
 
     private static float GetRelativeAngle(Ship ship)

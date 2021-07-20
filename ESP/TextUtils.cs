@@ -52,6 +52,8 @@ namespace ESP
       var levelLimit = (limit > 0) ? " after " + Format.Int(limit) + " meters" : "";
       return "Stars: " + level + chanceText + levelLimit;
     }
+    public static string JoinLines(IEnumerable<string> lines) => string.Join("\n", lines.Where(line => line != ""));
+    public static string JoinRow(IEnumerable<string> lines) => string.Join(", ", lines.Where(line => line != ""));
 
     public static string GetAttempt(double time, double limit, double chance) =>
       Format.ProgressPercent("Attempt", time, limit) + ", " + Format.Percent(chance / 100.0) + " chance";
@@ -61,12 +63,12 @@ namespace ESP
       required = required.Select(key => String(key, ZoneSystem.instance.GetGlobalKey(key))).ToList();
       notRequired = notRequired.Select(key => String("not " + key, !ZoneSystem.instance.GetGlobalKey(key))).ToList();
       var keys = required.Concat(notRequired);
-      return System.String.Join(", ", keys);
+      return JoinRow(keys);
     }
     public static string Coordinates(Vector3 coordinates, string color = "yellow")
     {
       var values = coordinates.ToString("F0").Replace("(", "").Replace(")", "").Split(',').Select(value => String(value.Trim(), color));
-      return string.Join(", ", values);
+      return JoinRow(values);
     }
     public static string GetHealth(double health, double limit)
       => "Health: " + Format.Progress(health, limit) + " (" + Format.Percent(health / limit) + ")";
@@ -77,8 +79,8 @@ namespace ESP
     public static string Name(ItemDrop.ItemData obj, string color = "yellow") => obj != null ? Name(obj.m_shared.m_name, color) : "";
     private static string Name(Pickable obj) => obj ? obj.m_itemPrefab.name : "";
     public static string Name(CreatureSpawner obj) => obj ? Utils.GetPrefabName(obj.m_creaturePrefab) : "";
-    public static string Name(IEnumerable<GameObject> objs, string color = "yellow") => string.Join(", ", objs.Select(prefab => Format.Name(prefab, color)));
-    public static string Name(IEnumerable<ItemDrop> objs, string color = "yellow") => string.Join(", ", objs.Select(prefab => Format.Name(prefab, color)));
+    public static string Name(IEnumerable<GameObject> objs, string color = "yellow") => JoinRow(objs.Select(prefab => Format.Name(prefab, color)));
+    public static string Name(IEnumerable<ItemDrop> objs, string color = "yellow") => JoinRow(objs.Select(prefab => Format.Name(prefab, color)));
     private static string Name(Bed obj) => obj ? obj.GetHoverName() : "";
     private static string Name(Piece obj) => obj ? obj.m_name : "";
     private static string Name(TreeLog obj) => obj ? obj.name : "";

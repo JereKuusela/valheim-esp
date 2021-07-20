@@ -38,8 +38,12 @@ namespace ESP
     }
     ///<summary>Creates a renderer with a sphere (x, y and z profiles).</summary>
     public static GameObject DrawSphere(MonoBehaviour parent, float radius, Color color, float width, string name)
+      => DrawSphere(parent.gameObject, radius, color, width, name);
+
+    ///<summary>Creates a renderer with a sphere (x, y and z profiles).</summary>
+    public static GameObject DrawSphere(GameObject parent, float radius, Color color, float width, string name)
     {
-      var obj = CreateObject(parent.gameObject, name);
+      var obj = CreateObject(parent, name);
       DrawArcX(CreateObject(obj, name), Vector3.zero, radius, 360f, color, width);
       AddSphereCollider(obj, radius - width / 2f);
       DrawArcY(CreateObject(obj, name), Vector3.zero, radius, 360f, color, width);

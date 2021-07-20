@@ -25,7 +25,7 @@ namespace ESP
       });
     }
     ///<summary>Creates a line.</summary>
-    private static GameObject DrawLineSub(GameObject obj, Vector3 start, Vector3 end, Color color, float width, string name)
+    private static GameObject DrawLineSub(GameObject obj, Vector3 start, Vector3 end, Color color, float width)
     {
       var renderer = CreateRenderer(obj, color, width);
       renderer.SetPosition(0, start);
@@ -38,7 +38,7 @@ namespace ESP
       // Box colliders don't work with non-perpendicular lines so the line must be rotated from a forward line.
       var parentObj = CreateLineRotater(CreateObject(parent.gameObject, name, true), start, end);
       var forwardEnd = Vector3.forward * (end - start).magnitude;
-      var obj = DrawLineSub(parentObj, Vector3.zero, forwardEnd, color, width, name);
+      var obj = DrawLineSub(parentObj, Vector3.zero, forwardEnd, color, width);
       Drawer.AddBoxCollider(obj);
       return obj;
     }
@@ -49,7 +49,7 @@ namespace ESP
     public static GameObject DrawMarkerLine(MonoBehaviour parent, Color color, float width, string name, Vector3 start)
     {
       var end = new Vector3(start.x, 500f, start.z);
-      var obj = DrawLineSub(CreateObject(parent.gameObject, name, true), start, end, color, width, name);
+      var obj = DrawLineSub(CreateObject(parent.gameObject, name, true), start, end, color, width);
       Drawer.AddBoxCollider(obj);
       return obj;
     }

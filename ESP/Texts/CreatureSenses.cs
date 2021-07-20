@@ -60,7 +60,7 @@ namespace ESP
       texts.Add(PartnerSearch(procreation));
       texts.Add(FoodLimit(monsterAI));
       texts.Add(GetEatRange(monsterAI));
-      return string.Join("\n", texts.Where(text => text != ""));
+      return Format.JoinLines(texts);
     }
   }
 }

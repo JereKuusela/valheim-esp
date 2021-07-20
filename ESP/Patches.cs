@@ -43,6 +43,7 @@ namespace ESP
     public static Rigidbody m_body(Smoke obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;
     public static float m_time(Smoke obj) => Traverse.Create(obj).Field<float>("m_time").Value;
     public static Vector3 m_currentVel(Player obj) => Traverse.Create(obj).Field<Vector3>("m_currentVel").Value;
+    public static SEMan m_seman(Player obj) => Traverse.Create(obj).Field<SEMan>("m_seman").Value;
     public static ZNetView m_nview(MonoBehaviour obj) => Traverse.Create(obj).Field<ZNetView>("m_nview").Value;
     public static Vector3[] m_coverRays(Cover obj) => Traverse.Create(obj).Field<Vector3[]>("m_coverRays").Value;
     public static int m_coverRayMask(Cover obj) => Traverse.Create(obj).Field<int>("m_coverRayMask").Value;

@@ -12,10 +12,12 @@ namespace ESP
     private static string GetShowHide(bool value) => value ? "Hide" : "Show";
     private static List<string> GetInfo()
     {
+      var position = Player.m_localPlayer.transform.position;
       var lines = new List<string>();
       lines.Add(GetEnvironment());
-      lines.Add(GetLocation(Player.m_localPlayer.transform.position));
+      lines.Add(GetLocation(position));
       lines.Add(GetSpeed() + ", " + GetNoise());
+      lines.Add(Ruler.GetText(position));
       lines.Add(GetTrackedCreatures());
       lines.Add(GetVisualSettings());
       lines.Add(GetOtherSettings());
@@ -39,10 +41,11 @@ namespace ESP
         lines.Add("");
         lines.AddRange(eps);
       }
-      if (PlayerShip != null)
+      var localShip = Ship.GetLocalShip();
+      if (localShip)
       {
         lines.Add("");
-        lines.AddRange(Texts.Get(PlayerShip).Split('\n').Where(line => line != ""));
+        lines.AddRange(Texts.Get(localShip).Split('\n').Where(line => line != ""));
       }
       return lines;
     }
@@ -82,11 +85,10 @@ namespace ESP
         return name + ": " + Format.Int(counts);
       });
 
-      return string.Join(",", tracks);
+      return Format.JoinRow(tracks);
     }
 
     private static string baseGameMessage = "";
-    public static Ship PlayerShip = null;
 
     // Use state to track when a default in game message arrives.
     public static void Prefix(out string __state)
@@ -118,30 +120,10 @@ namespace ESP
       var padding = lines.Count - 2;
       for (var i = 0; i < padding; i++) lines.Insert(0, "");
       hud.m_messageText.CrossFadeAlpha(1f, 0f, true);
-      hud.m_messageText.text = string.Join("\n", lines);
+      hud.m_messageText.text = Format.JoinLines(lines);
       // Icon is not very relevant information and will pop up over the text.
       if (isCustomMessage)
         hud.m_messageIcon.canvasRenderer.SetAlpha(0f);
-    }
-  }
-
-  // No easy way to find the player's ship so must be done indirectly.
-  [HarmonyPatch(typeof(Ship), "FixedUpdate")]
-  public class Ship_FixedUpdate_Hud
-  {
-    public static void Postfix(Ship __instance)
-    {
-      if (!Settings.showShipStatsOnHud || !Player.m_localPlayer) return;
-      if (!__instance.IsPlayerInBoat(Player.m_localPlayer.GetZDOID())) return;
-      MessageHud_UpdateMessage.PlayerShip = __instance;
-    }
-  }
-  [HarmonyPatch(typeof(Ship), "OnTriggerExit")]
-  public class Ship_OnTriggerExit_Hud
-  {
-    public static void Postfix()
-    {
-      MessageHud_UpdateMessage.PlayerShip = null;
     }
   }
 }

@@ -14,7 +14,7 @@ namespace ESP
       if (target == ItemDrop.ItemData.AiTarget.FriendHurt) return "Heal";
       return "";
     }
-    private static string GetDamages(HitData.DamageTypes target, int tier = 0)
+    private static string GetDamages(HitData.DamageTypes target, int tier)
     {
       var tooltip = target.GetTooltipString();
       tooltip = tooltip.Replace("#CHOP_TIER", Texts.GetChopTier(tier));
@@ -29,7 +29,7 @@ namespace ESP
       var weapons = obj.GetInventory().GetAllItems().Where(item => item.IsWeapon());
       var time = Time.time;
       // Some attacks have multiple instances so group them to reduce clutter.
-      var groups = weapons.GroupBy(weapon => GetDamages(weapon.GetDamage()) + weapon.m_shared.m_aiAttackInterval + weapon.m_shared.m_aiAttackRange);
+      var groups = weapons.GroupBy(weapon => GetDamages(weapon.GetDamage(), weapon.m_shared.m_toolTier) + weapon.m_shared.m_aiAttackInterval + weapon.m_shared.m_aiAttackRange);
       var texts = groups.Select(group =>
       {
         var weapon = group.First();
@@ -45,9 +45,9 @@ namespace ESP
           var timer = Mathf.Min(time - item.m_lastAttackTime, data.m_aiAttackInterval);
           return Format.Progress(timer, data.m_aiAttackInterval) + " s";
         });
-        text += ": " + string.Join(", ", timers);
+        text += ": " + Format.JoinRow(timers);
         var damage = weapon.GetDamage();
-        var damages = GetDamages(damage);
+        var damages = GetDamages(damage, weapon.m_shared.m_toolTier);
         if (!isNonAttack && damages != "")
           text += "\n" + damages;
         text += "\nRange: " + Format.Range(data.m_aiAttackRangeMin, data.m_aiAttackRange) + " meters (" + Format.Int(data.m_aiAttackMaxAngle) + " degrees)";
@@ -76,7 +76,7 @@ namespace ESP
         }
         return text;
       });
-      return "\n\n" + string.Join("\n", texts);
+      return "\n\n" + Format.JoinLines(texts);
     }
 
     public static string GetNoise(Character obj) => "Noise: " + Format.Int(Patch.m_noiseRange(obj));
@@ -191,7 +191,7 @@ namespace ESP
     {
       if (!Settings.drops || !characterDrop || !character)
         return "";
-      var dropTexts = string.Join(", ", GetDropTexts(characterDrop, character));
+      var dropTexts = Format.JoinRow(GetDropTexts(characterDrop, character));
       return "\nDrops: " + dropTexts;
     }
   }

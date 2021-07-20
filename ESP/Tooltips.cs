@@ -90,7 +90,7 @@ namespace ESP
         split.Add(Texts.GetProjectileText(attack, holdDuration, "orange"));
         split.Add(Texts.GetHitboxText(attack, "orange"));
       }
-      __result = string.Join("\n", split.Where(line => line != "").Select(line => line.StartsWith("$item_knockback") ? line + knockback : line));
+      __result = Format.JoinLines(split.Where(line => line != "").Select(line => line.StartsWith("$item_knockback") ? line + knockback : line));
     }
   }
 }

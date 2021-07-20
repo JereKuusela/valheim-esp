@@ -52,7 +52,7 @@ namespace ESP
       if (timeText.Length > 0) lines.Add(timeText);
       if (obj.m_setPatrolSpawnPoint) lines.Add("Patrol point");
       lines.Add("Activates within " + Format.Int(obj.m_triggerDistance) + " meters" + noise);
-      return "\n" + string.Join("\n", lines);
+      return "\n" + Format.JoinLines(lines);
     }
 
     private static string GetEventText()
@@ -77,9 +77,9 @@ namespace ESP
           Format.GetGlobalKeys(randomEvent.m_requiredGlobalKeys, randomEvent.m_notRequiredGlobalKeys),
           randomEvent.m_nearBaseOnly ? Format.String("player base", validBase) : ""
         };
-        return Format.String(randomEvent.m_name, valid) + ": " + String.Join(", ", parts.Where(part => part.Length > 0));
+        return Format.String(randomEvent.m_name, valid) + ": " + Format.JoinRow(parts);
       });
-      return String.Join("\n", texts);
+      return Format.JoinLines(texts);
     }
     private static string GetSpawnerText(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode)
     {
@@ -107,7 +107,7 @@ namespace ESP
       var instances = SpawnSystem.GetNrOfInstances(spawnData.m_prefab, Vector3.zero, 0f, true, false);
       var progress = Format.ProgressPercent("Attempt", timeSinceSpawned, spawnData.m_spawnInterval);
       var chance = Format.Percent(spawnData.m_spawnChance / 100.0) + " chance";
-      var weather = spawnData.m_requiredEnvironments.Count > 0 ? (", Weather: " + Format.String(string.Join(", ", spawnData.m_requiredEnvironments))) : "";
+      var weather = spawnData.m_requiredEnvironments.Count > 0 ? (", Weather: " + Format.String(Format.JoinRow(spawnData.m_requiredEnvironments))) : "";
       var global = spawnData.m_requiredGlobalKey != "" ? (", Bosses: " + Format.String(spawnData.m_requiredGlobalKey)) : "";
       var spawns = Format.Progress(instances, spawnData.m_maxSpawned);
       var spawnDistance = Format.Int(spawnData.m_spawnDistance) + " meters";
@@ -147,7 +147,7 @@ namespace ESP
           var stableHashCode = ("e_" + spawnData.m_prefab.name + num.ToString()).GetStableHashCode();
           return GetSpawnerText(obj, spawnData, stableHashCode);
         });
-        text += String.Join("\n", texts);
+        text += Format.JoinLines(texts);
       }
       return text;
     }
@@ -190,7 +190,7 @@ namespace ESP
       }
 
       var instances = SpawnSystem.GetNrOfInstances(spawnData.m_prefab, Vector3.zero, 0f, false, false);
-      var weather = spawnData.m_requiredEnvironments.Count > 0 ? (", Weather: " + Format.String(string.Join(", ", spawnData.m_requiredEnvironments))) : "";
+      var weather = spawnData.m_requiredEnvironments.Count > 0 ? (", Weather: " + Format.String(Format.JoinRow(spawnData.m_requiredEnvironments))) : "";
       var global = spawnData.m_requiredGlobalKey != "" ? (", Bosses: " + Format.String(spawnData.m_requiredGlobalKey)) : "";
       var spawns = Format.Progress(instances, spawnData.m_maxSpawned);
       var spawnDistance = Format.Int(spawnData.m_spawnDistance) + " meters";

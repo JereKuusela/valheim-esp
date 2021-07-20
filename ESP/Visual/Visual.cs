@@ -29,7 +29,7 @@ namespace ESP
     {
       var text = "Protection";
       if (!obj || IsDisabled(text)) return;
-      var line = Drawer.DrawSphere(obj, obj.m_radius, Color.gray, Settings.effectAreaLineWidth, Drawer.OTHER);
+      var line = Drawer.DrawCylinder(obj, obj.m_radius, Color.gray, Settings.effectAreaLineWidth, Drawer.OTHER);
       Drawer.AddText(line, text, Format.Radius(obj.m_radius));
     }
     public static void Draw(Piece obj)

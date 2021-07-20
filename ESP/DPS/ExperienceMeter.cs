@@ -15,7 +15,6 @@ namespace ESP
       ___m_seman.ModifyRaiseSkill(skill, ref mod);
       value *= mod;
       ExperienceMeter.AddExperience(skill, value);
-      ExperienceMeter.SetExperienceModifier(mod);
     }
   }
   public class ExperienceMeter
@@ -23,7 +22,6 @@ namespace ESP
     private static DateTime? startTime = null;
     private static DateTime? endTime = null;
     private static Dictionary<Skills.SkillType, float> experiences = new Dictionary<Skills.SkillType, float>();
-    private static float experienceModifier = 1.0f;
     public static void Start()
     {
       if (!Settings.showExperienceMeter) return;
@@ -35,7 +33,6 @@ namespace ESP
     {
       startTime = null;
       endTime = null;
-      experienceModifier = 1.0f;
       experiences.Clear();
     }
     public static void AddExperience(Skills.SkillType skill, float value = 1f)
@@ -47,10 +44,12 @@ namespace ESP
       experiences[skill] += value;
       endTime = DateTime.Now;
     }
-    public static void SetExperienceModifier(float value)
+    public static float GetExperienceModifier()
     {
-      if (!startTime.HasValue) return;
-      experienceModifier = value;
+      var seMan = Patch.m_seman(Player.m_localPlayer);
+      var mod = 1f;
+      seMan.ModifyRaiseSkill(Skills.SkillType.All, ref mod);
+      return mod;
     }
     public static List<string> Get()
     {
@@ -60,7 +59,7 @@ namespace ESP
         time = endTime.Value.Subtract(startTime.Value).TotalMilliseconds;
       time /= 60000.0;
       var lines = experiences.Select(kvp => kvp.Key.ToString() + ": " + Format.Float(kvp.Value) + " (" + Format.Float(kvp.Value / time) + " per minute)").ToList();
-      lines.Insert(0, "Experience gain: " + Format.Percent(experienceModifier));
+      lines.Insert(0, "Experience gain: " + Format.Percent(GetExperienceModifier()));
       return lines;
     }
   }

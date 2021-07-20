@@ -33,7 +33,7 @@ namespace ESP
     }
     public static void Draw(Fireplace obj)
     {
-      if (!obj || Settings.coverRayWidth == 0) return;
+      if (!obj || Settings.coverRayWidth == 0 || !CoverUtils.ChecksCover(obj)) return;
       DrawCover(obj, CoverUtils.GetCoverPoint(obj), Format.Name(obj), Texts.GetCover(obj));
     }
     public static void Draw(Bed obj)

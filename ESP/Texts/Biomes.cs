@@ -55,7 +55,7 @@ namespace ESP
       foreach (var biome in BIOMES)
         if ((biomes & biome) > 0) names.Add(Format.String(GetName(biome), ((validBiome & biome) > 0)));
       if (names.Count == BIOMES.Length) return "";
-      return String.Join(", ", names);
+      return Format.JoinRow(names);
     }
     public static string Get(Heightmap.Biome obj)
     {
@@ -66,7 +66,7 @@ namespace ESP
       text += "\n" + EnvUtils.GetWind() + " (" + Format.Percent(avgWind) + " on average)";
       text += "\n\n" + EnvUtils.GetProgress() + ", Current roll: " + EnvUtils.GetEnvironmentRoll(totalWeight);
       var texts = envs.Select(env => EnvUtils.GetEnvironment(env, totalWeight));
-      return text + "\n" + string.Join("\n", texts);
+      return text + "\n" + Format.JoinLines(texts);
     }
     public static string GetBiomes(Heightmap.Biome biome, Heightmap.BiomeArea area = Heightmap.BiomeArea.Edge)
     {

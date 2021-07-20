@@ -63,6 +63,8 @@ namespace ESP
     public static float pickableRayWidth => configPickableRayWidth.Value;
     public static ConfigEntry<float> configEffectAreaLineWidth;
     public static float effectAreaLineWidth => configEffectAreaLineWidth.Value;
+    public static ConfigEntry<float> configRulerRadius;
+    public static float rulerRadius => configRulerRadius.Value;
     public static ConfigEntry<float> configChestRayWidth;
     public static float chestRayWidth => configChestRayWidth.Value;
     public static ConfigEntry<float> configOreRayWidth;
@@ -164,6 +166,7 @@ namespace ESP
       Settings.configBiomeCornerRayWidth = config.Bind("Visual", "Zone corner rays", 0.25f, "Line width of zone corners (0 to disable)");
       Settings.configRandEventSystemRayWidth = config.Bind("Visual", "Random event system", 0.5f, "Line width of random event system (0 to disable)");
       Settings.configPickableRayWidth = config.Bind("Visual", "Pickable rays", 0.1f, "Line width of pickable locations (0 to disable)");
+      Settings.configRulerRadius = config.Bind("Visual", "Ruler point radius", 0.5f, "Ruler point radius (0 to disable)");
       Settings.configChestRayWidth = config.Bind("Visual", "Chest rays", 0.1f, "Line width of hidden chest locations (0 to disable)");
       Settings.configOreRayWidth = config.Bind("Visual", "Ore rays", 0f, "Line width of ore locations (0 to disable)");
       Settings.configTreeRayWidth = config.Bind("Visual", "Tree rays", 0f, "Line width of tree locations (0 to disable)");
@@ -233,6 +236,10 @@ namespace ESP
         {
           Settings.configShowExperienceMeter.Value = !Settings.configShowExperienceMeter.Value;
           if (!Settings.showExperienceMeter) ExperienceMeter.Reset();
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+          Ruler.Toggle(Player.m_localPlayer.transform.position);
         }
       }
     }
