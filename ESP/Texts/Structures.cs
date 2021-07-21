@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ESP
@@ -17,41 +18,95 @@ namespace ESP
     public static string Get(TreeLog obj)
     {
       if (!Settings.destructibles || !obj) return "";
-      var text = "";
+      var lines = new List<string>();
       var maxHealth = obj.m_health;
       var health = Patch.GetFloat(obj, "health", maxHealth);
-
-      text += "\n" + Format.GetHealth(health, maxHealth);
-      text += "\nHit noise: " + Format.Int(obj.m_hitNoise);
-      text += Texts.GetToolTier(obj.m_minToolTier, obj.m_damages.m_chop != HitData.DamageModifier.Immune, obj.m_damages.m_pickaxe != HitData.DamageModifier.Immune);
-      text += DamageModifierUtils.Get(obj.m_damages, false, false);
-      return text;
+      lines.Add(Format.GetHealth(health, maxHealth));
+      lines.Add("Hit noise: " + Format.Int(obj.m_hitNoise));
+      if (obj.m_subLogPrefab)
+        lines.Add("Destroy creates: " + Format.Int(obj.m_subLogPoints.Length) + " " + Format.Name(obj.m_subLogPrefab));
+      lines.Add(Texts.GetToolTier(obj.m_minToolTier, obj.m_damages.m_chop != HitData.DamageModifier.Immune, obj.m_damages.m_pickaxe != HitData.DamageModifier.Immune));
+      lines.Add(DamageModifierUtils.Get(obj.m_damages, false, false));
+      lines.Add(Get(obj.m_dropWhenDestroyed, 1));
+      return Format.JoinLines(lines);
+    }
+    public static string Get(DropTable obj, int areas)
+    {
+      if (obj == null || obj.m_drops.Count == 0) return "";
+      var lines = new List<string>();
+      if (obj.m_oneOfEach && obj.m_dropMin == obj.m_dropMax && obj.m_dropMin == obj.m_drops.Count)
+      {
+        // All items are guaranteed to drop.
+        lines.Add("Drops:");
+        var drops = obj.m_drops.Select(drop =>
+        {
+          var averageItems = (drop.m_stackMin + drop.m_stackMax) / 2.0;
+          var averageText = Format.Float(averageItems);
+          if (areas > 1)
+            averageText += " * " + Format.Int(areas) + " = " + Format.Float(areas * averageItems);
+          return Format.Name(drop.m_item, "white") + ": " + Format.Range(drop.m_stackMin, drop.m_stackMax) + " items (" + averageText + " on average)";
+        });
+        lines.AddRange(drops);
+      }
+      else
+      {
+        var dropChance = obj.m_dropChance == 1f ? "" : Format.Percent(obj.m_dropChance) + " chance for ";
+        lines.Add("Drops: " + dropChance + Format.Range(obj.m_dropMin, obj.m_dropMax) + " drops");
+        if (obj.m_oneOfEach)
+          lines.Add("One each mode, not handled!");
+        var averageDrops = obj.m_dropChance * (obj.m_dropMin + obj.m_dropMax) / 2.0;
+        var weight = obj.m_drops.Sum(drop => drop.m_weight);
+        var drops = obj.m_drops.Select(drop =>
+        {
+          var chance = weight > 0 ? drop.m_weight / weight : 1f;
+          var averageItems = averageDrops * chance * (drop.m_stackMin + drop.m_stackMax) / 2.0;
+          var chanceText = chance == 1f ? "" : Format.Percent(chance) + " chance for ";
+          var averageText = Format.Float(averageItems);
+          if (areas > 1)
+            averageText += " * " + Format.Int(areas) + " = " + Format.Float(areas * averageItems);
+          return Format.Name(drop.m_item, "white") + ": " + chanceText + Format.Range(drop.m_stackMin, drop.m_stackMax) + " items (" + averageText + " on average)";
+        });
+        lines.AddRange(drops);
+      }
+      return Format.JoinLines(lines);
     }
     public static string Get(TreeBase obj)
     {
       if (!Settings.destructibles || !obj) return "";
-      var text = "";
+      var lines = new List<string>();
       var maxHealth = obj.m_health;
       var health = Patch.GetFloat(obj, "health", maxHealth);
+      lines.Add(Format.GetHealth(health, maxHealth));
+      lines.Add("Hit noise: " + Format.Int(100));
+      if (obj.m_logPrefab)
+        lines.Add("Destroy creates: " + Format.Name(obj.m_logPrefab));
 
-      text += "\n" + Format.GetHealth(health, maxHealth);
-      text += "\nHit noise: " + Format.Int(100);
-      text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_pickaxe != HitData.DamageModifier.Immune);
-      text += DamageModifierUtils.Get(obj.m_damageModifiers, false, false);
-      return text;
+      lines.Add(Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_pickaxe != HitData.DamageModifier.Immune));
+      lines.Add(DamageModifierUtils.Get(obj.m_damageModifiers, false, false));
+      lines.Add(Get(obj.m_dropWhenDestroyed, 1));
+      return Format.JoinLines(lines);
     }
     public static string Get(Destructible obj)
     {
       if (!Settings.destructibles || !obj) return "";
-      var text = "";
+      var lines = new List<string>();
       var health = Patch.GetFloat(obj, "health", obj.m_health);
       var maxHealth = obj.m_health;
-
-      text += "\n" + Format.GetHealth(health, maxHealth);
-      text += "\nHit noise: " + Format.Int(obj.m_hitNoise);
-      text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damages.m_chop != HitData.DamageModifier.Immune, obj.m_damages.m_pickaxe != HitData.DamageModifier.Immune);
-      text += DamageModifierUtils.Get(obj.m_damages, false, false);
-      return text;
+      lines.Add(Format.GetHealth(health, maxHealth));
+      lines.Add("Hit noise: " + Format.Int(obj.m_hitNoise));
+      lines.Add("Destroy noise: " + Format.Int(obj.m_destroyNoise));
+      if (obj.m_spawnWhenDestroyed)
+        lines.Add("Destroy creates: " + Format.Name(obj.m_spawnWhenDestroyed));
+      lines.Add(Texts.GetToolTier(obj.m_minToolTier, obj.m_damages.m_chop != HitData.DamageModifier.Immune, obj.m_damages.m_pickaxe != HitData.DamageModifier.Immune));
+      lines.Add(DamageModifierUtils.Get(obj.m_damages, false, false));
+      return Format.JoinLines(lines);
+    }
+    public static string Get(DropOnDestroyed obj)
+    {
+      if (!Settings.destructibles || !obj) return "";
+      var lines = new List<string>();
+      lines.Add(Get(obj.m_dropWhenDestroyed, 1));
+      return Format.JoinLines(lines);
     }
     private static string GetMaterialName(WearNTear.MaterialType material)
     {
@@ -214,35 +269,42 @@ namespace ESP
     public static string Get(MineRock obj)
     {
       if (!Settings.destructibles || !obj) return "";
-      var text = "";
+      var lines = new List<string>();
       var maxHealth = obj.m_health;
-
-      text += "\nHealth per area: " + Format.Int(maxHealth);
-      text += "\nHit noise: " + Format.Int(100);
-      text += "\n" + Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_pickaxe != HitData.DamageModifier.Immune);
-      text += DamageModifierUtils.Get(obj.m_damageModifiers, false, false);
-      return text;
-    }
-    public static string Get(DropTable obj)
-    {
-      if (!Settings.destructibles) return "";
-      var text = "";
-      if (obj.m_dropChance < 1f)
-        text += Format.Percent(obj.m_dropChance) + " for ";
-      text += Format.Range(obj.m_dropMin, obj.m_dropMax) + " items";
-      return text;
+      var areas = Patch.m_hitAreas(obj);
+      var index = 0;
+      var remaining = areas.Count(area =>
+      {
+        var key = "Health" + index.ToString();
+        index++;
+        return Patch.GetFloat(obj, key, maxHealth) > 0;
+      });
+      lines.Add("Areas: " + Format.Progress(remaining, areas.Count));
+      lines.Add("Health per area: " + Format.Int(maxHealth));
+      lines.Add("Hit noise: " + Format.Int(100));
+      lines.Add(Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_pickaxe != HitData.DamageModifier.Immune));
+      lines.Add(DamageModifierUtils.Get(obj.m_damageModifiers, false, false));
+      lines.Add(Get(obj.m_dropItems, areas.Count));
+      return Format.JoinLines(lines);
     }
     public static string Get(MineRock5 obj)
     {
       if (!Settings.destructibles || !obj) return "";
-      var text = "";
+      var lines = new List<string>();
       var maxHealth = obj.m_health;
-
-      text += "\nHealth per area: " + Format.Int(maxHealth);
-      text += "\nHit noise: " + Format.Int(100);
-      text += Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune);
-      text += DamageModifierUtils.Get(obj.m_damageModifiers, false, false);
-      return text;
+      var areas = Patch.m_hitAreas(obj);
+      var remaining = areas.Count(area =>
+      {
+        var value = area.GetType().GetField("m_health").GetValue(area);
+        return (float)value > 0f;
+      });
+      lines.Add("Areas: " + Format.Progress(remaining, areas.Count()));
+      lines.Add("Health per area: " + Format.Int(maxHealth));
+      lines.Add("Hit noise: " + Format.Int(100));
+      lines.Add(Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_pickaxe != HitData.DamageModifier.Immune));
+      lines.Add(DamageModifierUtils.Get(obj.m_damageModifiers, false, false));
+      lines.Add(Get(obj.m_dropItems, areas.Count()));
+      return Format.JoinLines(lines);
     }
     public static string Get(Plant obj)
     {

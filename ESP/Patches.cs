@@ -46,6 +46,8 @@ namespace ESP
     public static SEMan m_seman(Player obj) => Traverse.Create(obj).Field<SEMan>("m_seman").Value;
     public static ZNetView m_nview(MonoBehaviour obj) => Traverse.Create(obj).Field<ZNetView>("m_nview").Value;
     public static Vector3[] m_coverRays(Cover obj) => Traverse.Create(obj).Field<Vector3[]>("m_coverRays").Value;
+    public static List<Collider> m_hitAreas(MineRock obj) => Traverse.Create(obj).Field<List<Collider>>("m_hitAreas").Value;
+    public static IEnumerable<object> m_hitAreas(MineRock5 obj) => Traverse.Create(obj).Field<IEnumerable<object>>("m_hitAreas").Value;
     public static int m_coverRayMask(Cover obj) => Traverse.Create(obj).Field<int>("m_coverRayMask").Value;
     public static float m_updateExtensionTimer(CraftingStation obj) => Traverse.Create(obj).Field<float>("m_updateExtensionTimer").Value;
     [HarmonyReversePatch]

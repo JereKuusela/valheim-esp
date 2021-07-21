@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace ESP
 {
@@ -40,41 +41,44 @@ namespace ESP
     public static void AddTexts(GameObject obj, ref string __result)
     {
       if (!extraInfo) return;
-      __result += "\nCoordinates: " + Format.Coordinates(obj.transform.position);
+      var lines = new List<string>();
+      lines.Add("Coordinates: " + Format.Coordinates(obj.transform.position));
       var character = obj.GetComponentInParent<Character>();
       var baseAI = obj.GetComponentInParent<BaseAI>();
-      __result += Texts.Get(obj.GetComponentInParent<TreeLog>());
-      __result += Texts.Get(obj.GetComponentInParent<TreeBase>());
-      __result += Texts.Get(obj.GetComponentInParent<Destructible>());
-      __result += Texts.Get(obj.GetComponentInParent<Pickable>());
-      __result += Texts.Get(obj.GetComponentInParent<CreatureSpawner>());
-      __result += Texts.Get(obj.GetComponentInParent<CraftingStation>());
-      __result += Texts.Get(obj.GetComponentInParent<Beehive>());
-      __result += Texts.Get(obj.GetComponentInParent<Bed>());
-      __result += Texts.Get(obj.GetComponentInParent<CookingStation>());
-      __result += Texts.Get(obj.GetComponentInParent<Fermenter>());
-      __result += Texts.Get(obj.GetComponentInParent<Fireplace>());
-      __result += Texts.Get(obj.GetComponentInParent<Smelter>());
-      __result += Texts.Get(obj.GetComponentInParent<WearNTear>());
-      __result += Texts.Get(obj.GetComponentInParent<Piece>());
-      __result += Texts.Get(obj.GetComponentInParent<Plant>());
-      __result += Texts.Get(obj.GetComponentInParent<PrivateArea>());
-      __result += Texts.Get(obj.GetComponentInParent<MineRock>());
-      __result += Texts.Get(obj.GetComponentInParent<MineRock5>());
-      __result += Texts.Get(obj.GetComponentInParent<ItemDrop>());
-      __result += Texts.Get(obj.GetComponentInParent<SmokeSpawner>());
-      __result += Texts.Get(obj.GetComponentInChildren<SmokeSpawner>());
-      __result += Texts.Get(obj.GetComponentInParent<Smoke>());
+      lines.Add(Texts.Get(obj.GetComponentInParent<TreeLog>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<TreeBase>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<Destructible>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<Pickable>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<CreatureSpawner>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<CraftingStation>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<Beehive>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<Bed>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<CookingStation>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<Fermenter>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<Fireplace>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<Smelter>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<WearNTear>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<Piece>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<Plant>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<PrivateArea>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<MineRock>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<MineRock5>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<DropOnDestroyed>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<ItemDrop>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<SmokeSpawner>()));
+      lines.Add(Texts.Get(obj.GetComponentInChildren<SmokeSpawner>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<Smoke>()));
       if (Settings.showShipStats)
-        __result += Texts.Get(obj.GetComponentInParent<Ship>());
-      __result += Texts.Get(obj.GetComponentInParent<EffectArea>());
-      __result += Texts.Get(character, baseAI, obj.GetComponentInParent<MonsterAI>());
-      __result += Texts.GetStatusStats(character);
-      __result += Texts.Get(obj.GetComponentInParent<Tameable>());
-      __result += Texts.Get(obj.GetComponentInParent<CharacterDrop>(), character);
-      __result += Texts.Get(baseAI, obj.GetComponentInParent<Growup>());
+        lines.Add(Texts.Get(obj.GetComponentInParent<Ship>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<EffectArea>()));
+      lines.Add(Texts.Get(character, baseAI, obj.GetComponentInParent<MonsterAI>()));
+      lines.Add(Texts.GetStatusStats(character));
+      lines.Add(Texts.Get(obj.GetComponentInParent<Tameable>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<CharacterDrop>(), character));
+      lines.Add(Texts.Get(baseAI, obj.GetComponentInParent<Growup>()));
       if (obj.GetComponentInParent<BaseAI>())
-        __result += Texts.GetAttack(obj.GetComponentInParent<Humanoid>());
+        lines.Add(Texts.GetAttack(obj.GetComponentInParent<Humanoid>()));
+      __result += "\n" + Format.JoinLines(lines);
     }
   }
 }

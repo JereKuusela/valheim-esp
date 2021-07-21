@@ -48,7 +48,7 @@ namespace ESP
       if (!Settings.resistances) return "";
       var texts = DAMAGE_TYPES.Select(type => GetModifierText(modifiers, type, ignoreNeutral, ignoreIgnore)).Where(text => text.Length > 0);
       if (texts.Count() > 0)
-        return "\n" + string.Join(", ", texts);
+        return "\n" + Format.JoinRow(texts);
       return "";
     }
   }

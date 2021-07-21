@@ -118,7 +118,7 @@ namespace ESP
       }
       if (lines.Count == 0) return;
       var padding = lines.Count - 2;
-      for (var i = 0; i < padding; i++) lines.Insert(0, "");
+      for (var i = 0; i < padding; i++) lines.Insert(0, " ");
       hud.m_messageText.CrossFadeAlpha(1f, 0f, true);
       hud.m_messageText.text = Format.JoinLines(lines);
       // Icon is not very relevant information and will pop up over the text.

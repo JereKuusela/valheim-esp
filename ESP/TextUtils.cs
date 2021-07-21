@@ -108,7 +108,7 @@ namespace ESP
       if (text == "") text = Name(obj.gameObject, color);
       return Name(text, color);
     }
-    private static string Name(GameObject obj, string color = "yellow") => obj ? Name(Utils.GetPrefabName(obj), color) : "";
+    public static string Name(GameObject obj, string color = "yellow") => obj ? Name(Utils.GetPrefabName(obj), color) : "";
 
     public static string Radius(float radius) => "Radius: " + Format.Float(radius);
   }
