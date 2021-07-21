@@ -51,9 +51,10 @@ namespace ESP
       else
       {
         var dropChance = obj.m_dropChance == 1f ? "" : Format.Percent(obj.m_dropChance) + " chance for ";
-        lines.Add("Drops: " + dropChance + Format.Range(obj.m_dropMin, obj.m_dropMax) + " drops");
+        var dropText = "Drops: " + dropChance + Format.Range(obj.m_dropMin, obj.m_dropMax) + " drops";
         if (obj.m_oneOfEach)
-          lines.Add("One each mode, not handled!");
+          dropText += " (max one of each)";
+        lines.Add(dropText);
         var averageDrops = obj.m_dropChance * (obj.m_dropMin + obj.m_dropMax) / 2.0;
         var weight = obj.m_drops.Sum(drop => drop.m_weight);
         var drops = obj.m_drops.Select(drop =>
@@ -119,21 +120,21 @@ namespace ESP
     public static string Get(WearNTear obj)
     {
       if (!Settings.structures || !obj) return "";
-      var text = "";
+      var lines = new List<string>();
       var health = obj.GetHealthPercentage();
 
-      text += "\n" + Format.GetHealth(health * obj.m_health, obj.m_health);
-      text += DamageModifierUtils.Get(obj.m_damages, true, false);
+      lines.Add(Format.GetHealth(health * obj.m_health, obj.m_health));
+      lines.Add(DamageModifierUtils.Get(obj.m_damages, true, false));
 
       if (SupportUtils.Enabled(obj))
       {
         float maxSupport, minSupport, horizontalLoss, verticalLoss;
         Patch.WearNTear_GetMaterialProperties(obj, out maxSupport, out minSupport, out horizontalLoss, out verticalLoss);
         var support = Math.Min(Patch.GetFloat(obj, "support", maxSupport), maxSupport);
-        text += "\n" + Format.String(GetMaterialName(obj.m_materialType)) + ": " + Format.Progress(support, minSupport) + " support";
-        text += "\n" + Format.Percent(horizontalLoss) + " horizontal loss, " + Format.Percent(verticalLoss) + " vertical loss";
+        lines.Add(Format.String(GetMaterialName(obj.m_materialType)) + ": " + Format.Progress(support, minSupport) + " support");
+        lines.Add(Format.Percent(horizontalLoss) + " horizontal loss, " + Format.Percent(verticalLoss) + " vertical loss");
       }
-      return text;
+      return Format.JoinLines(lines);
     }
     public static string Get(Piece obj)
     {
@@ -141,7 +142,7 @@ namespace ESP
       var text = "";
       if (obj.m_comfort > 0)
       {
-        text += "\nComfort: " + Format.Int(obj.m_comfort);
+        text += "Comfort: " + Format.Int(obj.m_comfort);
         if (obj.m_comfortGroup != Piece.ComfortGroup.None)
           text += " (" + Get(obj.m_comfortGroup) + ")";
       }
@@ -150,12 +151,15 @@ namespace ESP
     public static string Get(Beehive obj)
     {
       if (!Settings.structures || !Settings.progress || !obj) return "";
+      var lines = new List<string>();
       var limit = obj.m_secPerUnit;
-      if (limit == 0) return "";
-      var value = Patch.GetFloat(obj, "product");
-      var text = "\n" + Format.ProgressPercent("Progress", value, limit);
-      text += "\n" + GetCover(obj);
-      return text;
+      if (limit > 0)
+      {
+        var value = Patch.GetFloat(obj, "product");
+        lines.Add(Format.ProgressPercent("Progress", value, limit));
+      }
+      lines.Add(GetCover(obj));
+      return Format.JoinLines(lines);
     }
     public static string GetCover(Beehive obj)
     {
@@ -174,25 +178,28 @@ namespace ESP
       var limit = item.m_cookTime;
       if (limit == 0) return "";
       var value = cookedTime;
-      return "\n" + Format.ProgressPercent("Progress", value, limit);
+      return Format.ProgressPercent("Progress", value, limit);
     }
     public static string Get(CookingStation obj)
     {
       if (!Settings.structures || !Settings.progress || !obj) return "";
-      var text = "";
+      var lines = new List<string>();
       for (var slot = 0; slot < obj.m_slots.Length; slot++)
-        text += GetSlotText(obj, slot);
-      return text;
+        lines.Add(GetSlotText(obj, slot));
+      return Format.JoinLines(lines);
     }
     public static string Get(Fermenter obj)
     {
       if (!Settings.structures || !Settings.progress || !obj) return "";
+      var lines = new List<string>();
       var limit = obj.m_fermentationDuration;
-      if (limit == 0) return "";
-      var value = Patch.Fermenter_GetFermentationTime(obj);
-      var text = "\n" + Format.ProgressPercent("Progress", value, limit);
-      text += "\n" + GetCover(obj);
-      return text;
+      if (limit > 0)
+      {
+        var value = Patch.Fermenter_GetFermentationTime(obj);
+        lines.Add(Format.ProgressPercent("Progress", value, limit));
+      }
+      lines.Add(GetCover(obj));
+      return Format.JoinLines(lines);
     }
     public static string GetCover(Fermenter obj)
     {
@@ -202,28 +209,30 @@ namespace ESP
     public static string Get(SmokeSpawner obj)
     {
       if (!obj) return "";
-      var text = GetSmokeLimit();
-      text += "\nProduces smoke every " + Format.Float(obj.m_interval) + " s, unless smoke within " + Format.Float(obj.m_testRadius) + " m";
-      return text;
+      var lines = new List<string>();
+      lines.Add(GetSmokeLimit());
+      lines.Add("Produces smoke every " + Format.Float(obj.m_interval) + " s, unless smoke within " + Format.Float(obj.m_testRadius) + " m");
+      return Format.JoinLines(lines);
     }
     public static string Get(Smoke obj)
     {
       if (!obj) return "";
-      var text = ": " + Format.Progress(Smoke.GetTotalSmoke(), Constants.SmokeAmountLimit, true);
-      text += "\n" + Format.ProgressPercent("Expires", Patch.m_time(obj), obj.m_ttl);
+      var lines = new List<string>();
+      lines.Add(": " + Format.Progress(Smoke.GetTotalSmoke(), Constants.SmokeAmountLimit, true));
+      lines.Add(Format.ProgressPercent("Expires", Patch.m_time(obj), obj.m_ttl));
       var collider = obj.GetComponent<SphereCollider>();
       if (collider)
-        text += "\nRadius: " + Format.Float(collider.radius * obj.transform.lossyScale.x);
+        lines.Add("Radius: " + Format.Float(collider.radius * obj.transform.lossyScale.x));
       var body = Patch.m_body(obj);
-      text += "\nMass: " + Format.Float(body.mass);
-      text += "\nVelocity: " + Format.String(body.velocity.ToString("F3"));
+      lines.Add("Mass: " + Format.Float(body.mass));
+      lines.Add("Velocity: " + Format.String(body.velocity.ToString("F3")));
       var ratio = 1f - Mathf.Clamp01(Patch.m_time(obj) / obj.m_ttl);
       var vel = obj.m_vel;
       vel.y *= ratio;
-      text += "\nTarget: " + Format.String(vel.ToString("F3"));
-      return text;
+      lines.Add("Target: " + Format.String(vel.ToString("F3")));
+      return Format.JoinLines(lines);
     }
-    private static string GetSmokeLimit() => "\nSmoke: " + Format.Progress(Smoke.GetTotalSmoke(), Constants.SmokeAmountLimit, true);
+    private static string GetSmokeLimit() => "Smoke: " + Format.Progress(Smoke.GetTotalSmoke(), Constants.SmokeAmountLimit, true);
     public static string Get(Fireplace obj)
     {
       if (!Settings.structures || !Settings.progress || !obj) return "";
@@ -309,25 +318,28 @@ namespace ESP
     public static string Get(Plant obj)
     {
       if (!Settings.progress || !obj) return "";
+      var lines = new List<string>();
       var limit = Patch.Plant_GetGrowTime(obj);
-      if (limit == 0) return "";
-      var value = Patch.Plant_TimeSincePlanted(obj);
-      var text = "\n" + Format.ProgressPercent("Progress", value, limit);
-      text += "\nRadius: " + Format.Meters(obj.m_growRadius);
-      text += "\nGrows: " + Format.Name(obj.m_grownPrefabs);
+      if (limit > 0)
+      {
+        var value = Patch.Plant_TimeSincePlanted(obj);
+        lines.Add(Format.ProgressPercent("Progress", value, limit));
+      }
+      lines.Add("Radius: " + Format.Meters(obj.m_growRadius));
+      lines.Add("Grows: " + Format.Name(obj.m_grownPrefabs));
       if (obj.m_destroyIfCantGrow)
-        text += "\nDestroyed if can't grow";
-      return text;
+        lines.Add("Destroyed if can't grow");
+      return Format.JoinLines(lines);
     }
     public static string Get(EffectArea obj)
     {
       if (Settings.effectAreaLineWidth == 0 || !obj) return "";
-      return "\n" + EffectAreaUtils.GetTypeText(obj.m_type) + " " + Format.Radius(obj.GetRadius());
+      return EffectAreaUtils.GetTypeText(obj.m_type) + " " + Format.Radius(obj.GetRadius());
     }
     public static string Get(PrivateArea obj)
     {
       if (Settings.effectAreaLineWidth == 0 || !obj) return "";
-      return "\nProtection " + Format.Radius(obj.m_radius);
+      return "Protection " + Format.Radius(obj.m_radius);
     }
 
     private static string GetProgressText(Smelter instance)
@@ -388,25 +400,26 @@ namespace ESP
     public static string Get(Ship obj)
     {
       if (!obj) return "";
-      var text = "";
+      var lines = new List<string>();
       var body = Patch.m_body(obj);
       var forwardSpeed = obj.GetSpeed();
       var forwardAngle = 90f - Mathf.Atan2(obj.transform.forward.z, obj.transform.forward.x) / Math.PI * 180f;
       if (forwardSpeed < 0)
-        text += "\nSpeed: " + Format.Fixed(-forwardSpeed) + " m/s away from " + Format.Int(forwardAngle) + " degrees (backward)";
+        lines.Add("Speed: " + Format.Fixed(-forwardSpeed) + " m/s away from " + Format.Int(forwardAngle) + " degrees (backward)");
       else
-        text += "\nSpeed: " + Format.Fixed(forwardSpeed) + " m/s towards " + Format.Int(forwardAngle) + " degrees (forward)";
+        lines.Add("Speed: " + Format.Fixed(forwardSpeed) + " m/s towards " + Format.Int(forwardAngle) + " degrees (forward)");
       Vector3 velocity = body.velocity * 1f;
       velocity.y = 0f;
       var angle = 90f - Mathf.Atan2(velocity.z, velocity.x) / Math.PI * 180f;
       var speed = velocity.magnitude;
-      text += "\nSpeed: " + Format.Fixed(speed) + " m/s towards " + Format.Int(angle) + " degrees";
-      text += "\n" + EnvUtils.GetWind();
-      text += "\nWind power: " + Format.Percent(GetWindPower(obj)) + " from " + Format.Int(GetRelativeAngle(obj)) + " degrees";
-      return text;
+      lines.Add("Speed: " + Format.Fixed(speed) + " m/s towards " + Format.Int(angle) + " degrees");
+      lines.Add(EnvUtils.GetWind());
+      lines.Add("Wind power: " + Format.Percent(GetWindPower(obj)) + " from " + Format.Int(GetRelativeAngle(obj)) + " degrees");
+      return Format.JoinLines(lines);
     }
     private static string GetCover(Vector3 startPos, double limit, bool checkRoof = true, bool minLimit = true)
     {
+      var lines = new List<string>();
       var cover = new Cover();
       var start = Constants.CoverRaycastStart;
       var total = 0;
@@ -420,6 +433,7 @@ namespace ESP
         if (Physics.Raycast(startPos + vector * start, vector, out raycastHit, Constants.CoverRayCastLength - start, Patch.m_coverRayMask(cover)))
           hits++;
       }
+
       var text = "Cover";
       if (limit > 0)
       {
@@ -427,15 +441,21 @@ namespace ESP
         text += " (" + Format.Percent(limit, pastLimit ? "red" : "yellow") + ")";
       }
       text += ": " + Format.Progress(hits, total, true);
+      lines.Add(text);
       if (checkRoof && !roof)
-        text += "\n" + Format.String("Not under roof!", "red");
-      if (Math.Abs(percent - (float)hits / total) > 0.01) text += "\n" + Format.String("Error with cover calculation (" + percent + ")!", "red");
-      return text;
+        lines.Add(Format.String("Not under roof!", "red"));
+      if (Math.Abs(percent - (float)hits / total) > 0.01) lines.Add(Format.String("Error with cover calculation (" + percent + ")!", "red"));
+      return Format.JoinLines(lines);
     }
     public static string Get(Bed obj)
     {
       if (!obj) return "";
-      return "\n" + GetCover(obj);
+      return GetCover(obj);
+    }
+    public static string Get(Container obj)
+    {
+      if (!obj) return "";
+      return Get(obj.m_defaultItems, 1);
     }
     public static string GetCover(Bed obj)
     {

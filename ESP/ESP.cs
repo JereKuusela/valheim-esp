@@ -3,7 +3,7 @@ using HarmonyLib;
 
 namespace ESP
 {
-  [BepInPlugin("valheim.jerekuusela.esp", "ESP", "1.2.0.0")]
+  [BepInPlugin("valheim.jerekuusela.esp", "ESP", "1.3.0.0")]
   public class ESP : BaseUnityPlugin
   {
     void Awake()

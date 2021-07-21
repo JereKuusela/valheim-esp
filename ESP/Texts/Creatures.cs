@@ -76,7 +76,7 @@ namespace ESP
         }
         return text;
       });
-      return "\n\n" + Format.JoinLines(texts);
+      return "\n" + Format.JoinLines(texts);
     }
 
     public static string GetNoise(Character obj) => "Noise: " + Format.Int(Patch.m_noiseRange(obj));
@@ -85,17 +85,18 @@ namespace ESP
     {
       var staggerLimit = staggerDamageFactor * health;
       if (staggerLimit > 0)
-        return "\n" + "Stagger: " + Format.Progress(staggerDamage, staggerLimit);
+        return "Stagger: " + Format.Progress(staggerDamage, staggerLimit);
       else
-        return "\n" + "Stagger: " + Format.String("Immune");
+        return "Stagger: " + Format.String("Immune");
     }
     public static string Get(Character obj, BaseAI baseAI, MonsterAI monsterAI)
     {
       if (!Settings.resistances || !obj || !baseAI || !monsterAI)
         return "";
+      var lines = new List<string>();
       var staggerDamage = Patch.m_staggerDamage(obj);
       var body = Patch.m_body(obj);
-      var stats = "";
+      var state = "";
       if (monsterAI && (monsterAI.IsAlerted() || monsterAI.HuntPlayer()))
       {
         var mode = "";
@@ -105,48 +106,45 @@ namespace ESP
           mode += ", ";
         if (monsterAI.HuntPlayer())
           mode += Format.String("Hunt mode", "red");
-        stats += ", " + mode;
+        state += ", " + mode;
       }
       if (obj.IsStaggering())
-        stats += ", " + Format.String("Staggering", "red");
-      stats += "\n" + Patch.m_aiStatus(monsterAI);
+        state += ", " + Format.String("Staggering", "red");
+      lines.Add(state);
+      lines.Add(Patch.m_aiStatus(monsterAI));
       var health = obj.GetMaxHealth();
-      stats += "\n" + Format.GetHealth(obj.GetHealth(), health);
+      lines.Add(Format.GetHealth(obj.GetHealth(), health));
       var factor = obj.m_staggerDamageFactor;
       // Doesn't have stagger animation so hardcoded to be immune.
-      if ((obj.m_name == "Deathsquite"))
+      if ((obj.m_name == "Deathsquito"))
         factor = 0f;
-      stats += GetStaggerText(health, factor, staggerDamage);
-      stats += "\n" + "Mass: " + Format.Int(body.mass) + " (" + Format.Percent(1f - 5f / body.mass) + " knockback resistance)";
+      lines.Add(GetStaggerText(health, factor, staggerDamage));
+      lines.Add("Mass: " + Format.Int(body.mass) + " (" + Format.Percent(1f - 5f / body.mass) + " knockback resistance)");
       var damageModifiers = Patch.Character_GetDamageModifiers(obj);
-      stats += DamageModifierUtils.Get(damageModifiers, true, true);
+      lines.Add(DamageModifierUtils.Get(damageModifiers, true, true));
       if (baseAI)
       {
         Vector3 patrolPoint;
         var patrol = baseAI.GetPatrolPoint(out patrolPoint);
         if (patrol)
-          stats += "\nPatrol: " + Format.String(patrolPoint.ToString("F0"));
+          lines.Add("Patrol: " + Format.String(patrolPoint.ToString("F0")));
       }
       if (monsterAI.m_consumeItems.Count > 0)
       {
         var heal = " (" + Format.Int(monsterAI.m_consumeHeal) + " health)";
         var items = Format.Name(monsterAI.m_consumeItems);
-        stats += "\n" + items + heal;
+        lines.Add(items + heal);
       }
-      return stats;
+      return Format.JoinLines(lines);
     }
-
+    private static string Get(StatusEffect statusEffect)
+      => Localization.instance.Localize(statusEffect.m_name) + ": " + Format.Progress(statusEffect.GetRemaningTime(), statusEffect.m_ttl) + " seconds";
     public static string GetStatusStats(Character character)
     {
       if (!Settings.status || !character)
         return "";
-      var statusEffects = character.GetSEMan().GetStatusEffects();
-      var text = "";
-      foreach (var status in statusEffects)
-      {
-        text += "\n" + Localization.instance.Localize(status.m_name) + ": " + Format.Progress(status.GetRemaningTime(), status.m_ttl) + " seconds";
-      }
-      return text;
+      var lines = character.GetSEMan().GetStatusEffects().Select(Get);
+      return Format.JoinLines(lines);
     }
     public static string Get(BaseAI baseAI, Growup growup)
     {
@@ -154,7 +152,7 @@ namespace ESP
         return "";
       var value = baseAI.GetTimeSinceSpawned().TotalSeconds;
       var limit = growup.m_growTime;
-      return "\n" + Format.ProgressPercent("Progress", value, limit);
+      return Format.ProgressPercent("Progress", value, limit);
     }
 
     private static List<string> GetDropTexts(CharacterDrop characterDrop, Character character)
@@ -192,7 +190,7 @@ namespace ESP
       if (!Settings.drops || !characterDrop || !character)
         return "";
       var dropTexts = Format.JoinRow(GetDropTexts(characterDrop, character));
-      return "\nDrops: " + dropTexts;
+      return "Drops: " + dropTexts;
     }
   }
 }

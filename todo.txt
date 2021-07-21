@@ -26,14 +26,6 @@ Todo:
  - Stacksize to item tooltips
  - Add "spawn blocked" to HUD for current location?
  - Windmill base line cover comparison (since 4-5 are blocked by the propeller).
- - Change text functions to use list of lines instead of concanation (cleaner and works better with empty values).
  - In game setting menu on the HUD (would hide settings under one line and enable more finely tuned approach).
 
 Changes:
- - Added item drops to resources like rocks, minerals and trees.
- - Added ruler. Ruler point can be set at the current location. HUD shows distance to the set location.
- - Fixed tool tiers being always stone / antler for creature attacks.
- - Torches no longer show cover system as they don't use it.
- - Windmills no longer show amount of smoke.
- - Fixed ward protection radius shown as sphere instead of a cylinder.
- - Improved experience meter to automatically update the experience gain percentage.

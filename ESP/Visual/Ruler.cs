@@ -31,7 +31,7 @@ namespace ESP
       if (ruler == null) return Format.String("J") + ": Set ruler point.";
       var delta = position - ruler.transform.position;
       var distXZ = Utils.DistanceXZ(position, ruler.transform.position);
-      return Format.String("J") + ": Reset ruler of " + Format.Float(delta.magnitude) + " m, " + Format.Float(distXZ) + " m (" + Format.Coordinates(delta) + ")";
+      return Format.String("J") + ": Reset ruler, Distance (" + Format.Coordinates(delta) + "):" + Format.Float(delta.magnitude) + " m, XZ: " + Format.Float(distXZ) + " m";
     }
   }
 }

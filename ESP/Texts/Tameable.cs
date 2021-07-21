@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace ESP
 {
   public partial class Texts
@@ -10,11 +12,11 @@ namespace ESP
       var value = feedingTime == 0 ? 0 : obj.m_fedDuration - elapsed;
       var fed = value > 0;
       if (fed)
-        return "\n" + Format.ProgressPercent("Food", value, obj.m_fedDuration);
+        return Format.ProgressPercent("Food", value, obj.m_fedDuration);
       if (monsterAI)
       {
         value = Patch.m_consumeSearchTimer(monsterAI);
-        return "\n" + Format.ProgressPercent("Searching food", value, monsterAI.m_consumeSearchInterval);
+        return Format.ProgressPercent("Searching food", value, monsterAI.m_consumeSearchInterval);
       }
       return "";
     }
@@ -23,21 +25,21 @@ namespace ESP
       if (!Settings.breeding) return "";
       var value = obj.m_tamingTime - Patch.Tameable_GetRemainingTime(obj);
       var limit = obj.m_tamingTime;
-      return "\n" + Format.ProgressPercent("Taming", value, limit);
+      return Format.ProgressPercent("Taming", value, limit);
     }
     private static string GetPregnancy(Procreation obj)
     {
       if (!Settings.breeding || !obj || !obj.IsPregnant()) return "";
       var value = Patch.GetElapsed(obj, "pregnant");
       var limit = obj.m_pregnancyDuration;
-      return "\n" + Format.ProgressPercent("Pregnancy", value, limit);
+      return Format.ProgressPercent("Pregnancy", value, limit);
     }
     private static string GetLove(Procreation obj)
     {
       if (!Settings.breeding || !obj || obj.IsPregnant()) return "";
       var value = Patch.GetInt(obj, "lovePoints");
       var limit = obj.m_requiredLovePoints;
-      return "\nBreeding: " + Format.Progress(value, limit) + ", " + Format.Percent(obj.m_pregnancyChance) + " chance every " + Format.Int(obj.m_updateInterval) + " seconds";
+      return "Breeding: " + Format.Progress(value, limit) + ", " + Format.Percent(obj.m_pregnancyChance) + " chance every " + Format.Int(obj.m_updateInterval) + " seconds";
     }
     private static string GetPartners(Procreation obj)
     {
@@ -45,7 +47,7 @@ namespace ESP
       var prefab = Patch.GetPrefab(obj);
       var all = SpawnSystem.GetNrOfInstances(prefab, obj.transform.position, obj.m_partnerCheckRange, false, false) - 1;
       var partners = SpawnSystem.GetNrOfInstances(prefab, obj.transform.position, obj.m_partnerCheckRange, false, true) - 1;
-      return "\nPartners: " + Format.Int(partners) + " within " + obj.m_partnerCheckRange + " meters (" + Format.Int(all) + " possible)";
+      return "Partners: " + Format.Int(partners) + " within " + obj.m_partnerCheckRange + " meters (" + Format.Int(all) + " possible)";
     }
     private static string GetLimit(Procreation obj)
     {
@@ -56,7 +58,7 @@ namespace ESP
       var offspringAmount = SpawnSystem.GetNrOfInstances(offspring, obj.transform.position, obj.m_totalCheckRange, false, false);
       var value = ownAmount + offspringAmount;
       var limit = obj.m_maxCreatures;
-      return "\nLimit: " + Format.Progress(value, limit) + " within " + obj.m_totalCheckRange + " meters";
+      return "Limit: " + Format.Progress(value, limit) + " within " + obj.m_totalCheckRange + " meters";
     }
     public static string Get(Tameable obj)
     {
@@ -65,19 +67,20 @@ namespace ESP
       var character = obj.GetComponent<Character>();
       var monsterAI = obj.GetComponent<MonsterAI>();
       if (!character) return "";
-      var text = GetFed(obj, monsterAI);
+      var lines = new List<string>();
+      lines.Add(GetFed(obj, monsterAI));
       if (character.IsTamed())
       {
-        text += GetLove(procreation);
-        text += GetPregnancy(procreation);
-        text += GetPartners(procreation);
-        text += GetLimit(procreation);
+        lines.Add(GetLove(procreation));
+        lines.Add(GetPregnancy(procreation));
+        lines.Add(GetPartners(procreation));
+        lines.Add(GetLimit(procreation));
       }
       else
       {
-        text += GetTaming(obj);
+        lines.Add(GetTaming(obj));
       }
-      return text;
+      return Format.JoinLines(lines);
     }
   }
 }

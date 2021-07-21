@@ -33,11 +33,12 @@ namespace ESP
     public static string Get(Pickable obj)
     {
       if (!obj || !Settings.support) return "";
+      var lines = new List<string>();
       var respawn = GetRespawnTime(obj);
-      var text = "\nRespawn: " + respawn;
+      lines.Add("Respawn: " + respawn);
       if (obj.m_amount > 1)
-        text += "\nAmount: " + Format.Int(obj.m_amount);
-      return text;
+        lines.Add("Amount: " + Format.Int(obj.m_amount));
+      return Format.JoinLines(lines);
     }
 
     public static string Get(CreatureSpawner obj)
@@ -52,7 +53,7 @@ namespace ESP
       if (timeText.Length > 0) lines.Add(timeText);
       if (obj.m_setPatrolSpawnPoint) lines.Add("Patrol point");
       lines.Add("Activates within " + Format.Int(obj.m_triggerDistance) + " meters" + noise);
-      return "\n" + Format.JoinLines(lines);
+      return Format.JoinLines(lines);
     }
 
     private static string GetEventText()
@@ -83,8 +84,8 @@ namespace ESP
     }
     private static string GetSpawnerText(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode)
     {
+      var lines = new List<string>();
       var timeSinceSpawned = Patch.GetElapsed(obj, stableHashCode, 0);
-      var text = "";
       var time = "";
       if (!spawnData.m_spawnAtDay)
       {
@@ -119,15 +120,14 @@ namespace ESP
       var tilt = Format.Range(spawnData.m_minTilt, spawnData.m_maxTilt);
       var ocean = Format.Range(spawnData.m_minOceanDepth, spawnData.m_maxOceanDepth);
       var hunt = spawnData.m_huntPlayer ? ", forces hunt mode" : "";
-      text += "\nCreature: " + Format.String(spawnData.m_prefab.name) + hunt;
-      text += "\n" + progress + ", " + chance;
+      lines.Add("Creature: " + Format.String(spawnData.m_prefab.name) + hunt);
+      lines.Add(progress + ", " + chance);
       var biomeString = Texts.GetBiomes(spawnData.m_biome, spawnData.m_biomeArea);
       if (biomeString.Length > 0)
-        text += "\n" + biomeString + forest;
-      text += "\nCreature limit: " + spawns + ", Distance limit: " + spawnDistance;
-      text += "\n" + level + ", Group size: " + group + groupRadius;
-      //text += "\nAltitude: " + altitude + offset + ", Tilt: " + tilt + ", Water: " + ocean;
-      return text;
+        lines.Add(biomeString + forest);
+      lines.Add("Creature limit: " + spawns + ", Distance limit: " + spawnDistance);
+      lines.Add(level + ", Group size: " + group + groupRadius);
+      return Format.JoinLines(lines);
     }
     public static string GetRandomEvent(SpawnSystem obj)
     {
@@ -168,7 +168,8 @@ namespace ESP
     }
     public static string Get(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode)
     {
-      var text = GetZoneText(obj);
+      var lines = new List<string>();
+      lines.Add(GetZoneText(obj));
       var timeSinceSpawned = Patch.GetElapsed(obj, stableHashCode, 0);
       var time = "";
       if (!spawnData.m_spawnAtDay)
@@ -203,14 +204,14 @@ namespace ESP
       var ocean = Format.Range(spawnData.m_minOceanDepth, spawnData.m_maxOceanDepth);
       var hunt = spawnData.m_huntPlayer ? ", forces hunt mode" : "";
       var spawnRadius = Format.Range(spawnData.m_spawnRadiusMin > 0 ? spawnData.m_spawnRadiusMin : 40, spawnData.m_spawnRadiusMax > 0 ? spawnData.m_spawnRadiusMax : 80) + " meters";
-      text += "\nCreature: " + Format.String(spawnData.m_prefab.name) + hunt;
-      text += "\n" + Format.GetAttempt(timeSinceSpawned, spawnData.m_spawnInterval, spawnData.m_spawnChance);
+      lines.Add("Creature: " + Format.String(spawnData.m_prefab.name) + hunt);
+      lines.Add(Format.GetAttempt(timeSinceSpawned, spawnData.m_spawnInterval, spawnData.m_spawnChance));
       var biomeString = Texts.GetBiomes(spawnData.m_biome, spawnData.m_biomeArea);
-      text += "\n" + biomeString + forest + forest + weather + global + time;
-      text += "\nCreature limit: " + spawns + ", Distance limit: " + spawnDistance + ", From players: " + spawnRadius;
-      text += "\n" + level + ", Group size: " + group + groupRadius;
-      text += "\nAltitude: " + altitude + offset + ", Tilt: " + tilt + ", Water: " + ocean;
-      return text;
+      lines.Add(biomeString + forest + forest + weather + global + time);
+      lines.Add("Creature limit: " + spawns + ", Distance limit: " + spawnDistance + ", From players: " + spawnRadius);
+      lines.Add(level + ", Group size: " + group + groupRadius);
+      lines.Add("Altitude: " + altitude + offset + ", Tilt: " + tilt + ", Water: " + ocean);
+      return Format.JoinLines(lines);
     }
   }
 }

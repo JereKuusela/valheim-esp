@@ -34,7 +34,6 @@ namespace ESP
   /// <summary>Custom text that also shows the title.</summary>
   public class StaticText : MonoBehaviour, Hoverable
   {
-
     public string GetHoverText() => Format.String(title) + "\n" + text;
     public string GetHoverName() => title;
     public string title;

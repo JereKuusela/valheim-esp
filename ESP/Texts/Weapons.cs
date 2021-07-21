@@ -22,12 +22,12 @@ namespace ESP
     }
     public static string GetToolTier(int tier, bool chop, bool pickaxe)
     {
-      var text = "";
+      var lines = new List<string>();
       if (chop)
-        text += "\nAxe: " + Format.String(Texts.GetChopTier(tier));
+        lines.Add("Axe: " + Format.String(Texts.GetChopTier(tier)));
       if (pickaxe)
-        text += "\nPickaxe: " + Format.String(Texts.GetPickaxeTier(tier));
-      return text;
+        lines.Add("Pickaxe: " + Format.String(Texts.GetPickaxeTier(tier)));
+      return Format.JoinLines(lines);
     }
     private static string GetAttackTypeName(Attack.AttackType type)
     {

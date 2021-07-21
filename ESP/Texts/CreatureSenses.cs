@@ -51,16 +51,16 @@ namespace ESP
     }
     public static string GetSenses(BaseAI obj, MonsterAI monsterAI, Procreation procreation)
     {
-      var texts = new List<string>();
-      texts.Add(FireRange(obj));
-      texts.Add(ViewRange(obj));
-      texts.Add(AlertRange(monsterAI));
-      texts.Add(Hearing(obj));
-      texts.Add(BreedingLimit(procreation));
-      texts.Add(PartnerSearch(procreation));
-      texts.Add(FoodLimit(monsterAI));
-      texts.Add(GetEatRange(monsterAI));
-      return Format.JoinLines(texts);
+      var lines = new List<string>();
+      lines.Add(FireRange(obj));
+      lines.Add(ViewRange(obj));
+      lines.Add(AlertRange(monsterAI));
+      lines.Add(Hearing(obj));
+      lines.Add(BreedingLimit(procreation));
+      lines.Add(PartnerSearch(procreation));
+      lines.Add(FoodLimit(monsterAI));
+      lines.Add(GetEatRange(monsterAI));
+      return Format.JoinLines(lines);
     }
   }
 }

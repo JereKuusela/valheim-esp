@@ -32,19 +32,19 @@ namespace ESP
       var dps = DPSMeter.Get();
       if (dps != null)
       {
-        lines.Add("");
+        lines.Add(" ");
         lines.AddRange(dps);
       }
       var eps = ExperienceMeter.Get();
       if (eps != null)
       {
-        lines.Add("");
+        lines.Add(" ");
         lines.AddRange(eps);
       }
       var localShip = Ship.GetLocalShip();
       if (localShip)
       {
-        lines.Add("");
+        lines.Add(" ");
         lines.AddRange(Texts.Get(localShip).Split('\n').Where(line => line != ""));
       }
       return lines;

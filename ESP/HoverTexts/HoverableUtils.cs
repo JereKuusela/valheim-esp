@@ -68,6 +68,7 @@ namespace ESP
       lines.Add(Texts.Get(obj.GetComponentInParent<SmokeSpawner>()));
       lines.Add(Texts.Get(obj.GetComponentInChildren<SmokeSpawner>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<Smoke>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<Container>()));
       if (Settings.showShipStats)
         lines.Add(Texts.Get(obj.GetComponentInParent<Ship>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<EffectArea>()));
