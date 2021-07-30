@@ -5,16 +5,12 @@ using HarmonyLib;
 
 namespace ESP
 {
-  [HarmonyPatch(typeof(Player), "RaiseSkill")]
-  public class Player_RaiseSkill
+  [HarmonyPatch(typeof(Skills.Skill), "Raise")]
+  public class Skill_Raise
   {
-    public static void Prefix(Player __instance, Skills.SkillType skill, float value, SEMan ___m_seman)
+    public static void Prefix(Skills.Skill __instance, float factor)
     {
-      if (__instance != Player.m_localPlayer) return;
-      var mod = 1f;
-      ___m_seman.ModifyRaiseSkill(skill, ref mod);
-      value *= mod;
-      ExperienceMeter.AddExperience(skill, value);
+      ExperienceMeter.AddExperience(__instance.m_info.m_skill, factor * __instance.m_info.m_increseStep);
     }
   }
   public class ExperienceMeter
@@ -37,8 +33,11 @@ namespace ESP
     }
     public static void AddExperience(Skills.SkillType skill, float value = 1f)
     {
-      Start();
-      if (!startTime.HasValue) return;
+      if (!startTime.HasValue)
+      {
+        Start();
+        return;
+      }
       if (!experiences.ContainsKey(skill))
         experiences.Add(skill, 0);
       experiences[skill] += value;
@@ -51,6 +50,24 @@ namespace ESP
       seMan.ModifyRaiseSkill(Skills.SkillType.All, ref mod);
       return mod;
     }
+    public static float GetLevel(Skills.SkillType type)
+    {
+      var skills = Patch.m_skills(Player.m_localPlayer);
+      var skill = Patch.Skills_GetSkill(skills, type);
+      return skill.m_level;
+    }
+    public static float GetCurrent(Skills.SkillType type)
+    {
+      var skills = Patch.m_skills(Player.m_localPlayer);
+      var skill = Patch.Skills_GetSkill(skills, type);
+      return skill.m_accumulator;
+    }
+    public static float GetTotal(Skills.SkillType type)
+    {
+      var skills = Patch.m_skills(Player.m_localPlayer);
+      var skill = Patch.Skills_GetSkill(skills, type);
+      return Patch.Skill_GetNextLevelRequirement(skill);
+    }
     public static List<string> Get()
     {
       if (!Settings.showExperienceMeter) return null;
@@ -58,7 +75,12 @@ namespace ESP
       if (startTime.HasValue && endTime.HasValue)
         time = endTime.Value.Subtract(startTime.Value).TotalMilliseconds;
       time /= 60000.0;
-      var lines = experiences.Select(kvp => kvp.Key.ToString() + ": " + Format.Float(kvp.Value) + " (" + Format.Float(kvp.Value / time) + " per minute)").ToList();
+      var lines = experiences.Select(kvp =>
+      {
+        var text = kvp.Key.ToString() + " " + GetLevel(kvp.Key) + " (" + Format.Progress(GetCurrent(kvp.Key), GetTotal(kvp.Key)) + "): ";
+        text += Format.Float(kvp.Value) + " (" + Format.Float(kvp.Value / time) + " per minute)";
+        return text;
+      }).ToList();
       lines.Insert(0, "Experience gain: " + Format.Percent(GetExperienceModifier()));
       return lines;
     }

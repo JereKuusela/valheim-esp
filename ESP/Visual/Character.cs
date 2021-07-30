@@ -4,6 +4,10 @@ using System;
 
 namespace ESP
 {
+  public partial class Visual
+  {
+
+  }
   public class CharacterUtils
   {
     public static bool IsExcluded(Character instance)
