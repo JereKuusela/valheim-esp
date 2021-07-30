@@ -89,6 +89,22 @@ namespace ESP
       else
         return "Stagger: " + Format.String("Immune");
     }
+    private static string GetState(Character character, BaseAI baseAI, MonsterAI monsterAI)
+    {
+      var state = new List<string>();
+      if (monsterAI && monsterAI.IsAlerted())
+        state.Add(Format.String("Alerted", "red"));
+      if (monsterAI && monsterAI.HuntPlayer())
+        state.Add(Format.String("Hunt mode", "red"));
+      if (character.IsStaggering())
+        state.Add(Format.String("Staggering", "red"));
+      if (baseAI && baseAI.IsSleeping())
+        state.Add(Format.String("Sleeping", "yellow"));
+      var stateText = Format.JoinRow(state);
+      if (stateText != "")
+        return ", " + stateText;
+      return "";
+    }
     public static string Get(Character obj, BaseAI baseAI, MonsterAI monsterAI)
     {
       if (!Settings.resistances || !obj || !baseAI || !monsterAI)
@@ -96,21 +112,7 @@ namespace ESP
       var lines = new List<string>();
       var staggerDamage = Patch.m_staggerDamage(obj);
       var body = Patch.m_body(obj);
-      var state = "";
-      if (monsterAI && (monsterAI.IsAlerted() || monsterAI.HuntPlayer()))
-      {
-        var mode = "";
-        if (monsterAI.IsAlerted())
-          mode += Format.String("Alerted", "red");
-        if (monsterAI.IsAlerted() && monsterAI.HuntPlayer())
-          mode += ", ";
-        if (monsterAI.HuntPlayer())
-          mode += Format.String("Hunt mode", "red");
-        state += ", " + mode;
-      }
-      if (obj.IsStaggering())
-        state += ", " + Format.String("Staggering", "red");
-      lines.Add(state);
+      lines.Add(GetState(obj, baseAI, monsterAI));
       lines.Add(Patch.m_aiStatus(monsterAI));
       var health = obj.GetMaxHealth();
       lines.Add(Format.GetHealth(obj.GetHealth(), health));
@@ -122,6 +124,16 @@ namespace ESP
       lines.Add("Mass: " + Format.Int(body.mass) + " (" + Format.Percent(1f - 5f / body.mass) + " knockback resistance)");
       var damageModifiers = Patch.Character_GetDamageModifiers(obj);
       lines.Add(DamageModifierUtils.Get(damageModifiers, true, true));
+      if (monsterAI && monsterAI.IsSleeping())
+      {
+        var wakeUp = new List<string>();
+        if (monsterAI.m_wakeupRange > 0)
+          wakeUp.Add("Wake up range: " + Format.Float(monsterAI.m_wakeupRange) + " m");
+        if (monsterAI.m_noiseWakeup)
+          wakeUp.Add("Wake up noise: " + Format.Float(monsterAI.m_noiseRangeScale) + "x");
+        lines.Add(Format.JoinRow(wakeUp));
+      }
+
       if (baseAI)
       {
         Vector3 patrolPoint;

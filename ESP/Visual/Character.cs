@@ -66,4 +66,18 @@ namespace ESP
       Hoverables.AddTexts(__instance.gameObject, ref __result);
     }
   }
+
+  [HarmonyPatch(typeof(BaseAI), "FindPath")]
+  public class BaseAI_Pathfinding
+  {
+    public static void Prefix(out float __state, float ___m_lastFindPathTime)
+    {
+      __state = ___m_lastFindPathTime;
+    }
+    public static void Postfix(BaseAI __instance, float __state, float ___m_lastFindPathTime, bool __result)
+    {
+      if (__state == ___m_lastFindPathTime) return;
+
+    }
+  }
 }

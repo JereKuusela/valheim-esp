@@ -38,6 +38,8 @@ namespace ESP
     public static float m_eventTimer(RandEventSystem obj) => Traverse.Create(obj).Field<float>("m_eventTimer").Value;
     public static int m_solidRayMask(Fireplace obj) => Traverse.Create(obj).Field<int>("m_solidRayMask").Value;
     public static Heightmap m_heightmap(SpawnSystem obj) => Traverse.Create(obj).Field<Heightmap>("m_heightmap").Value;
+    public static float m_spawnDistanceMin(SpawnSystem obj) => Traverse.Create(obj).Field<float>("m_spawnDistanceMin").Value;
+    public static float m_spawnDistanceMax(SpawnSystem obj) => Traverse.Create(obj).Field<float>("m_spawnDistanceMax").Value;
     public static Rigidbody m_body(Character obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;
     public static Rigidbody m_body(Ship obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;
     public static Rigidbody m_body(Smoke obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;

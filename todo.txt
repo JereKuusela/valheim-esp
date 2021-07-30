@@ -26,6 +26,11 @@ Todo:
  - Stacksize to item tooltips
  - Add "spawn blocked" to HUD for current location?
  - Windmill base line cover comparison (since 4-5 are blocked by the propeller).
- - In game setting menu on the HUD (would hide settings under one line and enable more finely tuned approach).
+ - Keybindings to settings.
+ - Check configuration manager plugin!
+   - Perhaps could replace settings on UI?
+   - In game setting menu on the HUD (would hide settings under one line and enable more finely tuned approach).
 
 Changes:
+ - Added sleeping status to sleeping enemies.
+ - Added wake up range and noise for sleeping enemies.
