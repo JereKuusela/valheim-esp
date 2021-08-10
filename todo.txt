@@ -23,6 +23,7 @@ Creatures:
 
 
 Todo:
+ - Check world gen vegetations and items in those, add generation info?
  - Stacksize to item tooltips
  - Add "spawn blocked" to HUD for current location?
  - Windmill base line cover comparison (since 4-5 are blocked by the propeller).
@@ -30,6 +31,8 @@ Todo:
  - Check configuration manager plugin!
    - Perhaps could replace settings on UI?
    - In game setting menu on the HUD (would hide settings under one line and enable more finely tuned approach).
+ - Fixing and expading bounds calculator.
+ - Expand patrol points to include spawn points (since spawn point is used as fallback)
 
 Changes:
  - Added sleeping status to sleeping enemies.
@@ -37,3 +40,5 @@ Changes:
  - Changed experience meter to ignore the first experience gain so that experience per minute shows up correctly.
  - Added current skill level, experience amount and experience limit to experience meter.
  - Fixed experience meter showing wrong values.
+ - Fixed smoke visual being affected by cover ray setting.
+

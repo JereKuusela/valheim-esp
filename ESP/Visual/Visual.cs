@@ -42,11 +42,11 @@ namespace ESP
     }
     public static void Draw(Smoke obj)
     {
-      if (!obj || Settings.coverRayWidth == 0) return;
+      if (!obj || Settings.smokeLineWidth == 0) return;
       var collider = obj.GetComponent<SphereCollider>();
       if (collider)
       {
-        var line = Drawer.DrawSphere(obj, collider.radius * obj.transform.lossyScale.x, Color.black, Settings.coverRayWidth, Drawer.OTHER);
+        var line = Drawer.DrawSphere(obj, collider.radius * obj.transform.lossyScale.x, Color.black, Settings.smokeLineWidth, Drawer.OTHER);
         Drawer.AddText(line);
       }
     }
