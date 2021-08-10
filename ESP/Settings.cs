@@ -117,6 +117,14 @@ namespace ESP
     public static string setSkills => configSetSkills.Value;
     public static ConfigEntry<float> configPlayerDamageRange;
     public static float playerDamageRange => configPlayerDamageRange.Value;
+    public static ConfigEntry<float> configPlayerDamageBoost;
+    public static float playerDamageBoost => configPlayerDamageBoost.Value;
+    public static ConfigEntry<float> configPlayerStaminaUsage;
+    public static float playerStaminaUsage => configPlayerStaminaUsage.Value;
+    public static ConfigEntry<bool> configPlayerForceDodging;
+    public static bool playerForceDodging => configPlayerForceDodging.Value;
+    public static ConfigEntry<float> configTerrainEditMultiplier;
+    public static float terrainEditMultiplier => configTerrainEditMultiplier.Value;
     public static ConfigEntry<float> configCreatureDamageRange;
     public static float creatureDamageRange => configCreatureDamageRange.Value;
 
@@ -194,6 +202,10 @@ namespace ESP
       Settings.configSetSkills = config.Bind("DPS", "Set skill levels", "", "Sets all skill levels to a given number");
       Settings.configPlayerDamageRange = config.Bind("DPS", "Player damage range", 0.15f, "Damage variance for players");
       Settings.configCreatureDamageRange = config.Bind("DPS", "Creature damage range", 0.25f, "Damage variance for creatures");
+      Settings.configPlayerDamageBoost = config.Bind("DPS", "Player damage boost", 0f, "Percentage increase for damage dealt");
+      Settings.configPlayerStaminaUsage = config.Bind("DPS", "Player stamina usage", 1f, "Multiplier to stamina usage");
+      Settings.configPlayerForceDodging = config.Bind("DPS", "Player force dodging", false, "If true, player always dodges");
+      Settings.configTerrainEditMultiplier = config.Bind("DPS", "Terrain changes", 1f, "Multiplier to terrain changes");
 
       Settings.configShowHud = config.Bind("HUD", "Show HUD", true, "Show info and stats on HUD");
       Settings.configShowTimeAndWeather = config.Bind("HUD", "Show current time and weather", true, "Show current time and weather on the hud");

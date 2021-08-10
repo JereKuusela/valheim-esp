@@ -44,7 +44,7 @@ namespace ESP
       float num = Mathf.Lerp(0.4f, 1f, skillFactor);
       float a = Mathf.Clamp01(num - Settings.playerDamageRange);
       float b = Mathf.Clamp01(num + Settings.playerDamageRange);
-      __result = Mathf.Lerp(a, b, UnityEngine.Random.value);
+      __result = Mathf.Lerp(a, b, UnityEngine.Random.value) * (1f + Settings.playerDamageBoost);
     }
   }
   [HarmonyPatch(typeof(Character), "GetRandomSkillFactor")]
@@ -54,6 +54,34 @@ namespace ESP
     {
       if (!Cheats.IsAdmin) return;
       __result = UnityEngine.Random.Range(1f - Settings.creatureDamageRange, 1f);
+    }
+  }
+  [HarmonyPatch(typeof(Player), "RPC_UseStamina")]
+  public class Player_RPC_UseStamina
+  {
+    public static void Prefix(ref float v)
+    {
+      if (!Cheats.IsAdmin) return;
+      v *= Settings.playerStaminaUsage;
+    }
+  }
+  [HarmonyPatch(typeof(Player), "IsDodgeInvincible")]
+  public class Player_IsDodgeInvincible
+  {
+    public static void Postfix(ref bool __result)
+    {
+      if (!Cheats.IsAdmin) return;
+      if (Settings.playerForceDodging)
+        __result = true;
+    }
+  }
+  [HarmonyPatch(typeof(TerrainComp), "RaiseTerrain")]
+  public class TerrainComp_RaiseTerrain
+  {
+    public static void Prefix(ref float radius)
+    {
+      if (!Cheats.IsAdmin) return;
+      radius *= Settings.terrainEditMultiplier;
     }
   }
   #endregion
