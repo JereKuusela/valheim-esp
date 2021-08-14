@@ -12,19 +12,19 @@ namespace ESP
   {
     public static bool IsExcluded(Character instance)
     {
-      var name = instance.name.ToLower();
-      var m_name = instance.m_name.ToLower();
-      var localized = Localization.instance.Localize(instance.m_name).ToLower();
-      var excluded = Settings.excludedCreatures.ToLower().Split(',');
-      return Array.Exists(excluded, item => item == name || item == m_name || item == localized);
+      var name = instance.name;
+      var m_name = instance.m_name;
+      var localized = Localization.instance.Localize(instance.m_name);
+      var excluded = Settings.excludedCreatures;
+      return LocationUtils.IsIn(excluded, name) || LocationUtils.IsIn(excluded, m_name) || LocationUtils.IsIn(excluded, localized);
     }
     public static bool IsTracked(Character instance)
     {
-      var name = instance.name.ToLower();
-      var m_name = instance.m_name.ToLower();
-      var localized = Localization.instance.Localize(instance.m_name).ToLower();
-      var tracked = Settings.trackedCreatures.ToLower().Split(',');
-      return Array.Exists(tracked, item => item == name || item == m_name || item == localized);
+      var name = instance.name;
+      var m_name = instance.m_name;
+      var localized = Localization.instance.Localize(instance.m_name);
+      var tracked = Settings.trackedCreatures;
+      return LocationUtils.IsIn(tracked, name) || LocationUtils.IsIn(tracked, m_name) || LocationUtils.IsIn(tracked, localized);
     }
 
   }

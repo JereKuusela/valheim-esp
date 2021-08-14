@@ -73,7 +73,7 @@ namespace ESP
     public static string GetHealth(double health, double limit)
       => "Health: " + Format.Progress(health, limit) + " (" + Format.Percent(health / limit) + ")";
 
-    public static string Name(string name, string color = "yellow") => String(Localization.instance.Localize(name), color);
+    public static string Name(string name, string color = "yellow") => String(Localization.instance.Localize(name).Replace("(Clone)", ""), color);
     public static string Name(Heightmap.Biome obj, string color = "yellow") => Name(Texts.GetName(obj), color);
     private static string Name(Character obj) => obj ? obj.m_name : "";
     public static string Name(ItemDrop.ItemData obj, string color = "yellow") => obj != null ? Name(obj.m_shared.m_name, color) : "";

@@ -6,6 +6,54 @@ namespace ESP
 {
   public class LocationUtils
   {
+    public static bool IsIn(string arrayStr, string name)
+    {
+      var nameLower = name.ToLower().Replace("(clone)", "");
+      var array = arrayStr.ToLower().Split(',');
+      return Array.Exists(array, item =>
+      {
+        if (item.StartsWith("*") && item.EndsWith("*")) return nameLower.Contains(item.Replace("*", ""));
+        if (item.StartsWith("*")) return nameLower.EndsWith(item.Replace("*", ""));
+        if (item.EndsWith("*")) return nameLower.StartsWith(item.Replace("*", ""));
+        return item == nameLower;
+      });
+    }
+    private static bool IsResourceEnabled(string name) => !IsIn(Settings.excludedResources, name);
+    public static bool IsEnabled(Pickable obj)
+    {
+      if (Settings.pickableRayWidth == 0) return false;
+      return IsResourceEnabled(obj.m_itemPrefab.name);
+    }
+    public static bool IsEnabled(MineRock obj)
+    {
+      var width = LocationUtils.GetRayWidth(obj.m_damageModifiers);
+      if (width == 0) return false;
+      return IsResourceEnabled(obj.m_name);
+    }
+    public static bool IsEnabled(MineRock5 obj)
+    {
+      var width = LocationUtils.GetRayWidth(obj.m_damageModifiers);
+      if (width == 0) return false;
+      return IsResourceEnabled(obj.m_name);
+    }
+    public static bool IsEnabled(TreeLog obj)
+    {
+      var width = LocationUtils.GetRayWidth(obj.m_damages);
+      if (width == 0) return false;
+      return IsResourceEnabled(obj.name);
+    }
+    public static bool IsEnabled(TreeBase obj)
+    {
+      var width = LocationUtils.GetRayWidth(obj.m_damageModifiers);
+      if (width == 0) return false;
+      return IsResourceEnabled(obj.name);
+    }
+    public static bool IsEnabled(Destructible obj)
+    {
+      var width = LocationUtils.GetRayWidth(obj.m_damages);
+      if (width == 0) return false;
+      return IsResourceEnabled(obj.name);
+    }
     public static float GetRayWidth(HitData.DamageModifiers modifiers)
     {
       if (modifiers.m_chop == HitData.DamageModifier.Immune) return Settings.oreRayWidth;
@@ -31,7 +79,7 @@ namespace ESP
     {
       if (Settings.pickableRayWidth == 0) return false;
       var name = instance.m_itemPrefab.name.ToLower();
-      var excluded = Settings.excludedPickables.ToLower().Split(',');
+      var excluded = Settings.excludedResources.ToLower().Split(',');
       if (Array.Exists(excluded, item => item == name)) return false;
       return true;
     }
@@ -75,8 +123,8 @@ namespace ESP
   {
     public static void Postfix(MineRock __instance)
     {
+      if (!LocationUtils.IsEnabled(__instance)) return;
       var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
-      if (width == 0) return;
       var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
@@ -86,8 +134,8 @@ namespace ESP
   {
     public static void Postfix(MineRock5 __instance)
     {
+      if (!LocationUtils.IsEnabled(__instance)) return;
       var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
-      if (width == 0) return;
       var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
@@ -97,8 +145,8 @@ namespace ESP
   {
     public static void Postfix(Destructible __instance)
     {
+      if (!LocationUtils.IsEnabled(__instance)) return;
       var width = LocationUtils.GetRayWidth(__instance.m_damages);
-      if (width == 0) return;
       var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
@@ -108,8 +156,9 @@ namespace ESP
   {
     public static void Postfix(TreeBase __instance)
     {
+
+      if (!LocationUtils.IsEnabled(__instance)) return;
       var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
-      if (width == 0) return;
       var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
@@ -119,8 +168,8 @@ namespace ESP
   {
     public static void Postfix(TreeLog __instance)
     {
+      if (!LocationUtils.IsEnabled(__instance)) return;
       var width = LocationUtils.GetRayWidth(__instance.m_damages);
-      if (width == 0) return;
       var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
@@ -131,10 +180,7 @@ namespace ESP
     private static bool IsEnabled(CreatureSpawner obj)
     {
       if (Settings.creatureSpawnersRayWidth == 0) return false;
-      var name = obj.name.ToLower();
-      var excluded = Settings.excludedCreatureSpawners.ToLower().Split(',');
-      if (Array.Exists(excluded, item => item == name)) return false;
-      return true;
+      return !LocationUtils.IsIn(Settings.excludedCreatureSpawners, obj.name);
     }
     private static Color GetColor(CreatureSpawner obj)
     {

@@ -9,10 +9,7 @@ namespace ESP
     private static bool IsDisabled(string name)
     {
       if (Settings.effectAreaLineWidth == 0) return true;
-      name = name.ToLower();
-      var excluded = Settings.excludedAreaEffects.ToLower().Split(',');
-      if (Array.Exists(excluded, item => item == name)) return true;
-      return false;
+      return LocationUtils.IsIn(Settings.excludedAreaEffects, name);
     }
     public static void Draw(EffectArea obj)
     {

@@ -88,8 +88,8 @@ namespace ESP
     public static string excludedCreatureSpawners => configExcludedCreatureSpawners.Value;
     public static ConfigEntry<string> configExcludedSpawnSystems;
     public static string excludedSpawnSystems => configExcludedSpawnSystems.Value;
-    public static ConfigEntry<string> configExcludedPickables;
-    public static string excludedPickables => configExcludedPickables.Value;
+    public static ConfigEntry<string> configExcludedResources;
+    public static string excludedResources => configExcludedResources.Value;
     public static ConfigEntry<bool> configShowOthers;
     public static bool showOthers => configShowOthers.Value;
     public static ConfigEntry<bool> configShowZones;
@@ -176,7 +176,7 @@ namespace ESP
       Settings.configPickableRayWidth = config.Bind("Visual", "Pickable rays", 0.1f, "Line width of pickable locations (0 to disable)");
       Settings.configRulerRadius = config.Bind("Visual", "Ruler point radius", 0.5f, "Ruler point radius (0 to disable)");
       Settings.configChestRayWidth = config.Bind("Visual", "Chest rays", 0.1f, "Line width of hidden chest locations (0 to disable)");
-      Settings.configOreRayWidth = config.Bind("Visual", "Ore rays", 0f, "Line width of ore locations (0 to disable)");
+      Settings.configOreRayWidth = config.Bind("Visual", "Ore rays", 0.1f, "Line width of ore locations (0 to disable)");
       Settings.configTreeRayWidth = config.Bind("Visual", "Tree rays", 0f, "Line width of tree locations (0 to disable)");
       Settings.configDestructibleRayWidth = config.Bind("Visual", "Destructible rays", 0f, "Line width of destructible locations (0 to disable)");
       Settings.configLocationRayWidth = config.Bind("Visual", "Location rays", 0.5f, "Line width of pre-generated structure locations (0 to disable)");
@@ -189,7 +189,7 @@ namespace ESP
       Settings.configExcludedCreatures = config.Bind("Exclusions", "Creatures", "", "List of creatures separated by ,");
       Settings.configExcludedSpawnSystems = config.Bind("Exclusions", "Spawn systems", "Seagal,FireFlies", "List of creatures separated by , that are not visualized");
       Settings.configExcludedCreatureSpawners = config.Bind("Exclusions", "Spawn points", "", "List of creatures separated by , that are not visualized");
-      Settings.configExcludedPickables = config.Bind("Exclusions", "Pickables", "Wood,Stone", "List of items separated by , that are not visualized");
+      Settings.configExcludedResources = config.Bind("Exclusions", "Resources", "Wood,Stone,Rock*,*RockPillar", "List of resources separated by , that are not visualized");
 
       Settings.configUseDebugMode = config.Bind("Dev", "Use debugmode", true, "Enable devcommands and debugmode automatically (single player)");
       Settings.configUseGodMode = config.Bind("Dev", "Use god mode", true, "Enable god mode automatically (single player)");

@@ -47,10 +47,7 @@ namespace ESP
     private static bool IsEnabled(SpawnSystem.SpawnData instance)
     {
       if (Settings.spawnSystemRayWidth == 0) return false;
-      var name = Utils.GetPrefabName(instance.m_prefab).ToLower();
-      var excluded = Settings.excludedSpawnSystems.ToLower().Split(',');
-      if (Array.Exists(excluded, item => item == name)) return false;
-      return true;
+      return !LocationUtils.IsIn(Settings.excludedSpawnSystems, Utils.GetPrefabName(instance.m_prefab));
     }
     private static void DrawSpawnSystems(SpawnSystem instance)
     {
