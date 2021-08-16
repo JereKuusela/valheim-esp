@@ -197,11 +197,19 @@ namespace ESP
     ///<summary>Returns renderers with a given tag.</summary>
     public static LineRenderer[] GetRenderers(MonoBehaviour obj, string tag)
     {
-      return obj.GetComponentsInChildren<LineRenderer>().Where(renderer =>
+      return obj.GetComponentsInChildren<LineRenderer>(true).Where(renderer =>
       {
         var customTag = renderer.GetComponent<CustomTag>();
         return customTag != null && customTag.customTag == tag;
       }).ToArray();
+    }
+    ///<summary>Removes visuals with a given tag.</summary>
+    public static void Remove(MonoBehaviour obj, string tag)
+    {
+      foreach (var customTag in obj.GetComponentsInChildren<CustomTag>(true))
+      {
+        if (customTag.customTag == tag) Destroy(customTag.gameObject.gameObject);
+      }
     }
   }
 }

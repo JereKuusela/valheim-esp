@@ -5,12 +5,12 @@ namespace ESP
   public class Ruler : MonoBehaviour
   {
     private static GameObject ruler = null;
-    private static void Reset()
+    public static void Reset()
     {
       if (ruler) Destroy(ruler);
       ruler = null;
     }
-    private static void Set(Vector3 position)
+    public static void Set(Vector3 position)
     {
       if (ruler) Reset();
       var obj = new GameObject();

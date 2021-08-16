@@ -8,7 +8,8 @@ namespace ESP
   {
     public static bool IsIn(string arrayStr, string name)
     {
-      var nameLower = name.ToLower().Replace("(clone)", "");
+      var localized = Localization.instance.Localize(name);
+      var nameLower = localized.ToLower().Replace("(clone)", "");
       var array = arrayStr.ToLower().Split(',');
       return Array.Exists(array, item =>
       {
@@ -28,30 +29,40 @@ namespace ESP
     {
       var width = LocationUtils.GetRayWidth(obj.m_damageModifiers);
       if (width == 0) return false;
+      var text = obj.GetComponent<HoverText>();
+      if (text) return IsResourceEnabled(text.m_text);
       return IsResourceEnabled(obj.m_name);
     }
     public static bool IsEnabled(MineRock5 obj)
     {
       var width = LocationUtils.GetRayWidth(obj.m_damageModifiers);
       if (width == 0) return false;
+      var text = obj.GetComponent<HoverText>();
+      if (text) return IsResourceEnabled(text.m_text);
       return IsResourceEnabled(obj.m_name);
     }
     public static bool IsEnabled(TreeLog obj)
     {
       var width = LocationUtils.GetRayWidth(obj.m_damages);
       if (width == 0) return false;
+      var text = obj.GetComponent<HoverText>();
+      if (text) return IsResourceEnabled(text.m_text);
       return IsResourceEnabled(obj.name);
     }
     public static bool IsEnabled(TreeBase obj)
     {
       var width = LocationUtils.GetRayWidth(obj.m_damageModifiers);
       if (width == 0) return false;
+      var text = obj.GetComponent<HoverText>();
+      if (text) return IsResourceEnabled(text.m_text);
       return IsResourceEnabled(obj.name);
     }
     public static bool IsEnabled(Destructible obj)
     {
       var width = LocationUtils.GetRayWidth(obj.m_damages);
       if (width == 0) return false;
+      var text = obj.GetComponent<HoverText>();
+      if (text) return IsResourceEnabled(text.m_text);
       return IsResourceEnabled(obj.name);
     }
     public static float GetRayWidth(HitData.DamageModifiers modifiers)

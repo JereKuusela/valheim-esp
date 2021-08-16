@@ -5,7 +5,6 @@ General:
 Drawer:
  - Some kind of color customization (rgb + string to color).
  * List of priority names (different color and width can be set).
- - Rocks and their support somehow visualized
 
 HUD:
  - Current stamina consumption
@@ -30,7 +29,6 @@ Todo:
  - Check configuration manager plugin!
    - Perhaps could replace settings on UI?
    - In game setting menu on the HUD (would hide settings under one line and enable more finely tuned approach).
- - Fixing and expading bounds calculator.
  - Expand patrol points to include spawn points (since spawn point is used as fallback)
  - Better support for configuration manager plugin:
    - Add more specific tags / names to visuals and automatically show/hide (if possible).
@@ -53,11 +51,13 @@ Changes:
  - Added setting to set the player always dodging (to test which attacks can be dodged).
  - Added setting to increase player damage (past the damage cap).
  - Added setting to multiply stamina usage (for no stamina usage).
- - Added setting to multiply dig radius (causes visual glitches)
+ - Added setting to multiply dig radius (causes visual glitches).
+ - Added visual for mine rock support bounding boxes (disabled by default).
  - Changing the setting that was used to exclude pickables to exclude all resources.
  - Added wildcard (*) support to tracking and exclusions.
  - Changed experience meter to ignore the first experience gain so that experience per minute shows up correctly.
  - Added current skill level, experience amount and experience limit to experience meter.
  - Fixed experience meter showing wrong values.
  - Fixed smoke visual being affected by cover ray setting.
+ - Improved localization of some object names.
 

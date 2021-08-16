@@ -12,6 +12,7 @@ namespace ESP
     public const float RoofFireplaceLimit = 0.5f;
     public const float SmokeAmountLimit = 100;
     public const string CoverTag = "COVER";
+    public const string SupportTag = "SUPPORT";
     public const string TriggerLayer = "character_trigger";
   }
 }

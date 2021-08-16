@@ -87,17 +87,6 @@ namespace ESP
       lines.Add(Get(obj.m_dropWhenDestroyed, 1));
       return Format.JoinLines(lines);
     }
-    public static Vector3 CalculateBounds(GameObject obj)
-    {
-      var bounds = new Bounds();
-      bounds.size = Vector3.zero;
-      var colliders = obj.GetComponentsInChildren<Collider>();
-      foreach (var col in colliders)
-      {
-        bounds.Encapsulate(col.bounds);
-      }
-      return bounds.size;
-    }
     public static string Get(Destructible obj)
     {
       if (!Settings.destructibles || !obj) return "";
@@ -111,7 +100,6 @@ namespace ESP
         lines.Add("Destroy creates: " + Format.Name(obj.m_spawnWhenDestroyed));
       lines.Add(Texts.GetToolTier(obj.m_minToolTier, obj.m_damages.m_chop != HitData.DamageModifier.Immune, obj.m_damages.m_pickaxe != HitData.DamageModifier.Immune));
       lines.Add(DamageModifierUtils.Get(obj.m_damages, false, false));
-      lines.Add("Bounds: " + CalculateBounds(obj.gameObject).ToString("F3"));
       return Format.JoinLines(lines);
     }
     public static string Get(DropOnDestroyed obj)
@@ -314,11 +302,7 @@ namespace ESP
       var lines = new List<string>();
       var maxHealth = obj.m_health;
       var areas = Patch.m_hitAreas(obj);
-      var remaining = areas.Count(area =>
-      {
-        var value = area.GetType().GetField("m_health").GetValue(area);
-        return (float)value > 0f;
-      });
+      var remaining = areas.Count(area => Patch.Get2<float>(area, "m_health") > 0f);
       lines.Add("Areas: " + Format.Progress(remaining, areas.Count()));
       lines.Add("Health per area: " + Format.Int(maxHealth));
       lines.Add("Hit noise: " + Format.Int(100));

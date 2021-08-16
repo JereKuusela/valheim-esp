@@ -63,6 +63,8 @@ namespace ESP
     public static float pickableRayWidth => configPickableRayWidth.Value;
     public static ConfigEntry<float> configEffectAreaLineWidth;
     public static float effectAreaLineWidth => configEffectAreaLineWidth.Value;
+    public static ConfigEntry<float> configMineRockSupportLineWidth;
+    public static float mineRockSupportLineWidth => configMineRockSupportLineWidth.Value;
     public static ConfigEntry<float> configRulerRadius;
     public static float rulerRadius => configRulerRadius.Value;
     public static ConfigEntry<float> configChestRayWidth;
@@ -181,8 +183,9 @@ namespace ESP
       Settings.configDestructibleRayWidth = config.Bind("Visual", "Destructible rays", 0f, "Line width of destructible locations (0 to disable)");
       Settings.configLocationRayWidth = config.Bind("Visual", "Location rays", 0.5f, "Line width of pre-generated structure locations (0 to disable)");
       Settings.configShowSupport = config.Bind("Visual", "Support", true, "Always show support color for structures");
-      Settings.configEffectAreaLineWidth = config.Bind("Visual", "Area effects", 0.1f, "Line width of area effect ranges(0 to disable)");
+      Settings.configEffectAreaLineWidth = config.Bind("Visual", "Area effects", 0.1f, "Line width of area effect ranges (0 to disable)");
       Settings.configNoiseLineWidth = config.Bind("Visual", "Noise", 0.0f, "Line width of noise range (0 to disable)");
+      Settings.configMineRockSupportLineWidth = config.Bind("Visual", "Mine rock support", 0.0f, "Line width of mine rock support bounding boxes (0 to disable)");
 
       Settings.configTrackedCreatures = config.Bind("Highlight", "Creatures", "Serpent", "List of creatures to track (separated by ,)");
       Settings.configExcludedAreaEffects = config.Bind("Exclusions", "Area effects", "", "List of area effects separated by ,");

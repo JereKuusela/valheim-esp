@@ -65,9 +65,9 @@ namespace ESP
       var keys = required.Concat(notRequired);
       return JoinRow(keys);
     }
-    public static string Coordinates(Vector3 coordinates, string color = "yellow")
+    public static string Coordinates(Vector3 coordinates, string format = "F0", string color = "yellow")
     {
-      var values = coordinates.ToString("F0").Replace("(", "").Replace(")", "").Split(',').Select(value => String(value.Trim(), color));
+      var values = coordinates.ToString(format).Replace("(", "").Replace(")", "").Split(',').Select(value => String(value.Trim(), color));
       return JoinRow(values);
     }
     public static string GetHealth(double health, double limit)
@@ -85,14 +85,16 @@ namespace ESP
     private static string Name(Piece obj) => obj ? obj.m_name : "";
     private static string Name(TreeLog obj) => obj ? obj.name : "";
     private static string Name(Location obj) => obj ? obj.name : "";
-    private static string Name(MineRock obj) => obj ? obj.name : "";
-    private static string Name(MineRock5 obj) => obj ? obj.name : "";
+    private static string Name(MineRock obj) => obj ? obj.m_name : "";
+    private static string Name(MineRock5 obj) => obj ? obj.m_name : "";
     private static string Name(TreeBase obj) => obj ? obj.name : "";
     private static string Name(Destructible obj) => obj ? obj.name : "";
     private static string Name(Smoke obj) => obj ? "Smoke" : "";
+    private static string Name(HoverText obj) => obj ? obj.m_text : "";
     public static string Name(MonoBehaviour obj, string color = "yellow")
     {
       var text = "";
+      if (text == "") text = Format.Name(obj.GetComponentInParent<HoverText>());
       if (text == "") text = Format.Name(obj.GetComponentInParent<Smoke>());
       if (text == "") text = Format.Name(obj.GetComponentInParent<CreatureSpawner>());
       if (text == "") text = Format.Name(obj.GetComponentInParent<Pickable>());

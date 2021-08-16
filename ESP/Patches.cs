@@ -8,6 +8,11 @@ namespace ESP
   [HarmonyPatch]
   public class Patch
   {
+    public static T Get<T>(object obj, string field) => (T)obj.GetType().GetField(field).GetValue(obj);
+    public static T Get2<T>(object obj, string field) => Traverse.Create(obj).Field<T>(field).Value;
+    public static object Get2(object obj, string field) => Traverse.Create(obj).Field<object>(field).Value;
+
+
     public static double GetElapsed(MonoBehaviour obj, string key, long defaultValue = 0)
     {
       var time = ZNet.instance.GetTime();
@@ -51,6 +56,7 @@ namespace ESP
     public static Skills m_skills(Player obj) => Traverse.Create(obj).Field<Skills>("m_skills").Value;
     public static List<Collider> m_hitAreas(MineRock obj) => Traverse.Create(obj).Field<List<Collider>>("m_hitAreas").Value;
     public static IEnumerable<object> m_hitAreas(MineRock5 obj) => Traverse.Create(obj).Field<IEnumerable<object>>("m_hitAreas").Value;
+    public static int m_rayMask(MineRock5 obj) => Traverse.Create(obj).Field<int>("m_rayMask").Value;
     public static int m_coverRayMask(Cover obj) => Traverse.Create(obj).Field<int>("m_coverRayMask").Value;
     public static float m_updateExtensionTimer(CraftingStation obj) => Traverse.Create(obj).Field<float>("m_updateExtensionTimer").Value;
     [HarmonyReversePatch]
@@ -178,6 +184,12 @@ namespace ESP
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(Skills.Skill), "GetNextLevelRequirement")]
     public static float Skill_GetNextLevelRequirement(Skills.Skill instance)
+    {
+      throw new NotImplementedException("Dummy");
+    }
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(MineRock5), "GetSupport")]
+    public static bool MineRock5_GetSupport(MineRock5 instance, Collider c)
     {
       throw new NotImplementedException("Dummy");
     }

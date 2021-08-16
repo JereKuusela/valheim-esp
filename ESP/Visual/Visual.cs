@@ -1,16 +1,57 @@
 using HarmonyLib;
 using UnityEngine;
 using System;
+using System.Linq;
 
 namespace ESP
 {
   public partial class Visual
   {
+    private static Collider[] tempColliders = new Collider[128];
     private static bool IsDisabled(string name)
     {
       if (Settings.effectAreaLineWidth == 0) return true;
       return LocationUtils.IsIn(Settings.excludedAreaEffects, name);
     }
+    public static void DrawSupport(MineRock5 obj)
+    {
+      Drawer.Remove(obj, Constants.SupportTag);
+      if (Settings.mineRockSupportLineWidth == 0) return;
+      var areas = Patch.m_hitAreas(obj);
+      var remaining = areas.Count(area => Patch.Get2<float>(area, "m_health") > 0f);
+      var index = -1;
+      foreach (var area in areas)
+      {
+        index++;
+        var health = Patch.Get2<float>(area, "m_health");
+        if (health <= 0f) continue;
+        var bounds = Patch.Get2(area, "m_bound");
+        var pos = Patch.Get2<Vector3>(bounds, "m_pos");
+        var size = Patch.Get2<Vector3>(bounds, "m_size");
+        var rot = Patch.Get2<Quaternion>(bounds, "m_rot");
+        var mask = Patch.m_rayMask(obj);
+        int num = Physics.OverlapBoxNonAlloc(obj.transform.position + pos, size, tempColliders, rot, mask);
+        var areaCollider = Patch.Get2<Collider>(area, "m_collider");
+        for (int j = 0; j < num; j++)
+        {
+          var collider = tempColliders[j];
+          if (!(collider == areaCollider) && !(collider.attachedRigidbody != null) && !collider.isTrigger)
+          {
+            var componentInParent = collider.gameObject.GetComponentInParent<IDestructible>();
+            if ((object)componentInParent == obj) continue;
+            var supported = Patch.MineRock5_GetSupport(obj, collider);
+            if (supported)
+            {
+              var box = Drawer.DrawBox(obj, Color.red, Settings.mineRockSupportLineWidth, Drawer.OTHER, pos, size);
+              Drawer.AddTag(box, Constants.SupportTag);
+              Drawer.AddText(box, "Index: " + Format.Int(index), "Size: " + Format.Coordinates(2 * size, "F1"));
+              break;
+            }
+          }
+        }
+      }
+    }
+
     public static void Draw(EffectArea obj)
     {
       if (!obj) return;
@@ -71,6 +112,11 @@ namespace ESP
       Visual.Draw(__instance.GetComponent<Beehive>());
       Visual.Draw(__instance.GetComponent<Windmill>());
     }
+  }
+  [HarmonyPatch(typeof(MineRock5), "UpdateSupport")]
+  public class MineRock5_Support
+  {
+    public static void Postfix(MineRock5 __instance) => Visual.DrawSupport(__instance);
   }
   [HarmonyPatch(typeof(Smoke), "Awake")]
   public class Smoke_Visual
