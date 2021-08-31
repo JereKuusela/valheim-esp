@@ -63,6 +63,10 @@ namespace ESP
     public static float pickableRayWidth => configPickableRayWidth.Value;
     public static ConfigEntry<float> configEffectAreaLineWidth;
     public static float effectAreaLineWidth => configEffectAreaLineWidth.Value;
+    public static ConfigEntry<float> configCustomContainerEffectAreaRadius;
+    public static float customContainerEffectAreaRadius => configCustomContainerEffectAreaRadius.Value;
+    public static ConfigEntry<float> configCustomCraftingEffectAreaRadius;
+    public static float customCraftingEffectAreaRadius => configCustomCraftingEffectAreaRadius.Value;
     public static ConfigEntry<float> configMineRockSupportLineWidth;
     public static float mineRockSupportLineWidth => configMineRockSupportLineWidth.Value;
     public static ConfigEntry<float> configRulerRadius;
@@ -184,6 +188,8 @@ namespace ESP
       Settings.configLocationRayWidth = config.Bind("Visual", "Location rays", 0.5f, "Line width of pre-generated structure locations (0 to disable)");
       Settings.configShowSupport = config.Bind("Visual", "Support", true, "Always show support color for structures");
       Settings.configEffectAreaLineWidth = config.Bind("Visual", "Area effects", 0.1f, "Line width of area effect ranges (0 to disable)");
+      Settings.configCustomContainerEffectAreaRadius = config.Bind("Visual", "Custom radius for containers", 0.0f, "Custom effect area sphere for containers (0 to disable)");
+      Settings.configCustomCraftingEffectAreaRadius = config.Bind("Visual", "Custom radius for crafting stations", 0.0f, "Custom effect area sphere for crafting stations (0 to disable)");
       Settings.configNoiseLineWidth = config.Bind("Visual", "Noise", 0.0f, "Line width of noise range (0 to disable)");
       Settings.configMineRockSupportLineWidth = config.Bind("Visual", "Mine rock support", 0.0f, "Line width of mine rock support bounding boxes (0 to disable)");
 

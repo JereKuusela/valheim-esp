@@ -21,7 +21,7 @@ namespace ESP
         Drawer.AddTag(line, Constants.CoverTag);
       }
     }
-    public static void Draw(CraftingStation obj)
+    public static void DrawCover(CraftingStation obj)
     {
       if (!obj || Settings.coverRayWidth == 0) return;
       DrawCover(obj, CoverUtils.GetCoverPoint(obj), Format.Name(obj), Texts.GetCover(obj));

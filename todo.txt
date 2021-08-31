@@ -40,8 +40,6 @@ Todo:
    - So only 3 keys: settings, dps and experience.
  - Show object classnames on hover.
  - Experience meter to also include the first value (at least to total, over time to use average?).
- - Dev setting to disable stamina losses.
- - Dev setting to always dodge.
  - Creatures: Add if creature doesn't attack objects to hover.
  - Generation parameters to locations, pickables, trees and rocks.
 
@@ -53,6 +51,7 @@ Changes:
  - Added setting to multiply stamina usage (for no stamina usage).
  - Added setting to multiply dig radius (causes visual glitches).
  - Added visual for mine rock support bounding boxes (disabled by default).
+ - Added settings for custom spheres to containers and crafting stations (for people using "craft from containers" mods).
  - Changing the setting that was used to exclude pickables to exclude all resources.
  - Added wildcard (*) support to tracking and exclusions.
  - Changed experience meter to ignore the first experience gain so that experience per minute shows up correctly.

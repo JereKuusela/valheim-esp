@@ -58,7 +58,17 @@ namespace ESP
       var text = EffectAreaUtils.GetTypeText(obj.m_type);
       if (IsDisabled(text)) return;
       var color = EffectAreaUtils.GetEffectColor(obj.m_type);
-      var radius = obj.GetRadius() * obj.transform.lossyScale.x;
+      var radius = 0f;
+      try
+      {
+        // Try-catch since there was a NullReferenceException reported happening here.
+        // Unable to reproduce. 
+        radius = obj.GetRadius() * obj.transform.lossyScale.x;
+      }
+      catch
+      {
+
+      }
 
       var line = Drawer.DrawSphere(obj, Math.Max(0.5f, radius), color, Settings.effectAreaLineWidth, Drawer.OTHER);
       Drawer.AddText(line, text, Format.Radius(radius));
@@ -69,6 +79,27 @@ namespace ESP
       if (!obj || IsDisabled(text)) return;
       var line = Drawer.DrawCylinder(obj, obj.m_radius, Color.gray, Settings.effectAreaLineWidth, Drawer.OTHER);
       Drawer.AddText(line, text, Format.Radius(obj.m_radius));
+    }
+    public static void Draw(Container obj)
+    {
+      var text = "Container";
+      var radius = Settings.customContainerEffectAreaRadius;
+      if (!obj || IsDisabled(text) || radius == 0f) return;
+      var line = Drawer.DrawSphere(obj, Math.Max(0.5f, radius), Color.yellow, Settings.effectAreaLineWidth, Drawer.OTHER);
+      Drawer.AddText(line, text, Format.Radius(radius));
+    }
+    public static void Draw(CraftingStation obj)
+    {
+      DrawCover(obj);
+      DrawCustomEffectArea(obj);
+    }
+    public static void DrawCustomEffectArea(CraftingStation obj)
+    {
+      var text = "Crafting station";
+      var radius = Settings.customCraftingEffectAreaRadius;
+      if (!obj || IsDisabled(text) || radius == 0f) return;
+      var line = Drawer.DrawSphere(obj, Math.Max(0.5f, radius), Color.yellow, Settings.effectAreaLineWidth, Drawer.OTHER);
+      Drawer.AddText(line, text, Format.Radius(radius));
     }
     public static void Draw(Piece obj)
     {
@@ -106,6 +137,7 @@ namespace ESP
     {
       Visual.Draw(__instance);
       Visual.Draw(__instance.GetComponent<CraftingStation>());
+      Visual.Draw(__instance.GetComponent<Container>());
       Visual.Draw(__instance.GetComponent<Fermenter>());
       Visual.Draw(__instance.GetComponent<Bed>());
       Visual.Draw(__instance.GetComponent<Fireplace>());
