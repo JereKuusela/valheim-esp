@@ -1,6 +1,4 @@
-using HarmonyLib;
 using UnityEngine;
-using System;
 
 namespace ESP
 {
@@ -13,9 +11,9 @@ namespace ESP
       var cover = new Cover();
       foreach (var vector in Patch.m_coverRays(cover))
       {
-        var color = Color.green;
+        var color = Settings.coverRayColor;
         if (Physics.Raycast(startPos + vector * start, vector, out var raycastHit, Constants.CoverRayCastLength - start, Patch.m_coverRayMask(cover)))
-          color = Color.red;
+          color = Settings.coverRayBlockedColor;
         var line = Drawer.DrawLineWithFixedRotation(obj, delta + vector * start, delta + vector * Constants.CoverRayCastLength, color, Settings.coverRayWidth, Drawer.OTHER);
         Drawer.AddText(line, name, text);
         Drawer.AddTag(line, Constants.CoverTag);
@@ -62,9 +60,9 @@ namespace ESP
       foreach (var vector in vectors)
       {
         RaycastHit raycastHit;
-        var color = Color.green;
+        var color = Settings.coverRayColor;
         if (Physics.Raycast(startPos + vector * start, vector, out raycastHit, Constants.CoverRayCastLength - start, Patch.m_coverRayMask(cover)))
-          color = Color.red;
+          color = Settings.coverRayBlockedColor;
         var renderer = renderers[index];
         renderer.material.SetColor("_Color", color);
         var staticText = renderer.GetComponent<StaticText>();

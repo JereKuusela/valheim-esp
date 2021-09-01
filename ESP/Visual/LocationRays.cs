@@ -71,6 +71,12 @@ namespace ESP
       if (modifiers.m_pickaxe == HitData.DamageModifier.Immune) return Settings.treeRayWidth;
       return Settings.destructibleRayWidth;
     }
+    public static Color GetRayColor(HitData.DamageModifiers modifiers)
+    {
+      if (modifiers.m_chop == HitData.DamageModifier.Immune) return Settings.oreRayColor;
+      if (modifiers.m_pickaxe == HitData.DamageModifier.Immune) return Settings.treeRayColor;
+      return Settings.destructibleRayColor;
+    }
   }
   [HarmonyPatch(typeof(BaseAI), "Awake")]
   public class BaseAI_Ray
@@ -79,7 +85,7 @@ namespace ESP
     {
       var obj = ___m_character;
       if (Settings.creatureRayWidth == 0 || !CharacterUtils.IsTracked(obj)) return;
-      var line = Drawer.DrawMarkerLine(obj, Color.magenta, Settings.creatureRayWidth, Drawer.CREATURE);
+      var line = Drawer.DrawMarkerLine(obj, Settings.creatureRayColor, Settings.creatureRayWidth, Drawer.CREATURE);
       Drawer.AddText(line);
     }
   }
@@ -96,7 +102,7 @@ namespace ESP
     }
     private static Color GetColor(Pickable instance)
     {
-      return instance.m_hideWhenPicked && instance.m_respawnTimeMinutes > 0 ? Color.green : Color.blue;
+      return instance.m_hideWhenPicked && instance.m_respawnTimeMinutes > 0 ? Settings.pickableRespawningColor : Settings.pickableOneTimeColor;
     }
     public static void Postfix(Pickable __instance, ZNetView ___m_nview)
     {
@@ -114,7 +120,7 @@ namespace ESP
     {
       if (Settings.locationRayWidth == 0)
         return;
-      var obj = Drawer.DrawMarkerLine(__instance, Color.black, Settings.locationRayWidth, Drawer.OTHER);
+      var obj = Drawer.DrawMarkerLine(__instance, Settings.locationRayColor, Settings.locationRayWidth, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
   }
@@ -125,7 +131,7 @@ namespace ESP
     {
       if (Settings.chestRayWidth == 0 || !___m_piece || ___m_piece.IsPlacedByPlayer()) return;
       var text = Format.String(__instance.GetHoverName());
-      var obj = Drawer.DrawMarkerLine(__instance, Color.white, Settings.chestRayWidth, Drawer.OTHER);
+      var obj = Drawer.DrawMarkerLine(__instance, Settings.containerRayColor, Settings.chestRayWidth, Drawer.OTHER);
       Drawer.AddText(obj, text);
     }
   }
@@ -136,7 +142,8 @@ namespace ESP
     {
       if (!LocationUtils.IsEnabled(__instance)) return;
       var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
-      var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
+      var color = LocationUtils.GetRayColor(__instance.m_damageModifiers);
+      var obj = Drawer.DrawMarkerLine(__instance, color, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
   }
@@ -147,7 +154,8 @@ namespace ESP
     {
       if (!LocationUtils.IsEnabled(__instance)) return;
       var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
-      var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
+      var color = LocationUtils.GetRayColor(__instance.m_damageModifiers);
+      var obj = Drawer.DrawMarkerLine(__instance, color, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
   }
@@ -158,7 +166,8 @@ namespace ESP
     {
       if (!LocationUtils.IsEnabled(__instance)) return;
       var width = LocationUtils.GetRayWidth(__instance.m_damages);
-      var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
+      var color = LocationUtils.GetRayColor(__instance.m_damages);
+      var obj = Drawer.DrawMarkerLine(__instance, color, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
   }
@@ -170,7 +179,8 @@ namespace ESP
 
       if (!LocationUtils.IsEnabled(__instance)) return;
       var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
-      var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
+      var color = LocationUtils.GetRayColor(__instance.m_damageModifiers);
+      var obj = Drawer.DrawMarkerLine(__instance, color, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
   }
@@ -181,7 +191,8 @@ namespace ESP
     {
       if (!LocationUtils.IsEnabled(__instance)) return;
       var width = LocationUtils.GetRayWidth(__instance.m_damages);
-      var obj = Drawer.DrawMarkerLine(__instance, Color.gray, width, Drawer.OTHER);
+      var color = LocationUtils.GetRayColor(__instance.m_damages);
+      var obj = Drawer.DrawMarkerLine(__instance, color, width, Drawer.OTHER);
       Drawer.AddText(obj, Format.Name(__instance));
     }
   }
@@ -195,7 +206,7 @@ namespace ESP
     }
     private static Color GetColor(CreatureSpawner obj)
     {
-      return obj.m_respawnTimeMinuts > 0f ? Color.yellow : Color.red;
+      return obj.m_respawnTimeMinuts > 0f ? Settings.spawnerRespawningColor : Settings.spawnerOneTimeColor;
     }
     public static void Postfix(CreatureSpawner __instance)
     {

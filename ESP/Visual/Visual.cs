@@ -42,7 +42,7 @@ namespace ESP
             var supported = Patch.MineRock5_GetSupport(obj, collider);
             if (supported)
             {
-              var box = Drawer.DrawBox(obj, Color.red, Settings.mineRockSupportLineWidth, Drawer.OTHER, pos, size);
+              var box = Drawer.DrawBox(obj, Settings.mineRockSupportColor, Settings.mineRockSupportLineWidth, Drawer.OTHER, pos, size);
               Drawer.AddTag(box, Constants.SupportTag);
               Drawer.AddText(box, "Index: " + Format.Int(index), "Size: " + Format.Coordinates(2 * size, "F1"));
               break;
@@ -77,7 +77,7 @@ namespace ESP
     {
       var text = "Protection";
       if (!obj || IsDisabled(text)) return;
-      var line = Drawer.DrawCylinder(obj, obj.m_radius, Color.gray, Settings.effectAreaLineWidth, Drawer.OTHER);
+      var line = Drawer.DrawCylinder(obj, obj.m_radius, Settings.effectAreaPrivateAreaColor, Settings.effectAreaLineWidth, Drawer.OTHER);
       Drawer.AddText(line, text, Format.Radius(obj.m_radius));
     }
     public static void Draw(Container obj)
@@ -85,7 +85,7 @@ namespace ESP
       var text = "Container";
       var radius = Settings.customContainerEffectAreaRadius;
       if (!obj || IsDisabled(text) || radius == 0f) return;
-      var line = Drawer.DrawSphere(obj, Math.Max(0.5f, radius), Color.yellow, Settings.effectAreaLineWidth, Drawer.OTHER);
+      var line = Drawer.DrawSphere(obj, Math.Max(0.5f, radius), Settings.effectAreaCustomContainerColor, Settings.effectAreaLineWidth, Drawer.OTHER);
       Drawer.AddText(line, text, Format.Radius(radius));
     }
     public static void Draw(CraftingStation obj)
@@ -98,7 +98,7 @@ namespace ESP
       var text = "Crafting station";
       var radius = Settings.customCraftingEffectAreaRadius;
       if (!obj || IsDisabled(text) || radius == 0f) return;
-      var line = Drawer.DrawSphere(obj, Math.Max(0.5f, radius), Color.yellow, Settings.effectAreaLineWidth, Drawer.OTHER);
+      var line = Drawer.DrawSphere(obj, Math.Max(0.5f, radius), Settings.effectAreaCustomCraftingColor, Settings.effectAreaLineWidth, Drawer.OTHER);
       Drawer.AddText(line, text, Format.Radius(radius));
     }
     public static void Draw(Piece obj)
@@ -106,7 +106,7 @@ namespace ESP
       if (!obj || obj.m_comfort == 0) return;
       var text = "Comfort";
       if (IsDisabled(text)) return;
-      var line = Drawer.DrawSphere(obj, 10, Color.cyan, Settings.effectAreaLineWidth, Drawer.OTHER);
+      var line = Drawer.DrawSphere(obj, 10, Settings.effectAreaComfortColor, Settings.effectAreaLineWidth, Drawer.OTHER);
       Drawer.AddText(line, text, Format.Radius(10));
     }
     public static void Draw(Smoke obj)
@@ -115,7 +115,7 @@ namespace ESP
       var collider = obj.GetComponent<SphereCollider>();
       if (collider)
       {
-        var line = Drawer.DrawSphere(obj, collider.radius * obj.transform.lossyScale.x, Color.black, Settings.smokeLineWidth, Drawer.OTHER);
+        var line = Drawer.DrawSphere(obj, collider.radius * obj.transform.lossyScale.x, Settings.smokeColor, Settings.smokeLineWidth, Drawer.OTHER);
         Drawer.AddText(line);
       }
     }

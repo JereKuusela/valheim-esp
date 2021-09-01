@@ -26,24 +26,19 @@ Todo:
  - Add "spawn blocked" to HUD for current location?
  - Windmill base line cover comparison (since 4-5 are blocked by the propeller).
  - Keybindings to settings.
- - Check configuration manager plugin!
-   - Perhaps could replace settings on UI?
-   - In game setting menu on the HUD (would hide settings under one line and enable more finely tuned approach).
  - Expand patrol points to include spawn points (since spawn point is used as fallback)
  - Better support for configuration manager plugin:
    - Add more specific tags / names to visuals and automatically show/hide (if possible).
-   - Sort settings better (start group names with 1., 2.).
-   - Separate settings for shpwing/hiding and line widths (currently annoying to hide stuff as it's not one click).
- - Something done to current quick show/hide options. More options would be nice but with less clutter:
-   - One key to open/hide settings.
-   - Numbers for individual settings.
-   - So only 3 keys: settings, dps and experience.
+   - Separate settings for showing/hiding and line widths (currently annoying to hide stuff as it's not one click).
+   - Add keybinding for toggling different visuals (users can quickly toggle what they want).
  - Show object classnames on hover.
  - Experience meter to also include the first value (at least to total, over time to use average?).
  - Creatures: Add if creature doesn't attack objects to hover.
  - Generation parameters to locations, pickables, trees and rocks.
 
 Changes:
+ - Added settings to customize all colors used by the visuals.
+ - Reordered settings to more sensible sections.
  - Added sleeping status to sleeping enemies.
  - Added wake up range and noise for sleeping enemies.
  - Added setting to set the player always dodging (to test which attacks can be dodged).

@@ -35,7 +35,7 @@ namespace ESP
     {
       if (Settings.noiseLineWidth == 0 || CharacterUtils.IsExcluded(instance))
         return;
-      var obj = Drawer.DrawSphere(instance, Patch.m_noiseRange(instance), Color.cyan, Settings.noiseLineWidth, Drawer.CREATURE);
+      var obj = Drawer.DrawSphere(instance, Patch.m_noiseRange(instance), Settings.noiseColor, Settings.noiseLineWidth, Drawer.CREATURE);
       obj.AddComponent<NoiseText>().character = instance;
     }
     public static void Postfix(Character __instance)

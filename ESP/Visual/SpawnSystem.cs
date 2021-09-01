@@ -76,7 +76,7 @@ namespace ESP
     private static void DrawRandEventSystem(SpawnSystem instance)
     {
       if (Settings.randEventSystemRayWidth == 0) return;
-      var obj = Drawer.DrawMarkerLine(instance, Color.black, Settings.randEventSystemRayWidth, Drawer.ZONE, new Vector3(0, 0, 5));
+      var obj = Drawer.DrawMarkerLine(instance, Settings.randomEventSystemRayColor, Settings.randEventSystemRayWidth, Drawer.ZONE, new Vector3(0, 0, 5));
       obj.AddComponent<RandEventSystemText>().spawnSystem = instance;
     }
     public static void Postfix(SpawnSystem __instance)

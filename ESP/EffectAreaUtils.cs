@@ -9,13 +9,13 @@ namespace ESP
 
     public static Color GetEffectColor(EffectArea.Type type)
     {
-      if ((type & EffectArea.Type.Burning) != 0) return Color.yellow;
-      if ((type & EffectArea.Type.Heat) != 0) return Color.magenta;
-      if ((type & EffectArea.Type.Fire) != 0) return Color.red;
-      if ((type & EffectArea.Type.NoMonsters) != 0) return Color.green;
-      if ((type & EffectArea.Type.Teleport) != 0) return Color.blue;
-      if ((type & EffectArea.Type.PlayerBase) != 0) return Color.white;
-      return Color.black;
+      if ((type & EffectArea.Type.Burning) != 0) return Settings.effectAreaBurningColor;
+      if ((type & EffectArea.Type.Heat) != 0) return Settings.effectAreaHeatColor;
+      if ((type & EffectArea.Type.Fire) != 0) return Settings.effectAreaFireColor;
+      if ((type & EffectArea.Type.NoMonsters) != 0) return Settings.effectAreaNoMonstersColor;
+      if ((type & EffectArea.Type.Teleport) != 0) return Settings.effectAreaTeleportColor;
+      if ((type & EffectArea.Type.PlayerBase) != 0) return Settings.effectAreaPlayerBaseColor;
+      return Settings.effectAreaOtherColor;
     }
     public static String GetTypeText(EffectArea.Type type)
     {

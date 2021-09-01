@@ -9,16 +9,16 @@ namespace ESP
   {
     public static Color GetColor(Heightmap.Biome biome)
     {
-      if (biome == Heightmap.Biome.AshLands) return Color.red;
-      if (biome == Heightmap.Biome.BlackForest) return Color.magenta;
-      if (biome == Heightmap.Biome.DeepNorth) return Color.gray;
-      if (biome == Heightmap.Biome.Meadows) return Color.green;
-      if (biome == Heightmap.Biome.Mistlands) return Color.gray;
-      if (biome == Heightmap.Biome.Mountain) return Color.white;
-      if (biome == Heightmap.Biome.Ocean) return Color.blue;
-      if (biome == Heightmap.Biome.Plains) return Color.yellow;
-      if (biome == Heightmap.Biome.Swamp) return Color.cyan;
-      return Color.black;
+      if (biome == Heightmap.Biome.AshLands) return Settings.biomeAshlandsColor;
+      if (biome == Heightmap.Biome.BlackForest) return Settings.biomeBlackForestColor;
+      if (biome == Heightmap.Biome.DeepNorth) return Settings.biomeDeepNorthColor;
+      if (biome == Heightmap.Biome.Meadows) return Settings.biomeMeadowsColor;
+      if (biome == Heightmap.Biome.Mistlands) return Settings.biomeMistlandsColor;
+      if (biome == Heightmap.Biome.Mountain) return Settings.biomeMountainColor;
+      if (biome == Heightmap.Biome.Ocean) return Settings.biomeOceanColor;
+      if (biome == Heightmap.Biome.Plains) return Settings.biomePlainsColor;
+      if (biome == Heightmap.Biome.Swamp) return Settings.biomeSwampColor;
+      return Settings.biomeOtherColor;
     }
 
     private static Heightmap.Biome[] BIOMES = new Heightmap.Biome[]{

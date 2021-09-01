@@ -17,7 +17,7 @@ namespace ESP
       obj.layer = LayerMask.NameToLayer(Constants.TriggerLayer);
       obj.transform.position = position * 1.0f;
       ruler = obj;
-      var line = Drawer.DrawSphere(obj, Settings.rulerRadius, Color.red, Settings.rulerRadius, "");
+      var line = Drawer.DrawSphere(obj, Settings.rulerRadius, Settings.rulerColor, Settings.rulerRadius, "");
       Drawer.AddText(line, Format.Coordinates(position), "Ruler");
     }
     public static void Toggle(Vector3 position)
