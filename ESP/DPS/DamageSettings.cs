@@ -71,7 +71,8 @@ namespace ESP
     public static void Postfix(ref bool __result)
     {
       if (!Cheats.IsAdmin) return;
-      if (Settings.playerForceDodging)
+      if (Settings.
+      playerForceDodging)
         __result = true;
     }
   }

@@ -38,6 +38,7 @@ Some use cases:
 - Player base range visualized (white sphere).
 - Ward protection range visualized (gray sphere).
 - Burning, fire and warmth range visualized (yellow, red and magenta spheres).
+- Custom visualization for containers and crafting stations (if using for example a "craft from containers" mod).
 - Fuel amount of fireplace, torches and smelters.
 - Progression of beehives, smelters, kilns and windmills.
 
@@ -56,6 +57,7 @@ Some use cases:
 	- Noise created when hit.
 	- Created object when destroyed.
 	- Item drops with amounts and chances.
+- Bounding boxes for mineral/stone support system to locate parts keeping the deposit from collapsing.
 - Stack size and despawn timer on dropped items.
 - Ship speed (both total and to forward direction), wind angle and wind strength on the HUD when sailing.
 
@@ -70,7 +72,7 @@ Some use cases:
 - Breeding limit range (cyan sphere) and partner check range for breedable creatures (magenta sphere).
 - Food search check range (gray sphere) and eating range for tameable creatures (white sphere).
 - Lots of stats on tooltips:
-	- Status: is alerted, is in hunt mode, is staggering and current action.
+	- Status: is alerted, is in hunt mode, is staggering, is sleeping and current action.
 	- Current and max health.
 	- Accumulated stagger and stagger limit.
 	- Mass and knockback resistance.
@@ -80,6 +82,7 @@ Some use cases:
 	- Food timer and health gain when eating.
 	- Breeding progress.
 	- Breeding limit.
+	- Wake up range and noise.
 
 # Environment
 
@@ -127,7 +130,11 @@ Some use cases:
 	- Attack type and hitbox.
 	- Accuracy and projectile speed for bows.
 	- Secondary attack stats (damage multiplier, knocback multiplier, staggering multiplier).
-- Settings to overwrite player skill values, player damage range and creature damage range.
+- Setting to overwrite player skill values (for easier testing).
+- Settings for player damage multiplier, player damage range and creature damage range.
+- Setting to multiply stamina usage (easier testing when stamina is infinite).
+- Setting to enable permanent dodging (allows testing which attacks can be dodged).
+- Setting to multiply dig radius (for easier mining).
 - DPS can be toggled on and off with P key (which can also be used to reset the timer).
 - The DPS meter tracks start and end of attacks which makes it more accurate than the default DPS tool (which only tracks hits).
 - The DPS meter automatically stops when you stop attacking.
@@ -144,6 +151,7 @@ Some use cases:
 - Message box on the left hide shows following statistics:
 	- Experience gain modifier.
 	- Experience gained per skill (both total and per minute).
+	- Current level and progress towards the next level.
 
 # Ruler
 
@@ -153,6 +161,24 @@ Some use cases:
 
 # Changelog
 
+- v1.4.0: 
+	- Added settings to customize all colors used by the visuals.
+	- Reordered settings to more sensible sections.
+	- Added sleeping status to sleeping enemies.
+	- Added wake up range and noise for sleeping enemies.
+	- Added setting to set the player always dodging (to test which attacks can be dodged).
+	- Added setting to increase player damage (past the damage cap).
+	- Added setting to multiply stamina usage (for no stamina usage).
+	- Added setting to multiply dig radius (causes visual glitches).
+	- Added visual for mine rock support bounding boxes (disabled by default).
+	- Added settings for custom spheres to containers and crafting stations (for people using "craft from containers" mods).
+	- Changing the setting that was used to exclude pickables to exclude all resources.
+	- Added wildcard (*) support to tracking and exclusions.
+	- Changed experience meter to ignore the first experience gain so that experience per minute shows up correctly.
+	- Added current skill level, experience amount and experience limit to experience meter.
+	- Fixed experience meter showing wrong values.
+	- Fixed smoke visual being affected by cover ray setting.
+	- Improved localization of some object names.
 - v1.3.0: 
 	- Added item drops to resources like rocks, minerals and trees.
 	- Added chests contents to pregenerated chests.

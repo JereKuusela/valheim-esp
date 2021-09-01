@@ -1,6 +1,4 @@
 ﻿using BepInEx.Configuration;
-using UnityEngine;
-using HarmonyLib;
 
 namespace ESP
 {
