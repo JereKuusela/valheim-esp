@@ -393,22 +393,47 @@ namespace ESP
       var windPower = Mathf.Lerp(0.25f, 1f, windIntensity);
       return windPower * ship.GetWindAngleFactor();
     }
+    public static float GetShipForwardSpeed(Ship obj) => obj.GetSpeed();
+    public static float GetShipSpeed(Ship obj)
+    {
+      var body = Patch.m_body(obj);
+      Vector3 velocity = body.velocity;
+      velocity.y = 0f;
+      return velocity.magnitude;
+    }
+    const int SPEED_COUNT = 2000;
+    private static Queue<float> shipForwardSpeeds = new Queue<float>(SPEED_COUNT + 1);
+    private static Queue<float> shipSpeeds = new Queue<float>(SPEED_COUNT + 1);
+    public static void UpdateAverageSpeed(Ship obj)
+    {
+      if (obj == null)
+      {
+        shipSpeeds.Clear();
+        shipForwardSpeeds.Clear();
+        return;
+      }
+      shipSpeeds.Enqueue(GetShipSpeed(obj));
+      if (shipSpeeds.Count > SPEED_COUNT) shipSpeeds.Dequeue();
+      shipForwardSpeeds.Enqueue(Math.Abs(GetShipForwardSpeed(obj)));
+      if (shipForwardSpeeds.Count > SPEED_COUNT) shipForwardSpeeds.Dequeue();
+    }
     public static string Get(Ship obj)
     {
       if (!obj) return "";
       var lines = new List<string>();
       var body = Patch.m_body(obj);
-      var forwardSpeed = obj.GetSpeed();
+      var forwardSpeed = GetShipForwardSpeed(obj);
       var forwardAngle = 90f - Mathf.Atan2(obj.transform.forward.z, obj.transform.forward.x) / Math.PI * 180f;
+      var avgForwardSpeed = "(" + Format.Fixed(shipForwardSpeeds.Average()) + " avg)";
       if (forwardSpeed < 0)
-        lines.Add("Speed: " + Format.Fixed(-forwardSpeed) + " m/s away from " + Format.Int(forwardAngle) + " degrees (backward)");
+        lines.Add("Speed: " + Format.Fixed(-forwardSpeed) + " m/s away from " + Format.Int(forwardAngle) + " degrees " + avgForwardSpeed);
       else
-        lines.Add("Speed: " + Format.Fixed(forwardSpeed) + " m/s towards " + Format.Int(forwardAngle) + " degrees (forward)");
-      Vector3 velocity = body.velocity * 1f;
+        lines.Add("Speed: " + Format.Fixed(forwardSpeed) + " m/s towards " + Format.Int(forwardAngle) + " degrees " + avgForwardSpeed);
+      Vector3 velocity = body.velocity;
       velocity.y = 0f;
       var angle = 90f - Mathf.Atan2(velocity.z, velocity.x) / Math.PI * 180f;
-      var speed = velocity.magnitude;
-      lines.Add("Speed: " + Format.Fixed(speed) + " m/s towards " + Format.Int(angle) + " degrees");
+      var speed = GetShipSpeed(obj);
+      lines.Add("Speed: " + Format.Fixed(speed) + " m/s towards " + Format.Int(angle) + " degrees (" + Format.Fixed(shipSpeeds.Average()) + " avg)");
       lines.Add(EnvUtils.GetWind());
       lines.Add("Wind power: " + Format.Percent(GetWindPower(obj)) + " from " + Format.Int(GetRelativeAngle(obj)) + " degrees");
       return Format.JoinLines(lines);

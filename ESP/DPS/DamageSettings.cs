@@ -71,9 +71,18 @@ namespace ESP
     public static void Postfix(ref bool __result)
     {
       if (!Cheats.IsAdmin) return;
-      if (Settings.
-      playerForceDodging)
+      if (Settings.playerForceDodging)
         __result = true;
+    }
+  }
+  [HarmonyPatch(typeof(Player), "StartGuardianPower")]
+  public class Player_StartGuardianPower
+  {
+    public static void Prefix(ref float ___m_guardianPowerCooldown)
+    {
+      if (!Cheats.IsAdmin) return;
+      if (Settings.ignoreForsakedPowerCooldown)
+        ___m_guardianPowerCooldown = 0;
     }
   }
   [HarmonyPatch(typeof(TerrainComp), "RaiseTerrain")]

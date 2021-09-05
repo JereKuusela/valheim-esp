@@ -55,33 +55,33 @@ namespace ESP
     public static void InitVisuals(ConfigFile config)
     {
       var section = "4. Visuals";
-      Settings.configShowZones = config.Bind(section, "Show zones", false, "Show visualization for zones (toggle with Y button in the game)");
-      Settings.configShowCreatures = config.Bind(section, "Show creatures", false, "Show visualization for creatures (toggle with U button in the game)");
-      Settings.configShowOthers = config.Bind(section, "Show visualization", false, "Show visualization for everything else (toggle with I button in the game)");
-      Settings.configCreatureFireLineWidth = config.Bind(section, "Creature fire alert range", 0.1f, "Vsualize radius of fire fearing");
-      Settings.configSenseLineWidth = config.Bind(section, "Creature senses", 0.1f, "Line width of sight and hear ranges (0 to disable)");
-      Settings.configBreedingLineWidth = config.Bind(section, "Breeding limits", 0.1f, "Visualize breeding parther check and total limit ranges");
-      Settings.configCoverRayWidth = config.Bind(section, "Cover rays", 0.1f, "Visualize cover check rays");
-      Settings.configSmokeLineWidth = config.Bind(section, "Smoke", 0.1f, "Visualize smoke particles");
-      Settings.configCreatureRayWidth = config.Bind(section, "Creature rays", 0.25f, "Line width for tracked creature locations (0 to disable)");
-      Settings.configCreatureSpawnerRayWidth = config.Bind(section, "Spawn points", 0.1f, "Line width of fixed creature spawn points (0 to disable)");
-      Settings.configSpawnAreasLineWidth = config.Bind(section, "Creature spawners", 0.1f, "Line width of physical creature spawner ranges (0 to disable)");
-      Settings.configSpawnSystemRayWidth = config.Bind(section, "Spawn zones", 0.5f, "Line width of spawn zone system (0 to disable)");
-      Settings.configBiomeCornerRayWidth = config.Bind(section, "Zone corner rays", 0.25f, "Line width of zone corners (0 to disable)");
-      Settings.configRandEventSystemRayWidth = config.Bind(section, "Random event system", 0.5f, "Line width of random event system (0 to disable)");
-      Settings.configPickableRayWidth = config.Bind(section, "Pickable rays", 0.1f, "Line width of pickable locations (0 to disable)");
-      Settings.configRulerRadius = config.Bind(section, "Ruler point radius", 0.5f, "Ruler point radius (0 to disable)");
-      Settings.configChestRayWidth = config.Bind(section, "Chest rays", 0.1f, "Line width of hidden chest locations (0 to disable)");
-      Settings.configOreRayWidth = config.Bind(section, "Ore rays", 0.1f, "Line width of ore locations (0 to disable)");
-      Settings.configTreeRayWidth = config.Bind(section, "Tree rays", 0f, "Line width of tree locations (0 to disable)");
-      Settings.configDestructibleRayWidth = config.Bind(section, "Destructible rays", 0f, "Line width of destructible locations (0 to disable)");
-      Settings.configLocationRayWidth = config.Bind(section, "Location rays", 0.5f, "Line width of pre-generated structure locations (0 to disable)");
-      Settings.configShowSupport = config.Bind(section, "Support", true, "Always show support color for structures");
-      Settings.configEffectAreaLineWidth = config.Bind(section, "Area effects", 0.1f, "Line width of area effect ranges (0 to disable)");
-      Settings.configCustomContainerEffectAreaRadius = config.Bind(section, "Custom radius for containers", 0.0f, "Custom effect area sphere for containers (0 to disable)");
-      Settings.configCustomCraftingEffectAreaRadius = config.Bind(section, "Custom radius for crafting stations", 0.0f, "Custom effect area sphere for crafting stations (0 to disable)");
-      Settings.configNoiseLineWidth = config.Bind(section, "Noise", 0.0f, "Line width of noise range (0 to disable)");
-      Settings.configMineRockSupportLineWidth = config.Bind(section, "Mine rock support", 0.0f, "Line width of mine rock support bounding boxes (0 to disable)");
+      configShowZones = config.Bind(section, "Show zones", false, "Show visualization for zones (toggle with Y button in the game)");
+      configShowCreatures = config.Bind(section, "Show creatures", false, "Show visualization for creatures (toggle with U button in the game)");
+      configShowOthers = config.Bind(section, "Show visualization", false, "Show visualization for everything else (toggle with I button in the game)");
+      configCreatureFireLineWidth = config.Bind(section, "Creature fire alert range", 0.1f, "Vsualize radius of fire fearing");
+      configSenseLineWidth = config.Bind(section, "Creature senses", 0.1f, "Line width of sight and hear ranges (0 to disable)");
+      configBreedingLineWidth = config.Bind(section, "Breeding limits", 0.1f, "Visualize breeding parther check and total limit ranges");
+      configCoverRayWidth = config.Bind(section, "Cover rays", 0.1f, "Visualize cover check rays");
+      configSmokeLineWidth = config.Bind(section, "Smoke", 0.1f, "Visualize smoke particles");
+      configCreatureRayWidth = config.Bind(section, "Creature rays", 0.25f, "Line width for tracked creature locations (0 to disable)");
+      configCreatureSpawnerRayWidth = config.Bind(section, "Spawn points", 0.1f, "Line width of fixed creature spawn points (0 to disable)");
+      configSpawnAreasLineWidth = config.Bind(section, "Creature spawners", 0.1f, "Line width of physical creature spawner ranges (0 to disable)");
+      configSpawnSystemRayWidth = config.Bind(section, "Spawn zones", 0.5f, "Line width of spawn zone system (0 to disable)");
+      configBiomeCornerRayWidth = config.Bind(section, "Zone corner rays", 0.25f, "Line width of zone corners (0 to disable)");
+      configRandEventSystemRayWidth = config.Bind(section, "Random event system", 0.5f, "Line width of random event system (0 to disable)");
+      configPickableRayWidth = config.Bind(section, "Pickable rays", 0.1f, "Line width of pickable locations (0 to disable)");
+      configRulerRadius = config.Bind(section, "Ruler point radius", 0.5f, "Ruler point radius (0 to disable)");
+      configChestRayWidth = config.Bind(section, "Chest rays", 0.1f, "Line width of hidden chest locations (0 to disable)");
+      configOreRayWidth = config.Bind(section, "Ore rays", 0.1f, "Line width of ore locations (0 to disable)");
+      configTreeRayWidth = config.Bind(section, "Tree rays", 0f, "Line width of tree locations (0 to disable)");
+      configDestructibleRayWidth = config.Bind(section, "Destructible rays", 0f, "Line width of destructible locations (0 to disable)");
+      configLocationRayWidth = config.Bind(section, "Location rays", 0.5f, "Line width of pre-generated structure locations (0 to disable)");
+      configShowSupport = config.Bind(section, "Support", true, "Always show support color for structures");
+      configEffectAreaLineWidth = config.Bind(section, "Area effects", 0.1f, "Line width of area effect ranges (0 to disable)");
+      configCustomContainerEffectAreaRadius = config.Bind(section, "Custom radius for containers", 0.0f, "Custom effect area sphere for containers (0 to disable)");
+      configCustomCraftingEffectAreaRadius = config.Bind(section, "Custom radius for crafting stations", 0.0f, "Custom effect area sphere for crafting stations (0 to disable)");
+      configNoiseLineWidth = config.Bind(section, "Noise", 0.0f, "Line width of noise range (0 to disable)");
+      configMineRockSupportLineWidth = config.Bind(section, "Mine rock support", 0.0f, "Line width of mine rock support bounding boxes (0 to disable)");
     }
   }
 }

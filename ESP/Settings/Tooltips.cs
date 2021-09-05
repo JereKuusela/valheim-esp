@@ -37,21 +37,21 @@ namespace ESP
     public static void InitTooltips(ConfigFile config)
     {
       var section = "3. Tooltips";
-      Settings.configExtraInfo = config.Bind(section, "Show extra info on tooltips", false, "Show extra info on tooltips and hover texts (toggle with O button in the game)");
-      Settings.configResistances = config.Bind(section, "Resistances", true, "Show resistances for creatures and structures");
-      Settings.configAttacks = config.Bind(section, "Attacks", true, "Show creature attacks");
-      Settings.configStructures = config.Bind(section, "Structures", true, "Show structure stats (health, resistances, support, etc.)");
-      Settings.configCreatures = config.Bind(section, "Creatures", true, "Show creature stats (health, resistances, drops, attacks, taming, etc.)");
-      Settings.configDestructibles = config.Bind(section, "Destructibles", true, "Show destructible stats (health, resistances)");
-      Settings.configPickables = config.Bind(section, "Pickables", true, "Show pickable stats (respawn, timer)");
-      Settings.configItemDrops = config.Bind(section, "Item drops", true, "Show item drop stats (stack size, despawn timer)");
-      Settings.configDrops = config.Bind(section, "Drops", true, "Show creature drops");
-      Settings.configBreeding = config.Bind(section, "Breeding", true, "Show taming and breeding related information");
-      Settings.configStatus = config.Bind(section, "Status effects", true, "Show creature status effects");
-      Settings.configAllDamageTypes = config.Bind(section, "All damage types", true, "Show all damage types on weapon tooltips");
-      Settings.configShowProgress = config.Bind(section, "Show progress", true, "Show progress for plants and structures");
-      Settings.configSupport = config.Bind(section, "Show stats", true, "Show support for structures");
-      Settings.configShowShipStats = config.Bind(section, "Show ship stats", true, "Show ship speed and wind direction on the ship");
+      configExtraInfo = config.Bind(section, "Show extra info on tooltips", false, "Show extra info on tooltips and hover texts (toggle with O button in the game)");
+      configResistances = config.Bind(section, "Resistances", true, "Show resistances for creatures and structures");
+      configAttacks = config.Bind(section, "Attacks", true, "Show creature attacks");
+      configStructures = config.Bind(section, "Structures", true, "Show structure stats (health, resistances, support, etc.)");
+      configCreatures = config.Bind(section, "Creatures", true, "Show creature stats (health, resistances, drops, attacks, taming, etc.)");
+      configDestructibles = config.Bind(section, "Destructibles", true, "Show destructible stats (health, resistances)");
+      configPickables = config.Bind(section, "Pickables", true, "Show pickable stats (respawn, timer)");
+      configItemDrops = config.Bind(section, "Item drops", true, "Show item drop stats (stack size, despawn timer)");
+      configDrops = config.Bind(section, "Drops", true, "Show creature drops");
+      configBreeding = config.Bind(section, "Breeding", true, "Show taming and breeding related information");
+      configStatus = config.Bind(section, "Status effects", true, "Show creature status effects");
+      configAllDamageTypes = config.Bind(section, "All damage types", true, "Show all damage types on weapon tooltips");
+      configShowProgress = config.Bind(section, "Show progress", true, "Show progress for plants and structures");
+      configSupport = config.Bind(section, "Show stats", true, "Show support for structures");
+      configShowShipStats = config.Bind(section, "Show ship stats", true, "Show ship speed and wind direction on the ship");
     }
   }
 }

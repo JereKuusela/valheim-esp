@@ -24,11 +24,11 @@ namespace ESP
     public static void InitExcluded(ConfigFile config)
     {
       var section = "5. Excluded";
-      Settings.configExcludedAreaEffects = config.Bind(section, "Area effects", "", "List of area effects separated by ,");
-      Settings.configExcludedCreatures = config.Bind(section, "Creatures", "", "List of creatures separated by ,");
-      Settings.configExcludedSpawnSystems = config.Bind(section, "Spawn systems", "Seagal,FireFlies", "List of creatures separated by , that are not visualized");
-      Settings.configExcludedCreatureSpawners = config.Bind(section, "Spawn points", "", "List of creatures separated by , that are not visualized");
-      Settings.configExcludedResources = config.Bind(section, "Resources", "Wood,Stone,Rock*,*RockPillar", "List of resources separated by , that are not visualized");
+      configExcludedAreaEffects = config.Bind(section, "Area effects", "", "List of area effects separated by ,");
+      configExcludedCreatures = config.Bind(section, "Creatures", "", "List of creatures separated by ,");
+      configExcludedSpawnSystems = config.Bind(section, "Spawn systems", "Seagal,FireFlies", "List of creatures separated by , that are not visualized");
+      configExcludedCreatureSpawners = config.Bind(section, "Spawn points", "", "List of creatures separated by , that are not visualized");
+      configExcludedResources = config.Bind(section, "Resources", "Wood,Stone,Rock*,*RockPillar", "List of resources separated by , that are not visualized");
     }
   }
 }

@@ -37,21 +37,6 @@ Todo:
  - Generation parameters to locations, pickables, trees and rocks.
 
 Changes:
- - Added settings to customize all colors used by the visuals.
- - Reordered settings to more sensible sections.
- - Added sleeping status to sleeping enemies.
- - Added wake up range and noise for sleeping enemies.
- - Added setting to set the player always dodging (to test which attacks can be dodged).
- - Added setting to increase player damage (past the damage cap).
- - Added setting to multiply stamina usage (for no stamina usage).
- - Added setting to multiply dig radius (causes visual glitches).
- - Added visual for mine rock support bounding boxes (disabled by default).
- - Added settings for custom spheres to containers and crafting stations (for people using "craft from containers" mods).
- - Changing the setting that was used to exclude pickables to exclude all resources.
- - Added wildcard (*) support to tracking and exclusions.
- - Changed experience meter to ignore the first experience gain so that experience per minute shows up correctly.
- - Added current skill level, experience amount and experience limit to experience meter.
- - Fixed experience meter showing wrong values.
- - Fixed smoke visual being affected by cover ray setting.
- - Improved localization of some object names.
+ - Added average ship speed to HUD.
+ - Added setting to ignore forsaken power cooldowns.
 

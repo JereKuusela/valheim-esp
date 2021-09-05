@@ -30,7 +30,7 @@ namespace ESP
   {
     public static void Postfix(Console __instance, ref bool ___m_cheat)
     {
-      if (!Settings.useDegugMode) return;
+      if (!Settings.useDebugMode) return;
       ___m_cheat = Cheats.IsAdmin;
     }
   }
@@ -58,7 +58,7 @@ namespace ESP
   {
     public static void Postfix(Player __instance, ref bool ___m_noPlacementCost, ref bool ___m_debugFly)
     {
-      if (!Cheats.IsAdmin || !Settings.useDegugMode) return;
+      if (!Cheats.IsAdmin || !Settings.useDebugMode) return;
       Player.m_debugMode = true;
       ___m_noPlacementCost = Settings.useFreeBuild;
       ___m_debugFly = Settings.useFreeFly;

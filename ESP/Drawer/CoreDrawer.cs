@@ -158,6 +158,12 @@ namespace ESP
       component.widthMultiplier = width;
       return component;
     }
+    ///<summary>Changes object color.</summary>
+    private static void ChangeColor(GameObject obj, Color color)
+    {
+      foreach (var renderer in obj.GetComponentsInChildren<LineRenderer>(true))
+        renderer.material.SetColor("_Color", color);
+    }
     ///<summary>Adds an advanced collider to a complex shape (like cone).</summary>
     public static void AddMeshCollider(GameObject obj)
     {
@@ -209,6 +215,15 @@ namespace ESP
       foreach (var customTag in obj.GetComponentsInChildren<CustomTag>(true))
       {
         if (customTag.customTag == tag) Destroy(customTag.gameObject.gameObject);
+      }
+    }
+    ///<summary>Removes visuals with a given tag.</summary>
+    public static void SetColor(string tag, Color color)
+    {
+      foreach (var customTag in Resources.FindObjectsOfTypeAll<CustomTag>())
+      {
+        if (customTag.customTag == tag)
+          ChangeColor(customTag.gameObject.gameObject, Color.magenta);
       }
     }
   }
