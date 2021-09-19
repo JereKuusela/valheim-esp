@@ -1,14 +1,11 @@
-using HarmonyLib;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using HarmonyLib;
+using UnityEngine;
 
-namespace ESP
-{
-  public class SpawnAreaUtils
-  {
-    public static String Get(SpawnArea obj)
-    {
+namespace ESP {
+  public class SpawnAreaUtils {
+    public static String Get(SpawnArea obj) {
       var spawnTimer = Patch.m_spawnTimer(obj);
       int near, total;
       Patch.SpawnArea_GetInstances(obj, out near, out total);
@@ -20,8 +17,7 @@ namespace ESP
         "Near limit: " + Format.Progress(near, obj.m_maxNear) + " within " + Format.Int(obj.m_nearRadius) + " m",
         "Far limit: " +  Format.Progress(total, obj.m_maxTotal) + " within " + Format.Int(obj.m_farRadius) + " m"
       };
-      if (obj.m_onGroundOnly)
-      {
+      if (obj.m_onGroundOnly) {
         lines.Add("Only on ground");
       }
 
@@ -29,8 +25,7 @@ namespace ESP
       var totalWeight = 0f;
       foreach (var data in obj.m_prefabs)
         totalWeight += data.m_weight;
-      foreach (var data in obj.m_prefabs)
-      {
+      foreach (var data in obj.m_prefabs) {
         var level = Format.Range(data.m_minLevel, data.m_maxLevel);
         lines.Add(data.m_prefab.name + ": " + Format.Percent(data.m_weight / totalWeight) + " with level " + level);
       }
@@ -39,23 +34,20 @@ namespace ESP
   }
 
   [HarmonyPatch(typeof(SpawnArea), "Awake")]
-  public class SpawnArea_Awake
-  {
-    public static void Postfix(SpawnArea __instance, float ___m_spawnTimer)
-    {
-      if (Settings.spawnAreasLineWidth == 0)
+  public class SpawnArea_Awake {
+    public static void Postfix(SpawnArea __instance, float ___m_spawnTimer) {
+      if (Settings.SpawnAreasLineWidth == 0)
         return;
-      var obj = Drawer.DrawSphere(__instance, __instance.m_triggerDistance, Settings.spawnAreaTriggerColor, Settings.spawnAreasLineWidth, Drawer.OTHER);
+      var obj = Drawer.DrawSphere(__instance, __instance.m_triggerDistance, Settings.SpawnAreaTriggerColor, Settings.SpawnAreasLineWidth, Drawer.OTHER);
       obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
-      obj = Drawer.DrawSphere(__instance, __instance.m_nearRadius, Settings.spawnAreaNearColor, Settings.spawnAreasLineWidth, Drawer.OTHER);
+      obj = Drawer.DrawSphere(__instance, __instance.m_nearRadius, Settings.SpawnAreaNearColor, Settings.SpawnAreasLineWidth, Drawer.OTHER);
       obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
-      obj = Drawer.DrawSphere(__instance, __instance.m_spawnRadius, Settings.spawnAreaSpawnColor, Settings.spawnAreasLineWidth, Drawer.OTHER);
+      obj = Drawer.DrawSphere(__instance, __instance.m_spawnRadius, Settings.SpawnAreaSpawnColor, Settings.SpawnAreasLineWidth, Drawer.OTHER);
       obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
     }
   }
 
-  public class SpawnAreaText : MonoBehaviour, Hoverable
-  {
+  public class SpawnAreaText : MonoBehaviour, Hoverable {
     public string GetHoverText() => GetHoverName() + "\n" + SpawnAreaUtils.Get(spawnArea);
     public string GetHoverName() => Format.String(spawnArea.name);
     public SpawnArea spawnArea;

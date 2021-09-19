@@ -1,7 +1,5 @@
-namespace ESP
-{
-  public static class Constants
-  {
+namespace ESP {
+  public static class Constants {
     public const float CoverRayCastLength = 30f;
     public const float CoverRaycastStart = 0.5f;
     public const float CoverBedLimit = 0.8f;

@@ -1,41 +1,38 @@
 using BepInEx.Configuration;
 
-namespace ESP
-{
-  public partial class Settings
-  {
+namespace ESP {
+  public partial class Settings {
     public static ConfigEntry<bool> configDrops;
-    public static bool drops => configDrops.Value;
+    public static bool Drops => configDrops.Value;
     public static ConfigEntry<bool> configBreeding;
-    public static bool breeding => configBreeding.Value;
+    public static bool Breeding => configBreeding.Value;
     public static ConfigEntry<bool> configStatus;
-    public static bool status => configStatus.Value;
+    public static bool Status => configStatus.Value;
     public static ConfigEntry<bool> configAttacks;
-    public static bool attacks => configAttacks.Value;
+    public static bool Attacks => configAttacks.Value;
     public static ConfigEntry<bool> configResistances;
-    public static bool resistances => configResistances.Value;
+    public static bool Resistances => configResistances.Value;
     public static ConfigEntry<bool> configExtraInfo;
-    public static bool extraInfo => configExtraInfo.Value;
+    public static bool ExtraInfo => configExtraInfo.Value;
     public static ConfigEntry<bool> configAllDamageTypes;
-    public static bool allDamageTypes => configAllDamageTypes.Value;
+    public static bool AllDamageTypes => configAllDamageTypes.Value;
     public static ConfigEntry<bool> configShowProgress;
-    public static bool progress => configShowProgress.Value;
+    public static bool Progress => configShowProgress.Value;
     public static ConfigEntry<bool> configSupport;
-    public static bool support => configSupport.Value;
+    public static bool Support => configSupport.Value;
     public static ConfigEntry<bool> configStructures;
-    public static bool structures => configStructures.Value;
+    public static bool Structures => configStructures.Value;
     public static ConfigEntry<bool> configCreatures;
-    public static bool creatures => configCreatures.Value;
+    public static bool Creatures => configCreatures.Value;
     public static ConfigEntry<bool> configDestructibles;
-    public static bool destructibles => configDestructibles.Value;
+    public static bool Destructibles => configDestructibles.Value;
     public static ConfigEntry<bool> configPickables;
-    public static bool pickables => configPickables.Value;
+    public static bool Pickables => configPickables.Value;
     public static ConfigEntry<bool> configItemDrops;
-    public static bool itemDrops => configItemDrops.Value;
+    public static bool ItemDrops => configItemDrops.Value;
     public static ConfigEntry<bool> configShowShipStats;
-    public static bool showShipStats => configShowShipStats.Value;
-    public static void InitTooltips(ConfigFile config)
-    {
+    public static bool ShowShipStats => configShowShipStats.Value;
+    public static void InitTooltips(ConfigFile config) {
       var section = "3. Tooltips";
       configExtraInfo = config.Bind(section, "Show extra info on tooltips", false, "Show extra info on tooltips and hover texts (toggle with O button in the game)");
       configResistances = config.Bind(section, "Resistances", true, "Show resistances for creatures and structures");

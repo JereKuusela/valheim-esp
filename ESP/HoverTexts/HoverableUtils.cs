@@ -1,45 +1,36 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace ESP
-{
+namespace ESP {
   /// <summary>Custom text that doesn't show anything without content.</summary>
-  public class CustomHoverText : MonoBehaviour, Hoverable
-  {
-    public string GetHoverText()
-    {
+  public class CustomHoverText : MonoBehaviour, Hoverable {
+    public string GetHoverText() {
       var text = "";
       Hoverables.AddTexts(gameObject, ref text);
       if (text == "") return "";
       return GetHoverName() + text;
     }
-    public string GetHoverName()
-    {
+    public string GetHoverName() {
       if (title == "")
         title = Format.Name(this);
       return title;
     }
     private string title = "";
   }
-  public class Hoverables
-  {
-    public static bool extraInfo
-    {
-      get => Settings.extraInfo && Cheats.IsAdmin;
-      set
-      {
+  public class Hoverables {
+    public static bool extraInfo {
+      get => Settings.ExtraInfo && Admin.Enabled;
+      set {
         if (value)
-          Cheats.CheckAdmin();
+          Admin.Check();
         Settings.configExtraInfo.Value = value;
       }
     }
-    public static void AddHoverText(MonoBehaviour obj)
-    {
+    public static void AddHoverText(MonoBehaviour obj) {
       if (obj.gameObject.GetComponent<Hoverable>() == null)
         obj.gameObject.AddComponent<CustomHoverText>();
     }
-    public static void AddTexts(GameObject obj, ref string __result)
-    {
+    public static void AddTexts(GameObject obj, ref string __result) {
       if (!extraInfo) return;
       var lines = new List<string>();
       lines.Add("Coordinates: " + Format.Coordinates(obj.transform.position));
@@ -69,7 +60,7 @@ namespace ESP
       lines.Add(Texts.Get(obj.GetComponentInChildren<SmokeSpawner>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<Smoke>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<Container>()));
-      if (Settings.showShipStats)
+      if (Settings.ShowShipStats)
         lines.Add(Texts.Get(obj.GetComponentInParent<Ship>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<EffectArea>()));
       lines.Add(Texts.Get(character, baseAI, obj.GetComponentInParent<MonsterAI>()));

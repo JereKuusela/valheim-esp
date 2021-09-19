@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 
-namespace ESP
-{
-  public partial class Texts
-  {
-    public static string Get(ItemDrop obj)
-    {
-      if (!obj || !Settings.itemDrops) return "";
+namespace ESP {
+  public partial class Texts {
+    public static string Get(ItemDrop obj) {
+      if (!obj || !Settings.ItemDrops) return "";
       var lines = new List<string>();
       lines.Add("Stack size: " + Format.Int(obj.m_itemData.m_shared.m_maxStackSize));
       var timer = Patch.ItemDrop_GetTimeSinceSpawned(obj);

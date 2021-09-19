@@ -1,9 +1,7 @@
 using UnityEngine;
 
-namespace ESP
-{
-  public static class CoverUtils
-  {
+namespace ESP {
+  public static class CoverUtils {
     public static Vector3 GetCoverPoint(CraftingStation obj) => obj.m_roofCheckPoint.position;
     public static Vector3 GetCoverPoint(Fermenter obj) => obj.m_roofCheckPoint.position;
     public static Vector3 GetCoverPoint(Beehive obj) => obj.m_coverPoint.position;

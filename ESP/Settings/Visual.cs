@@ -1,59 +1,56 @@
 ﻿using BepInEx.Configuration;
 
-namespace ESP
-{
-  public partial class Settings
-  {
+namespace ESP {
+  public partial class Settings {
     public static ConfigEntry<float> configCreatureFireLineWidth;
-    public static float creatureFireLineWidth => configCreatureFireLineWidth.Value;
+    public static float CreatureFireLineWidth => configCreatureFireLineWidth.Value;
     public static ConfigEntry<float> configCreatureRayWidth;
-    public static float creatureRayWidth => configCreatureRayWidth.Value;
+    public static float CreatureRayWidth => configCreatureRayWidth.Value;
     public static ConfigEntry<float> configBreedingLineWidth;
-    public static float breedingLineWidth => configBreedingLineWidth.Value;
+    public static float BreedingLineWidth => configBreedingLineWidth.Value;
     public static ConfigEntry<float> configCoverRayWidth;
-    public static float coverRayWidth => configCoverRayWidth.Value;
+    public static float CoverRayWidth => configCoverRayWidth.Value;
     public static ConfigEntry<float> configSmokeLineWidth;
-    public static float smokeLineWidth => configSmokeLineWidth.Value;
+    public static float SmokeLineWidth => configSmokeLineWidth.Value;
     public static ConfigEntry<float> configSenseLineWidth;
-    public static float senseLineWidth => configSenseLineWidth.Value;
+    public static float SenseLineWidth => configSenseLineWidth.Value;
     public static ConfigEntry<float> configNoiseLineWidth;
-    public static float noiseLineWidth => configNoiseLineWidth.Value;
+    public static float NoiseLineWidth => configNoiseLineWidth.Value;
     public static ConfigEntry<float> configSpawnSystemRayWidth;
-    public static float spawnSystemRayWidth => configSpawnSystemRayWidth.Value;
+    public static float SpawnSystemRayWidth => configSpawnSystemRayWidth.Value;
     public static ConfigEntry<float> configRandEventSystemRayWidth;
-    public static float randEventSystemRayWidth => configRandEventSystemRayWidth.Value;
+    public static float RandEventSystemRayWidth => configRandEventSystemRayWidth.Value;
     public static ConfigEntry<float> configSpawnAreasLineWidth;
-    public static float spawnAreasLineWidth => configSpawnAreasLineWidth.Value;
+    public static float SpawnAreasLineWidth => configSpawnAreasLineWidth.Value;
     public static ConfigEntry<float> configCreatureSpawnerRayWidth;
-    public static float creatureSpawnersRayWidth => configCreatureSpawnerRayWidth.Value;
+    public static float CreatureSpawnersRayWidth => configCreatureSpawnerRayWidth.Value;
     public static ConfigEntry<float> configBiomeCornerRayWidth;
-    public static float biomeCornerRayWidth => configBiomeCornerRayWidth.Value;
+    public static float BiomeCornerRayWidth => configBiomeCornerRayWidth.Value;
     public static ConfigEntry<float> configPickableRayWidth;
-    public static float pickableRayWidth => configPickableRayWidth.Value;
+    public static float PickableRayWidth => configPickableRayWidth.Value;
     public static ConfigEntry<float> configEffectAreaLineWidth;
-    public static float effectAreaLineWidth => configEffectAreaLineWidth.Value;
+    public static float EffectAreaLineWidth => configEffectAreaLineWidth.Value;
     public static ConfigEntry<float> configCustomContainerEffectAreaRadius;
-    public static float customContainerEffectAreaRadius => configCustomContainerEffectAreaRadius.Value;
+    public static float CustomContainerEffectAreaRadius => configCustomContainerEffectAreaRadius.Value;
     public static ConfigEntry<float> configCustomCraftingEffectAreaRadius;
-    public static float customCraftingEffectAreaRadius => configCustomCraftingEffectAreaRadius.Value;
+    public static float CustomCraftingEffectAreaRadius => configCustomCraftingEffectAreaRadius.Value;
     public static ConfigEntry<float> configMineRockSupportLineWidth;
-    public static float mineRockSupportLineWidth => configMineRockSupportLineWidth.Value;
+    public static float MineRockSupportLineWidth => configMineRockSupportLineWidth.Value;
     public static ConfigEntry<float> configRulerRadius;
-    public static float rulerRadius => configRulerRadius.Value;
+    public static float RulerRadius => configRulerRadius.Value;
     public static ConfigEntry<float> configChestRayWidth;
-    public static float chestRayWidth => configChestRayWidth.Value;
+    public static float ChestRayWidth => configChestRayWidth.Value;
     public static ConfigEntry<float> configOreRayWidth;
-    public static float oreRayWidth => configOreRayWidth.Value;
+    public static float OreRayWidth => configOreRayWidth.Value;
     public static ConfigEntry<float> configTreeRayWidth;
-    public static float treeRayWidth => configTreeRayWidth.Value;
+    public static float TreeRayWidth => configTreeRayWidth.Value;
     public static ConfigEntry<float> configDestructibleRayWidth;
-    public static float destructibleRayWidth => configDestructibleRayWidth.Value;
+    public static float DestructibleRayWidth => configDestructibleRayWidth.Value;
     public static ConfigEntry<float> configLocationRayWidth;
-    public static float locationRayWidth => configLocationRayWidth.Value;
+    public static float LocationRayWidth => configLocationRayWidth.Value;
     public static ConfigEntry<bool> configShowSupport;
-    public static bool showSupport => configShowSupport.Value;
-    public static void InitVisuals(ConfigFile config)
-    {
+    public static bool ShowSupport => configShowSupport.Value;
+    public static void InitVisuals(ConfigFile config) {
       var section = "4. Visuals";
       configShowZones = config.Bind(section, "Show zones", false, "Show visualization for zones (toggle with Y button in the game)");
       configShowCreatures = config.Bind(section, "Show creatures", false, "Show visualization for creatures (toggle with U button in the game)");

@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-namespace ESP
-{
-  public class DPSMeter
-  {
+namespace ESP {
+  public class DPSMeter {
     private static DateTime? startTime = null;
     private static DateTime? endTime = null;
     private static float damageTaken = 0;
@@ -21,9 +19,8 @@ namespace ESP
     private static float stagger = 0;
     private static float stamina = 0;
     private static float hits = 0;
-    public static void Start()
-    {
-      if (!Settings.showDPS) return;
+    public static void Start() {
+      if (!Settings.ShowDPS) return;
       if (startTime.HasValue) return;
       startTime = DateTime.Now;
       endTime = null;
@@ -41,69 +38,58 @@ namespace ESP
       stamina = 0;
       hits = 0;
     }
-    public static void Reset()
-    {
+    public static void Reset() {
       startTime = null;
       endTime = null;
     }
-    public static void AddBaseDamage(HitData.DamageTypes hit)
-    {
+    public static void AddBaseDamage(HitData.DamageTypes hit) {
       if (!startTime.HasValue) return;
       // Base damage is only available at start of the attack so it must be stored when the actual hits are resolved.
       pendingBaseDamageTypes = hit;
     }
-    public static void AddRawHit(HitData hit)
-    {
+    public static void AddRawHit(HitData hit) {
     }
-    public static void AddStructureDamage(HitData hit, WearNTear obj)
-    {
+    public static void AddStructureDamage(HitData hit, WearNTear obj) {
       if (!startTime.HasValue) return;
       pendingStructureDamage += hit.GetTotalDamage();
       AddPendingBaseStructureDamage(obj.m_damages);
     }
-    public static void AddStructureDamage(HitData hit, TreeLog obj)
-    {
+    public static void AddStructureDamage(HitData hit, TreeLog obj) {
       if (!startTime.HasValue) return;
       if (hit.m_toolTier < obj.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
       AddPendingBaseStructureDamage(obj.m_damages);
     }
-    public static void AddStructureDamage(HitData hit, TreeBase obj)
-    {
+    public static void AddStructureDamage(HitData hit, TreeBase obj) {
       if (!startTime.HasValue) return;
       if (hit.m_toolTier < obj.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
       AddPendingBaseStructureDamage(obj.m_damageModifiers);
     }
-    public static void AddStructureDamage(HitData hit, MineRock5 obj)
-    {
+    public static void AddStructureDamage(HitData hit, MineRock5 obj) {
       if (!startTime.HasValue) return;
       if (hit.m_toolTier < obj.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
       AddPendingBaseStructureDamage(obj.m_damageModifiers);
     }
-    public static void AddStructureDamage(HitData hit, MineRock obj)
-    {
+    public static void AddStructureDamage(HitData hit, MineRock obj) {
       if (!startTime.HasValue) return;
       if (hit.m_toolTier < obj.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
       AddPendingBaseStructureDamage(obj.m_damageModifiers);
     }
-    public static void AddStructureDamage(HitData hit, Destructible obj)
-    {
+    public static void AddStructureDamage(HitData hit, Destructible obj) {
       if (!startTime.HasValue) return;
       if (hit.m_toolTier < obj.m_minToolTier) return;
       pendingStructureDamage += hit.GetTotalDamage();
       AddPendingBaseStructureDamage(obj.m_damages);
     }
-    public static void AddDamageTaken(HitData hit)
-    {
+    public static void AddDamageTaken(HitData hit) {
       if (!startTime.HasValue) return;
       damageTaken += hit.GetTotalDamage();
       SetTime();
     }
-    private static void AddPendingBaseDamage(Character target)
-    {
+    private static void AddPendingBaseDamage(Character target) {
       if (!startTime.HasValue) return;
       var hit = new HitData()
       {
@@ -111,15 +97,13 @@ namespace ESP
       };
       var damageModifiers = Patch.Character_GetDamageModifiers(target);
       hit.ApplyResistance(damageModifiers, out var mod);
-      if (target.IsPlayer())
-      {
+      if (target.IsPlayer()) {
         float bodyArmor = target.GetBodyArmor();
         hit.ApplyArmor(bodyArmor);
       }
       pendingBaseDamage += hit.GetTotalDamage();
     }
-    private static void AddPendingBaseStructureDamage(HitData.DamageModifiers modifiers)
-    {
+    private static void AddPendingBaseStructureDamage(HitData.DamageModifiers modifiers) {
       if (!startTime.HasValue) return;
       var hit = new HitData()
       {
@@ -128,26 +112,22 @@ namespace ESP
       hit.ApplyResistance(modifiers, out var mod);
       pendingBaseStructureDamage += hit.GetTotalDamage();
     }
-    public static void AddDamage(HitData hit, Character target)
-    {
+    public static void AddDamage(HitData hit, Character target) {
       if (!startTime.HasValue) return;
       AddPendingBaseDamage(target);
       pendingDamage += hit.GetTotalDamage();
       stagger += hit.m_damage.GetTotalPhysicalDamage() * hit.m_staggerMultiplier;
       hits++;
     }
-    public static void AddDot(HitData hit)
-    {
+    public static void AddDot(HitData hit) {
       if (!startTime.HasValue) return;
       pendingDamage += hit.GetTotalDamage();
     }
-    public static void AddStamina(float stamina)
-    {
+    public static void AddStamina(float stamina) {
       if (!startTime.HasValue) return;
       DPSMeter.stamina += stamina;
     }
-    public static void SetTime()
-    {
+    public static void SetTime() {
       if (!startTime.HasValue) return;
       endTime = DateTime.Now;
       damage += pendingDamage;
@@ -159,9 +139,8 @@ namespace ESP
       baseStructureDamage += pendingBaseStructureDamage;
       pendingBaseStructureDamage = 0;
     }
-    public static List<string> Get()
-    {
-      if (!Settings.showDPS) return null;
+    public static List<string> Get() {
+      if (!Settings.ShowDPS) return null;
       var time = 1.0;
       if (startTime.HasValue && endTime.HasValue)
         time = endTime.Value.Subtract(startTime.Value).TotalMilliseconds;
@@ -184,8 +163,7 @@ namespace ESP
       lines.Add("Stagger per second: " + Format.Float(staggerPerSecond) + " (" + Format.Float(stagger) + ")");
       lines.Add("Attack speed: " + Format.Float(attackSpeed) + " s (" + Format.Float(hitsPerSecond) + " per second)");
       lines.Add("Damage taken: " + Format.Float(damageTakenPerSecond) + " (total " + Format.Float(damageTaken) + ")");
-      if (structureDamage > 0)
-      {
+      if (structureDamage > 0) {
         var structureDamagePerSecond = structureDamage * 1000.0 / time;
         var structureDamagePerStamina = (structureDamage + pendingStructureDamage) / stamina;
         var baseStructureDamagePerSecond = baseStructureDamage * 1000.0 / time;

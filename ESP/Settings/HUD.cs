@@ -1,23 +1,20 @@
 ﻿using BepInEx.Configuration;
 
-namespace ESP
-{
-  public partial class Settings
-  {
+namespace ESP {
+  public partial class Settings {
     public static ConfigEntry<bool> configShowShipStatsOnHud;
-    public static bool showShipStatsOnHud => configShowShipStatsOnHud.Value;
+    public static bool ShowShipStatsOnHud => configShowShipStatsOnHud.Value;
     public static ConfigEntry<bool> configShowHud;
-    public static bool showHud => configShowHud.Value;
+    public static bool ShowHud => configShowHud.Value;
     public static ConfigEntry<bool> configShowTimeAndWeather;
-    public static bool showTimeAndWeather => configShowTimeAndWeather.Value;
+    public static bool ShowTimeAndWeather => configShowTimeAndWeather.Value;
     public static ConfigEntry<string> configTrackedCreatures;
-    public static string trackedCreatures => configTrackedCreatures.Value;
+    public static string TrackedCreatures => configTrackedCreatures.Value;
     public static ConfigEntry<bool> configShowDPS;
-    public static bool showDPS => configShowDPS.Value;
+    public static bool ShowDPS => configShowDPS.Value;
     public static ConfigEntry<bool> configShowExperienceMeter;
-    public static bool showExperienceMeter => configShowExperienceMeter.Value;
-    public static void InitHUD(ConfigFile config)
-    {
+    public static bool ShowExperienceMeter => configShowExperienceMeter.Value;
+    public static void InitHUD(ConfigFile config) {
       var section = "2. HUD";
       configShowHud = config.Bind(section, "Show HUD", true, "Show info and stats on HUD");
       configShowTimeAndWeather = config.Bind(section, "Show current time and weather", true, "Show current time and weather on the hud");

@@ -39,4 +39,6 @@ Todo:
 Changes:
  - Added average ship speed to HUD.
  - Added setting to ignore forsaken power cooldowns.
+ - Added setting to set the maximum attack chain level.
+ - Fixed for Hearth & Home patch.
 

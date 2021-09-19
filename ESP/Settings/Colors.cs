@@ -1,115 +1,111 @@
 using BepInEx.Configuration;
 using UnityEngine;
 
-namespace ESP
-{
-  public partial class Settings
-  {
-    private static Color ParseColor(string color)
-    {
+namespace ESP {
+  public partial class Settings {
+    private static Color ParseColor(string color) {
       if (ColorUtility.TryParseHtmlString(color, out var parsed)) return parsed;
       return Color.white;
     }
     public static ConfigEntry<string> configCreatureRayColor;
-    public static Color creatureRayColor => ParseColor(configCreatureRayColor.Value);
+    public static Color CreatureRayColor => ParseColor(configCreatureRayColor.Value);
     public static ConfigEntry<string> configPickableOneTimeColor;
-    public static Color pickableOneTimeColor => ParseColor(configPickableOneTimeColor.Value);
+    public static Color PickableOneTimeColor => ParseColor(configPickableOneTimeColor.Value);
     public static ConfigEntry<string> configPickableRespawningColor;
-    public static Color pickableRespawningColor => ParseColor(configPickableRespawningColor.Value);
+    public static Color PickableRespawningColor => ParseColor(configPickableRespawningColor.Value);
     public static ConfigEntry<string> configLocationRayColor;
-    public static Color locationRayColor => ParseColor(configLocationRayColor.Value);
+    public static Color LocationRayColor => ParseColor(configLocationRayColor.Value);
     public static ConfigEntry<string> configContainerRayColor;
-    public static Color containerRayColor => ParseColor(configContainerRayColor.Value);
+    public static Color ContainerRayColor => ParseColor(configContainerRayColor.Value);
     public static ConfigEntry<string> configOreRayColor;
-    public static Color oreRayColor => ParseColor(configOreRayColor.Value);
+    public static Color OreRayColor => ParseColor(configOreRayColor.Value);
     public static ConfigEntry<string> configTreeRayColor;
-    public static Color treeRayColor => ParseColor(configTreeRayColor.Value);
+    public static Color TreeRayColor => ParseColor(configTreeRayColor.Value);
     public static ConfigEntry<string> configDestructibleRayColor;
-    public static Color destructibleRayColor => ParseColor(configDestructibleRayColor.Value);
+    public static Color DestructibleRayColor => ParseColor(configDestructibleRayColor.Value);
     public static ConfigEntry<string> configSpawnerOneTimeColor;
-    public static Color spawnerOneTimeColor => ParseColor(configSpawnerOneTimeColor.Value);
+    public static Color SpawnerOneTimeColor => ParseColor(configSpawnerOneTimeColor.Value);
     public static ConfigEntry<string> configSpawnerRespawningColor;
-    public static Color spawnerRespawningColor => ParseColor(configSpawnerRespawningColor.Value);
+    public static Color SpawnerRespawningColor => ParseColor(configSpawnerRespawningColor.Value);
     public static ConfigEntry<string> configNoiseColor;
-    public static Color noiseColor => ParseColor(configNoiseColor.Value);
+    public static Color NoiseColor => ParseColor(configNoiseColor.Value);
     public static ConfigEntry<string> configCoverRayColor;
-    public static Color coverRayColor => ParseColor(configCoverRayColor.Value);
+    public static Color CoverRayColor => ParseColor(configCoverRayColor.Value);
     public static ConfigEntry<string> configCoverRayBlockedColor;
-    public static Color coverRayBlockedColor => ParseColor(configCoverRayBlockedColor.Value);
+    public static Color CoverRayBlockedColor => ParseColor(configCoverRayBlockedColor.Value);
     public static ConfigEntry<string> configCreatureHearColor;
-    public static Color creatureHearColor => ParseColor(configCreatureHearColor.Value);
+    public static Color CreatureHearColor => ParseColor(configCreatureHearColor.Value);
     public static ConfigEntry<string> configCreatureViewColor;
-    public static Color creatureViewColor => ParseColor(configCreatureViewColor.Value);
+    public static Color CreatureViewColor => ParseColor(configCreatureViewColor.Value);
     public static ConfigEntry<string> configCreatureAlertViewColor;
-    public static Color creatureAlertViewColor => ParseColor(configCreatureAlertViewColor.Value);
+    public static Color CreatureAlertViewColor => ParseColor(configCreatureAlertViewColor.Value);
     public static ConfigEntry<string> configCreatureFireLimitColor;
-    public static Color creatureFireLimitColor => ParseColor(configCreatureFireLimitColor.Value);
+    public static Color CreatureFireLimitColor => ParseColor(configCreatureFireLimitColor.Value);
     public static ConfigEntry<string> configCreatureTotalLimitColor;
-    public static Color creatureTotalLimitColor => ParseColor(configCreatureTotalLimitColor.Value);
+    public static Color CreatureTotalLimitColor => ParseColor(configCreatureTotalLimitColor.Value);
     public static ConfigEntry<string> configCreaturePartnerCheckColor;
-    public static Color creaturePartnerCheckColor => ParseColor(configCreaturePartnerCheckColor.Value);
+    public static Color CreaturePartnerCheckColor => ParseColor(configCreaturePartnerCheckColor.Value);
     public static ConfigEntry<string> configCreatureFoodCheckColor;
-    public static Color creatureFoodCheckColor => ParseColor(configCreatureFoodCheckColor.Value);
+    public static Color CreatureFoodCheckColor => ParseColor(configCreatureFoodCheckColor.Value);
     public static ConfigEntry<string> configCreatureEatRangeColor;
-    public static Color creatureEatRangeColor => ParseColor(configCreatureEatRangeColor.Value);
+    public static Color CreatureEatRangeColor => ParseColor(configCreatureEatRangeColor.Value);
     public static ConfigEntry<string> configRulerColor;
-    public static Color rulerColor => ParseColor(configRulerColor.Value);
+    public static Color RulerColor => ParseColor(configRulerColor.Value);
     public static ConfigEntry<string> configSpawnAreaTriggerColor;
-    public static Color spawnAreaTriggerColor => ParseColor(configSpawnAreaTriggerColor.Value);
+    public static Color SpawnAreaTriggerColor => ParseColor(configSpawnAreaTriggerColor.Value);
     public static ConfigEntry<string> configSpawnAreaNearColor;
-    public static Color spawnAreaNearColor => ParseColor(configSpawnAreaNearColor.Value);
+    public static Color SpawnAreaNearColor => ParseColor(configSpawnAreaNearColor.Value);
     public static ConfigEntry<string> configSpawnAreaSpawnColor;
-    public static Color spawnAreaSpawnColor => ParseColor(configSpawnAreaSpawnColor.Value);
+    public static Color SpawnAreaSpawnColor => ParseColor(configSpawnAreaSpawnColor.Value);
     public static ConfigEntry<string> configMineRockSupportColor;
-    public static Color mineRockSupportColor => ParseColor(configMineRockSupportColor.Value);
+    public static Color MineRockSupportColor => ParseColor(configMineRockSupportColor.Value);
     public static ConfigEntry<string> configEffectAreaPrivateAreaColor;
-    public static Color effectAreaPrivateAreaColor => ParseColor(configEffectAreaPrivateAreaColor.Value);
+    public static Color EffectAreaPrivateAreaColor => ParseColor(configEffectAreaPrivateAreaColor.Value);
     public static ConfigEntry<string> configEffectAreaComfortColor;
-    public static Color effectAreaComfortColor => ParseColor(configEffectAreaComfortColor.Value);
+    public static Color EffectAreaComfortColor => ParseColor(configEffectAreaComfortColor.Value);
     public static ConfigEntry<string> configEffectAreaBurningColor;
-    public static Color effectAreaBurningColor => ParseColor(configEffectAreaBurningColor.Value);
+    public static Color EffectAreaBurningColor => ParseColor(configEffectAreaBurningColor.Value);
     public static ConfigEntry<string> configEffectAreaHeatColor;
-    public static Color effectAreaHeatColor => ParseColor(configEffectAreaHeatColor.Value);
+    public static Color EffectAreaHeatColor => ParseColor(configEffectAreaHeatColor.Value);
     public static ConfigEntry<string> configEffectAreaFireColor;
-    public static Color effectAreaFireColor => ParseColor(configEffectAreaFireColor.Value);
+    public static Color EffectAreaFireColor => ParseColor(configEffectAreaFireColor.Value);
     public static ConfigEntry<string> configEffectAreaNoMonstersColor;
-    public static Color effectAreaNoMonstersColor => ParseColor(configEffectAreaNoMonstersColor.Value);
+    public static Color EffectAreaNoMonstersColor => ParseColor(configEffectAreaNoMonstersColor.Value);
     public static ConfigEntry<string> configEffectAreaTeleportColor;
-    public static Color effectAreaTeleportColor => ParseColor(configEffectAreaTeleportColor.Value);
+    public static Color EffectAreaTeleportColor => ParseColor(configEffectAreaTeleportColor.Value);
     public static ConfigEntry<string> configEffectAreaPlayerBaseColor;
-    public static Color effectAreaPlayerBaseColor => ParseColor(configEffectAreaPlayerBaseColor.Value);
+    public static Color EffectAreaPlayerBaseColor => ParseColor(configEffectAreaPlayerBaseColor.Value);
     public static ConfigEntry<string> configEffectAreaOtherColor;
-    public static Color effectAreaOtherColor => ParseColor(configEffectAreaOtherColor.Value);
+    public static Color EffectAreaOtherColor => ParseColor(configEffectAreaOtherColor.Value);
     public static ConfigEntry<string> configEffectAreaCustomContainerColor;
-    public static Color effectAreaCustomContainerColor => ParseColor(configEffectAreaCustomContainerColor.Value);
+    public static Color EffectAreaCustomContainerColor => ParseColor(configEffectAreaCustomContainerColor.Value);
     public static ConfigEntry<string> configEffectAreaCustomCraftingColor;
-    public static Color effectAreaCustomCraftingColor => ParseColor(configEffectAreaCustomCraftingColor.Value);
+    public static Color EffectAreaCustomCraftingColor => ParseColor(configEffectAreaCustomCraftingColor.Value);
     public static ConfigEntry<string> configSmokeColor;
-    public static Color smokeColor => ParseColor(configSmokeColor.Value);
+    public static Color SmokeColor => ParseColor(configSmokeColor.Value);
     public static ConfigEntry<string> configRandomEventSystemRayColor;
-    public static Color randomEventSystemRayColor => ParseColor(configRandomEventSystemRayColor.Value);
+    public static Color RandomEventSystemRayColor => ParseColor(configRandomEventSystemRayColor.Value);
     public static ConfigEntry<string> configBiomeAshlandsColor;
-    public static Color biomeAshlandsColor => ParseColor(configBiomeAshlandsColor.Value);
+    public static Color BiomeAshlandsColor => ParseColor(configBiomeAshlandsColor.Value);
     public static ConfigEntry<string> configBiomeBlackForestColor;
-    public static Color biomeBlackForestColor => ParseColor(configBiomeBlackForestColor.Value);
+    public static Color BiomeBlackForestColor => ParseColor(configBiomeBlackForestColor.Value);
     public static ConfigEntry<string> configBiomeDeepNorthColor;
-    public static Color biomeDeepNorthColor => ParseColor(configBiomeDeepNorthColor.Value);
+    public static Color BiomeDeepNorthColor => ParseColor(configBiomeDeepNorthColor.Value);
     public static ConfigEntry<string> configBiomeMeadowsColor;
-    public static Color biomeMeadowsColor => ParseColor(configBiomeMeadowsColor.Value);
+    public static Color BiomeMeadowsColor => ParseColor(configBiomeMeadowsColor.Value);
     public static ConfigEntry<string> configBiomeMistlandsColor;
-    public static Color biomeMistlandsColor => ParseColor(configBiomeMistlandsColor.Value);
+    public static Color BiomeMistlandsColor => ParseColor(configBiomeMistlandsColor.Value);
     public static ConfigEntry<string> configBiomeMountainColor;
-    public static Color biomeMountainColor => ParseColor(configBiomeMountainColor.Value);
+    public static Color BiomeMountainColor => ParseColor(configBiomeMountainColor.Value);
     public static ConfigEntry<string> configBiomeOceanColor;
-    public static Color biomeOceanColor => ParseColor(configBiomeOceanColor.Value);
+    public static Color BiomeOceanColor => ParseColor(configBiomeOceanColor.Value);
     public static ConfigEntry<string> configBiomePlainsColor;
-    public static Color biomePlainsColor => ParseColor(configBiomePlainsColor.Value);
+    public static Color BiomePlainsColor => ParseColor(configBiomePlainsColor.Value);
     public static ConfigEntry<string> configBiomeSwampColor;
-    public static Color biomeSwampColor => ParseColor(configBiomeSwampColor.Value);
+    public static Color BiomeSwampColor => ParseColor(configBiomeSwampColor.Value);
     public static ConfigEntry<string> configBiomeOtherColor;
-    public static Color biomeOtherColor => ParseColor(configBiomeOtherColor.Value);
-    private static void InitColors(ConfigFile config)
-    {
+    public static Color BiomeOtherColor => ParseColor(configBiomeOtherColor.Value);
+    private static void InitColors(ConfigFile config) {
       var section = "6. Colors (predefined, #RRGGBB, #RRGGBBAA)";
       configCreatureRayColor = config.Bind(section, "Creature ray", "magenta", "");
       configPickableOneTimeColor = config.Bind(section, "Pickable ray (one time)", "green", "");
@@ -137,9 +133,8 @@ namespace ESP
       configSpawnAreaNearColor = config.Bind(section, "Spawner near limit sphere", "white", "");
       configSpawnAreaSpawnColor = config.Bind(section, "Spawner spawn sphere", "cyan", "");
       configMineRockSupportColor = config.Bind(section, "Minerock support bounding box", "red", "");
-      configMineRockSupportColor.SettingChanged += (s, e) =>
-      {
-        Drawer.SetColor(Constants.SupportTag, mineRockSupportColor);
+      configMineRockSupportColor.SettingChanged += (s, e) => {
+        Drawer.SetColor(Constants.SupportTag, MineRockSupportColor);
       };
       configEffectAreaPrivateAreaColor = config.Bind(section, "Ward effect sphere", "gray", "");
       configEffectAreaComfortColor = config.Bind(section, "Comfort effect sphere", "cyan", "");

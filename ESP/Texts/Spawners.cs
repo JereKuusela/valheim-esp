@@ -3,36 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace ESP
-{
-  public partial class Texts
-  {
-    private static string GetTime(CreatureSpawner obj)
-    {
+namespace ESP {
+  public partial class Texts {
+    private static string GetTime(CreatureSpawner obj) {
       if (!obj.m_spawnAtDay)
         return "Only during " + Format.String("night");
       if (!obj.m_spawnAtNight)
         return "Only during " + Format.String("day");
       return "";
     }
-    private static String GetRespawnTime(CreatureSpawner obj)
-    {
+    private static String GetRespawnTime(CreatureSpawner obj) {
       if (obj.m_respawnTimeMinuts == 0) return "Never";
       var elapsed = Patch.GetElapsed(obj, "alive_time");
       var elapsedString = elapsed == 0 ? "Alive" : elapsed.ToString("N0");
       return elapsedString + " / " + (60 * obj.m_respawnTimeMinuts).ToString("N0") + " seconds";
     }
-    private static string GetRespawnTime(Pickable obj)
-    {
+    private static string GetRespawnTime(Pickable obj) {
       if (!obj.m_hideWhenPicked || obj.m_respawnTimeMinutes == 0) return "Never";
       var elapsed = Patch.GetElapsed(obj, "picked_time") / 60;
       var picked = Patch.GetBool(obj, "picked");
       var elapsedText = picked ? Format.Int(elapsed) : Format.String("Not picked");
       return elapsedText + " / " + Format.Int(obj.m_respawnTimeMinutes) + " minutes";
     }
-    public static string Get(Pickable obj)
-    {
-      if (!obj || !Settings.support) return "";
+    public static string Get(Pickable obj) {
+      if (!obj || !Settings.Support) return "";
       var lines = new List<string>();
       var respawn = GetRespawnTime(obj);
       lines.Add("Respawn: " + respawn);
@@ -41,14 +35,13 @@ namespace ESP
       return Format.JoinLines(lines);
     }
 
-    public static string Get(CreatureSpawner obj)
-    {
+    public static string Get(CreatureSpawner obj) {
       if (!obj) return "";
       var respawn = GetRespawnTime(obj);
       var noise = obj.m_triggerNoise > 0 ? " with noise of " + Format.Int(obj.m_triggerNoise) : "";
       var lines = new List<string>();
       lines.Add("Respawn: " + Format.String(respawn));
-      lines.Add(Format.GetLevel(obj.m_minLevel, obj.m_maxLevel, obj.m_levelupChance));
+      lines.Add(Format.GetLevel(obj.m_minLevel, obj.m_maxLevel, 10));
       var timeText = GetTime(obj);
       if (timeText.Length > 0) lines.Add(timeText);
       if (obj.m_setPatrolSpawnPoint) lines.Add("Patrol point");
@@ -56,19 +49,16 @@ namespace ESP
       return Format.JoinLines(lines);
     }
 
-    private static string GetEventText()
-    {
+    private static string GetEventText() {
       var instance = RandEventSystem.instance;
       var timer = Patch.m_eventTimer(instance);
       return Format.GetAttempt(timer, instance.m_eventIntervalMin * 60, instance.m_eventChance);
     }
-    private static string GetEventsText()
-    {
+    private static string GetEventsText() {
       var instance = RandEventSystem.instance;
       var zdo = ZDOMan.instance.GetZDO(Player.m_localPlayer.GetZDOID());
       var currentBiome = WorldGenerator.instance.GetBiome(Player.m_localPlayer.transform.position);
-      var texts = instance.m_events.Where(randomEvent => randomEvent.m_enabled && randomEvent.m_random).Select(randomEvent =>
-      {
+      var texts = instance.m_events.Where(randomEvent => randomEvent.m_enabled && randomEvent.m_random).Select(randomEvent => {
         var validBiome = (currentBiome & randomEvent.m_biome) > 0;
         var validBase = Patch.RandEventSystem_CheckBase(instance, randomEvent, zdo);
         var validKeys = Patch.RandEventSystem_HaveGlobalKeys(instance, randomEvent);
@@ -82,26 +72,21 @@ namespace ESP
       });
       return Format.JoinLines(texts);
     }
-    private static string GetSpawnerText(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode)
-    {
+    private static string GetSpawnerText(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode) {
       var lines = new List<string>();
       var timeSinceSpawned = Patch.GetElapsed(obj, stableHashCode, 0);
       var time = "";
-      if (!spawnData.m_spawnAtDay)
-      {
+      if (!spawnData.m_spawnAtDay) {
         time = ", only during " + Format.String("night");
       }
-      if (!spawnData.m_spawnAtNight)
-      {
+      if (!spawnData.m_spawnAtNight) {
         time = ", only during " + Format.String("day");
       }
       var forest = "";
-      if (!spawnData.m_inForest)
-      {
+      if (!spawnData.m_inForest) {
         forest = ", only outside forests";
       }
-      if (!spawnData.m_outsideForest)
-      {
+      if (!spawnData.m_outsideForest) {
         forest = ", only inside forests";
       }
 
@@ -112,7 +97,7 @@ namespace ESP
       var global = spawnData.m_requiredGlobalKey != "" ? (", Bosses: " + Format.String(spawnData.m_requiredGlobalKey)) : "";
       var spawns = Format.Progress(instances, spawnData.m_maxSpawned);
       var spawnDistance = Format.Int(spawnData.m_spawnDistance) + " meters";
-      var level = Format.GetLevel(spawnData.m_minLevel, spawnData.m_maxLevel, obj.m_levelupChance, spawnData.m_levelUpMinCenterDistance);
+      var level = Format.GetLevel(spawnData.m_minLevel, spawnData.m_maxLevel, 10, spawnData.m_levelUpMinCenterDistance);
       var group = Format.Range(spawnData.m_groupSizeMin, spawnData.m_groupSizeMax);
       var groupRadius = (spawnData.m_groupSizeMax > spawnData.m_groupSizeMin) ? " within " + Format.Int(spawnData.m_groupRadius) + " meters" : "";
       var altitude = Format.Range(spawnData.m_minAltitude, spawnData.m_maxAltitude);
@@ -129,20 +114,17 @@ namespace ESP
       lines.Add(level + ", Group size: " + group + groupRadius);
       return Format.JoinLines(lines);
     }
-    public static string GetRandomEvent(SpawnSystem obj)
-    {
+    public static string GetRandomEvent(SpawnSystem obj) {
       var randEvent = RandEventSystem.instance;
       var text = GetEventText() + "\n\n";
       var num = 0;
       var currentEvent = randEvent.GetCurrentRandomEvent();
       if (currentEvent == null || randEvent.GetCurrentSpawners() == null)
         text += GetEventsText();
-      else
-      {
+      else {
         text += Format.ProgressPercent(currentEvent.m_name, currentEvent.m_time, currentEvent.m_duration) + "\n";
         var spawners = randEvent.GetCurrentSpawners();
-        var texts = spawners.Select(spawnData =>
-        {
+        var texts = spawners.Select(spawnData => {
           num++;
           var stableHashCode = ("e_" + spawnData.m_prefab.name + num.ToString()).GetStableHashCode();
           return GetSpawnerText(obj, spawnData, stableHashCode);
@@ -152,8 +134,7 @@ namespace ESP
       return text;
     }
 
-    private static string GetZoneText(SpawnSystem obj)
-    {
+    private static string GetZoneText(SpawnSystem obj) {
       var position = obj.transform.position;
       var heightmap = Patch.m_heightmap(obj);
       var zone = ZoneSystem.instance.GetZone(position);
@@ -166,27 +147,22 @@ namespace ESP
       text += "\n";
       return text;
     }
-    public static string Get(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode)
-    {
+    public static string Get(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode) {
       var lines = new List<string>();
       lines.Add(GetZoneText(obj));
       var timeSinceSpawned = Patch.GetElapsed(obj, stableHashCode, 0);
       var time = "";
-      if (!spawnData.m_spawnAtDay)
-      {
+      if (!spawnData.m_spawnAtDay) {
         time = ", only during " + Format.String("night");
       }
-      if (!spawnData.m_spawnAtNight)
-      {
+      if (!spawnData.m_spawnAtNight) {
         time = ", only during " + Format.String("day");
       }
       var forest = "";
-      if (!spawnData.m_inForest)
-      {
+      if (!spawnData.m_inForest) {
         forest = ", only outside forests";
       }
-      if (!spawnData.m_outsideForest)
-      {
+      if (!spawnData.m_outsideForest) {
         forest = ", only inside forests";
       }
 
@@ -195,7 +171,7 @@ namespace ESP
       var global = spawnData.m_requiredGlobalKey != "" ? (", Bosses: " + Format.String(spawnData.m_requiredGlobalKey)) : "";
       var spawns = Format.Progress(instances, spawnData.m_maxSpawned);
       var spawnDistance = Format.Int(spawnData.m_spawnDistance) + " meters";
-      var level = Format.GetLevel(spawnData.m_minLevel, spawnData.m_maxLevel, obj.m_levelupChance, spawnData.m_levelUpMinCenterDistance);
+      var level = Format.GetLevel(spawnData.m_minLevel, spawnData.m_maxLevel, 10, spawnData.m_levelUpMinCenterDistance);
       var group = Format.Range(spawnData.m_groupSizeMin, spawnData.m_groupSizeMax);
       var groupRadius = (spawnData.m_groupSizeMax > spawnData.m_groupSizeMin) ? " within " + Format.Int(spawnData.m_groupRadius) + " meters" : "";
       var altitude = Format.Range(spawnData.m_minAltitude, spawnData.m_maxAltitude);

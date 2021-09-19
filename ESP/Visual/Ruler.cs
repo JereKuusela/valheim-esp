@@ -1,33 +1,27 @@
 using UnityEngine;
 
-namespace ESP
-{
-  public class Ruler : MonoBehaviour
-  {
+namespace ESP {
+  public class Ruler : MonoBehaviour {
     private static GameObject ruler = null;
-    public static void Reset()
-    {
+    public static void Reset() {
       if (ruler) Destroy(ruler);
       ruler = null;
     }
-    public static void Set(Vector3 position)
-    {
+    public static void Set(Vector3 position) {
       if (ruler) Reset();
       var obj = new GameObject();
       obj.layer = LayerMask.NameToLayer(Constants.TriggerLayer);
       obj.transform.position = position * 1.0f;
       ruler = obj;
-      var line = Drawer.DrawSphere(obj, Settings.rulerRadius, Settings.rulerColor, Settings.rulerRadius, "");
+      var line = Drawer.DrawSphere(obj, Settings.RulerRadius, Settings.RulerColor, Settings.RulerRadius, "");
       Drawer.AddText(line, Format.Coordinates(position), "Ruler");
     }
-    public static void Toggle(Vector3 position)
-    {
+    public static void Toggle(Vector3 position) {
       if (!ruler) Set(position);
       else Reset();
     }
-    public static string GetText(Vector3 position)
-    {
-      if (Settings.rulerRadius == 0f) return "";
+    public static string GetText(Vector3 position) {
+      if (Settings.RulerRadius == 0f) return "";
       if (ruler == null) return Format.String("J") + ": Set ruler point.";
       var delta = position - ruler.transform.position;
       var distXZ = Utils.DistanceXZ(position, ruler.transform.position);

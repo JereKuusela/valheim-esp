@@ -1,13 +1,9 @@
 using UnityEngine;
-using System;
 
-namespace ESP
-{
-  public partial class Drawer
-  {
+namespace ESP {
+  public partial class Drawer {
     ///<summary>Creates a renderer with a cylinder (vertical).</summary>
-    public static GameObject DrawCylinder(MonoBehaviour parent, float radius, Color color, float width, string name)
-    {
+    public static GameObject DrawCylinder(MonoBehaviour parent, float radius, Color color, float width, string name) {
       var obj = CreateObject(parent.gameObject, name);
       DrawArcY(CreateObject(obj, name), Vector3.zero, radius, 360f, color, width);
       AddSphereCollider(obj, radius - width / 2f);

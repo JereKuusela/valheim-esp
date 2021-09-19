@@ -1,26 +1,21 @@
-using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using HarmonyLib;
 using UnityEngine;
 
-namespace ESP
-{
+namespace ESP {
   [HarmonyPatch]
-  public class Patch
-  {
-    public static T Get<T>(object obj, string field) => (T)obj.GetType().GetField(field).GetValue(obj);
-    public static T Get2<T>(object obj, string field) => Traverse.Create(obj).Field<T>(field).Value;
-    public static object Get2(object obj, string field) => Traverse.Create(obj).Field<object>(field).Value;
+  public class Patch {
+    public static T Get<T>(object obj, string field) => Traverse.Create(obj).Field<T>(field).Value;
+    public static object Get(object obj, string field) => Traverse.Create(obj).Field<object>(field).Value;
 
 
-    public static double GetElapsed(MonoBehaviour obj, string key, long defaultValue = 0)
-    {
+    public static double GetElapsed(MonoBehaviour obj, string key, long defaultValue = 0) {
       var time = ZNet.instance.GetTime();
       var d = GetDateTime(obj, key, defaultValue);
       return (time - d).TotalSeconds;
     }
-    public static double GetElapsed(MonoBehaviour obj, int key, long defaultValue = 0)
-    {
+    public static double GetElapsed(MonoBehaviour obj, int key, long defaultValue = 0) {
       var time = ZNet.instance.GetTime();
       var d = GetDateTime(obj, key, defaultValue);
       return (time - d).TotalSeconds;
@@ -61,136 +56,114 @@ namespace ESP
     public static float m_updateExtensionTimer(CraftingStation obj) => Traverse.Create(obj).Field<float>("m_updateExtensionTimer").Value;
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(SpawnArea), "GetInstances")]
-    public static void SpawnArea_GetInstances(SpawnArea instance, out int near, out int total)
-    {
+    public static void SpawnArea_GetInstances(SpawnArea instance, out int near, out int total) {
       throw new NotImplementedException("Dummy");
     }
 
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(CookingStation), "GetItemConversion")]
-    public static CookingStation.ItemConversion CookingStation_GetItemConversion(CookingStation instance, string itemName)
-    {
+    public static CookingStation.ItemConversion CookingStation_GetItemConversion(CookingStation instance, string itemName) {
       throw new NotImplementedException("Dummy");
     }
 
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(Fermenter), "GetFermentationTime")]
-    public static double Fermenter_GetFermentationTime(Fermenter instance)
-    {
+    public static double Fermenter_GetFermentationTime(Fermenter instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(Plant), "GetGrowTime")]
-    public static float Plant_GetGrowTime(Plant instance)
-    {
+    public static float Plant_GetGrowTime(Plant instance) {
       throw new System.NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(Plant), "TimeSincePlanted")]
-    public static double Plant_TimeSincePlanted(Plant instance)
-    {
+    public static double Plant_TimeSincePlanted(Plant instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(Smelter), "GetBakeTimer")]
-    public static float Smelter_GetBakeTimer(Smelter instance)
-    {
+    public static float Smelter_GetBakeTimer(Smelter instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(Smelter), "GetFuel")]
-    public static float Smelter_GetFuel(Smelter instance)
-    {
+    public static float Smelter_GetFuel(Smelter instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(Character), "GetDamageModifiers")]
-    public static HitData.DamageModifiers Character_GetDamageModifiers(Character instance)
-    {
+    public static HitData.DamageModifiers Character_GetDamageModifiers(Character instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(Tameable), "GetRemainingTime")]
-    public static float Tameable_GetRemainingTime(Tameable instance)
-    {
+    public static float Tameable_GetRemainingTime(Tameable instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(HitData.DamageTypes), "DamageRange")]
-    public static string DamageTypes_DamageRange(HitData.DamageTypes instance, float damage, float minFactor, float maxFactor)
-    {
+    public static string DamageTypes_DamageRange(HitData.DamageTypes instance, float damage, float minFactor, float maxFactor) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(RandEventSystem), "HaveGlobalKeys")]
-    public static bool RandEventSystem_HaveGlobalKeys(RandEventSystem instance, RandomEvent ev)
-    {
+    public static bool RandEventSystem_HaveGlobalKeys(RandEventSystem instance, RandomEvent ev) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(RandEventSystem), "CheckBase")]
-    public static bool RandEventSystem_CheckBase(RandEventSystem instance, RandomEvent ev, ZDO zdo)
-    {
+    public static bool RandEventSystem_CheckBase(RandEventSystem instance, RandomEvent ev, ZDO zdo) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(EnvMan), "GetDayFraction")]
-    public static float EnvMan_GetDayFraction(EnvMan instance)
-    {
+    public static float EnvMan_GetDayFraction(EnvMan instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(EnvMan), "GetAvailableEnvironments")]
-    public static List<EnvEntry> EnvMan_GetAvailableEnvironments(EnvMan instance, Heightmap.Biome biome)
-    {
+    public static List<EnvEntry> EnvMan_GetAvailableEnvironments(EnvMan instance, Heightmap.Biome biome) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(Player), "TakeInput")]
-    public static bool Player_TakeInput(Player instance)
-    {
+    public static bool Player_TakeInput(Player instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(WearNTear), "GetMaterialProperties")]
-    public static void WearNTear_GetMaterialProperties(WearNTear instance, out float maxSupport, out float minSupport, out float horizontalLoss, out float verticalLoss)
-    {
+    public static void WearNTear_GetMaterialProperties(WearNTear instance, out float maxSupport, out float minSupport, out float horizontalLoss, out float verticalLoss) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(WearNTear), "ResetHighlight")]
-    public static void WearNTear_ResetHighlight(WearNTear instance)
-    {
+    public static void WearNTear_ResetHighlight(WearNTear instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(ItemDrop), "GetTimeSinceSpawned")]
-    public static double ItemDrop_GetTimeSinceSpawned(ItemDrop instance)
-    {
+    public static double ItemDrop_GetTimeSinceSpawned(ItemDrop instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(ItemDrop), "IsInsideBase")]
-    public static bool ItemDrop_IsInsideBase(ItemDrop instance)
-    {
+    public static bool ItemDrop_IsInsideBase(ItemDrop instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(Skills), "GetSkill")]
-    public static Skills.Skill Skills_GetSkill(Skills instance, Skills.SkillType skillType)
-    {
+    public static Skills.Skill Skills_GetSkill(Skills instance, Skills.SkillType skillType) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(Skills.Skill), "GetNextLevelRequirement")]
-    public static float Skill_GetNextLevelRequirement(Skills.Skill instance)
-    {
+    public static float Skill_GetNextLevelRequirement(Skills.Skill instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(MineRock5), "GetSupport")]
-    public static bool MineRock5_GetSupport(MineRock5 instance, Collider c)
-    {
+    public static bool MineRock5_GetSupport(MineRock5 instance, Collider c) {
       throw new NotImplementedException("Dummy");
     }
   }

@@ -1,9 +1,7 @@
 using System.Linq;
 
-namespace ESP
-{
-  public class DamageModifierUtils
-  {
+namespace ESP {
+  public class DamageModifierUtils {
     private static HitData.DamageType[] DAMAGE_TYPES = new HitData.DamageType[]{
       HitData.DamageType.Blunt,
       HitData.DamageType.Chop,
@@ -16,8 +14,7 @@ namespace ESP
       HitData.DamageType.Slash,
       HitData.DamageType.Spirit
     };
-    public static string DamageTypeToString(HitData.DamageType damageType)
-    {
+    public static string DamageTypeToString(HitData.DamageType damageType) {
       if (damageType == HitData.DamageType.Blunt) return "Blunt";
       if (damageType == HitData.DamageType.Chop) return "Chop";
       if (damageType == HitData.DamageType.Fire) return "Fire";
@@ -30,8 +27,7 @@ namespace ESP
       if (damageType == HitData.DamageType.Spirit) return "Spirit";
       return "";
     }
-    private static string GetModifierText(HitData.DamageModifiers modifiers, HitData.DamageType damageType, bool ignoreNeutral, bool ignoreIgnore)
-    {
+    private static string GetModifierText(HitData.DamageModifiers modifiers, HitData.DamageType damageType, bool ignoreNeutral, bool ignoreIgnore) {
       var name = DamageTypeToString(damageType);
       var modifier = modifiers.GetModifier(damageType);
       if (ignoreNeutral && modifier == HitData.DamageModifier.Immune) return name + ": " + Format.String("x0");
@@ -43,9 +39,8 @@ namespace ESP
       if (!ignoreNeutral && modifier == HitData.DamageModifier.Normal) return name + ": " + Format.String("x1");
       return "";
     }
-    public static string Get(HitData.DamageModifiers modifiers, bool ignoreNeutral, bool ignoreIgnore)
-    {
-      if (!Settings.resistances) return "";
+    public static string Get(HitData.DamageModifiers modifiers, bool ignoreNeutral, bool ignoreIgnore) {
+      if (!Settings.Resistances) return "";
       var texts = DAMAGE_TYPES.Select(type => GetModifierText(modifiers, type, ignoreNeutral, ignoreIgnore)).Where(text => text.Length > 0);
       return Format.JoinRow(texts);
     }
