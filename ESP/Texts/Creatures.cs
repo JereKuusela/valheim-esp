@@ -71,7 +71,7 @@ namespace ESP {
       return "\n" + Format.JoinLines(texts);
     }
 
-    public static string GetNoise(Character obj) => "Noise: " + Format.Int(Patch.m_noiseRange(obj));
+    public static string GetNoise(Character obj) => "Noise: " + Format.Int(Patch.NoiseRange(obj));
 
     public static string GetStaggerText(float health, float staggerDamageFactor, float staggerDamage) {
       var staggerLimit = staggerDamageFactor * health;
@@ -99,10 +99,10 @@ namespace ESP {
       if (!Settings.Resistances || !obj || !baseAI || !monsterAI)
         return "";
       var lines = new List<string>();
-      var staggerDamage = Patch.m_staggerDamage(obj);
-      var body = Patch.m_body(obj);
+      var staggerDamage = Patch.StaggerDamage(obj);
+      var body = Patch.Body(obj);
       lines.Add(GetState(obj, baseAI, monsterAI));
-      lines.Add(Patch.m_aiStatus(monsterAI));
+      lines.Add(Patch.AiStatus(monsterAI));
       var health = obj.GetMaxHealth();
       lines.Add(Format.GetHealth(obj.GetHealth(), health));
       var factor = obj.m_staggerDamageFactor;

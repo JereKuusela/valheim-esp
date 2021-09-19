@@ -54,7 +54,7 @@ namespace ESP {
       text += Format.String("L") + ": " + GetShowHide(Settings.ShowExperienceMeter) + " experience";
       return text;
     }
-    private static string GetSpeed() => "Speed: " + Format.Float(Patch.m_currentVel(Player.m_localPlayer).magnitude, "0.#") + " m/s";
+    private static string GetSpeed() => "Speed: " + Format.Float(Patch.CurrentVel(Player.m_localPlayer).magnitude, "0.#") + " m/s";
     private static string GetNoise() => "Noise: " + Format.Int(Player.m_localPlayer.GetNoiseRange()) + " meters";
     private static string GetEnvironment() {
       if (!Settings.ShowTimeAndWeather) return "";

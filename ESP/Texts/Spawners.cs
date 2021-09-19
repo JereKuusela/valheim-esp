@@ -51,7 +51,7 @@ namespace ESP {
 
     private static string GetEventText() {
       var instance = RandEventSystem.instance;
-      var timer = Patch.m_eventTimer(instance);
+      var timer = Patch.EventTimer(instance);
       return Format.GetAttempt(timer, instance.m_eventIntervalMin * 60, instance.m_eventChance);
     }
     private static string GetEventsText() {
@@ -136,7 +136,7 @@ namespace ESP {
 
     private static string GetZoneText(SpawnSystem obj) {
       var position = obj.transform.position;
-      var heightmap = Patch.m_heightmap(obj);
+      var heightmap = Patch.Heightmap(obj);
       var zone = ZoneSystem.instance.GetZone(position);
       var text = "Zone: " + Format.String(zone.x + ";" + zone.y);
       var biome = heightmap.GetBiome(obj.transform.position);
@@ -179,7 +179,7 @@ namespace ESP {
       var tilt = Format.Range(spawnData.m_minTilt, spawnData.m_maxTilt);
       var ocean = Format.Range(spawnData.m_minOceanDepth, spawnData.m_maxOceanDepth);
       var hunt = spawnData.m_huntPlayer ? ", forces hunt mode" : "";
-      var spawnRadius = Format.Range(spawnData.m_spawnRadiusMin > 0 ? spawnData.m_spawnRadiusMin : Patch.m_spawnDistanceMin(obj), spawnData.m_spawnRadiusMax > 0 ? spawnData.m_spawnRadiusMax : Patch.m_spawnDistanceMax(obj)) + " meters";
+      var spawnRadius = Format.Range(spawnData.m_spawnRadiusMin > 0 ? spawnData.m_spawnRadiusMin : Patch.SpawnDistanceMin(obj), spawnData.m_spawnRadiusMax > 0 ? spawnData.m_spawnRadiusMax : Patch.SpawnDistanceMax(obj)) + " meters";
       lines.Add("Creature: " + Format.String(spawnData.m_prefab.name) + hunt);
       lines.Add(Format.GetAttempt(timeSinceSpawned, spawnData.m_spawnInterval, spawnData.m_spawnChance));
       var biomeString = Texts.GetBiomes(spawnData.m_biome, spawnData.m_biomeArea);

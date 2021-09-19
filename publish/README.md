@@ -161,7 +161,14 @@ Some use cases:
 
 # Changelog
 
-- v1.4.0: 
+- v1.5.0:
+	- Updated for Hearth & Home patch.
+	- Added average ship speed to HUD.
+	- Added setting to ignore forsaken power cooldowns.
+	- AAdded setting to set the maximum attack chain level.
+	- Added generator stats to locations.
+	- Added generator stats to vegetation (trees, plants, rocks, etc.)
+- v1.4.0:
 	- Added settings to customize all colors used by the visuals.
 	- Reordered settings to more sensible sections.
 	- Added sleeping status to sleeping enemies.
@@ -179,7 +186,7 @@ Some use cases:
 	- Fixed experience meter showing wrong values.
 	- Fixed smoke visual being affected by cover ray setting.
 	- Improved localization of some object names.
-- v1.3.0: 
+- v1.3.0:
 	- Added item drops to resources like rocks, minerals and trees.
 	- Added chests contents to pregenerated chests.
 	- Added ruler. Ruler point can be set at the current location. HUD shows distance to the set location.
@@ -188,7 +195,7 @@ Some use cases:
 	- Windmills no longer show amount of smoke.
 	- Fixed ward protection radius shown as sphere instead of a cylinder.
 	- Fixed tool tiers being always stone / antler for creature attacks.
-- v1.2.0: 
+- v1.2.0:
 	- Added minimum tool tiers to trees, ores and other destructibles tooltips.
 	- Added location ray to trees, ores and other destructibles (disabled by default).
 	- Added hit box type to weapon and enemy attack tooltips.
@@ -225,8 +232,8 @@ Some use cases:
 	- Fixed no monsters area of the trader being the wrong size.
 	- Reduced draw width of many visualizations (less clutter).
 	- Fixed rays not always being straight up.
-- v1.1.0: 
+- v1.1.0:
 	- Enabled for dedicated servers (when server admin).
 	- Fixed structures flashing when disabling visuals.
-- v1.0.0: 
+- v1.0.0:
 	- Initial release

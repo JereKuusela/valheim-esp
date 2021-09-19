@@ -6,9 +6,9 @@ namespace ESP {
       var delta = startPos - obj.transform.position;
       var start = Constants.CoverRaycastStart;
       var cover = new Cover();
-      foreach (var vector in Patch.m_coverRays(cover)) {
+      foreach (var vector in Patch.CoverRays(cover)) {
         var color = Settings.CoverRayColor;
-        if (Physics.Raycast(startPos + vector * start, vector, out var raycastHit, Constants.CoverRayCastLength - start, Patch.m_coverRayMask(cover)))
+        if (Physics.Raycast(startPos + vector * start, vector, out var raycastHit, Constants.CoverRayCastLength - start, Patch.CoverRayMask(cover)))
           color = Settings.CoverRayBlockedColor;
         var line = Drawer.DrawLineWithFixedRotation(obj, delta + vector * start, delta + vector * Constants.CoverRayCastLength, color, Settings.CoverRayWidth, Drawer.OTHER);
         Drawer.AddText(line, name, text);
@@ -42,14 +42,14 @@ namespace ESP {
     private static void UpdateCover(MonoBehaviour obj, Vector3 startPos, string text) {
       var renderers = Drawer.GetRenderers(obj, Constants.CoverTag);
       var cover = new Cover();
-      var vectors = Patch.m_coverRays(cover);
+      var vectors = Patch.CoverRays(cover);
       if (renderers.Length != vectors.Length) return;
       var start = Constants.CoverRaycastStart;
       var index = 0;
       foreach (var vector in vectors) {
         RaycastHit raycastHit;
         var color = Settings.CoverRayColor;
-        if (Physics.Raycast(startPos + vector * start, vector, out raycastHit, Constants.CoverRayCastLength - start, Patch.m_coverRayMask(cover)))
+        if (Physics.Raycast(startPos + vector * start, vector, out raycastHit, Constants.CoverRayCastLength - start, Patch.CoverRayMask(cover)))
           color = Settings.CoverRayBlockedColor;
         var renderer = renderers[index];
         renderer.material.SetColor("_Color", color);

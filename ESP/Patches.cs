@@ -6,9 +6,8 @@ using UnityEngine;
 namespace ESP {
   [HarmonyPatch]
   public class Patch {
-    public static T Get<T>(object obj, string field) => Traverse.Create(obj).Field<T>(field).Value;
-    public static object Get(object obj, string field) => Traverse.Create(obj).Field<object>(field).Value;
-
+    private static T Get<T>(object obj, string field) => Traverse.Create(obj).Field<T>(field).Value;
+    private static object Get(object obj, string field) => Traverse.Create(obj).Field<object>(field).Value;
 
     public static double GetElapsed(MonoBehaviour obj, string key, long defaultValue = 0) {
       var time = ZNet.instance.GetTime();
@@ -22,38 +21,46 @@ namespace ESP {
     }
     public static DateTime GetDateTime(MonoBehaviour obj, string key, long defaultValue = 0) => new DateTime(GetLong(obj, key, defaultValue));
     public static DateTime GetDateTime(MonoBehaviour obj, int key, long defaultValue = 0) => new DateTime(GetLong(obj, key, defaultValue));
-    public static float GetFloat(MonoBehaviour obj, string key, float defaultValue = 0) => m_nview(obj).GetZDO().GetFloat(key, defaultValue);
-    public static long GetLong(MonoBehaviour obj, string key, long defaultValue = 0) => m_nview(obj).GetZDO().GetLong(key, defaultValue);
-    public static long GetLong(MonoBehaviour obj, int key, long defaultValue = 0) => m_nview(obj).GetZDO().GetLong(key, defaultValue);
-    public static int GetInt(MonoBehaviour obj, string key, int defaultValue = 0) => m_nview(obj).GetZDO().GetInt(key, defaultValue);
-    public static bool GetBool(MonoBehaviour obj, string key, bool defaultValue = false) => m_nview(obj).GetZDO().GetBool(key, defaultValue);
-    public static string GetString(MonoBehaviour obj, string key, string defaultValue = "") => m_nview(obj).GetZDO().GetString(key, defaultValue);
-    public static GameObject GetPrefab(MonoBehaviour obj) => ZNetScene.instance.GetPrefab(m_nview(obj).GetZDO().GetPrefab());
-    public static float m_cover(Windmill obj) => Traverse.Create(obj).Field<float>("m_cover").Value;
-    public static float m_spawnTimer(SpawnArea obj) => Traverse.Create(obj).Field<float>("m_spawnTimer").Value;
-    public static float m_noiseRange(Character obj) => Traverse.Create(obj).Field<float>("m_noiseRange").Value;
-    public static float m_staggerDamage(Character obj) => Traverse.Create(obj).Field<float>("m_staggerDamage").Value;
-    public static float m_consumeSearchTimer(MonsterAI obj) => Traverse.Create(obj).Field<float>("m_consumeSearchTimer").Value;
-    public static string m_aiStatus(MonsterAI obj) => Traverse.Create(obj).Field<string>("m_aiStatus").Value;
-    public static float m_eventTimer(RandEventSystem obj) => Traverse.Create(obj).Field<float>("m_eventTimer").Value;
-    public static int m_solidRayMask(Fireplace obj) => Traverse.Create(obj).Field<int>("m_solidRayMask").Value;
-    public static Heightmap m_heightmap(SpawnSystem obj) => Traverse.Create(obj).Field<Heightmap>("m_heightmap").Value;
-    public static float m_spawnDistanceMin(SpawnSystem obj) => Traverse.Create(obj).Field<float>("m_spawnDistanceMin").Value;
-    public static float m_spawnDistanceMax(SpawnSystem obj) => Traverse.Create(obj).Field<float>("m_spawnDistanceMax").Value;
-    public static Rigidbody m_body(Character obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;
-    public static Rigidbody m_body(Ship obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;
-    public static Rigidbody m_body(Smoke obj) => Traverse.Create(obj).Field<Rigidbody>("m_body").Value;
-    public static float m_time(Smoke obj) => Traverse.Create(obj).Field<float>("m_time").Value;
-    public static Vector3 m_currentVel(Player obj) => Traverse.Create(obj).Field<Vector3>("m_currentVel").Value;
-    public static SEMan m_seman(Player obj) => Traverse.Create(obj).Field<SEMan>("m_seman").Value;
-    public static ZNetView m_nview(MonoBehaviour obj) => Traverse.Create(obj).Field<ZNetView>("m_nview").Value;
-    public static Vector3[] m_coverRays(Cover obj) => Traverse.Create(obj).Field<Vector3[]>("m_coverRays").Value;
-    public static Skills m_skills(Player obj) => Traverse.Create(obj).Field<Skills>("m_skills").Value;
-    public static List<Collider> m_hitAreas(MineRock obj) => Traverse.Create(obj).Field<List<Collider>>("m_hitAreas").Value;
-    public static IEnumerable<object> m_hitAreas(MineRock5 obj) => Traverse.Create(obj).Field<IEnumerable<object>>("m_hitAreas").Value;
-    public static int m_rayMask(MineRock5 obj) => Traverse.Create(obj).Field<int>("m_rayMask").Value;
-    public static int m_coverRayMask(Cover obj) => Traverse.Create(obj).Field<int>("m_coverRayMask").Value;
-    public static float m_updateExtensionTimer(CraftingStation obj) => Traverse.Create(obj).Field<float>("m_updateExtensionTimer").Value;
+    public static float GetFloat(MonoBehaviour obj, string key, float defaultValue = 0) => Nview(obj).GetZDO().GetFloat(key, defaultValue);
+    public static long GetLong(MonoBehaviour obj, string key, long defaultValue = 0) => Nview(obj).GetZDO().GetLong(key, defaultValue);
+    public static long GetLong(MonoBehaviour obj, int key, long defaultValue = 0) => Nview(obj).GetZDO().GetLong(key, defaultValue);
+    public static int GetInt(MonoBehaviour obj, string key, int defaultValue = 0) => Nview(obj).GetZDO().GetInt(key, defaultValue);
+    public static bool GetBool(MonoBehaviour obj, string key, bool defaultValue = false) => Nview(obj).GetZDO().GetBool(key, defaultValue);
+    public static string GetString(MonoBehaviour obj, string key, string defaultValue = "") => Nview(obj).GetZDO().GetString(key, defaultValue);
+    public static GameObject GetPrefab(MonoBehaviour obj) => ZNetScene.instance.GetPrefab(Nview(obj).GetZDO().GetPrefab());
+    public static float Cover(Windmill obj) => Get<float>(obj, "m_cover");
+    public static float Health(object obj) => Get<float>(obj, "m_health");
+    public static object Bound(object obj) => Get<float>(obj, "m_bound");
+    public static Vector3 Pos(object obj) => Get<Vector3>(obj, "m_pos");
+    public static Vector3 Size(object obj) => Get<Vector3>(obj, "m_size");
+    public static Quaternion Rot(object obj) => Get<Quaternion>(obj, "m_rot");
+    public static Collider Collider(object obj) => Get<Collider>(obj, "m_collider");
+    public static int NextAttackChainLevel(Attack obj) => Get<int>(obj, "m_nextAttackChainLevel");
+    public static float SpawnTimer(SpawnArea obj) => Get<float>(obj, "m_spawnTimer");
+    public static float NoiseRange(Character obj) => Get<float>(obj, "m_noiseRange");
+    public static float StaggerDamage(Character obj) => Get<float>(obj, "m_staggerDamage");
+    public static float ConsumeSearchTimer(MonsterAI obj) => Get<float>(obj, "m_consumeSearchTimer");
+    public static string AiStatus(MonsterAI obj) => Get<string>(obj, "m_aiStatus");
+    public static float EventTimer(RandEventSystem obj) => Get<float>(obj, "m_eventTimer");
+    public static int SolidRayMask(Fireplace obj) => Get<int>(obj, "m_solidRayMask");
+    public static Heightmap Heightmap(SpawnSystem obj) => Get<Heightmap>(obj, "m_heightmap");
+    public static float SpawnDistanceMin(SpawnSystem obj) => Get<float>(obj, "m_spawnDistanceMin");
+    public static float SpawnDistanceMax(SpawnSystem obj) => Get<float>(obj, "m_spawnDistanceMax");
+    public static Rigidbody Body(Character obj) => Get<Rigidbody>(obj, "m_body");
+    public static Rigidbody Body(Ship obj) => Get<Rigidbody>(obj, "m_body");
+    public static Rigidbody Body(Smoke obj) => Get<Rigidbody>(obj, "m_body");
+    public static float Time(Smoke obj) => Get<float>(obj, "m_time");
+    public static Vector3 CurrentVel(Player obj) => Get<Vector3>(obj, "m_currentVel");
+    public static SEMan Seman(Player obj) => Get<SEMan>(obj, "m_seman");
+    public static ZNetView Nview(MonoBehaviour obj) => Get<ZNetView>(obj, "m_nview");
+    public static Vector3[] CoverRays(Cover obj) => Get<Vector3[]>(obj, "m_coverRays");
+    public static Skills Skills(Player obj) => Get<Skills>(obj, "m_skills");
+    public static List<Collider> HitAreas(MineRock obj) => Get<List<Collider>>(obj, "m_hitAreas");
+    public static IEnumerable<object> HitAreas(MineRock5 obj) => Get<IEnumerable<object>>(obj, "m_hitAreas");
+    public static int RayMask(MineRock5 obj) => Get<int>(obj, "m_rayMask");
+    public static int CoverRayMask(Cover obj) => Get<int>(obj, "m_coverRayMask");
+    public static float UpdateExtensionTimer(CraftingStation obj) => Get<float>(obj, "m_updateExtensionTimer");
+
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(SpawnArea), "GetInstances")]
     public static void SpawnArea_GetInstances(SpawnArea instance, out int near, out int total) {

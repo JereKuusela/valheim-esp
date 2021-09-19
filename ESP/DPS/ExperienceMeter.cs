@@ -36,23 +36,23 @@ namespace ESP {
       endTime = DateTime.Now;
     }
     public static float GetExperienceModifier() {
-      var seMan = Patch.m_seman(Player.m_localPlayer);
+      var seMan = Patch.Seman(Player.m_localPlayer);
       var mod = 1f;
       seMan.ModifyRaiseSkill(Skills.SkillType.All, ref mod);
       return mod;
     }
     public static float GetLevel(Skills.SkillType type) {
-      var skills = Patch.m_skills(Player.m_localPlayer);
+      var skills = Patch.Skills(Player.m_localPlayer);
       var skill = Patch.Skills_GetSkill(skills, type);
       return skill.m_level;
     }
     public static float GetCurrent(Skills.SkillType type) {
-      var skills = Patch.m_skills(Player.m_localPlayer);
+      var skills = Patch.Skills(Player.m_localPlayer);
       var skill = Patch.Skills_GetSkill(skills, type);
       return skill.m_accumulator;
     }
     public static float GetTotal(Skills.SkillType type) {
-      var skills = Patch.m_skills(Player.m_localPlayer);
+      var skills = Patch.Skills(Player.m_localPlayer);
       var skill = Patch.Skills_GetSkill(skills, type);
       return Patch.Skill_GetNextLevelRequirement(skill);
     }

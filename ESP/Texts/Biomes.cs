@@ -85,11 +85,12 @@ namespace ESP {
       var texts = envs.Select(env => EnvUtils.GetEnvironment(env, totalWeight));
       return text + "\n" + Format.JoinLines(texts);
     }
-    public static string GetBiomes(Heightmap.Biome biome, Heightmap.BiomeArea area = Heightmap.BiomeArea.Edge) {
+    public static string GetBiomes(Heightmap.Biome biome, Heightmap.BiomeArea area = Heightmap.BiomeArea.Edge, bool addLabel = true) {
       var biomeText = GetNames(biome);
       if (biomeText.Length == 0) return "";
+      var label = addLabel ? "Biomes: " : "";
       var biomeArea = (area == Heightmap.BiomeArea.Median) ? ", only full biomes" : "";
-      return "Biomes: " + biomeText + biomeArea;
+      return label + biomeText + biomeArea;
     }
   }
 }

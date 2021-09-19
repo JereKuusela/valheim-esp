@@ -60,6 +60,8 @@ namespace ESP {
       lines.Add(Texts.Get(obj.GetComponentInChildren<SmokeSpawner>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<Smoke>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<Container>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<Location>()));
+      lines.Add(Texts.GetVegetation(obj));
       if (Settings.ShowShipStats)
         lines.Add(Texts.Get(obj.GetComponentInParent<Ship>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<EffectArea>()));

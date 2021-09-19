@@ -32,6 +32,10 @@ namespace ESP {
     public static bool ItemDrops => configItemDrops.Value;
     public static ConfigEntry<bool> configShowShipStats;
     public static bool ShowShipStats => configShowShipStats.Value;
+    public static ConfigEntry<bool> configLocations;
+    public static bool Locations => configLocations.Value;
+    public static ConfigEntry<bool> configVegetation;
+    public static bool Vegetation => configVegetation.Value;
     public static void InitTooltips(ConfigFile config) {
       var section = "3. Tooltips";
       configExtraInfo = config.Bind(section, "Show extra info on tooltips", false, "Show extra info on tooltips and hover texts (toggle with O button in the game)");
@@ -48,6 +52,8 @@ namespace ESP {
       configAllDamageTypes = config.Bind(section, "All damage types", true, "Show all damage types on weapon tooltips");
       configShowProgress = config.Bind(section, "Show progress", true, "Show progress for plants and structures");
       configSupport = config.Bind(section, "Show stats", true, "Show support for structures");
+      configLocations = config.Bind(section, "Locations", true, "Show generator stats for locations");
+      configVegetation = config.Bind(section, "Vegetation", true, "Show generator stats for vegetation");
       configShowShipStats = config.Bind(section, "Show ship stats", true, "Show ship speed and wind direction on the ship");
     }
   }

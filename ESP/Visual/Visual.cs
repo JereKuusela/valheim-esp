@@ -13,20 +13,20 @@ namespace ESP {
     public static void DrawSupport(MineRock5 obj) {
       Drawer.Remove(obj, Constants.SupportTag);
       if (Settings.MineRockSupportLineWidth == 0) return;
-      var areas = Patch.m_hitAreas(obj);
-      var remaining = areas.Count(area => Patch.Get<float>(area, "m_health") > 0f);
+      var areas = Patch.HitAreas(obj);
+      var remaining = areas.Count(area => Patch.Health(area) > 0f);
       var index = -1;
       foreach (var area in areas) {
         index++;
-        var health = Patch.Get<float>(area, "m_health");
+        var health = Patch.Health(area);
         if (health <= 0f) continue;
-        var bounds = Patch.Get(area, "m_bound");
-        var pos = Patch.Get<Vector3>(bounds, "m_pos");
-        var size = Patch.Get<Vector3>(bounds, "m_size");
-        var rot = Patch.Get<Quaternion>(bounds, "m_rot");
-        var mask = Patch.m_rayMask(obj);
+        var bounds = Patch.Bound(area);
+        var pos = Patch.Pos(bounds);
+        var size = Patch.Size(bounds);
+        var rot = Patch.Rot(bounds);
+        var mask = Patch.RayMask(obj);
         int num = Physics.OverlapBoxNonAlloc(obj.transform.position + pos, size, tempColliders, rot, mask);
-        var areaCollider = Patch.Get<Collider>(area, "m_collider");
+        var areaCollider = Patch.Collider(area);
         for (int j = 0; j < num; j++) {
           var collider = tempColliders[j];
           if (!(collider == areaCollider) && !(collider.attachedRigidbody != null) && !collider.isTrigger) {

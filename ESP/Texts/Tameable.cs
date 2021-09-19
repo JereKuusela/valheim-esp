@@ -11,7 +11,7 @@ namespace ESP {
       if (fed)
         return Format.ProgressPercent("Food", value, obj.m_fedDuration);
       if (monsterAI) {
-        value = Patch.m_consumeSearchTimer(monsterAI);
+        value = Patch.ConsumeSearchTimer(monsterAI);
         return Format.ProgressPercent("Searching food", value, monsterAI.m_consumeSearchInterval);
       }
       return "";

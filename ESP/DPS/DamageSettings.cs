@@ -82,7 +82,7 @@ namespace ESP {
     public static void Prefix(ref Attack previousAttack, ref int ___m_currentAttackCainLevel) {
       if (!Admin.Enabled || Settings.MaxAttackChainLevels == 0) return;
       if (previousAttack == null) return;
-      var nextLevel = Patch.Get<int>(previousAttack, "m_nextAttackChainLevel");
+      var nextLevel = Patch.NextAttackChainLevel(previousAttack);
       if (nextLevel >= Settings.MaxAttackChainLevels) {
         previousAttack = null;
         ___m_currentAttackCainLevel = 0;

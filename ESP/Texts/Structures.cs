@@ -191,14 +191,14 @@ namespace ESP {
       if (!obj) return "";
       var lines = new List<string>();
       lines.Add(": " + Format.Progress(Smoke.GetTotalSmoke(), Constants.SmokeAmountLimit, true));
-      lines.Add(Format.ProgressPercent("Expires", Patch.m_time(obj), obj.m_ttl));
+      lines.Add(Format.ProgressPercent("Expires", Patch.Time(obj), obj.m_ttl));
       var collider = obj.GetComponent<SphereCollider>();
       if (collider)
         lines.Add("Radius: " + Format.Float(collider.radius * obj.transform.lossyScale.x));
-      var body = Patch.m_body(obj);
+      var body = Patch.Body(obj);
       lines.Add("Mass: " + Format.Float(body.mass));
       lines.Add("Velocity: " + Format.String(body.velocity.ToString("F3")));
-      var ratio = 1f - Mathf.Clamp01(Patch.m_time(obj) / obj.m_ttl);
+      var ratio = 1f - Mathf.Clamp01(Patch.Time(obj) / obj.m_ttl);
       var vel = obj.m_vel;
       vel.y *= ratio;
       lines.Add("Target: " + Format.String(vel.ToString("F3")));
@@ -227,7 +227,7 @@ namespace ESP {
     }
     private static string GetDistanceFromRoof(Fireplace obj) {
       if (!obj) return "";
-      if (Physics.Raycast(CoverUtils.GetCoverPoint(obj), Vector3.up, out var raycastHit, Constants.RoofFireplaceLimit, Patch.m_solidRayMask(obj))) {
+      if (Physics.Raycast(CoverUtils.GetCoverPoint(obj), Vector3.up, out var raycastHit, Constants.RoofFireplaceLimit, Patch.SolidRayMask(obj))) {
         var distance = raycastHit.distance;
         return "Roof (" + Format.Float(Constants.RoofFireplaceLimit, Format.FORMAT, "red") + " m): " + Format.Float(distance) + " m";
       }
@@ -245,7 +245,7 @@ namespace ESP {
       if (!Settings.Destructibles || !obj) return "";
       var lines = new List<string>();
       var maxHealth = obj.m_health;
-      var areas = Patch.m_hitAreas(obj);
+      var areas = Patch.HitAreas(obj);
       var index = 0;
       var remaining = areas.Count(area => {
         var key = "Health" + index.ToString();
@@ -264,8 +264,8 @@ namespace ESP {
       if (!Settings.Destructibles || !obj) return "";
       var lines = new List<string>();
       var maxHealth = obj.m_health;
-      var areas = Patch.m_hitAreas(obj);
-      var remaining = areas.Count(area => Patch.Get<float>(area, "m_health") > 0f);
+      var areas = Patch.HitAreas(obj);
+      var remaining = areas.Count(area => Patch.Health(area) > 0f);
       lines.Add("Areas: " + Format.Progress(remaining, areas.Count()));
       lines.Add("Health per area: " + Format.Int(maxHealth));
       lines.Add("Hit noise: " + Format.Int(100));
@@ -314,7 +314,7 @@ namespace ESP {
     }
     private static string GetPowerText(Windmill windmill) {
       if (!windmill) return "";
-      var cover = Patch.m_cover(windmill);
+      var cover = Patch.Cover(windmill);
       var speed = Utils.LerpStep(windmill.m_minWindSpeed, 1f, EnvMan.instance.GetWindIntensity());
       var powerText = "Power: " + Format.Percent(windmill.GetPowerOutput());
       var speedText = Format.Percent(speed) + " speed";
@@ -348,7 +348,7 @@ namespace ESP {
     }
     public static float GetShipForwardSpeed(Ship obj) => obj.GetSpeed();
     public static float GetShipSpeed(Ship obj) {
-      var body = Patch.m_body(obj);
+      var body = Patch.Body(obj);
       Vector3 velocity = body.velocity;
       velocity.y = 0f;
       return velocity.magnitude;
@@ -370,7 +370,7 @@ namespace ESP {
     public static string Get(Ship obj) {
       if (!obj) return "";
       var lines = new List<string>();
-      var body = Patch.m_body(obj);
+      var body = Patch.Body(obj);
       var forwardSpeed = GetShipForwardSpeed(obj);
       var forwardAngle = 90f - Mathf.Atan2(obj.transform.forward.z, obj.transform.forward.x) / Math.PI * 180f;
       var avgForwardSpeed = "(" + Format.Fixed(shipForwardSpeeds.Average()) + " avg)";
@@ -395,10 +395,10 @@ namespace ESP {
       var hits = 0;
       Cover.GetCoverForPoint(startPos, out var percent, out var roof);
 
-      foreach (var vector in Patch.m_coverRays(cover)) {
+      foreach (var vector in Patch.CoverRays(cover)) {
         total++;
         RaycastHit raycastHit;
-        if (Physics.Raycast(startPos + vector * start, vector, out raycastHit, Constants.CoverRayCastLength - start, Patch.m_coverRayMask(cover)))
+        if (Physics.Raycast(startPos + vector * start, vector, out raycastHit, Constants.CoverRayCastLength - start, Patch.CoverRayMask(cover)))
           hits++;
       }
 

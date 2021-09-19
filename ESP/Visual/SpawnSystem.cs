@@ -8,7 +8,7 @@ namespace ESP {
     private static void DrawBiomes(SpawnSystem instance) {
       if (Settings.BiomeCornerRayWidth == 0)
         return;
-      var heightmap = Patch.m_heightmap(instance);
+      var heightmap = Patch.Heightmap(instance);
       var num = ZoneSystem.instance.m_zoneSize * 0.5f;
       var pos1 = new Vector3(num, 0f, num);
       var pos2 = new Vector3(-num, 0f, num);
@@ -43,7 +43,7 @@ namespace ESP {
     }
     private static void DrawSpawnSystems(SpawnSystem instance) {
       if (Settings.SpawnSystemRayWidth == 0) return;
-      var heightmap = Patch.m_heightmap(instance);
+      var heightmap = Patch.Heightmap(instance);
       var totalAmount = GetTotalAmountOfSpawnSystems(instance, heightmap);
       var counter = -totalAmount / 2;
       var num = 0;

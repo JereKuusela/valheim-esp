@@ -6,7 +6,7 @@ using UnityEngine;
 namespace ESP {
   public class SpawnAreaUtils {
     public static String Get(SpawnArea obj) {
-      var spawnTimer = Patch.m_spawnTimer(obj);
+      var spawnTimer = Patch.SpawnTimer(obj);
       int near, total;
       Patch.SpawnArea_GetInstances(obj, out near, out total);
       var lines = new List<string>(){

@@ -21,7 +21,6 @@ Creatures:
 
 
 Todo:
- - Check world gen vegetations and items in those, add generation info?
  - Stacksize to item tooltips
  - Add "spawn blocked" to HUD for current location?
  - Windmill base line cover comparison (since 4-5 are blocked by the propeller).
@@ -34,11 +33,5 @@ Todo:
  - Show object classnames on hover.
  - Experience meter to also include the first value (at least to total, over time to use average?).
  - Creatures: Add if creature doesn't attack objects to hover.
- - Generation parameters to locations, pickables, trees and rocks.
 
 Changes:
- - Added average ship speed to HUD.
- - Added setting to ignore forsaken power cooldowns.
- - Added setting to set the maximum attack chain level.
- - Fixed for Hearth & Home patch.
-
