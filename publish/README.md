@@ -47,9 +47,11 @@ Some use cases:
 - Growth timer, health and damage resistances of plants.
 - Visual indicator for pickables (green line when respawning, blue line when one time, stones and branches are turned off by default):
 	- Respawn timer.
+	- World generator parameters.
 - Visual indicator for hidden chests (white line).
 	- Possible chest items and their chances.
 - Visual indicator for pregenerated structures (black line).
+	- World generator parameters.
 - Visual indicator for trees, minerals and other destructibles (gray line, turned off by default):
 	- Current and max health.
 	- Damage resistances.
@@ -57,9 +59,10 @@ Some use cases:
 	- Noise created when hit.
 	- Created object when destroyed.
 	- Item drops with amounts and chances.
+	- World generator parameters.
 - Bounding boxes for mineral/stone support system to locate parts keeping the deposit from collapsing.
 - Stack size and despawn timer on dropped items.
-- Ship speed (both total and to forward direction), wind angle and wind strength on the HUD when sailing.
+- Ship speed (both current and average), wind angle and wind strength on the HUD when sailing.
 
 # Creatures
 
@@ -79,7 +82,7 @@ Some use cases:
 	- Damage resistances.
 	- Item drops.
 	- Attacks with damage, tool tier, range, hitbox and cooldown.
-	- Food timer and health gain when eating.
+	- Food timer.
 	- Breeding progress.
 	- Breeding limit.
 	- Wake up range and noise.
@@ -165,7 +168,7 @@ Some use cases:
 	- Updated for Hearth & Home patch.
 	- Added average ship speed to HUD.
 	- Added setting to ignore forsaken power cooldowns.
-	- AAdded setting to set the maximum attack chain level.
+	- Added setting to set the maximum attack chain level.
 	- Added generator stats to locations.
 	- Added generator stats to vegetation (trees, plants, rocks, etc.)
 - v1.4.0:
