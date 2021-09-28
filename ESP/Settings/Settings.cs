@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using HarmonyLib;
+using Modules;
 using UnityEngine;
 
 namespace ESP {
@@ -11,6 +12,7 @@ namespace ESP {
       InitVisuals(config);
       InitExcluded(config);
       InitColors(config);
+      MinerockSupport.Init(config);
     }
   }
 

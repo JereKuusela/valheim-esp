@@ -8,7 +8,6 @@ namespace ESP {
   public class Patch {
     private static T Get<T>(object obj, string field) => Traverse.Create(obj).Field<T>(field).Value;
     private static object Get(object obj, string field) => Traverse.Create(obj).Field<object>(field).Value;
-
     public static double GetElapsed(MonoBehaviour obj, string key, long defaultValue = 0) {
       var time = ZNet.instance.GetTime();
       var d = GetDateTime(obj, key, defaultValue);
@@ -30,7 +29,7 @@ namespace ESP {
     public static GameObject GetPrefab(MonoBehaviour obj) => ZNetScene.instance.GetPrefab(Nview(obj).GetZDO().GetPrefab());
     public static float Cover(Windmill obj) => Get<float>(obj, "m_cover");
     public static float Health(object obj) => Get<float>(obj, "m_health");
-    public static object Bound(object obj) => Get<float>(obj, "m_bound");
+    public static object Bound(object obj) => Get<object>(obj, "m_bound");
     public static Vector3 Pos(object obj) => Get<Vector3>(obj, "m_pos");
     public static Vector3 Size(object obj) => Get<Vector3>(obj, "m_size");
     public static Quaternion Rot(object obj) => Get<Quaternion>(obj, "m_rot");

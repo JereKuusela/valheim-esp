@@ -17,6 +17,7 @@ Some use cases:
 1. Install the [BepInExPack Valheim](https://valheim.thunderstore.io/package/denikson/BepInExPack_Valheim/)
 2. Download the latest zip
 3. Extract it in the \<GameDirectory\>\BepInEx\plugins\ folder.
+4. Optionally also install the [Configuration manager](https://github.com/BepInEx/BepInEx.ConfigurationManager/releases/tag/v16.4).
 
 # Structures
 

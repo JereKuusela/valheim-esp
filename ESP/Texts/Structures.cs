@@ -13,7 +13,7 @@ namespace ESP {
       return "None";
     }
     public static string Get(TreeLog obj) {
-      if (!Settings.Destructibles || !obj) return "";
+      if (!Settings.Destructibles || !IsValid(obj)) return "";
       var lines = new List<string>();
       var maxHealth = obj.m_health;
       var health = Patch.GetFloat(obj, "health", maxHealth);
@@ -62,7 +62,7 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string Get(TreeBase obj) {
-      if (!Settings.Destructibles || !obj) return "";
+      if (!Settings.Destructibles || !IsValid(obj)) return "";
       var lines = new List<string>();
       var maxHealth = obj.m_health;
       var health = Patch.GetFloat(obj, "health", maxHealth);
@@ -77,7 +77,7 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string Get(Destructible obj) {
-      if (!Settings.Destructibles || !obj) return "";
+      if (!Settings.Destructibles || !IsValid(obj)) return "";
       var lines = new List<string>();
       var health = Patch.GetFloat(obj, "health", obj.m_health);
       var maxHealth = obj.m_health;
@@ -91,7 +91,7 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string Get(DropOnDestroyed obj) {
-      if (!Settings.Destructibles || !obj) return "";
+      if (!Settings.Destructibles || !IsValid(obj)) return "";
       var lines = new List<string>();
       lines.Add(Get(obj.m_dropWhenDestroyed, 1));
       return Format.JoinLines(lines);
@@ -104,7 +104,7 @@ namespace ESP {
       return "Unknown";
     }
     public static string Get(WearNTear obj) {
-      if (!Settings.Structures || !obj) return "";
+      if (!Settings.Structures || !IsValid(obj)) return "";
       var lines = new List<string>();
       var health = obj.GetHealthPercentage();
 
@@ -121,7 +121,7 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string Get(Piece obj) {
-      if (!Settings.Structures || !obj) return "";
+      if (!Settings.Structures || !IsValid(obj)) return "";
       var text = "";
       if (obj.m_comfort > 0) {
         text += "Comfort: " + Format.Int(obj.m_comfort);
@@ -131,7 +131,7 @@ namespace ESP {
       return text;
     }
     public static string Get(Beehive obj) {
-      if (!Settings.Structures || !Settings.Progress || !obj) return "";
+      if (!Settings.Structures || !Settings.Progress || !IsValid(obj)) return "";
       var lines = new List<string>();
       var limit = obj.m_secPerUnit;
       if (limit > 0) {
@@ -142,8 +142,12 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string GetCover(Beehive obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       return GetCover(CoverUtils.GetCoverPoint(obj), obj.m_maxCover, false, false);
+    }
+    public static string GetCover(Player obj) {
+      if (!IsValid(obj)) return "";
+      return GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverPlayerLimit);
     }
     private static string GetItem(CookingStation obj, int slot) => Patch.GetString(obj, "slot" + slot);
     private static float GetTime(CookingStation obj, int slot) => Patch.GetFloat(obj, "slot" + slot);
@@ -159,14 +163,14 @@ namespace ESP {
       return Format.ProgressPercent("Progress", value, limit);
     }
     public static string Get(CookingStation obj) {
-      if (!Settings.Structures || !Settings.Progress || !obj) return "";
+      if (!Settings.Structures || !Settings.Progress || !IsValid(obj)) return "";
       var lines = new List<string>();
       for (var slot = 0; slot < obj.m_slots.Length; slot++)
         lines.Add(GetSlotText(obj, slot));
       return Format.JoinLines(lines);
     }
     public static string Get(Fermenter obj) {
-      if (!Settings.Structures || !Settings.Progress || !obj) return "";
+      if (!Settings.Structures || !Settings.Progress || !IsValid(obj)) return "";
       var lines = new List<string>();
       var limit = obj.m_fermentationDuration;
       if (limit > 0) {
@@ -177,18 +181,18 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string GetCover(Fermenter obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       return GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverFermenterLimit);
     }
     public static string Get(SmokeSpawner obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       var lines = new List<string>();
       lines.Add(GetSmokeLimit());
       lines.Add("Produces smoke every " + Format.Float(obj.m_interval) + " s, unless smoke within " + Format.Float(obj.m_testRadius) + " m");
       return Format.JoinLines(lines);
     }
     public static string Get(Smoke obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       var lines = new List<string>();
       lines.Add(": " + Format.Progress(Smoke.GetTotalSmoke(), Constants.SmokeAmountLimit, true));
       lines.Add(Format.ProgressPercent("Expires", Patch.Time(obj), obj.m_ttl));
@@ -206,7 +210,7 @@ namespace ESP {
     }
     private static string GetSmokeLimit() => "Smoke: " + Format.Progress(Smoke.GetTotalSmoke(), Constants.SmokeAmountLimit, true);
     public static string Get(Fireplace obj) {
-      if (!Settings.Structures || !Settings.Progress || !obj) return "";
+      if (!Settings.Structures || !Settings.Progress || !IsValid(obj)) return "";
       var lines = new List<string>();
       var limit = obj.m_secPerFuel;
       if (limit > 0) {
@@ -217,7 +221,7 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     private static string GetWind(Fireplace obj) {
-      if (!obj || !CoverUtils.ChecksCover(obj)) return "";
+      if (!IsValid(obj) || !CoverUtils.ChecksCover(obj)) return "";
       var wind = EnvMan.instance.GetWindIntensity();
       var limit = Constants.WindFireplaceLimit;
       var pastLimit = wind >= limit;
@@ -226,7 +230,7 @@ namespace ESP {
       return text;
     }
     private static string GetDistanceFromRoof(Fireplace obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       if (Physics.Raycast(CoverUtils.GetCoverPoint(obj), Vector3.up, out var raycastHit, Constants.RoofFireplaceLimit, Patch.SolidRayMask(obj))) {
         var distance = raycastHit.distance;
         return "Roof (" + Format.Float(Constants.RoofFireplaceLimit, Format.FORMAT, "red") + " m): " + Format.Float(distance) + " m";
@@ -234,7 +238,7 @@ namespace ESP {
       return "";
     }
     public static string GetCover(Fireplace obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       var lines = new List<string>();
       if (CoverUtils.ChecksCover(obj)) lines.Add(GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverFireplaceLimit, false));
       lines.Add(GetWind(obj));
@@ -242,7 +246,7 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string Get(MineRock obj) {
-      if (!Settings.Destructibles || !obj) return "";
+      if (!Settings.Destructibles || !IsValid(obj)) return "";
       var lines = new List<string>();
       var maxHealth = obj.m_health;
       var areas = Patch.HitAreas(obj);
@@ -261,7 +265,7 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string Get(MineRock5 obj) {
-      if (!Settings.Destructibles || !obj) return "";
+      if (!Settings.Destructibles || !IsValid(obj)) return "";
       var lines = new List<string>();
       var maxHealth = obj.m_health;
       var areas = Patch.HitAreas(obj);
@@ -275,7 +279,7 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string Get(Plant obj) {
-      if (!Settings.Progress || !obj) return "";
+      if (!Settings.Progress || !IsValid(obj)) return "";
       var lines = new List<string>();
       var limit = Patch.Plant_GetGrowTime(obj);
       if (limit > 0) {
@@ -289,11 +293,11 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string Get(EffectArea obj) {
-      if (Settings.EffectAreaLineWidth == 0 || !obj) return "";
+      if (Settings.EffectAreaLineWidth == 0 || !IsValid(obj)) return "";
       return EffectAreaUtils.GetTypeText(obj.m_type) + " " + Format.Radius(obj.GetRadius());
     }
     public static string Get(PrivateArea obj) {
-      if (Settings.EffectAreaLineWidth == 0 || !obj) return "";
+      if (Settings.EffectAreaLineWidth == 0 || !IsValid(obj)) return "";
       return "Protection " + Format.Radius(obj.m_radius);
     }
 
@@ -322,7 +326,7 @@ namespace ESP {
       return powerText + " from " + speedText + " and " + coverText;
     }
     public static string Get(Smelter obj) {
-      if (!Settings.Structures || !Settings.Progress || !obj) return "";
+      if (!Settings.Structures || !Settings.Progress || !IsValid(obj)) return "";
       var lines = new List<string>();
       lines.Add(GetProgressText(obj));
       lines.Add(GetFuelText(obj));
@@ -368,7 +372,7 @@ namespace ESP {
       if (shipForwardSpeeds.Count > SPEED_COUNT) shipForwardSpeeds.Dequeue();
     }
     public static string Get(Ship obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       var lines = new List<string>();
       var body = Patch.Body(obj);
       var forwardSpeed = GetShipForwardSpeed(obj);
@@ -415,27 +419,27 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string Get(Bed obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       return GetCover(obj);
     }
     public static string Get(Container obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       return Get(obj.m_defaultItems, 1);
     }
     public static string GetCover(Bed obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       return GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverBedLimit);
     }
     public static string Get(CraftingStation obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       return "\n" + GetCover(obj);
     }
     public static string GetCover(CraftingStation obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       return GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverCraftingStationLimit);
     }
     public static string GetCover(Windmill obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       return GetCover(CoverUtils.GetCoverPoint(obj), 0, false);
     }
   }

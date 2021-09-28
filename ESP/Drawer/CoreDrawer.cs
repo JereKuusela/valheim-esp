@@ -127,17 +127,28 @@ namespace ESP {
     }
     ///<summary>Creates the line renderer object.</summary>
     private static LineRenderer CreateRenderer(GameObject obj, Color color, float width) {
-      var component = obj.AddComponent<LineRenderer>();
-      component.useWorldSpace = false;
-      component.material = new Material(Shader.Find("Standard TwoSided"));
-      component.material.SetColor("_Color", color);
-      component.widthMultiplier = width;
-      return component;
+      var renderer = obj.AddComponent<LineRenderer>();
+      renderer.useWorldSpace = false;
+      var material = new Material(Shader.Find("Particles/Standard Unlit"));
+      material.SetColor("_Color", color);
+      material.SetFloat("_BlendOp", (float)UnityEngine.Rendering.BlendOp.Subtract);
+      var texture = new Texture2D(1, 1);
+      texture.SetPixel(0, 0, Color.gray);
+      material.SetTexture("_MainTex", texture);
+      renderer.material = material;
+      renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+      renderer.widthMultiplier = width;
+      return renderer;
     }
     ///<summary>Changes object color.</summary>
     private static void ChangeColor(GameObject obj, Color color) {
       foreach (var renderer in obj.GetComponentsInChildren<LineRenderer>(true))
         renderer.material.SetColor("_Color", color);
+    }
+    ///<summary>Changes object line width.</summary>
+    private static void ChangeLineWidth(GameObject obj, float width) {
+      foreach (var renderer in obj.GetComponentsInChildren<LineRenderer>(true))
+        renderer.widthMultiplier = width;
     }
     ///<summary>Adds an advanced collider to a complex shape (like cone).</summary>
     public static void AddMeshCollider(GameObject obj) {
@@ -182,11 +193,18 @@ namespace ESP {
         if (customTag.customTag == tag) Destroy(customTag.gameObject.gameObject);
       }
     }
-    ///<summary>Removes visuals with a given tag.</summary>
+    ///<summary>Sets colors to visuals with a given tag.</summary>
     public static void SetColor(string tag, Color color) {
       foreach (var customTag in Resources.FindObjectsOfTypeAll<CustomTag>()) {
         if (customTag.customTag == tag)
-          ChangeColor(customTag.gameObject.gameObject, Color.magenta);
+          ChangeColor(customTag.gameObject.gameObject, color);
+      }
+    }
+    ///<summary>Sets line width to visuals with a given tag.</summary>
+    public static void SetLineWidth(string tag, float width) {
+      foreach (var customTag in Resources.FindObjectsOfTypeAll<CustomTag>()) {
+        if (customTag.customTag == tag)
+          ChangeLineWidth(customTag.gameObject.gameObject, width);
       }
     }
   }

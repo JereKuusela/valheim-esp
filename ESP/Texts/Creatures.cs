@@ -20,7 +20,7 @@ namespace ESP {
       return text;
     }
     public static string GetAttack(Humanoid obj) {
-      if (!Settings.Creatures || !Settings.Attacks || !obj) return "";
+      if (!Settings.Creatures || !Settings.Attacks || !IsValid(obj)) return "";
       var weapons = obj.GetInventory().GetAllItems().Where(item => item.IsWeapon());
       var time = Time.time;
       // Some attacks have multiple instances so group them to reduce clutter.
@@ -96,7 +96,7 @@ namespace ESP {
       return "";
     }
     public static string Get(Character obj, BaseAI baseAI, MonsterAI monsterAI) {
-      if (!Settings.Resistances || !obj || !baseAI || !monsterAI)
+      if (!Settings.Resistances || !IsValid(obj) || !baseAI || !monsterAI)
         return "";
       var lines = new List<string>();
       var staggerDamage = Patch.StaggerDamage(obj);

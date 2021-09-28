@@ -1,63 +1,19 @@
 using System;
-using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 
 namespace ESP {
   public partial class Visual {
-    private static Collider[] tempColliders = new Collider[128];
     private static bool IsDisabled(string name) {
       if (Settings.EffectAreaLineWidth == 0) return true;
       return LocationUtils.IsIn(Settings.ExcludedAreaEffects, name);
     }
-    public static void DrawSupport(MineRock5 obj) {
-      Drawer.Remove(obj, Constants.SupportTag);
-      if (Settings.MineRockSupportLineWidth == 0) return;
-      var areas = Patch.HitAreas(obj);
-      var remaining = areas.Count(area => Patch.Health(area) > 0f);
-      var index = -1;
-      foreach (var area in areas) {
-        index++;
-        var health = Patch.Health(area);
-        if (health <= 0f) continue;
-        var bounds = Patch.Bound(area);
-        var pos = Patch.Pos(bounds);
-        var size = Patch.Size(bounds);
-        var rot = Patch.Rot(bounds);
-        var mask = Patch.RayMask(obj);
-        int num = Physics.OverlapBoxNonAlloc(obj.transform.position + pos, size, tempColliders, rot, mask);
-        var areaCollider = Patch.Collider(area);
-        for (int j = 0; j < num; j++) {
-          var collider = tempColliders[j];
-          if (!(collider == areaCollider) && !(collider.attachedRigidbody != null) && !collider.isTrigger) {
-            var componentInParent = collider.gameObject.GetComponentInParent<IDestructible>();
-            if ((object)componentInParent == obj) continue;
-            var supported = Patch.MineRock5_GetSupport(obj, collider);
-            if (supported) {
-              var box = Drawer.DrawBox(obj, Settings.MineRockSupportColor, Settings.MineRockSupportLineWidth, Drawer.OTHER, pos, size);
-              Drawer.AddTag(box, Constants.SupportTag);
-              Drawer.AddText(box, "Index: " + Format.Int(index), "Size: " + Format.Coordinates(2 * size, "F1"));
-              break;
-            }
-          }
-        }
-      }
-    }
-
     public static void Draw(EffectArea obj) {
       if (!obj) return;
       var text = EffectAreaUtils.GetTypeText(obj.m_type);
       if (IsDisabled(text)) return;
       var color = EffectAreaUtils.GetEffectColor(obj.m_type);
-      var radius = 0f;
-      try {
-        // Try-catch since there was a NullReferenceException reported happening here.
-        // Unable to reproduce. 
-        radius = obj.GetRadius() * obj.transform.lossyScale.x;
-      } catch {
-
-      }
-
+      var radius = obj.GetRadius() * obj.transform.lossyScale.x;
       var line = Drawer.DrawSphere(obj, Math.Max(0.5f, radius), color, Settings.EffectAreaLineWidth, Drawer.OTHER);
       Drawer.AddText(line, text, Format.Radius(radius));
     }
@@ -122,10 +78,6 @@ namespace ESP {
       Visual.Draw(__instance.GetComponent<Windmill>());
     }
   }
-  [HarmonyPatch(typeof(MineRock5), "UpdateSupport")]
-  public class MineRock5_Support {
-    public static void Postfix(MineRock5 __instance) => Visual.DrawSupport(__instance);
-  }
   [HarmonyPatch(typeof(Smoke), "Awake")]
   public class Smoke_Visual {
     public static void Postfix(Smoke __instance) => Visual.Draw(__instance);
@@ -168,5 +120,13 @@ namespace ESP {
   [HarmonyPatch(typeof(Windmill), "CheckCover")]
   public class Windmill_Visual_Update {
     public static void Postfix(Windmill __instance) => Visual.Update(__instance);
+  }
+  [HarmonyPatch(typeof(Player), "Awake")]
+  public class Player_Cover {
+    public static void Postfix(Player __instance) => Visual.DrawCover(__instance);
+  }
+  [HarmonyPatch(typeof(Player), "LateUpdate")]
+  public class Player_Cover_Update {
+    public static void Postfix(Player __instance) => Visual.Update(__instance);
   }
 }

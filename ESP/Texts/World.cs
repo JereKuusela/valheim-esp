@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ESP {
   public partial class Texts {
     public static string Get(Location obj) {
-      if (!obj || !Settings.Locations) return "";
+      if (!IsValid(obj) || !Settings.Locations) return "";
       var name = Utils.GetPrefabName(obj.gameObject).ToLower();
       var lines = new List<string>();
       var instances = ZoneSystem.instance.m_locationInstances;

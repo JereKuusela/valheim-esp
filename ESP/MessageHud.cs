@@ -61,7 +61,13 @@ namespace ESP {
       return EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment() + " (" + EnvUtils.GetWindHud() + ")";
     }
     private static string GetLocation(Vector3 location) {
-      return EnvUtils.GetLocation(location) + ", " + EnvUtils.GetAltitude(location) + ", " + EnvUtils.GetForest(location);
+      var lines = new List<string>(){
+        EnvUtils.GetLocation(location),
+        EnvUtils.GetAltitude(location),
+        EnvUtils.GetForest(location),
+        EnvUtils.GetBlocked(location)
+      };
+      return Format.JoinRow(lines);
     }
     public static string GetTrackedCreatures() {
       if (Settings.TrackedCreatures == "") return "";

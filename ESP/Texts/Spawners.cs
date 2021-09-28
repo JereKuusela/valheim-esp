@@ -26,7 +26,7 @@ namespace ESP {
       return elapsedText + " / " + Format.Int(obj.m_respawnTimeMinutes) + " minutes";
     }
     public static string Get(Pickable obj) {
-      if (!obj || !Settings.Support) return "";
+      if (!IsValid(obj) || !Settings.Support) return "";
       var lines = new List<string>();
       var respawn = GetRespawnTime(obj);
       lines.Add("Respawn: " + respawn);
@@ -36,7 +36,7 @@ namespace ESP {
     }
 
     public static string Get(CreatureSpawner obj) {
-      if (!obj) return "";
+      if (!IsValid(obj)) return "";
       var respawn = GetRespawnTime(obj);
       var noise = obj.m_triggerNoise > 0 ? " with noise of " + Format.Int(obj.m_triggerNoise) : "";
       var lines = new List<string>();

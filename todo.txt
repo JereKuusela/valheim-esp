@@ -33,5 +33,14 @@ Todo:
  - Show object classnames on hover.
  - Experience meter to also include the first value (at least to total, over time to use average?).
  - Creatures: Add if creature doesn't attack objects to hover.
+ - Weapon skill.
+ - Creature faction and grouo.
+ - Coords and zone to bigger minimap (copy from upgrade world).
+ - Commands to toggle individual features (*esp_toggle_XXX) to allow binding toggles, requires a separate setting for toggle.
 
 Changes:
+- More precision to percentages (fix precision for some, only spawn/generator stuff needs more precision!).
+- Added cover ray visualization for players (disabled by default).
+- Fixed error when pickinng up items (also other similar cases fixed).
+- Added improved minerock support settings (can specify limits when boxes are shown).
+

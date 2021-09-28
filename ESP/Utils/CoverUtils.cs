@@ -8,6 +8,7 @@ namespace ESP {
     public static Vector3 GetCoverPoint(Fireplace obj) => obj.transform.position + Vector3.up * obj.m_coverCheckOffset;
     public static Vector3 GetCoverPoint(Bed obj) => obj.GetSpawnPoint();
     public static Vector3 GetCoverPoint(Windmill obj) => obj.m_propeller.transform.position;
+    public static Vector3 GetCoverPoint(Player obj) => obj.GetCenterPoint();
     public static bool ChecksCover(Fireplace obj) => obj.m_enabledObjectLow != null && obj.m_enabledObjectHigh != null;
   }
 }

@@ -18,7 +18,7 @@ namespace ESP {
     public static string Fixed(double value) {
       return String(value.ToString("N2", CultureInfo.InvariantCulture).PadLeft(5, '0'));
     }
-    public static string Percent(double value, string color = "yellow") => String(value.ToString("P0", CultureInfo.InvariantCulture), color);
+    public static string Percent(double value, string color = "yellow") => String((100.0 * value).ToString(FORMAT, CultureInfo.InvariantCulture) + " %", color);
 
     public static string Range(double min, double max, string color = "yellow") {
       if (min == max)

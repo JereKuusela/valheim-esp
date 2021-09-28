@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ESP {
   public partial class Settings {
-    private static Color ParseColor(string color) {
+    public static Color ParseColor(string color) {
       if (ColorUtility.TryParseHtmlString(color, out var parsed)) return parsed;
       return Color.white;
     }
@@ -57,8 +57,6 @@ namespace ESP {
     public static Color SpawnAreaNearColor => ParseColor(configSpawnAreaNearColor.Value);
     public static ConfigEntry<string> configSpawnAreaSpawnColor;
     public static Color SpawnAreaSpawnColor => ParseColor(configSpawnAreaSpawnColor.Value);
-    public static ConfigEntry<string> configMineRockSupportColor;
-    public static Color MineRockSupportColor => ParseColor(configMineRockSupportColor.Value);
     public static ConfigEntry<string> configEffectAreaPrivateAreaColor;
     public static Color EffectAreaPrivateAreaColor => ParseColor(configEffectAreaPrivateAreaColor.Value);
     public static ConfigEntry<string> configEffectAreaComfortColor;
@@ -132,10 +130,6 @@ namespace ESP {
       configSpawnAreaTriggerColor = config.Bind(section, "Spawner trigger sphere", "red", "");
       configSpawnAreaNearColor = config.Bind(section, "Spawner near limit sphere", "white", "");
       configSpawnAreaSpawnColor = config.Bind(section, "Spawner spawn sphere", "cyan", "");
-      configMineRockSupportColor = config.Bind(section, "Minerock support bounding box", "red", "");
-      configMineRockSupportColor.SettingChanged += (s, e) => {
-        Drawer.SetColor(Constants.SupportTag, MineRockSupportColor);
-      };
       configEffectAreaPrivateAreaColor = config.Bind(section, "Ward effect sphere", "gray", "");
       configEffectAreaComfortColor = config.Bind(section, "Comfort effect sphere", "cyan", "");
       configEffectAreaBurningColor = config.Bind(section, "Burning effect sphere", "yellow", "");

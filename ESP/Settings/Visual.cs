@@ -10,6 +10,8 @@ namespace ESP {
     public static float BreedingLineWidth => configBreedingLineWidth.Value;
     public static ConfigEntry<float> configCoverRayWidth;
     public static float CoverRayWidth => configCoverRayWidth.Value;
+    public static ConfigEntry<float> configPlayerCoverRayWidth;
+    public static float PlayerCoverRayWidth => configPlayerCoverRayWidth.Value;
     public static ConfigEntry<float> configSmokeLineWidth;
     public static float SmokeLineWidth => configSmokeLineWidth.Value;
     public static ConfigEntry<float> configSenseLineWidth;
@@ -34,8 +36,6 @@ namespace ESP {
     public static float CustomContainerEffectAreaRadius => configCustomContainerEffectAreaRadius.Value;
     public static ConfigEntry<float> configCustomCraftingEffectAreaRadius;
     public static float CustomCraftingEffectAreaRadius => configCustomCraftingEffectAreaRadius.Value;
-    public static ConfigEntry<float> configMineRockSupportLineWidth;
-    public static float MineRockSupportLineWidth => configMineRockSupportLineWidth.Value;
     public static ConfigEntry<float> configRulerRadius;
     public static float RulerRadius => configRulerRadius.Value;
     public static ConfigEntry<float> configChestRayWidth;
@@ -59,6 +59,7 @@ namespace ESP {
       configSenseLineWidth = config.Bind(section, "Creature senses", 0.1f, "Line width of sight and hear ranges (0 to disable)");
       configBreedingLineWidth = config.Bind(section, "Breeding limits", 0.1f, "Visualize breeding parther check and total limit ranges");
       configCoverRayWidth = config.Bind(section, "Cover rays", 0.1f, "Visualize cover check rays");
+      configPlayerCoverRayWidth = config.Bind(section, "Player cover rays", 0.0f, "Visualize cover check rays for players");
       configSmokeLineWidth = config.Bind(section, "Smoke", 0.1f, "Visualize smoke particles");
       configCreatureRayWidth = config.Bind(section, "Creature rays", 0.25f, "Line width for tracked creature locations (0 to disable)");
       configCreatureSpawnerRayWidth = config.Bind(section, "Spawn points", 0.1f, "Line width of fixed creature spawn points (0 to disable)");
@@ -78,7 +79,6 @@ namespace ESP {
       configCustomContainerEffectAreaRadius = config.Bind(section, "Custom radius for containers", 0.0f, "Custom effect area sphere for containers (0 to disable)");
       configCustomCraftingEffectAreaRadius = config.Bind(section, "Custom radius for crafting stations", 0.0f, "Custom effect area sphere for crafting stations (0 to disable)");
       configNoiseLineWidth = config.Bind(section, "Noise", 0.0f, "Line width of noise range (0 to disable)");
-      configMineRockSupportLineWidth = config.Bind(section, "Mine rock support", 0.0f, "Line width of mine rock support bounding boxes (0 to disable)");
     }
   }
 }

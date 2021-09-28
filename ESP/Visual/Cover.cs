@@ -39,6 +39,10 @@ namespace ESP {
       if (!obj || Settings.CoverRayWidth == 0) return;
       DrawCover(obj, CoverUtils.GetCoverPoint(obj), Format.Name(obj), Texts.GetCover(obj));
     }
+    public static void DrawCover(Player obj) {
+      if (!obj || Settings.PlayerCoverRayWidth == 0) return;
+      DrawCover(obj, CoverUtils.GetCoverPoint(obj), Format.Name(obj), Texts.GetCover(obj));
+    }
     private static void UpdateCover(MonoBehaviour obj, Vector3 startPos, string text) {
       var renderers = Drawer.GetRenderers(obj, Constants.CoverTag);
       var cover = new Cover();
@@ -53,6 +57,7 @@ namespace ESP {
           color = Settings.CoverRayBlockedColor;
         var renderer = renderers[index];
         renderer.material.SetColor("_Color", color);
+        renderer.transform.parent.transform.rotation = Quaternion.identity;
         var staticText = renderer.GetComponent<StaticText>();
         if (staticText) staticText.text = text;
         index++;
@@ -80,6 +85,10 @@ namespace ESP {
     }
     public static void Update(Windmill obj) {
       if (!obj || Settings.CoverRayWidth == 0) return;
+      UpdateCover(obj, CoverUtils.GetCoverPoint(obj), Texts.GetCover(obj));
+    }
+    public static void Update(Player obj) {
+      if (!obj || Settings.PlayerCoverRayWidth == 0) return;
       UpdateCover(obj, CoverUtils.GetCoverPoint(obj), Texts.GetCover(obj));
     }
   }

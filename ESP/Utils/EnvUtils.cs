@@ -64,6 +64,7 @@ namespace ESP {
 
     public static string GetLocation(Vector3 location) => "Location: " + Format.Coordinates(location);
     public static string GetAltitude(Vector3 location) => "Altitude: " + Format.Int(location.y - ZoneSystem.instance.m_waterLevel);
+    public static string GetBlocked(Vector3 location) => ZoneSystem.instance.IsBlocked(location) ? "blocked" : "";
     public static string GetForest(Vector3 location) {
       var inForest = WorldGenerator.InForest(location);
       return (inForest ? "Forest" : "No forest") + " (" + Format.Float(WorldGenerator.GetForestFactor(location)) + ")";
