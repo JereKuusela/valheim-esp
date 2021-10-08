@@ -1,4 +1,6 @@
+using Text;
 using UnityEngine;
+using Visualization;
 
 namespace ESP {
   public partial class Visual {
@@ -10,9 +12,8 @@ namespace ESP {
         var color = Settings.CoverRayColor;
         if (Physics.Raycast(startPos + vector * start, vector, out var raycastHit, Constants.CoverRayCastLength - start, Patch.CoverRayMask(cover)))
           color = Settings.CoverRayBlockedColor;
-        var line = Drawer.DrawLineWithFixedRotation(obj, delta + vector * start, delta + vector * Constants.CoverRayCastLength, color, Settings.CoverRayWidth, Drawer.OTHER);
-        Drawer.AddText(line, name, text);
-        Drawer.AddTag(line, Constants.CoverTag);
+        var line = Visualization.Draw.DrawLineWithFixedRotation(Tag.StructureCover, obj, delta + vector * start, delta + vector * Constants.CoverRayCastLength, color, Settings.CoverRayWidth);
+        Visualization.Draw.AddText(line, name, text);
       }
     }
     public static void DrawCover(CraftingStation obj) {
@@ -44,7 +45,7 @@ namespace ESP {
       DrawCover(obj, CoverUtils.GetCoverPoint(obj), Format.Name(obj), Texts.GetCover(obj));
     }
     private static void UpdateCover(MonoBehaviour obj, Vector3 startPos, string text) {
-      var renderers = Drawer.GetRenderers(obj, Constants.CoverTag);
+      var renderers = Visualization.Draw.GetRenderers(obj, Tag.StructureCover);
       var cover = new Cover();
       var vectors = Patch.CoverRays(cover);
       if (renderers.Length != vectors.Length) return;

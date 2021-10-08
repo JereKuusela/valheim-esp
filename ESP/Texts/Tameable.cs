@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Text;
 
 namespace ESP {
   public partial class Texts {

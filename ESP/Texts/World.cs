@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Text;
 using UnityEngine;
 
 namespace ESP {
@@ -93,6 +94,12 @@ namespace ESP {
       }
       if (lines.Count > 0) lines.Insert(0, " ");
       return Format.JoinLines(lines);
+    }
+
+    public static string Get(RandomSpawn obj) {
+      if (!IsValid(obj)) return "";
+      return "Chance to spawn: " + Format.Percent(obj.m_chanceToSpawn);
+
     }
   }
 }

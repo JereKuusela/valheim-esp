@@ -1,4 +1,5 @@
 using System;
+using Text;
 using UnityEngine;
 
 namespace ESP {
@@ -62,12 +63,12 @@ namespace ESP {
     }
     public static double GetAvgWind(EnvEntry env) => (env.m_env.m_windMin + env.m_env.m_windMax) / 2.0 * env.m_weight;
 
-    public static string GetLocation(Vector3 location) => "Location: " + Format.Coordinates(location);
-    public static string GetAltitude(Vector3 location) => "Altitude: " + Format.Int(location.y - ZoneSystem.instance.m_waterLevel);
-    public static string GetBlocked(Vector3 location) => ZoneSystem.instance.IsBlocked(location) ? "blocked" : "";
-    public static string GetForest(Vector3 location) {
-      var inForest = WorldGenerator.InForest(location);
-      return (inForest ? "Forest" : "No forest") + " (" + Format.Float(WorldGenerator.GetForestFactor(location)) + ")";
+    public static string GetLocation(Vector3 position) => "Position: " + Format.Coordinates(position);
+    public static string GetAltitude(Vector3 position) => "Altitude: " + Format.Int(position.y - ZoneSystem.instance.m_waterLevel);
+    public static string GetBlocked(Vector3 position) => ZoneSystem.instance.IsBlocked(position) ? "blocked" : "";
+    public static string GetForest(Vector3 position) {
+      var inForest = WorldGenerator.InForest(position);
+      return (inForest ? "Forest" : "No forest") + " (" + Format.Float(WorldGenerator.GetForestFactor(position)) + ")";
     }
 
   }

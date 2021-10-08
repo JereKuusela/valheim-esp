@@ -1,5 +1,7 @@
 using HarmonyLib;
+using Text;
 using UnityEngine;
+using Visualization;
 
 namespace ESP {
   public partial class Visual {
@@ -17,7 +19,7 @@ namespace ESP {
       var name = instance.name;
       var m_name = instance.m_name;
       var localized = Localization.instance.Localize(instance.m_name);
-      var tracked = Settings.TrackedCreatures;
+      var tracked = Settings.TrackedObjects;
       return LocationUtils.IsIn(tracked, name) || LocationUtils.IsIn(tracked, m_name) || LocationUtils.IsIn(tracked, localized);
     }
 
@@ -27,7 +29,7 @@ namespace ESP {
     private static void DrawNoise(Character instance) {
       if (Settings.NoiseLineWidth == 0 || CharacterUtils.IsExcluded(instance))
         return;
-      var obj = Drawer.DrawSphere(instance, Patch.NoiseRange(instance), Settings.NoiseColor, Settings.NoiseLineWidth, Drawer.CREATURE);
+      var obj = Draw.DrawSphere(Tag.CreatureNoise, instance, Patch.NoiseRange(instance), Settings.NoiseColor, Settings.NoiseLineWidth);
       obj.AddComponent<NoiseText>().character = instance;
     }
     public static void Postfix(Character __instance) {
@@ -40,7 +42,7 @@ namespace ESP {
     public static void Postfix(Character __instance, float ___m_noiseRange) {
       if (Settings.NoiseLineWidth == 0 || CharacterUtils.IsExcluded(__instance))
         return;
-      Drawer.UpdateSphere(__instance, ___m_noiseRange, Settings.NoiseLineWidth);
+      Draw.UpdateSphere(__instance, ___m_noiseRange, Settings.NoiseLineWidth);
     }
   }
   public class NoiseText : MonoBehaviour, Hoverable {
@@ -53,7 +55,7 @@ namespace ESP {
 
     public static void Postfix(Character __instance, ref string __result) {
       if (!Settings.ExtraInfo) return;
-      Hoverables.AddTexts(__instance.gameObject, ref __result);
+      Text.AddTexts(__instance.gameObject, ref __result);
     }
   }
 

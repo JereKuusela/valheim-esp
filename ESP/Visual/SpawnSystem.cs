@@ -1,5 +1,7 @@
 using HarmonyLib;
+using Text;
 using UnityEngine;
+using Visualization;
 
 namespace ESP {
 
@@ -24,7 +26,7 @@ namespace ESP {
       DrawMarker(instance, pos4, biome4);
     }
     private static void DrawMarker(MonoBehaviour parent, Vector3 position, Heightmap.Biome biome) {
-      var obj = Drawer.DrawMarkerLine(parent, Texts.GetColor(biome), Settings.BiomeCornerRayWidth, Drawer.ZONE, position);
+      var obj = Draw.DrawMarkerLine(Tag.ZoneCorner, parent, Texts.GetColor(biome), Settings.BiomeCornerRayWidth, position);
       var text = obj.AddComponent<BiomeText>();
       text.biome = biome;
     }
@@ -55,7 +57,7 @@ namespace ESP {
         if (!IsEnabled(spawnData)) return;
         var stableHashCode = ("b_" + spawnData.m_prefab.name + num.ToString()).GetStableHashCode();
         var position = new Vector3(counter * 2 * Settings.SpawnSystemRayWidth, 0, 0);
-        var obj = Drawer.DrawMarkerLine(instance, Texts.GetColor(biome), Settings.SpawnSystemRayWidth, Drawer.ZONE, position);
+        var obj = Draw.DrawMarkerLine(Tag.SpawnZone, instance, Texts.GetColor(biome), Settings.SpawnSystemRayWidth, position);
         var text = obj.AddComponent<SpawnSystemText>();
         text.spawnSystem = instance;
         text.spawnData = spawnData;
@@ -65,7 +67,7 @@ namespace ESP {
     }
     private static void DrawRandEventSystem(SpawnSystem instance) {
       if (Settings.RandEventSystemRayWidth == 0) return;
-      var obj = Drawer.DrawMarkerLine(instance, Settings.RandomEventSystemRayColor, Settings.RandEventSystemRayWidth, Drawer.ZONE, new Vector3(0, 0, 5));
+      var obj = Draw.DrawMarkerLine(Tag.RandomEventSystem, instance, Settings.RandomEventSystemRayColor, Settings.RandEventSystemRayWidth, new Vector3(0, 0, 5));
       obj.AddComponent<RandEventSystemText>().spawnSystem = instance;
     }
     public static void Postfix(SpawnSystem __instance) {
@@ -90,7 +92,7 @@ namespace ESP {
 
   public class BiomeText : MonoBehaviour, Hoverable {
     public string GetHoverText() => Texts.Get(biome);
-    public string GetHoverName() => Texts.GetName(biome);
+    public string GetHoverName() => Format.Name(biome);
     public Heightmap.Biome biome;
   }
 }

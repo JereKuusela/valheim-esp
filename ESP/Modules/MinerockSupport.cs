@@ -1,12 +1,14 @@
 using System;
 using System.Linq;
 using BepInEx.Configuration;
-using ESP;
 using HarmonyLib;
+using Text;
 using UnityEngine;
+using Visualization;
 
 namespace Modules {
   public class MinerockSupport {
+    public const string TagSupport = "MINEROCK_SUPPORT";
     public static ConfigEntry<float> configLineWidth;
     private static float LineWidth => Math.Max(0.01f, configLineWidth.Value);
     public static ConfigEntry<int> configMaxAmount;
@@ -21,16 +23,16 @@ namespace Modules {
       configMinSize = config.Bind(section, "Min size", 10, "Minimum amount of parts to display any boxes.");
       configLineWidth = config.Bind(section, "Line width", 0.02f, "Line width of the bounding boxes.");
       configLineWidth.SettingChanged += (s, e) => {
-        Drawer.SetLineWidth(Constants.SupportTag, LineWidth);
+        Draw.SetLineWidth(TagSupport, LineWidth);
       };
       configColor = config.Bind(section, "Color", "red", "");
       configColor.SettingChanged += (s, e) => {
-        Drawer.SetColor(Constants.SupportTag, Color);
+        Draw.SetColor(TagSupport, Color);
       };
     }
     private static Collider[] tempColliders = new Collider[128];
     public static void DrawSupport(MineRock5 obj) {
-      Drawer.Remove(obj, Constants.SupportTag);
+      Draw.Remove(obj, TagSupport);
       if (LineWidth == 0) return;
       var areas = ESP.Patch.HitAreas(obj);
       if (areas.Count() < MinSize) return;
@@ -56,15 +58,14 @@ namespace Modules {
             var supported = ESP.Patch.MineRock5_GetSupport(obj, collider);
             if (supported) {
               supportedCount++;
-              var box = Drawer.DrawBox(obj, Color, LineWidth, "", pos, size);
-              Drawer.AddTag(box, Constants.SupportTag);
-              Drawer.AddText(box, "Index: " + Format.Int(index), "Size: " + Format.Coordinates(2 * size, "F1"));
+              var box = Draw.DrawBox(TagSupport, obj, Color, LineWidth, pos, size);
+              Draw.AddText(box, "Index: " + Format.Int(index), "Size: " + Format.Coordinates(2 * size, "F1"));
               break;
             }
           }
         }
       }
-      if (supportedCount > MaxAmount) Drawer.Remove(obj, Constants.SupportTag);
+      if (supportedCount > MaxAmount) Draw.Remove(obj, TagSupport);
     }
   }
   [HarmonyPatch(typeof(MineRock5), "UpdateSupport")]

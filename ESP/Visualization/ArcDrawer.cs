@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
 
-namespace ESP {
-  public partial class Drawer {
+namespace Visualization {
+  public partial class Draw {
     ///<summary>Returns how many straigth lines are used to draw the arc</summary>
     private static int GetSegments(float angle) => (int)Math.Floor(32 * angle / 360);
     ///<summary>Returns the arc point at a given angle and radius on the X plane</summary>
@@ -81,11 +81,11 @@ namespace ESP {
       UpdateArcZ(renderer, position, radius, angle, width);
     }
     ///<summary>Creates a renderer with two frontal arcs (vertical and horizontal).</summary>
-    public static GameObject DrawArc(MonoBehaviour parent, Vector3 position, float radius, float angle, Color color, float width, string name) {
-      var obj = Drawer.CreateObject(parent.gameObject, name);
-      Drawer.DrawArcY(Drawer.CreateObject(obj, name), position, radius, angle, color, width);
-      Drawer.DrawArcX(Drawer.CreateObject(obj, name), position, radius, angle, color, width);
-      Drawer.AddMeshCollider(obj);
+    public static GameObject DrawArc(string tag, MonoBehaviour parent, Vector3 position, float radius, float angle, Color color, float width) {
+      var obj = Draw.CreateObject(parent.gameObject, tag);
+      Draw.DrawArcY(Draw.CreateObject(obj), position, radius, angle, color, width);
+      Draw.DrawArcX(Draw.CreateObject(obj), position, radius, angle, color, width);
+      Draw.AddMeshCollider(obj);
       return obj;
     }
   }

@@ -1,4 +1,6 @@
+using Text;
 using UnityEngine;
+using Visualization;
 
 namespace ESP {
   public class Ruler : MonoBehaviour {
@@ -10,11 +12,11 @@ namespace ESP {
     public static void Set(Vector3 position) {
       if (ruler) Reset();
       var obj = new GameObject();
-      obj.layer = LayerMask.NameToLayer(Constants.TriggerLayer);
-      obj.transform.position = position * 1.0f;
+      obj.layer = LayerMask.NameToLayer(Draw.TriggerLayer);
+      obj.transform.position = position;
       ruler = obj;
-      var line = Drawer.DrawSphere(obj, Settings.RulerRadius, Settings.RulerColor, Settings.RulerRadius, "");
-      Drawer.AddText(line, Format.Coordinates(position), "Ruler");
+      var line = Draw.DrawSphere("", obj, Settings.RulerRadius, Settings.RulerColor, Settings.RulerRadius);
+      Draw.AddText(line, Format.Coordinates(position), "Ruler");
     }
     public static void Toggle(Vector3 position) {
       if (!ruler) Set(position);

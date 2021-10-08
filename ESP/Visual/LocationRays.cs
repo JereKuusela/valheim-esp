@@ -1,6 +1,8 @@
 using System;
 using HarmonyLib;
+using Text;
 using UnityEngine;
+using Visualization;
 
 namespace ESP {
   public class LocationUtils {
@@ -55,6 +57,11 @@ namespace ESP {
       if (text) return IsResourceEnabled(text.m_text);
       return IsResourceEnabled(obj.name);
     }
+    public static string GetTag(HitData.DamageModifiers modifiers) {
+      if (modifiers.m_chop == HitData.DamageModifier.Immune) return Tag.Ore;
+      if (modifiers.m_pickaxe == HitData.DamageModifier.Immune) return Tag.Tree;
+      return Tag.Destructible;
+    }
     public static float GetRayWidth(HitData.DamageModifiers modifiers) {
       if (modifiers.m_chop == HitData.DamageModifier.Immune) return Settings.OreRayWidth;
       if (modifiers.m_pickaxe == HitData.DamageModifier.Immune) return Settings.TreeRayWidth;
@@ -71,8 +78,8 @@ namespace ESP {
     public static void Postfix(Character ___m_character) {
       var obj = ___m_character;
       if (Settings.CreatureRayWidth == 0 || !CharacterUtils.IsTracked(obj)) return;
-      var line = Drawer.DrawMarkerLine(obj, Settings.CreatureRayColor, Settings.CreatureRayWidth, Drawer.CREATURE);
-      Drawer.AddText(line);
+      var line = Draw.DrawMarkerLine(Tag.TrackedCreature, obj, Settings.CreatureRayColor, Settings.CreatureRayWidth);
+      Text.AddText(line);
     }
   }
   [HarmonyPatch(typeof(Pickable), "Awake")]
@@ -91,8 +98,8 @@ namespace ESP {
       if (!IsEnabled(__instance))
         return;
       var color = GetColor(__instance);
-      var obj = Drawer.DrawMarkerLine(__instance, color, Settings.PickableRayWidth, Drawer.OTHER);
-      Drawer.AddText(obj, Format.Name(__instance));
+      var obj = Draw.DrawMarkerLine(Tag.Pickable, __instance, color, Settings.PickableRayWidth);
+      Text.AddText(obj, Format.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(Location), "Awake")]
@@ -100,8 +107,8 @@ namespace ESP {
     public static void Postfix(Location __instance) {
       if (Settings.LocationRayWidth == 0)
         return;
-      var obj = Drawer.DrawMarkerLine(__instance, Settings.LocationRayColor, Settings.LocationRayWidth, Drawer.OTHER);
-      Drawer.AddText(obj, Format.Name(__instance));
+      var obj = Draw.DrawMarkerLine(Tag.Location, __instance, Settings.LocationRayColor, Settings.LocationRayWidth);
+      Text.AddText(obj, Format.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(Container), "Awake")]
@@ -109,38 +116,41 @@ namespace ESP {
     public static void Postfix(Container __instance, Piece ___m_piece) {
       if (Settings.ChestRayWidth == 0 || !___m_piece || ___m_piece.IsPlacedByPlayer()) return;
       var text = Format.String(__instance.GetHoverName());
-      var obj = Drawer.DrawMarkerLine(__instance, Settings.ContainerRayColor, Settings.ChestRayWidth, Drawer.OTHER);
-      Drawer.AddText(obj, text);
+      var obj = Draw.DrawMarkerLine(Tag.Chest, __instance, Settings.ContainerRayColor, Settings.ChestRayWidth);
+      Text.AddText(obj, text);
     }
   }
   [HarmonyPatch(typeof(MineRock), "Start")]
   public class MineRock_Ray {
     public static void Postfix(MineRock __instance) {
       if (!LocationUtils.IsEnabled(__instance)) return;
-      var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
-      var color = LocationUtils.GetRayColor(__instance.m_damageModifiers);
-      var obj = Drawer.DrawMarkerLine(__instance, color, width, Drawer.OTHER);
-      Drawer.AddText(obj, Format.Name(__instance));
+      var damages = __instance.m_damageModifiers;
+      var width = LocationUtils.GetRayWidth(damages);
+      var color = LocationUtils.GetRayColor(damages);
+      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
+      Text.AddText(obj, Format.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(MineRock5), "Start")]
   public class MineRock5_Ray {
     public static void Postfix(MineRock5 __instance) {
       if (!LocationUtils.IsEnabled(__instance)) return;
-      var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
-      var color = LocationUtils.GetRayColor(__instance.m_damageModifiers);
-      var obj = Drawer.DrawMarkerLine(__instance, color, width, Drawer.OTHER);
-      Drawer.AddText(obj, Format.Name(__instance));
+      var damages = __instance.m_damageModifiers;
+      var width = LocationUtils.GetRayWidth(damages);
+      var color = LocationUtils.GetRayColor(damages);
+      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
+      Text.AddText(obj, Format.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(Destructible), "Awake")]
   public class Destructible_Ray {
     public static void Postfix(Destructible __instance) {
       if (!LocationUtils.IsEnabled(__instance)) return;
-      var width = LocationUtils.GetRayWidth(__instance.m_damages);
-      var color = LocationUtils.GetRayColor(__instance.m_damages);
-      var obj = Drawer.DrawMarkerLine(__instance, color, width, Drawer.OTHER);
-      Drawer.AddText(obj, Format.Name(__instance));
+      var damages = __instance.m_damages;
+      var width = LocationUtils.GetRayWidth(damages);
+      var color = LocationUtils.GetRayColor(damages);
+      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
+      Text.AddText(obj, Format.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(TreeBase), "Awake")]
@@ -148,20 +158,22 @@ namespace ESP {
     public static void Postfix(TreeBase __instance) {
 
       if (!LocationUtils.IsEnabled(__instance)) return;
-      var width = LocationUtils.GetRayWidth(__instance.m_damageModifiers);
-      var color = LocationUtils.GetRayColor(__instance.m_damageModifiers);
-      var obj = Drawer.DrawMarkerLine(__instance, color, width, Drawer.OTHER);
-      Drawer.AddText(obj, Format.Name(__instance));
+      var damages = __instance.m_damageModifiers;
+      var width = LocationUtils.GetRayWidth(damages);
+      var color = LocationUtils.GetRayColor(damages);
+      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
+      Text.AddText(obj, Format.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(TreeLog), "Awake")]
   public class TreeLog_Ray {
     public static void Postfix(TreeLog __instance) {
       if (!LocationUtils.IsEnabled(__instance)) return;
-      var width = LocationUtils.GetRayWidth(__instance.m_damages);
-      var color = LocationUtils.GetRayColor(__instance.m_damages);
-      var obj = Drawer.DrawMarkerLine(__instance, color, width, Drawer.OTHER);
-      Drawer.AddText(obj, Format.Name(__instance));
+      var damages = __instance.m_damages;
+      var width = LocationUtils.GetRayWidth(damages);
+      var color = LocationUtils.GetRayColor(damages);
+      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
+      Text.AddText(obj, Format.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(CreatureSpawner), "Awake")]
@@ -177,8 +189,8 @@ namespace ESP {
       var obj = __instance;
       if (!IsEnabled(obj)) return;
       var color = GetColor(obj);
-      var line = Drawer.DrawMarkerLine(obj, color, Settings.CreatureSpawnersRayWidth, Drawer.OTHER);
-      Drawer.AddText(line, Format.Name(obj));
+      var line = Draw.DrawMarkerLine(Tag.SpawnPoint, obj, color, Settings.CreatureSpawnersRayWidth);
+      Text.AddText(line, Format.Name(obj));
     }
   }
 }

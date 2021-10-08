@@ -1,15 +1,14 @@
 using System.Linq;
 using HarmonyLib;
+using Visualization;
 
 namespace ESP {
   ///<summary>Utility code for support related things.</summary>
   public static class SupportUtils {
-    public static bool Shown = Drawer.showOthers;
     ///<summary>Sets visibility of the support visual for all structures.</summary>
-    public static void SetVisibility(bool shown) {
-      if (!Settings.ShowSupport) return;
-      Shown = shown;
+    public static void UpdateVisibility() {
       WearNTear.GetAllInstaces().Where(item => item.m_supports).ToList().ForEach(item => {
+        var shown = VisualEnabled(item);
         if (shown)
           item.Highlight();
         else
@@ -20,10 +19,10 @@ namespace ESP {
     public static bool Enabled(WearNTear obj) {
       if (!obj) return false;
       var piece = obj.GetComponent<Piece>();
-      return Settings.ShowSupport && obj.m_supports && (!piece || !piece.m_waterPiece);
+      return obj.m_supports && (!piece || !piece.m_waterPiece);
     }
     ///<summary>Returns whether visual should be drawn for a given structure.</summary>
-    public static bool VisualEnabled(WearNTear obj) => SupportUtils.Shown && SupportUtils.Enabled(obj);
+    public static bool VisualEnabled(WearNTear obj) => Visibility.IsTag(Tag.StructureSupport) && Enabled(obj);
     ///<summary>Updates visual of a given structure.</summary>
     public static void Update(WearNTear obj) {
       if (!VisualEnabled(obj)) return;

@@ -59,6 +59,8 @@ namespace ESP {
     public static int RayMask(MineRock5 obj) => Get<int>(obj, "m_rayMask");
     public static int CoverRayMask(Cover obj) => Get<int>(obj, "m_coverRayMask");
     public static float UpdateExtensionTimer(CraftingStation obj) => Get<float>(obj, "m_updateExtensionTimer");
+    public static List<string> BindList(Terminal obj) => Get<List<string>>(obj, "m_bindList");
+    public static List<ItemDrop> Instances(ItemDrop obj) => Get<List<ItemDrop>>(obj, "m_instances");
 
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(SpawnArea), "GetInstances")]

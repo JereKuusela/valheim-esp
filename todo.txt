@@ -22,7 +22,6 @@ Creatures:
 
 Todo:
  - Stacksize to item tooltips
- - Add "spawn blocked" to HUD for current location?
  - Windmill base line cover comparison (since 4-5 are blocked by the propeller).
  - Keybindings to settings.
  - Expand patrol points to include spawn points (since spawn point is used as fallback)
@@ -37,10 +36,15 @@ Todo:
  - Creature faction and grouo.
  - Coords and zone to bigger minimap (copy from upgrade world).
  - Commands to toggle individual features (*esp_toggle_XXX) to allow binding toggles, requires a separate setting for toggle.
+ - Only in forests is twice on enemy spawn zones.
 
 Changes:
 - More precision to percentages (fix precision for some, only spawn/generator stuff needs more precision!).
 - Added cover ray visualization for players (disabled by default).
 - Fixed error when pickinng up items (also other similar cases fixed).
 - Added improved minerock support settings (can specify limits when boxes are shown).
+- HUD now shows if the current location is blocked (for creature spawning, etc).
+- Creature tracker now also works for item drops.
+- New settings which allow quickly toggling on/off features.
+- Added commands for toggling settings on/off (can be bound to keys).
 

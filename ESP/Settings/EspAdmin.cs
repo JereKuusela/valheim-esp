@@ -1,13 +1,15 @@
+using Authorization;
 using HarmonyLib;
+using Visualization;
 
 namespace ESP {
   public class EspAdmin : DefaultAdmin {
     public override bool Enabled {
-      get => base.Enabled || (ZNet.instance && ZNet.instance.IsServer());
+      get => base.Enabled;
       set {
         base.Enabled = value;
-        Drawer.CheckVisibility();
-        SupportUtils.SetVisibility(Drawer.showOthers);
+        Visibility.Set(value);
+        SupportUtils.UpdateVisibility();
       }
     }
   }

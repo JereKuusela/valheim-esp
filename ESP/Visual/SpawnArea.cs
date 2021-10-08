@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using Text;
 using UnityEngine;
+using Visualization;
 
 namespace ESP {
   public class SpawnAreaUtils {
@@ -38,11 +40,11 @@ namespace ESP {
     public static void Postfix(SpawnArea __instance, float ___m_spawnTimer) {
       if (Settings.SpawnAreasLineWidth == 0)
         return;
-      var obj = Drawer.DrawSphere(__instance, __instance.m_triggerDistance, Settings.SpawnAreaTriggerColor, Settings.SpawnAreasLineWidth, Drawer.OTHER);
+      var obj = Draw.DrawSphere(Tag.Spawner, __instance, __instance.m_triggerDistance, Settings.SpawnAreaTriggerColor, Settings.SpawnAreasLineWidth);
       obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
-      obj = Drawer.DrawSphere(__instance, __instance.m_nearRadius, Settings.SpawnAreaNearColor, Settings.SpawnAreasLineWidth, Drawer.OTHER);
+      obj = Draw.DrawSphere(Tag.Spawner, __instance, __instance.m_nearRadius, Settings.SpawnAreaNearColor, Settings.SpawnAreasLineWidth);
       obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
-      obj = Drawer.DrawSphere(__instance, __instance.m_spawnRadius, Settings.SpawnAreaSpawnColor, Settings.SpawnAreasLineWidth, Drawer.OTHER);
+      obj = Draw.DrawSphere(Tag.Spawner, __instance, __instance.m_spawnRadius, Settings.SpawnAreaSpawnColor, Settings.SpawnAreasLineWidth);
       obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
     }
   }

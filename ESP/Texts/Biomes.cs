@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Text;
 using UnityEngine;
 
 namespace ESP {
@@ -40,30 +41,7 @@ namespace ESP {
       Heightmap.Biome.Plains,
       Heightmap.Biome.Swamp
     };
-    public static string GetName(Heightmap.Biome biome) {
-      switch (biome) {
-        case Heightmap.Biome.AshLands:
-          return "Ash Lands";
-        case Heightmap.Biome.BlackForest:
-          return "Black Forest";
-        case Heightmap.Biome.DeepNorth:
-          return "Deep North";
-        case Heightmap.Biome.Meadows:
-          return "Meadows";
-        case Heightmap.Biome.Mistlands:
-          return "Mistlands";
-        case Heightmap.Biome.Mountain:
-          return "Mountain";
-        case Heightmap.Biome.Ocean:
-          return "Ocean";
-        case Heightmap.Biome.Plains:
-          return "Plains";
-        case Heightmap.Biome.Swamp:
-          return "Swamp";
-        default:
-          return "";
-      }
-    }
+
     private const Heightmap.Biome BIOME_MAX = Heightmap.Biome.AshLands | Heightmap.Biome.BlackForest
      | Heightmap.Biome.DeepNorth | Heightmap.Biome.Meadows | Heightmap.Biome.Mistlands
      | Heightmap.Biome.Mountain | Heightmap.Biome.Ocean | Heightmap.Biome.Plains | Heightmap.Biome.Swamp;
@@ -71,7 +49,7 @@ namespace ESP {
     public static string GetNames(Heightmap.Biome biomes, Heightmap.Biome validBiome = BIOME_MAX) {
       var names = new List<string>();
       foreach (var biome in BIOMES)
-        if ((biomes & biome) > 0) names.Add(Format.String(GetName(biome), ((validBiome & biome) > 0)));
+        if ((biomes & biome) > 0) names.Add(Format.String(Format.Name(biome), ((validBiome & biome) > 0)));
       if (names.Count == BIOMES.Length) return "";
       return Format.JoinRow(names);
     }

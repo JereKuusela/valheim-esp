@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using Text;
 using UnityEngine;
+using Visualization;
 
 namespace ESP {
 
@@ -9,13 +11,14 @@ namespace ESP {
   public class MessageHud_UpdateMessage : MonoBehaviour {
     private static string GetShowHide(bool value) => value ? "Hide" : "Show";
     private static List<string> GetInfo() {
+      if (!Settings.ShowHud) return new List<string>();
       var position = Player.m_localPlayer.transform.position;
       var lines = new List<string>();
       lines.Add(GetEnvironment());
-      lines.Add(GetLocation(position));
+      lines.Add(GetPosition(position));
       lines.Add(GetSpeed() + ", " + GetNoise());
       lines.Add(Ruler.GetText(position));
-      lines.Add(GetTrackedCreatures());
+      lines.Add(GetTrackedObjects());
       lines.Add(GetVisualSettings());
       lines.Add(GetOtherSettings());
       return lines.Where(item => item != "").ToList();
@@ -43,13 +46,13 @@ namespace ESP {
       return lines;
     }
     private static string GetVisualSettings() {
-      var text = Format.String("Y") + ": " + GetShowHide(Drawer.showZones) + " zones, ";
-      text += Format.String("U") + ": " + GetShowHide(Drawer.showCreatures) + " creatures, ";
-      text += Format.String("I") + ": " + GetShowHide(Drawer.showOthers) + " other";
+      var text = Format.String("Y") + ": " + GetShowHide(Visibility.IsGroup(Group.Zone)) + " zones, ";
+      text += Format.String("U") + ": " + GetShowHide(Visibility.IsGroup(Group.Creature)) + " creatures, ";
+      text += Format.String("I") + ": " + GetShowHide(Visibility.IsGroup(Group.Other)) + " other";
       return text;
     }
     private static string GetOtherSettings() {
-      var text = Format.String("O") + ": " + GetShowHide(Hoverables.extraInfo) + " extra info, ";
+      var text = Format.String("O") + ": " + GetShowHide(Text.extraInfo) + " extra info, ";
       text += Format.String("P") + ": " + GetShowHide(Settings.ShowDPS) + " DPS, ";
       text += Format.String("L") + ": " + GetShowHide(Settings.ShowExperienceMeter) + " experience";
       return text;
@@ -60,22 +63,26 @@ namespace ESP {
       if (!Settings.ShowTimeAndWeather) return "";
       return EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment() + " (" + EnvUtils.GetWindHud() + ")";
     }
-    private static string GetLocation(Vector3 location) {
+    private static string GetPosition(Vector3 position) {
+      if (!Settings.ShowPosition) return "";
       var lines = new List<string>(){
-        EnvUtils.GetLocation(location),
-        EnvUtils.GetAltitude(location),
-        EnvUtils.GetForest(location),
-        EnvUtils.GetBlocked(location)
+        EnvUtils.GetLocation(position),
+        EnvUtils.GetAltitude(position),
+        EnvUtils.GetForest(position),
+        EnvUtils.GetBlocked(position)
       };
       return Format.JoinRow(lines);
     }
-    public static string GetTrackedCreatures() {
-      if (Settings.TrackedCreatures == "") return "";
-      var tracked = Settings.TrackedCreatures.Split(',');
+    public static string GetTrackedObjects() {
+      if (Settings.TrackedObjects == "") return "";
+      var tracked = Settings.TrackedObjects.Split(',');
+      var itemsDrops = Patch.Instances(new ItemDrop());
       var tracks = tracked.Select(name => {
         var prefab = ZNetScene.instance.GetPrefab(name);
-        var counts = prefab == null ? -1 : SpawnSystem.GetNrOfInstances(prefab);
-        return name + ": " + Format.Int(counts);
+        if (prefab == null) return name + ": " + Format.String("Invalid ID", "red");
+        var creatures = SpawnSystem.GetNrOfInstances(prefab);
+        var drops = itemsDrops.Where(item => item.name.Replace("(Clone)", "") == prefab.name).Sum(item => item.m_itemData.m_stack);
+        return name + ": " + Format.Int(creatures + drops);
       });
 
       return Format.JoinRow(tracks);
@@ -89,7 +96,6 @@ namespace ESP {
     }
     // Keeps the message always visible and shows any base game messages.
     public static void Postfix(float ___m_msgQueueTimer, string __state) {
-      if (!Settings.ShowHud) return;
       var hud = MessageHud.instance;
       var lines = GetFixedMessage();
       var isCustomMessage = lines.Count > 0;

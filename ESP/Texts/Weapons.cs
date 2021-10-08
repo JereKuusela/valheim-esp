@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Text;
 
 namespace ESP {
   public partial class Texts {
@@ -83,7 +84,7 @@ namespace ESP {
       if (animation == "mace_secondary") return "1.72 s";
       if (animation == "spear_poke") return "0.68 s";
       if (animation == "spear_throw") return "1.57 s (includes picking up)";
-      if (animation == "swing_axe") return "2.58 s (1.11 + 0.65 + 1.0)";
+      if (animation == "swing_axe") return "2.58 s (1.11 + 0.65 + 0.82)";
       if (animation == "swing_hammer") return "";
       if (animation == "swing_hoe") return "";
       // Also used for the mace.

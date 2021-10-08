@@ -1,4 +1,5 @@
 using System.Linq;
+using Text;
 
 namespace ESP {
   public class DamageModifierUtils {

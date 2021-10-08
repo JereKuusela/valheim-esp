@@ -1,84 +1,193 @@
-﻿using BepInEx.Configuration;
+﻿using System;
+using BepInEx.Configuration;
+using Visualization;
 
 namespace ESP {
   public partial class Settings {
-    public static ConfigEntry<float> configCreatureFireLineWidth;
-    public static float CreatureFireLineWidth => configCreatureFireLineWidth.Value;
-    public static ConfigEntry<float> configCreatureRayWidth;
-    public static float CreatureRayWidth => configCreatureRayWidth.Value;
-    public static ConfigEntry<float> configBreedingLineWidth;
-    public static float BreedingLineWidth => configBreedingLineWidth.Value;
-    public static ConfigEntry<float> configCoverRayWidth;
-    public static float CoverRayWidth => configCoverRayWidth.Value;
-    public static ConfigEntry<float> configPlayerCoverRayWidth;
-    public static float PlayerCoverRayWidth => configPlayerCoverRayWidth.Value;
-    public static ConfigEntry<float> configSmokeLineWidth;
-    public static float SmokeLineWidth => configSmokeLineWidth.Value;
-    public static ConfigEntry<float> configSenseLineWidth;
-    public static float SenseLineWidth => configSenseLineWidth.Value;
-    public static ConfigEntry<float> configNoiseLineWidth;
-    public static float NoiseLineWidth => configNoiseLineWidth.Value;
-    public static ConfigEntry<float> configSpawnSystemRayWidth;
-    public static float SpawnSystemRayWidth => configSpawnSystemRayWidth.Value;
-    public static ConfigEntry<float> configRandEventSystemRayWidth;
-    public static float RandEventSystemRayWidth => configRandEventSystemRayWidth.Value;
-    public static ConfigEntry<float> configSpawnAreasLineWidth;
-    public static float SpawnAreasLineWidth => configSpawnAreasLineWidth.Value;
-    public static ConfigEntry<float> configCreatureSpawnerRayWidth;
-    public static float CreatureSpawnersRayWidth => configCreatureSpawnerRayWidth.Value;
-    public static ConfigEntry<float> configBiomeCornerRayWidth;
-    public static float BiomeCornerRayWidth => configBiomeCornerRayWidth.Value;
-    public static ConfigEntry<float> configPickableRayWidth;
-    public static float PickableRayWidth => configPickableRayWidth.Value;
-    public static ConfigEntry<float> configEffectAreaLineWidth;
-    public static float EffectAreaLineWidth => configEffectAreaLineWidth.Value;
-    public static ConfigEntry<float> configCustomContainerEffectAreaRadius;
-    public static float CustomContainerEffectAreaRadius => configCustomContainerEffectAreaRadius.Value;
-    public static ConfigEntry<float> configCustomCraftingEffectAreaRadius;
-    public static float CustomCraftingEffectAreaRadius => configCustomCraftingEffectAreaRadius.Value;
-    public static ConfigEntry<float> configRulerRadius;
-    public static float RulerRadius => configRulerRadius.Value;
-    public static ConfigEntry<float> configChestRayWidth;
-    public static float ChestRayWidth => configChestRayWidth.Value;
-    public static ConfigEntry<float> configOreRayWidth;
-    public static float OreRayWidth => configOreRayWidth.Value;
-    public static ConfigEntry<float> configTreeRayWidth;
-    public static float TreeRayWidth => configTreeRayWidth.Value;
-    public static ConfigEntry<float> configDestructibleRayWidth;
-    public static float DestructibleRayWidth => configDestructibleRayWidth.Value;
-    public static ConfigEntry<float> configLocationRayWidth;
-    public static float LocationRayWidth => configLocationRayWidth.Value;
-    public static ConfigEntry<bool> configShowSupport;
-    public static bool ShowSupport => configShowSupport.Value;
-    public static void InitVisuals(ConfigFile config) {
+    public static ConfigEntry<bool> configShowCreatureFireRange;
+    public static ConfigEntry<bool> configShowTrackedCreatures;
+    public static ConfigEntry<bool> configShowCreatureBreedingTotalRange;
+    public static ConfigEntry<bool> configShowCreatureBreedingPartnerRange;
+    public static ConfigEntry<bool> configShowCreatureFoodSearchRange;
+    public static ConfigEntry<bool> configShowCreatureEatingRange;
+    public static ConfigEntry<bool> configShowStructureCover;
+    public static ConfigEntry<bool> configShowPlayerCover;
+    public static ConfigEntry<bool> configShowSmoke;
+    public static ConfigEntry<bool> configShowCreatureAlertRange;
+    public static ConfigEntry<bool> configShowCreatureNoise;
+    public static ConfigEntry<bool> configShowCreatureHearRange;
+    public static ConfigEntry<bool> configShowCreatureViewRange;
+    public static ConfigEntry<bool> configShowSpawnZones;
+    public static ConfigEntry<bool> configShowRandomEventSystem;
+    public static ConfigEntry<bool> configShowSpawners;
+    public static ConfigEntry<bool> configShowSpawnPoints;
+    public static ConfigEntry<bool> configShowZoneCorners;
+    public static ConfigEntry<bool> configShowPickables;
+    public static ConfigEntry<bool> configShowEffectAreas;
+    public static ConfigEntry<bool> configShowChests;
+    public static ConfigEntry<bool> configShowOres;
+    public static ConfigEntry<bool> configShowTrees;
+    public static ConfigEntry<bool> configShowDestrucibles;
+    public static ConfigEntry<bool> configShowLocations;
+    public static ConfigEntry<bool> configShowStructureSupport;
+    private static void SetTag(string name, bool value) {
+      var entry = GetTagEntry(name);
+      if (entry.Value != value)
+        entry.Value = value;
+    }
+    private static void ToggleTag(string name) {
+      var entry = GetTagEntry(name);
+      entry.Value = !entry.Value;
+    }
+    private static void SetGroup(string name, bool value) {
+      var entry = GetGroupEntry(name);
+      if (entry.Value != value)
+        entry.Value = value;
+    }
+    private static void ToggleGroup(string name) {
+      var entry = GetGroupEntry(name);
+      entry.Value = !entry.Value;
+    }
+    private static ConfigEntry<bool> GetTagEntry(string name) {
+      name = name.ToLower();
+      if (name == Tag.StructureCover.ToLower()) return configShowStructureCover;
+      if (name == Tag.StructureSupport.ToLower()) return configShowStructureSupport;
+      if (name == Tag.CreatureNoise.ToLower()) return configShowCreatureNoise;
+      if (name == Tag.CreatureHearRange.ToLower()) return configShowCreatureHearRange;
+      if (name == Tag.CreatureViewRange.ToLower()) return configShowCreatureViewRange;
+      if (name == Tag.CreatureAlertRange.ToLower()) return configShowCreatureAlertRange;
+      if (name == Tag.CreatureFireRange.ToLower()) return configShowCreatureFireRange;
+      if (name == Tag.CreatureBreedingTotalRange.ToLower()) return configShowCreatureBreedingTotalRange;
+      if (name == Tag.CreatureBreedingPartnerRange.ToLower()) return configShowCreatureBreedingPartnerRange;
+      if (name == Tag.CreatureFoodSearchRange.ToLower()) return configShowCreatureFoodSearchRange;
+      if (name == Tag.CreatureEatingRange.ToLower()) return configShowCreatureEatingRange;
+      if (name == Tag.TrackedCreature.ToLower()) return configShowTrackedCreatures;
+      if (name == Tag.Pickable.ToLower()) return configShowPickables;
+      if (name == Tag.Location.ToLower()) return configShowLocations;
+      if (name == Tag.Chest.ToLower()) return configShowChests;
+      if (name == Tag.Tree.ToLower()) return configShowTrees;
+      if (name == Tag.Ore.ToLower()) return configShowOres;
+      if (name == Tag.Destructible.ToLower()) return configShowDestrucibles;
+      if (name == Tag.SpawnPoint.ToLower()) return configShowSpawnPoints;
+      if (name == Tag.Spawner.ToLower()) return configShowSpawners;
+      if (name == Tag.ZoneCorner.ToLower()) return configShowZoneCorners;
+      if (name == Tag.SpawnZone.ToLower()) return configShowSpawnZones;
+      if (name == Tag.RandomEventSystem.ToLower()) return configShowRandomEventSystem;
+      if (name == Tag.EffectArea.ToLower()) return configShowEffectAreas;
+      if (name == Tag.Smoke.ToLower()) return configShowSmoke;
+      if (name == Tag.PlayerCover.ToLower()) return configShowPlayerCover;
+      throw new NotImplementedException();
+    }
+    private static ConfigEntry<bool> GetGroupEntry(string name) {
+      name = name.ToLower();
+      if (name == Group.Creature.ToLower()) return configShowCreatures;
+      if (name == Group.Zone.ToLower()) return configShowZones;
+      if (name == Group.Other.ToLower()) return configShowOthers;
+      throw new NotImplementedException();
+    }
+    private static void UpdateTag(string name) {
+      var entry = GetTagEntry(name);
+      if (entry == null) UnityEngine.Debug.LogError("Setting not initialized: " + name);
+      Visibility.SetTag(name, entry.Value);
+    }
+    private static void UpdateGroup(string name) {
+      var entry = GetGroupEntry(name);
+      if (entry == null) UnityEngine.Debug.LogError("Setting not initialized: " + name);
+      Visibility.SetGroup(name, entry.Value);
+    }
+    private static void InitVisuals(ConfigFile config) {
       var section = "4. Visuals";
       configShowZones = config.Bind(section, "Show zones", false, "Show visualization for zones (toggle with Y button in the game)");
+      configShowZones.SettingChanged += (s, e) => UpdateGroup(Group.Zone);
+      UpdateGroup(Group.Zone);
       configShowCreatures = config.Bind(section, "Show creatures", false, "Show visualization for creatures (toggle with U button in the game)");
+      configShowCreatures.SettingChanged += (s, e) => UpdateGroup(Group.Creature);
+      UpdateGroup(Group.Creature);
       configShowOthers = config.Bind(section, "Show visualization", false, "Show visualization for everything else (toggle with I button in the game)");
-      configCreatureFireLineWidth = config.Bind(section, "Creature fire alert range", 0.1f, "Vsualize radius of fire fearing");
-      configSenseLineWidth = config.Bind(section, "Creature senses", 0.1f, "Line width of sight and hear ranges (0 to disable)");
-      configBreedingLineWidth = config.Bind(section, "Breeding limits", 0.1f, "Visualize breeding parther check and total limit ranges");
-      configCoverRayWidth = config.Bind(section, "Cover rays", 0.1f, "Visualize cover check rays");
-      configPlayerCoverRayWidth = config.Bind(section, "Player cover rays", 0.0f, "Visualize cover check rays for players");
-      configSmokeLineWidth = config.Bind(section, "Smoke", 0.1f, "Visualize smoke particles");
-      configCreatureRayWidth = config.Bind(section, "Creature rays", 0.25f, "Line width for tracked creature locations (0 to disable)");
-      configCreatureSpawnerRayWidth = config.Bind(section, "Spawn points", 0.1f, "Line width of fixed creature spawn points (0 to disable)");
-      configSpawnAreasLineWidth = config.Bind(section, "Creature spawners", 0.1f, "Line width of physical creature spawner ranges (0 to disable)");
-      configSpawnSystemRayWidth = config.Bind(section, "Spawn zones", 0.5f, "Line width of spawn zone system (0 to disable)");
-      configBiomeCornerRayWidth = config.Bind(section, "Zone corner rays", 0.25f, "Line width of zone corners (0 to disable)");
-      configRandEventSystemRayWidth = config.Bind(section, "Random event system", 0.5f, "Line width of random event system (0 to disable)");
-      configPickableRayWidth = config.Bind(section, "Pickable rays", 0.1f, "Line width of pickable locations (0 to disable)");
-      configRulerRadius = config.Bind(section, "Ruler point radius", 0.5f, "Ruler point radius (0 to disable)");
-      configChestRayWidth = config.Bind(section, "Chest rays", 0.1f, "Line width of hidden chest locations (0 to disable)");
-      configOreRayWidth = config.Bind(section, "Ore rays", 0.1f, "Line width of ore locations (0 to disable)");
-      configTreeRayWidth = config.Bind(section, "Tree rays", 0f, "Line width of tree locations (0 to disable)");
-      configDestructibleRayWidth = config.Bind(section, "Destructible rays", 0f, "Line width of destructible locations (0 to disable)");
-      configLocationRayWidth = config.Bind(section, "Location rays", 0.5f, "Line width of pre-generated structure locations (0 to disable)");
-      configShowSupport = config.Bind(section, "Support", true, "Always show support color for structures");
-      configEffectAreaLineWidth = config.Bind(section, "Area effects", 0.1f, "Line width of area effect ranges (0 to disable)");
-      configCustomContainerEffectAreaRadius = config.Bind(section, "Custom radius for containers", 0.0f, "Custom effect area sphere for containers (0 to disable)");
-      configCustomCraftingEffectAreaRadius = config.Bind(section, "Custom radius for crafting stations", 0.0f, "Custom effect area sphere for crafting stations (0 to disable)");
-      configNoiseLineWidth = config.Bind(section, "Noise", 0.0f, "Line width of noise range (0 to disable)");
+      configShowOthers.SettingChanged += (s, e) => UpdateGroup(Group.Other);
+      UpdateGroup(Group.Other);
+
+      configShowStructureCover = config.Bind(section, "Structure cover", true, "");
+      configShowStructureCover.SettingChanged += (s, e) => {
+        Visibility.SetGroup(Tag.StructureCover, configShowStructureCover.Value);
+        SupportUtils.UpdateVisibility();
+      };
+      UpdateTag(Tag.StructureCover);
+      configShowStructureSupport = config.Bind(section, "Structure support", true, "");
+      configShowStructureSupport.SettingChanged += (s, e) => UpdateTag(Tag.StructureSupport);
+      UpdateTag(Tag.StructureSupport);
+      configShowCreatureNoise = config.Bind(section, "Creature noise", true, "");
+      configShowCreatureNoise.SettingChanged += (s, e) => UpdateTag(Tag.CreatureNoise);
+      UpdateTag(Tag.CreatureNoise);
+      configShowCreatureHearRange = config.Bind(section, "Creature hear range", true, "");
+      configShowCreatureHearRange.SettingChanged += (s, e) => UpdateTag(Tag.CreatureHearRange);
+      UpdateTag(Tag.CreatureHearRange);
+      configShowCreatureViewRange = config.Bind(section, "Creature vuew range", true, "");
+      configShowCreatureViewRange.SettingChanged += (s, e) => UpdateTag(Tag.CreatureViewRange);
+      UpdateTag(Tag.CreatureViewRange);
+      configShowCreatureAlertRange = config.Bind(section, "Creature alert range", true, "");
+      configShowCreatureAlertRange.SettingChanged += (s, e) => UpdateTag(Tag.CreatureAlertRange);
+      UpdateTag(Tag.CreatureAlertRange);
+      configShowCreatureFireRange = config.Bind(section, "Creature fire range", true, "");
+      configShowCreatureFireRange.SettingChanged += (s, e) => UpdateTag(Tag.CreatureFireRange);
+      UpdateTag(Tag.CreatureFireRange);
+      configShowCreatureBreedingTotalRange = config.Bind(section, "Creature breeding total range", true, "");
+      configShowCreatureBreedingTotalRange.SettingChanged += (s, e) => UpdateTag(Tag.CreatureBreedingTotalRange);
+      UpdateTag(Tag.CreatureBreedingTotalRange);
+      configShowCreatureBreedingPartnerRange = config.Bind(section, "Creature breeding partner range", true, "");
+      configShowCreatureBreedingPartnerRange.SettingChanged += (s, e) => UpdateTag(Tag.CreatureBreedingPartnerRange);
+      UpdateTag(Tag.CreatureBreedingPartnerRange);
+      configShowCreatureEatingRange = config.Bind(section, "Creature eating range", true, "");
+      configShowCreatureEatingRange.SettingChanged += (s, e) => UpdateTag(Tag.CreatureEatingRange);
+      UpdateTag(Tag.CreatureEatingRange);
+      configShowCreatureFoodSearchRange = config.Bind(section, "Creature food search range", true, "");
+      configShowCreatureFoodSearchRange.SettingChanged += (s, e) => UpdateTag(Tag.CreatureFoodSearchRange);
+      UpdateTag(Tag.CreatureFoodSearchRange);
+      configShowTrackedCreatures = config.Bind(section, "Tracked creature rays", true, "");
+      configShowTrackedCreatures.SettingChanged += (s, e) => UpdateTag(Tag.TrackedCreature);
+      UpdateTag(Tag.TrackedCreature);
+      configShowPickables = config.Bind(section, "Pickable rays", true, "");
+      configShowPickables.SettingChanged += (s, e) => UpdateTag(Tag.Pickable);
+      UpdateTag(Tag.Pickable);
+      configShowLocations = config.Bind(section, "Location rays", true, "");
+      configShowLocations.SettingChanged += (s, e) => UpdateTag(Tag.Location);
+      UpdateTag(Tag.Location);
+      configShowChests = config.Bind(section, "Chest rays", true, "");
+      configShowChests.SettingChanged += (s, e) => UpdateTag(Tag.Chest);
+      UpdateTag(Tag.Chest);
+      configShowTrees = config.Bind(section, "Tree rays", true, "");
+      configShowTrees.SettingChanged += (s, e) => UpdateTag(Tag.Tree);
+      UpdateTag(Tag.Tree);
+      configShowOres = config.Bind(section, "Ore rays", true, "");
+      configShowOres.SettingChanged += (s, e) => UpdateTag(Tag.Ore);
+      UpdateTag(Tag.Ore);
+      configShowDestrucibles = config.Bind(section, "Destructible rays", true, "");
+      configShowDestrucibles.SettingChanged += (s, e) => UpdateTag(Tag.Destructible);
+      UpdateTag(Tag.Destructible);
+      configShowSpawnPoints = config.Bind(section, "Spawn points", true, "");
+      configShowSpawnPoints.SettingChanged += (s, e) => UpdateTag(Tag.SpawnPoint);
+      UpdateTag(Tag.SpawnPoint);
+      configShowSpawners = config.Bind(section, "Creature spawners", true, "");
+      configShowSpawners.SettingChanged += (s, e) => UpdateTag(Tag.Spawner);
+      UpdateTag(Tag.Spawner);
+      configShowSpawnZones = config.Bind(section, "Spawn zones", true, "");
+      configShowSpawnZones.SettingChanged += (s, e) => UpdateTag(Tag.SpawnZone);
+      UpdateTag(Tag.SpawnZone);
+      configShowZoneCorners = config.Bind(section, "Zone corner rays", true, "");
+      configShowZoneCorners.SettingChanged += (s, e) => UpdateTag(Tag.ZoneCorner);
+      UpdateTag(Tag.ZoneCorner);
+      configShowRandomEventSystem = config.Bind(section, "Random event system", true, "");
+      configShowRandomEventSystem.SettingChanged += (s, e) => UpdateTag(Tag.RandomEventSystem);
+      UpdateTag(Tag.RandomEventSystem);
+      configShowEffectAreas = config.Bind(section, "Area effects", true, "");
+      configShowEffectAreas.SettingChanged += (s, e) => UpdateTag(Tag.EffectArea);
+      UpdateTag(Tag.EffectArea);
+      configShowSmoke = config.Bind(section, "Smoke", true, "");
+      configShowSmoke.SettingChanged += (s, e) => UpdateTag(Tag.Smoke);
+      UpdateTag(Tag.Smoke);
+      configShowPlayerCover = config.Bind(section, "Player cover", true, "");
+      configShowPlayerCover.SettingChanged += (s, e) => UpdateTag(Tag.PlayerCover);
+      UpdateTag(Tag.PlayerCover);
     }
   }
 }

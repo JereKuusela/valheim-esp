@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace ESP {
+namespace Authorization {
 
   ///<summary>Static accessors for easier usage.</summary>
   public static class Admin {
@@ -82,7 +82,7 @@ namespace ESP {
   [HarmonyPatch(typeof(ZNet), "Start")]
   public class ZNet_Start {
     public static void Postfix() {
-      Admin.Enabled = false;
+      Admin.Enabled = (ZNet.instance && ZNet.instance.IsServer());
     }
   }
 

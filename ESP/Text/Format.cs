@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 
-namespace ESP {
+namespace Text {
   public class Format {
     public const string FORMAT = "0.##";
 
@@ -19,6 +19,7 @@ namespace ESP {
       return String(value.ToString("N2", CultureInfo.InvariantCulture).PadLeft(5, '0'));
     }
     public static string Percent(double value, string color = "yellow") => String((100.0 * value).ToString(FORMAT, CultureInfo.InvariantCulture) + " %", color);
+    public static string PercentInt(double value, string color = "yellow") => String(value.ToString("P0", CultureInfo.InvariantCulture), color);
 
     public static string Range(double min, double max, string color = "yellow") {
       if (min == max)
@@ -30,18 +31,14 @@ namespace ESP {
         return max.ToString("P0", CultureInfo.InvariantCulture);
       return min.ToString("P0", CultureInfo.InvariantCulture) + "-" + max.ToString("P0", CultureInfo.InvariantCulture);
     }
-    public static string Progress(double value, double limit, bool percent = false) => String(value.ToString("N0")) + "/" + String(limit.ToString("N0")) + (percent ? " (" + Percent(value / limit) + ")" : "");
+    public static string Progress(double value, double limit, bool percent = false) => String(value.ToString("N0")) + "/" + String(limit.ToString("N0")) + (percent ? " (" + PercentInt(value / limit) + ")" : "");
     public static string Int(double value, string color = "yellow") => String(value.ToString("N0"), color);
     public static string ProgressPercent(string header, double value, double limit) => header + ": " + Progress(value, limit) + " seconds (" + Percent(value / limit) + ")";
 
     public static string GetLevel(int min, int max, double chance, double limit = 0) {
       min--;
       max--;
-      var level = "";
-      if (max < min && Settings.FixInvalidLevelData)
-        level = Format.Range(max, min);
-      else
-        level = Format.Range(min, max);
+      var level = Format.Range(min, max);
       var chanceText = level.Contains("-") ? " (" + Format.Percent(chance / 100f) + " per star)" : "";
       var levelLimit = (limit > 0) ? " after " + Format.Int(limit) + " meters" : "";
       return "Stars: " + level + chanceText + levelLimit;
@@ -66,7 +63,7 @@ namespace ESP {
       => "Health: " + Format.Progress(health, limit) + " (" + Format.Percent(health / limit) + ")";
 
     public static string Name(string name, string color = "yellow") => String(Localization.instance.Localize(name).Replace("(Clone)", ""), color);
-    public static string Name(Heightmap.Biome obj, string color = "yellow") => Name(Texts.GetName(obj), color);
+    public static string Name(Heightmap.Biome obj, string color = "yellow") => Name(Names.GetName(obj), color);
     private static string Name(Character obj) => obj ? obj.m_name : "";
     public static string Name(ItemDrop.ItemData obj, string color = "yellow") => obj != null ? Name(obj.m_shared.m_name, color) : "";
     private static string Name(Pickable obj) => obj ? obj.m_itemPrefab.name : "";

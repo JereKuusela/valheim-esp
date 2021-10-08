@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Authorization;
+using Text;
 using UnityEngine;
 
 namespace ESP {
@@ -6,7 +8,7 @@ namespace ESP {
   public class CustomHoverText : MonoBehaviour, Hoverable {
     public string GetHoverText() {
       var text = "";
-      Hoverables.AddTexts(gameObject, ref text);
+      Text.AddTexts(gameObject, ref text);
       if (text == "") return "";
       return GetHoverName() + text;
     }
@@ -17,7 +19,16 @@ namespace ESP {
     }
     private string title = "";
   }
-  public class Hoverables {
+  public partial class Text {
+
+    ///<summary>Adds a self-updating text to a given object.</summary>
+    public static void AddText(GameObject obj) {
+      obj.AddComponent<CustomHoverText>();
+    }
+    ///<summary>Adds a text to a given object (uses the in-game text).</summary>
+    public static void AddText(GameObject obj, string text) {
+      obj.AddComponent<HoverText>().m_text = text;
+    }
     public static bool extraInfo {
       get => Settings.ExtraInfo && Admin.Enabled;
       set {
@@ -61,6 +72,7 @@ namespace ESP {
       lines.Add(Texts.Get(obj.GetComponentInParent<Smoke>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<Container>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<Location>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<RandomSpawn>()));
       lines.Add(Texts.GetVegetation(obj));
       if (Settings.ShowShipStats)
         lines.Add(Texts.Get(obj.GetComponentInParent<Ship>()));
