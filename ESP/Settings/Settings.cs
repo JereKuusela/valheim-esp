@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using BepInEx.Configuration;
-using Modules;
 using Visualization;
 
 namespace ESP {
@@ -14,7 +13,6 @@ namespace ESP {
       InitExcluded(config);
       InitColors(config);
       InitVisualWidth(config);
-      MinerockSupport.Init(config);
       InitCommands();
     }
 
@@ -45,7 +43,6 @@ namespace ESP {
     private static List<string> OptionsFetcher() {
       var options = new List<string>();
       options.AddRange(Visibility.GetTags);
-      options.AddRange(Visibility.GetGroups);
       options.Add(Tool.ExtraInfo);
       options.Add(Tool.DPS);
       options.Add(Tool.Experience);
@@ -70,9 +67,6 @@ namespace ESP {
     private static ConfigEntry<bool> GetEntry(string name) {
       try {
         return GetTagEntry(name);
-      } catch (NotImplementedException) { }
-      try {
-        return GetGroupEntry(name);
       } catch (NotImplementedException) { }
       try {
         return GetOtherEntry(name);

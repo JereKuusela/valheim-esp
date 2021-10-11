@@ -51,12 +51,15 @@ namespace ESP {
         var weight = obj.m_drops.Sum(drop => drop.m_weight);
         var drops = obj.m_drops.Select(drop => {
           var chance = weight > 0 ? drop.m_weight / weight : 1f;
-          var averageItems = averageDrops * chance * (drop.m_stackMin + drop.m_stackMax) / 2.0;
+          var min = drop.m_stackMin;
+          var max = drop.m_stackMax;
+          if (max > min) max--; // Bug in the code.
+          var averageItems = averageDrops * chance * (min + max) / 2.0;
           var chanceText = chance == 1f ? "" : Format.Percent(chance) + " chance for ";
           var averageText = Format.Float(averageItems);
           if (areas > 1)
             averageText += " * " + Format.Int(areas) + " = " + Format.Float(areas * averageItems);
-          return Format.Name(drop.m_item, "white") + ": " + chanceText + Format.Range(drop.m_stackMin, drop.m_stackMax) + " items (" + averageText + " on average)";
+          return Format.Name(drop.m_item, "white") + ": " + chanceText + Format.Range(min, max) + " items (" + averageText + " on average)";
         });
         lines.AddRange(drops);
       }
@@ -92,7 +95,8 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string Get(DropOnDestroyed obj) {
-      if (!Settings.Destructibles || !IsValid(obj)) return "";
+      // Utility object without nView.
+      if (!Settings.Destructibles || !obj) return "";
       var lines = new List<string>();
       lines.Add(Get(obj.m_dropWhenDestroyed, 1));
       return Format.JoinLines(lines);

@@ -23,28 +23,30 @@ Creatures:
 Todo:
  - Stacksize to item tooltips
  - Windmill base line cover comparison (since 4-5 are blocked by the propeller).
- - Keybindings to settings.
  - Expand patrol points to include spawn points (since spawn point is used as fallback)
- - Better support for configuration manager plugin:
-   - Add more specific tags / names to visuals and automatically show/hide (if possible).
-   - Separate settings for showing/hiding and line widths (currently annoying to hide stuff as it's not one click).
-   - Add keybinding for toggling different visuals (users can quickly toggle what they want).
  - Show object classnames on hover.
  - Experience meter to also include the first value (at least to total, over time to use average?).
  - Creatures: Add if creature doesn't attack objects to hover.
  - Weapon skill.
- - Creature faction and grouo.
+ - Creature faction and group.
  - Coords and zone to bigger minimap (copy from upgrade world).
- - Commands to toggle individual features (*esp_toggle_XXX) to allow binding toggles, requires a separate setting for toggle.
  - Only in forests is twice on enemy spawn zones.
+ - Fix percentage precision for some, only spawn/generator stuff needs more precision!
+ - Add timer for the tracker to not update every step.
+ - Add master switch for all visuals.
+ - Add master switch for all features.
+ - Split DPS and experience tools to an own mod.
 
 Changes:
-- More precision to percentages (fix precision for some, only spawn/generator stuff needs more precision!).
+- More precision to spawn and generator chance percentages.
 - Added cover ray visualization for players (disabled by default).
 - Fixed error when pickinng up items (also other similar cases fixed).
-- Added improved minerock support settings (can specify limits when boxes are shown).
+- Removed mine rock support (separate mod exists for that with better support).
 - HUD now shows if the current location is blocked (for creature spawning, etc).
-- Creature tracker now also works for item drops.
+- Creature tracker now works for all entities.
+- New setting for the range of the tracker.
 - New settings which allow quickly toggling on/off features.
 - Added commands for toggling settings on/off (can be bound to keys).
+- Removed setting groups which were quickly used show/hide visuals (better build your own with keybindings).
+- 
 

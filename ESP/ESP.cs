@@ -15,31 +15,31 @@ namespace ESP {
     }
 
     private void SetupTagGroups() {
-      Visibility.AddTagToGroup(Group.Creature, Tag.TrackedCreature);
-      Visibility.AddTagToGroup(Group.Creature, Tag.CreatureAlertRange);
-      Visibility.AddTagToGroup(Group.Creature, Tag.CreatureBreedingPartnerRange);
-      Visibility.AddTagToGroup(Group.Creature, Tag.CreatureBreedingTotalRange);
-      Visibility.AddTagToGroup(Group.Creature, Tag.CreatureEatingRange);
-      Visibility.AddTagToGroup(Group.Creature, Tag.CreatureFireRange);
-      Visibility.AddTagToGroup(Group.Creature, Tag.CreatureFoodSearchRange);
-      Visibility.AddTagToGroup(Group.Creature, Tag.CreatureHearRange);
-      Visibility.AddTagToGroup(Group.Creature, Tag.CreatureNoise);
-      Visibility.AddTagToGroup(Group.Creature, Tag.CreatureViewRange);
-      Visibility.AddTagToGroup(Group.Other, Tag.Chest);
-      Visibility.AddTagToGroup(Group.Other, Tag.StructureCover);
-      Visibility.AddTagToGroup(Group.Other, Tag.SpawnPoint);
-      Visibility.AddTagToGroup(Group.Other, Tag.Destructible);
-      Visibility.AddTagToGroup(Group.Other, Tag.EffectArea);
-      Visibility.AddTagToGroup(Group.Other, Tag.Location);
-      Visibility.AddTagToGroup(Group.Other, Tag.Ore);
-      Visibility.AddTagToGroup(Group.Other, Tag.Pickable);
-      Visibility.AddTagToGroup(Group.Zone, Tag.RandomEventSystem);
-      Visibility.AddTagToGroup(Group.Other, Tag.Smoke);
-      Visibility.AddTagToGroup(Group.Other, Tag.Spawner);
-      Visibility.AddTagToGroup(Group.Zone, Tag.SpawnZone);
-      Visibility.AddTagToGroup(Group.Other, Tag.StructureSupport);
-      Visibility.AddTagToGroup(Group.Other, Tag.Tree);
-      Visibility.AddTagToGroup(Group.Zone, Tag.ZoneCorner);
+      Visibility.AddTag(Group.Creature, Tag.TrackedCreature);
+      Visibility.AddTag(Group.Creature, Tag.CreatureAlertRange);
+      Visibility.AddTag(Group.Creature, Tag.CreatureBreedingPartnerRange);
+      Visibility.AddTag(Group.Creature, Tag.CreatureBreedingTotalRange);
+      Visibility.AddTag(Group.Creature, Tag.CreatureEatingRange);
+      Visibility.AddTag(Group.Creature, Tag.CreatureFireRange);
+      Visibility.AddTag(Group.Creature, Tag.CreatureFoodSearchRange);
+      Visibility.AddTag(Group.Creature, Tag.CreatureHearRange);
+      Visibility.AddTag(Group.Creature, Tag.CreatureNoise);
+      Visibility.AddTag(Group.Creature, Tag.CreatureViewRange);
+      Visibility.AddTag(Group.Other, Tag.Chest);
+      Visibility.AddTag(Group.Other, Tag.StructureCover);
+      Visibility.AddTag(Group.Other, Tag.SpawnPoint);
+      Visibility.AddTag(Group.Other, Tag.Destructible);
+      Visibility.AddTag(Group.Other, Tag.EffectArea);
+      Visibility.AddTag(Group.Other, Tag.Location);
+      Visibility.AddTag(Group.Other, Tag.Ore);
+      Visibility.AddTag(Group.Other, Tag.Pickable);
+      Visibility.AddTag(Group.Zone, Tag.RandomEventSystem);
+      Visibility.AddTag(Group.Other, Tag.Smoke);
+      Visibility.AddTag(Group.Other, Tag.Spawner);
+      Visibility.AddTag(Group.Zone, Tag.SpawnZone);
+      Visibility.AddTag(Group.Other, Tag.StructureSupport);
+      Visibility.AddTag(Group.Other, Tag.Tree);
+      Visibility.AddTag(Group.Zone, Tag.ZoneCorner);
     }
     public void LateUpdate() {
       if (Player.m_localPlayer)

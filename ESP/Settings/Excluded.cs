@@ -12,12 +12,6 @@ namespace ESP {
     public static string ExcludedSpawnSystems => configExcludedSpawnSystems.Value;
     public static ConfigEntry<string> configExcludedResources;
     public static string ExcludedResources => configExcludedResources.Value;
-    public static ConfigEntry<bool> configShowOthers;
-    public static bool ShowOthers => configShowOthers.Value;
-    public static ConfigEntry<bool> configShowZones;
-    public static bool ShowZones => configShowZones.Value;
-    public static ConfigEntry<bool> configShowCreatures;
-    public static bool ShowCreatures => configShowCreatures.Value;
 
     public static void InitExcluded(ConfigFile config) {
       var section = "5. Excluded";

@@ -65,6 +65,8 @@ namespace ESP {
       configRandEventSystemRayWidth = config.Bind(section, "Random event system", 0.1f, "");
       configPickableRayWidth = config.Bind(section, "Pickable rays", 0.02f, "");
       configRulerRadius = config.Bind(section, "Ruler point radius", 0.1f, "");
+      configCustomContainerEffectAreaRadius = config.Bind(section, "Custom radius for containers", 0.0f, "Custom effect area sphere for containers (0 to disable)");
+      configCustomCraftingEffectAreaRadius = config.Bind(section, "Custom radius for crafting stations", 0.0f, "Custom effect area sphere for crafting stations (0 to disable)");
       configChestRayWidth = config.Bind(section, "Chest rays", 0.02f, "");
       configOreRayWidth = config.Bind(section, "Ore rays", 0.02f, "");
       configTreeRayWidth = config.Bind(section, "Tree rays", 0.02f, "");

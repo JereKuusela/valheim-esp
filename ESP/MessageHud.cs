@@ -3,7 +3,6 @@ using System.Linq;
 using HarmonyLib;
 using Text;
 using UnityEngine;
-using Visualization;
 
 namespace ESP {
 
@@ -19,8 +18,6 @@ namespace ESP {
       lines.Add(GetSpeed() + ", " + GetNoise());
       lines.Add(Ruler.GetText(position));
       lines.Add(GetTrackedObjects());
-      lines.Add(GetVisualSettings());
-      lines.Add(GetOtherSettings());
       return lines.Where(item => item != "").ToList();
     }
     private static List<string> GetFixedMessage() {
@@ -45,18 +42,6 @@ namespace ESP {
       }
       return lines;
     }
-    private static string GetVisualSettings() {
-      var text = Format.String("Y") + ": " + GetShowHide(Visibility.IsGroup(Group.Zone)) + " zones, ";
-      text += Format.String("U") + ": " + GetShowHide(Visibility.IsGroup(Group.Creature)) + " creatures, ";
-      text += Format.String("I") + ": " + GetShowHide(Visibility.IsGroup(Group.Other)) + " other";
-      return text;
-    }
-    private static string GetOtherSettings() {
-      var text = Format.String("O") + ": " + GetShowHide(Text.extraInfo) + " extra info, ";
-      text += Format.String("P") + ": " + GetShowHide(Settings.ShowDPS) + " DPS, ";
-      text += Format.String("L") + ": " + GetShowHide(Settings.ShowExperienceMeter) + " experience";
-      return text;
-    }
     private static string GetSpeed() => "Speed: " + Format.Float(Patch.CurrentVel(Player.m_localPlayer).magnitude, "0.#") + " m/s";
     private static string GetNoise() => "Noise: " + Format.Int(Player.m_localPlayer.GetNoiseRange()) + " meters";
     private static string GetEnvironment() {
@@ -80,9 +65,16 @@ namespace ESP {
       var tracks = tracked.Select(name => {
         var prefab = ZNetScene.instance.GetPrefab(name);
         if (prefab == null) return name + ": " + Format.String("Invalid ID", "red");
-        var creatures = SpawnSystem.GetNrOfInstances(prefab);
-        var drops = itemsDrops.Where(item => item.name.Replace("(Clone)", "") == prefab.name).Sum(item => item.m_itemData.m_stack);
-        return name + ": " + Format.Int(creatures + drops);
+        var count = 0;
+        if (count == 0)
+          count = itemsDrops.Where(item => item.name.Replace("(Clone)", "") == prefab.name).Sum(item => item.m_itemData.m_stack);
+        if (count == 0) {
+          var zdos = new List<ZDO>();
+          ZDOMan.instance.GetAllZDOsWithPrefab(prefab.name, zdos);
+          var position = Player.m_localPlayer.transform.position;
+          count = zdos.Where(zdo => Utils.DistanceXZ(zdo.GetPosition(), position) < Settings.TrackRadius).Count();
+        }
+        return name + ": " + Format.Int(count);
       });
 
       return Format.JoinRow(tracks);

@@ -39,15 +39,6 @@ namespace ESP {
       var entry = GetTagEntry(name);
       entry.Value = !entry.Value;
     }
-    private static void SetGroup(string name, bool value) {
-      var entry = GetGroupEntry(name);
-      if (entry.Value != value)
-        entry.Value = value;
-    }
-    private static void ToggleGroup(string name) {
-      var entry = GetGroupEntry(name);
-      entry.Value = !entry.Value;
-    }
     private static ConfigEntry<bool> GetTagEntry(string name) {
       name = name.ToLower();
       if (name == Tag.StructureCover.ToLower()) return configShowStructureCover;
@@ -78,38 +69,17 @@ namespace ESP {
       if (name == Tag.PlayerCover.ToLower()) return configShowPlayerCover;
       throw new NotImplementedException();
     }
-    private static ConfigEntry<bool> GetGroupEntry(string name) {
-      name = name.ToLower();
-      if (name == Group.Creature.ToLower()) return configShowCreatures;
-      if (name == Group.Zone.ToLower()) return configShowZones;
-      if (name == Group.Other.ToLower()) return configShowOthers;
-      throw new NotImplementedException();
-    }
     private static void UpdateTag(string name) {
       var entry = GetTagEntry(name);
       if (entry == null) UnityEngine.Debug.LogError("Setting not initialized: " + name);
       Visibility.SetTag(name, entry.Value);
     }
-    private static void UpdateGroup(string name) {
-      var entry = GetGroupEntry(name);
-      if (entry == null) UnityEngine.Debug.LogError("Setting not initialized: " + name);
-      Visibility.SetGroup(name, entry.Value);
-    }
     private static void InitVisuals(ConfigFile config) {
       var section = "4. Visuals";
-      configShowZones = config.Bind(section, "Show zones", false, "Show visualization for zones (toggle with Y button in the game)");
-      configShowZones.SettingChanged += (s, e) => UpdateGroup(Group.Zone);
-      UpdateGroup(Group.Zone);
-      configShowCreatures = config.Bind(section, "Show creatures", false, "Show visualization for creatures (toggle with U button in the game)");
-      configShowCreatures.SettingChanged += (s, e) => UpdateGroup(Group.Creature);
-      UpdateGroup(Group.Creature);
-      configShowOthers = config.Bind(section, "Show visualization", false, "Show visualization for everything else (toggle with I button in the game)");
-      configShowOthers.SettingChanged += (s, e) => UpdateGroup(Group.Other);
-      UpdateGroup(Group.Other);
 
       configShowStructureCover = config.Bind(section, "Structure cover", true, "");
       configShowStructureCover.SettingChanged += (s, e) => {
-        Visibility.SetGroup(Tag.StructureCover, configShowStructureCover.Value);
+        UpdateTag(Tag.StructureCover);
         SupportUtils.UpdateVisibility();
       };
       UpdateTag(Tag.StructureCover);

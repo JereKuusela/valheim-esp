@@ -12,6 +12,8 @@ namespace ESP {
     public static bool ShowPosition => configShowPosition.Value;
     public static ConfigEntry<string> configTrackedObjects;
     public static string TrackedObjects => configTrackedObjects.Value;
+    public static ConfigEntry<float> configTrackRadius;
+    public static float TrackRadius => configTrackRadius.Value;
     public static ConfigEntry<bool> configShowDPS;
     public static bool ShowDPS => configShowDPS.Value;
     public static ConfigEntry<bool> configShowExperienceMeter;
@@ -24,6 +26,7 @@ namespace ESP {
       configShowPosition = config.Bind(section, "Show current position", true, "Show current position on the hud");
       configShowShipStatsOnHud = config.Bind(section, "Show ship stats", true, "Show ship stats on the hud");
       configTrackedObjects = config.Bind(section, "Tracked objects", "Serpent", "List of creature and item drop ids to track (separated by ,)");
+      configTrackRadius = config.Bind(section, "Track radius", 500f, "Radius to find objects.");
       configShowDPS = config.Bind(section, "Show DPS meter", false, "Show DPS meter (toggle with P button in the game)");
       configShowDPS.SettingChanged += (s, e) => {
         if (!ShowDPS) DPSMeter.Reset();

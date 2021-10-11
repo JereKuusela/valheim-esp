@@ -80,24 +80,16 @@ namespace Visualization {
         return visualization != null && visualization.Tag == tag;
       }).ToArray();
     }
-    ///<summary>Removes visuals with a given tag.</summary>
-    public static void Remove(MonoBehaviour obj, string tag) {
-      foreach (var customTag in obj.GetComponentsInChildren<Visualization>(true)) {
-        if (customTag.Tag == tag) Destroy(customTag.gameObject.gameObject);
-      }
-    }
     ///<summary>Sets colors to visuals with a given tag.</summary>
     public static void SetColor(string tag, Color color) {
       foreach (var obj in Utils.GetVisualizations()) {
-        if (obj.Tag == tag)
-          ChangeColor(obj.gameObject, color);
+        if (obj.Tag == tag) ChangeColor(obj.gameObject, color);
       }
     }
     ///<summary>Sets line width to visuals with a given tag.</summary>
     public static void SetLineWidth(string tag, float width) {
       foreach (var obj in Utils.GetVisualizations()) {
-        if (obj.Tag == tag)
-          ChangeLineWidth(obj.gameObject, width);
+        if (obj.Tag == tag) ChangeLineWidth(obj.gameObject, width);
       }
     }
   }
