@@ -44,8 +44,6 @@ namespace ESP {
       var options = new List<string>();
       options.AddRange(Visibility.GetTags);
       options.Add(Tool.ExtraInfo);
-      options.Add(Tool.DPS);
-      options.Add(Tool.Experience);
       options.Add(Tool.TimeAndWeather);
       options.Add(Tool.Position);
       options.Add(Tool.HUD);
@@ -56,8 +54,6 @@ namespace ESP {
     private static ConfigEntry<bool> GetOtherEntry(string name) {
       name = name.ToLower();
       if (name == Tool.ExtraInfo.ToLower()) return configExtraInfo;
-      if (name == Tool.DPS.ToLower()) return configShowDPS;
-      if (name == Tool.Experience.ToLower()) return configShowExperienceMeter;
       if (name == Tool.TimeAndWeather.ToLower()) return configShowTimeAndWeather;
       if (name == Tool.Position.ToLower()) return configShowPosition;
       if (name == Tool.HUD.ToLower()) return configShowHud;

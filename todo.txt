@@ -28,13 +28,14 @@ Todo:
  - Experience meter to also include the first value (at least to total, over time to use average?).
  - Creatures: Add if creature doesn't attack objects to hover.
  - Weapon skill.
+
  - Creature faction and group.
  - Coords and zone to bigger minimap (copy from upgrade world).
  - Only in forests is twice on enemy spawn zones.
  - Fix percentage precision for some, only spawn/generator stuff needs more precision!
- - Add timer for the tracker to not update every step.
  - Add master switch for all visuals.
  - Add master switch for all features.
+ - Verify line widths (thicker for biome corners and smoke?)
  - Split DPS and experience tools to an own mod.
 
 Changes:
@@ -43,10 +44,11 @@ Changes:
 - Fixed error when pickinng up items (also other similar cases fixed).
 - Removed mine rock support (separate mod exists for that with better support).
 - HUD now shows if the current location is blocked (for creature spawning, etc).
-- Creature tracker now works for all entities.
-- New setting for the range of the tracker.
+- Creature tracker now works for all entities. Creature and item drops only check for loaded areas.
+- New setting for the range of the tracker (only works for other entities than creatures or item drops).
 - New settings which allow quickly toggling on/off features.
 - Added commands for toggling settings on/off (can be bound to keys).
 - Removed setting groups which were quickly used show/hide visuals (better build your own with keybindings).
-- 
+- Fixed clock showing wrong time.
+- Removed DPS and experience meters as they are now in a own mod.
 

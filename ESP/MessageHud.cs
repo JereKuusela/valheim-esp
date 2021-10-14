@@ -7,6 +7,24 @@ using UnityEngine;
 namespace ESP {
 
   [HarmonyPatch(typeof(MessageHud), "UpdateMessage")]
+  public class MessageHud_GetBaseMessage : MonoBehaviour {
+    private static string BaseMessage = "";
+    // Use state to track when a default in game message arrives.
+    public static void Prefix(out string __state) {
+      __state = MessageHud.instance.m_messageText.text;
+    }
+    public static void Postfix(MessageHud __instance, float ___m_msgQueueTimer, string __state) {
+      if (__instance.m_messageText.text != __state)
+        BaseMessage = __instance.m_messageText.text;
+      // No more base game messages.
+      if (___m_msgQueueTimer >= 4f)
+        BaseMessage = "";
+      __instance.m_messageText.text = BaseMessage;
+    }
+  }
+
+
+  [HarmonyPatch(typeof(MessageHud), "Update")]
   public class MessageHud_UpdateMessage : MonoBehaviour {
     private static string GetShowHide(bool value) => value ? "Hide" : "Show";
     private static List<string> GetInfo() {
@@ -25,16 +43,6 @@ namespace ESP {
       // Wait for the game to load.
       if (Player.m_localPlayer == null) return lines;
       lines.AddRange(GetInfo());
-      var dps = DPSMeter.Get();
-      if (dps != null) {
-        lines.Add(" ");
-        lines.AddRange(dps);
-      }
-      var eps = ExperienceMeter.Get();
-      if (eps != null) {
-        lines.Add(" ");
-        lines.AddRange(eps);
-      }
       var localShip = Ship.GetLocalShip();
       if (localShip) {
         lines.Add(" ");
@@ -58,59 +66,74 @@ namespace ESP {
       };
       return Format.JoinRow(lines);
     }
+    private static float TrackUpdateTimer = 0;
+    // ZDO tracks take a while for big worlds so have a longer timer for them.
+    // More careful solution would be using sectors but more complicated.
+    private static float TrackUpdateLongTimer = 0;
+    private static IDictionary<string, int> trackCache = new Dictionary<string, int>();
     public static string GetTrackedObjects() {
       if (Settings.TrackedObjects == "") return "";
+      TrackUpdateTimer += Time.deltaTime;
+      TrackUpdateLongTimer += Time.deltaTime;
       var tracked = Settings.TrackedObjects.Split(',');
-      var itemsDrops = Patch.Instances(new ItemDrop());
-      var tracks = tracked.Select(name => {
-        var prefab = ZNetScene.instance.GetPrefab(name);
-        if (prefab == null) return name + ": " + Format.String("Invalid ID", "red");
-        var count = 0;
-        if (count == 0)
-          count = itemsDrops.Where(item => item.name.Replace("(Clone)", "") == prefab.name).Sum(item => item.m_itemData.m_stack);
-        if (count == 0) {
-          var zdos = new List<ZDO>();
-          ZDOMan.instance.GetAllZDOsWithPrefab(prefab.name, zdos);
-          var position = Player.m_localPlayer.transform.position;
-          count = zdos.Where(zdo => Utils.DistanceXZ(zdo.GetPosition(), position) < Settings.TrackRadius).Count();
+      if (TrackUpdateTimer >= 1f) {
+        TrackUpdateTimer = 0;
+        var itemsDrops = Patch.Instances(new ItemDrop());
+        foreach (var name in tracked) {
+          var prefab = ZNetScene.instance.GetPrefab(name);
+          var count = 0;
+          if (prefab == null)
+            count = -1;
+          else if (prefab.GetComponent<Character>() != null)
+            count = SpawnSystem.GetNrOfInstances(prefab);
+          else if (prefab.GetComponent<ItemDrop>() != null)
+            count = itemsDrops.Where(item => item.name.Replace("(Clone)", "") == prefab.name).Sum(item => item.m_itemData.m_stack);
+          else {
+            if (TrackUpdateLongTimer < 5f) continue;
+            var zdos = new List<ZDO>();
+            ZDOMan.instance.GetAllZDOsWithPrefab(prefab.name, zdos);
+            var position = Player.m_localPlayer.transform.position;
+            count = zdos.Where(zdo => Utils.DistanceXZ(zdo.GetPosition(), position) < Settings.TrackRadius).Count();
+          }
+          trackCache[name] = count;
         }
-        return name + ": " + Format.Int(count);
+        if (TrackUpdateLongTimer >= 5f) TrackUpdateLongTimer = 0f;
+      }
+
+      var tracks = tracked.Select(name => {
+        if (!trackCache.ContainsKey(name))
+          return "";
+        if (trackCache[name] < 0)
+          return name + ": " + Format.String("Invalid ID", "red");
+        return name + ": " + Format.Int(trackCache[name]);
       });
 
       return Format.JoinRow(tracks);
     }
 
-    private static string baseGameMessage = "";
-
-    // Use state to track when a default in game message arrives.
-    public static void Prefix(out string __state) {
-      __state = MessageHud.instance.m_messageText.text;
-    }
-    // Keeps the message always visible and shows any base game messages.
-    public static void Postfix(float ___m_msgQueueTimer, string __state) {
+    public static void Postfix() {
       var hud = MessageHud.instance;
+      var previousText = hud.m_messageText.text;
       var lines = GetFixedMessage();
-      var isCustomMessage = lines.Count > 0;
-      // New base game message.
-      if (hud.m_messageText.text != __state)
-        baseGameMessage = hud.m_messageText.text;
-      if (baseGameMessage != "") {
-        // No more base game messages.
-        if (___m_msgQueueTimer >= 4f)
-          baseGameMessage = "";
-      }
-      if (baseGameMessage != "") {
-        lines.Add("");
-        lines.Add(baseGameMessage);
-      }
       if (lines.Count == 0) return;
-      var padding = lines.Count - 2;
+
+      var previousPadding = 0;
+      while (previousText.StartsWith(" \n")) {
+        previousPadding++;
+        previousText = previousText.Substring(2);
+      }
+      var padding = previousPadding + lines.Count - 2;
       for (var i = 0; i < padding; i++) lines.Insert(0, " ");
-      hud.m_messageText.CrossFadeAlpha(1f, 0f, true);
+      if (previousText != "") {
+        lines.Insert(0, " ");
+        lines.Add(" ");
+        lines.Add(previousText);
+      }
       hud.m_messageText.text = Format.JoinLines(lines);
+      hud.m_messageText.CrossFadeAlpha(1f, 0f, true);
       // Icon is not very relevant information and will pop up over the text.
-      if (isCustomMessage)
-        hud.m_messageIcon.canvasRenderer.SetAlpha(0f);
+      hud.m_messageIcon.canvasRenderer.SetAlpha(0f);
+
     }
   }
 }

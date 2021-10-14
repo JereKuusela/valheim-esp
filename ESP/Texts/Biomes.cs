@@ -58,8 +58,8 @@ namespace ESP {
       var envs = Patch.EnvMan_GetAvailableEnvironments(EnvMan.instance, obj);
       var totalWeight = envs.Sum(env => env.m_weight);
       var avgWind = envs.Sum(EnvUtils.GetAvgWind) / totalWeight;
-      text += "\n" + EnvUtils.GetWind() + " (" + Format.Percent(avgWind) + " on average)";
-      text += "\n\n" + EnvUtils.GetProgress() + ", Current roll: " + EnvUtils.GetEnvironmentRoll(totalWeight);
+      text += "\n" + EnvUtils.GetWind() + " (" + Format.Percent(avgWind) + " on average), Current roll: " + EnvUtils.GetWindRoll();
+      text += "\n\n" + EnvUtils.GetProgress() + ", Current roll: " + EnvUtils.GetEnvironmentRoll();
       var texts = envs.Select(env => EnvUtils.GetEnvironment(env, totalWeight));
       return text + "\n" + Format.JoinLines(texts);
     }

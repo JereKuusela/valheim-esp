@@ -155,7 +155,7 @@ namespace ESP {
       configShowSmoke = config.Bind(section, "Smoke", true, "");
       configShowSmoke.SettingChanged += (s, e) => UpdateTag(Tag.Smoke);
       UpdateTag(Tag.Smoke);
-      configShowPlayerCover = config.Bind(section, "Player cover", true, "");
+      configShowPlayerCover = config.Bind(section, "Player cover", false, "");
       configShowPlayerCover.SettingChanged += (s, e) => UpdateTag(Tag.PlayerCover);
       UpdateTag(Tag.PlayerCover);
     }

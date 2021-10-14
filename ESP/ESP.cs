@@ -4,6 +4,7 @@ using HarmonyLib;
 using Visualization;
 
 namespace ESP {
+  [BepInDependency("valheim.jerekuusela.dps", BepInDependency.DependencyFlags.SoftDependency)]
   [BepInPlugin("valheim.jerekuusela.esp", "ESP", "1.5.0.0")]
   public class ESP : BaseUnityPlugin {
     public void Awake() {
@@ -15,31 +16,31 @@ namespace ESP {
     }
 
     private void SetupTagGroups() {
-      Visibility.AddTag(Group.Creature, Tag.TrackedCreature);
-      Visibility.AddTag(Group.Creature, Tag.CreatureAlertRange);
-      Visibility.AddTag(Group.Creature, Tag.CreatureBreedingPartnerRange);
-      Visibility.AddTag(Group.Creature, Tag.CreatureBreedingTotalRange);
-      Visibility.AddTag(Group.Creature, Tag.CreatureEatingRange);
-      Visibility.AddTag(Group.Creature, Tag.CreatureFireRange);
-      Visibility.AddTag(Group.Creature, Tag.CreatureFoodSearchRange);
-      Visibility.AddTag(Group.Creature, Tag.CreatureHearRange);
-      Visibility.AddTag(Group.Creature, Tag.CreatureNoise);
-      Visibility.AddTag(Group.Creature, Tag.CreatureViewRange);
-      Visibility.AddTag(Group.Other, Tag.Chest);
-      Visibility.AddTag(Group.Other, Tag.StructureCover);
-      Visibility.AddTag(Group.Other, Tag.SpawnPoint);
-      Visibility.AddTag(Group.Other, Tag.Destructible);
-      Visibility.AddTag(Group.Other, Tag.EffectArea);
-      Visibility.AddTag(Group.Other, Tag.Location);
-      Visibility.AddTag(Group.Other, Tag.Ore);
-      Visibility.AddTag(Group.Other, Tag.Pickable);
-      Visibility.AddTag(Group.Zone, Tag.RandomEventSystem);
-      Visibility.AddTag(Group.Other, Tag.Smoke);
-      Visibility.AddTag(Group.Other, Tag.Spawner);
-      Visibility.AddTag(Group.Zone, Tag.SpawnZone);
-      Visibility.AddTag(Group.Other, Tag.StructureSupport);
-      Visibility.AddTag(Group.Other, Tag.Tree);
-      Visibility.AddTag(Group.Zone, Tag.ZoneCorner);
+      Visibility.AddTag(Tag.TrackedCreature);
+      Visibility.AddTag(Tag.CreatureAlertRange);
+      Visibility.AddTag(Tag.CreatureBreedingPartnerRange);
+      Visibility.AddTag(Tag.CreatureBreedingTotalRange);
+      Visibility.AddTag(Tag.CreatureEatingRange);
+      Visibility.AddTag(Tag.CreatureFireRange);
+      Visibility.AddTag(Tag.CreatureFoodSearchRange);
+      Visibility.AddTag(Tag.CreatureHearRange);
+      Visibility.AddTag(Tag.CreatureNoise);
+      Visibility.AddTag(Tag.CreatureViewRange);
+      Visibility.AddTag(Tag.Chest);
+      Visibility.AddTag(Tag.StructureCover);
+      Visibility.AddTag(Tag.SpawnPoint);
+      Visibility.AddTag(Tag.Destructible);
+      Visibility.AddTag(Tag.EffectArea);
+      Visibility.AddTag(Tag.Location);
+      Visibility.AddTag(Tag.Ore);
+      Visibility.AddTag(Tag.Pickable);
+      Visibility.AddTag(Tag.RandomEventSystem);
+      Visibility.AddTag(Tag.Smoke);
+      Visibility.AddTag(Tag.Spawner);
+      Visibility.AddTag(Tag.SpawnZone);
+      Visibility.AddTag(Tag.StructureSupport);
+      Visibility.AddTag(Tag.Tree);
+      Visibility.AddTag(Tag.ZoneCorner);
     }
     public void LateUpdate() {
       if (Player.m_localPlayer)
@@ -59,11 +60,6 @@ namespace ESP {
         if (index == -1) break;
         binds.RemoveAt(index);
       }
-      __instance.TryRunCommand("bind y esp_toggle " + Group.Zone);
-      __instance.TryRunCommand("bind u esp_toggle " + Group.Creature);
-      __instance.TryRunCommand("bind i esp_toggle " + Group.Other);
-      __instance.TryRunCommand("bind p esp_toggle " + Tool.DPS);
-      __instance.TryRunCommand("bind p esp_toggle " + Tool.Experience);
       __instance.TryRunCommand("bind o esp_toggle " + Tool.ExtraInfo);
       __instance.TryRunCommand("bind j esp_toggle " + Tool.Ruler);
     }

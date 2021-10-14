@@ -11,11 +11,6 @@ namespace ESP {
     public const float CoverPlayerLimit = 0.8f;
     public const float SmokeAmountLimit = 100;
   }
-  public static class Group {
-    public const string Zone = "Zone";
-    public const string Creature = "Creature";
-    public const string Other = "Other";
-  }
   public static class Tag {
     public const string StructureCover = "StructureCover";
     public const string StructureSupport = "StructureSupport";
@@ -46,8 +41,6 @@ namespace ESP {
   }
   public static class Tool {
     public const string ExtraInfo = "ExtraInfo";
-    public const string DPS = "DPS";
-    public const string Experience = "Experience";
     public const string TimeAndWeather = "TimeAndWeather";
     public const string Position = "Position";
     public const string HUD = "HUD";

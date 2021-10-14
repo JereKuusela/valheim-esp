@@ -29,12 +29,6 @@ namespace ESP {
     public static GameObject GetPrefab(MonoBehaviour obj) => ZNetScene.instance.GetPrefab(Nview(obj).GetZDO().GetPrefab());
     public static float Cover(Windmill obj) => Get<float>(obj, "m_cover");
     public static float Health(object obj) => Get<float>(obj, "m_health");
-    public static object Bound(object obj) => Get<object>(obj, "m_bound");
-    public static Vector3 Pos(object obj) => Get<Vector3>(obj, "m_pos");
-    public static Vector3 Size(object obj) => Get<Vector3>(obj, "m_size");
-    public static Quaternion Rot(object obj) => Get<Quaternion>(obj, "m_rot");
-    public static Collider Collider(object obj) => Get<Collider>(obj, "m_collider");
-    public static int NextAttackChainLevel(Attack obj) => Get<int>(obj, "m_nextAttackChainLevel");
     public static float SpawnTimer(SpawnArea obj) => Get<float>(obj, "m_spawnTimer");
     public static float NoiseRange(Character obj) => Get<float>(obj, "m_noiseRange");
     public static float StaggerDamage(Character obj) => Get<float>(obj, "m_staggerDamage");
@@ -53,7 +47,6 @@ namespace ESP {
     public static SEMan Seman(Player obj) => Get<SEMan>(obj, "m_seman");
     public static ZNetView Nview(MonoBehaviour obj) => Get<ZNetView>(obj, "m_nview");
     public static Vector3[] CoverRays(Cover obj) => Get<Vector3[]>(obj, "m_coverRays");
-    public static Skills Skills(Player obj) => Get<Skills>(obj, "m_skills");
     public static List<Collider> HitAreas(MineRock obj) => Get<List<Collider>>(obj, "m_hitAreas");
     public static IEnumerable<object> HitAreas(MineRock5 obj) => Get<IEnumerable<object>>(obj, "m_hitAreas");
     public static int RayMask(MineRock5 obj) => Get<int>(obj, "m_rayMask");
@@ -97,11 +90,6 @@ namespace ESP {
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(Smelter), "GetFuel")]
     public static float Smelter_GetFuel(Smelter instance) {
-      throw new NotImplementedException("Dummy");
-    }
-    [HarmonyReversePatch]
-    [HarmonyPatch(typeof(Character), "GetDamageModifiers")]
-    public static HitData.DamageModifiers Character_GetDamageModifiers(Character instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
@@ -160,18 +148,13 @@ namespace ESP {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
-    [HarmonyPatch(typeof(Skills), "GetSkill")]
-    public static Skills.Skill Skills_GetSkill(Skills instance, Skills.SkillType skillType) {
+    [HarmonyPatch(typeof(Character), "GetDamageModifiers")]
+    public static HitData.DamageModifiers Character_GetDamageModifiers(Character instance) {
       throw new NotImplementedException("Dummy");
     }
     [HarmonyReversePatch]
-    [HarmonyPatch(typeof(Skills.Skill), "GetNextLevelRequirement")]
-    public static float Skill_GetNextLevelRequirement(Skills.Skill instance) {
-      throw new NotImplementedException("Dummy");
-    }
-    [HarmonyReversePatch]
-    [HarmonyPatch(typeof(MineRock5), "GetSupport")]
-    public static bool MineRock5_GetSupport(MineRock5 instance, Collider c) {
+    [HarmonyPatch(typeof(EnvMan), "AddWindOctave")]
+    public static void EnvMan_AddWindOctave(EnvMan instance, long timeSec, int octave, ref float angle, ref float intensity) {
       throw new NotImplementedException("Dummy");
     }
   }

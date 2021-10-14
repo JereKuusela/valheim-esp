@@ -10,16 +10,17 @@ namespace ESP {
       var value = ZNet.instance.GetTimeSeconds() % limit;
       return Format.ProgressPercent("Next", value, limit);
     }
-    public static string GetEnvironmentRoll(float weight) {
-      var seed = (long)ZNet.instance.GetTimeSeconds() / EnvMan.instance.m_environmentDuration; ;
+    public static string GetEnvironmentRoll() {
+      var seed = (long)ZNet.instance.GetTimeSeconds() / EnvMan.instance.m_environmentDuration;
       var state = UnityEngine.Random.state;
       UnityEngine.Random.InitState((int)seed);
-      var roll = Format.Percent(UnityEngine.Random.Range(0f, weight) / weight);
+      var roll = UnityEngine.Random.Range(0f, 1f);
       UnityEngine.Random.state = state;
-      return roll;
+      return Format.Percent(roll) + " (seed " + seed + ")";
     }
     private static string GetClock() {
-      var fraction = Patch.EnvMan_GetDayFraction(EnvMan.instance);
+      var limit = EnvMan.instance.m_dayLengthSec;
+      var fraction = (ZNet.instance.GetTimeSeconds() % limit) / limit;
       var seconds = fraction * 3600 * 24;
       var hours = Math.Floor(seconds / 3600);
       var minutes = Math.Floor((seconds - hours * 3600) / 60);
@@ -56,6 +57,18 @@ namespace ESP {
     public static string GetWind() {
       var windIntensity = EnvMan.instance.GetWindIntensity();
       return "Wind: " + Format.Percent(windIntensity);
+    }
+    public static string GetWindRoll() {
+      UnityEngine.Random.State state = UnityEngine.Random.state;
+      var angle = 0f;
+      var intensity = 0.5f;
+      var time = (long)ZNet.instance.GetTimeSeconds();
+      Patch.EnvMan_AddWindOctave(EnvMan.instance, time, 1, ref angle, ref intensity);
+      Patch.EnvMan_AddWindOctave(EnvMan.instance, time, 2, ref angle, ref intensity);
+      Patch.EnvMan_AddWindOctave(EnvMan.instance, time, 4, ref angle, ref intensity);
+      Patch.EnvMan_AddWindOctave(EnvMan.instance, time, 8, ref angle, ref intensity);
+      UnityEngine.Random.state = state;
+      return Format.Percent(intensity) + " and " + Format.Degrees(angle * 180 / Math.PI);
     }
     public static string GetWindHud() {
       var windIntensity = EnvMan.instance.GetWindIntensity();

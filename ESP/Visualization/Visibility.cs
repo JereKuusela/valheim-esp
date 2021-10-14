@@ -11,7 +11,7 @@ namespace Visualization {
     private static HashSet<string> tags = new HashSet<string>();
     public static List<string> GetTags => tags.ToList();
     private static Dictionary<string, string> tagToGroup = new Dictionary<string, string>();
-    public static void AddTag(string group, string tag) {
+    public static void AddTag(string tag) {
       tags.Add(tag);
     }
     ///<summary>Returns whether a given visual tag is shown.</summary>

@@ -65,6 +65,22 @@ namespace ESP {
       }
       return Format.JoinLines(lines);
     }
+    private static int[] IgnoredLayers = new int[] { LayerMask.NameToLayer("character_trigger"), LayerMask.NameToLayer("viewblock") };
+    private static string GetBoundingBox(MonoBehaviour obj) {
+      var colliders = obj.GetComponentsInChildren<Collider>().Where(collider => !IgnoredLayers.Contains(collider.gameObject.layer)).ToArray();
+      if (colliders.Length > 1) {
+        var layers = Format.JoinRow(colliders.Select(collider => LayerMask.LayerToName(collider.gameObject.layer)));
+        return "Bounds: " + Format.String("Multiple colliders not supported", "red") + ", Layers: " + layers;
+      }
+      var size = colliders[0].bounds.size;
+      var scale = obj.transform.lossyScale;
+      var scaleText = Format.Coordinates(scale, "F2");
+      if (Math.Abs(scale.x - scale.y) < 0.01f && Math.Abs(scale.x - scale.z) < 0.01f) {
+        if (Math.Abs(scale.x - 1.0f) < 0.01f) return "Bounds: " + Format.Coordinates(size, "F3");
+        scaleText = Format.Float(scale.x);
+      }
+      return "Bounds: " + Format.Coordinates(size, "F2") + " with scale " + scaleText;
+    }
     public static string Get(TreeBase obj) {
       if (!Settings.Destructibles || !IsValid(obj)) return "";
       var lines = new List<string>();
@@ -78,6 +94,7 @@ namespace ESP {
       lines.Add(Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_pickaxe != HitData.DamageModifier.Immune));
       lines.Add(DamageModifierUtils.Get(obj.m_damageModifiers, false, false));
       lines.Add(Get(obj.m_dropWhenDestroyed, 1));
+      lines.Add(GetBoundingBox(obj));
       return Format.JoinLines(lines);
     }
     public static string Get(Destructible obj) {
@@ -123,6 +140,7 @@ namespace ESP {
         lines.Add(Format.String(GetMaterialName(obj.m_materialType)) + ": " + Format.Progress(support, minSupport) + " support");
         lines.Add(Format.Percent(horizontalLoss) + " horizontal loss, " + Format.Percent(verticalLoss) + " vertical loss");
       }
+      lines.Add(GetBoundingBox(obj));
       return Format.JoinLines(lines);
     }
     public static string Get(Piece obj) {
