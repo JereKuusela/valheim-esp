@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Text;
+using Service;
 using UnityEngine;
 
 namespace ESP {
@@ -21,7 +21,7 @@ namespace ESP {
       return text;
     }
     public static string GetAttack(Humanoid obj) {
-      if (!Settings.Creatures || !Settings.Attacks || !IsValid(obj)) return "";
+      if (!Settings.Creatures || !Settings.Attacks || !Helper.IsValid(obj)) return "";
       var weapons = obj.GetInventory().GetAllItems().Where(item => item.IsWeapon());
       var time = Time.time;
       // Some attacks have multiple instances so group them to reduce clutter.
@@ -31,7 +31,7 @@ namespace ESP {
         var data = weapon.m_shared;
         var attack = data.m_attack;
         var isNonAttack = attack.m_attackType == Attack.AttackType.None;
-        var text = Format.Name(weapon, "orange");
+        var text = Translate.Name(weapon, "orange");
         var target = GetTargetName(data.m_aiTargetType);
         if (target != "")
           text += " (" + target + ")";
@@ -72,7 +72,7 @@ namespace ESP {
       return "\n" + Format.JoinLines(texts);
     }
 
-    public static string GetNoise(Character obj) => "Noise: " + Format.Int(Patch.NoiseRange(obj));
+    public static string GetNoise(Character obj) => "Noise: " + Format.Int(obj.m_noiseRange);
 
     public static string GetStaggerText(float health, float staggerDamageFactor, float staggerDamage) {
       var staggerLimit = staggerDamageFactor * health;
@@ -97,22 +97,21 @@ namespace ESP {
       return "";
     }
     public static string Get(Character obj, BaseAI baseAI, MonsterAI monsterAI) {
-      if (!Settings.Resistances || !IsValid(obj) || !baseAI || !monsterAI)
+      if (!Settings.Resistances || !Helper.IsValid(obj) || !baseAI || !monsterAI)
         return "";
       var lines = new List<string>();
-      var staggerDamage = Patch.StaggerDamage(obj);
-      var body = Patch.Body(obj);
+      var mass = obj.m_body.mass;
       lines.Add(GetState(obj, baseAI, monsterAI));
-      lines.Add(Patch.AiStatus(monsterAI));
+      lines.Add(monsterAI.m_aiStatus);
       var health = obj.GetMaxHealth();
-      lines.Add(Format.GetHealth(obj.GetHealth(), health));
+      lines.Add(Text.GetHealth(obj.GetHealth(), health));
       var factor = obj.m_staggerDamageFactor;
       // Doesn't have stagger animation so hardcoded to be immune.
       if ((obj.m_name == "Deathsquito"))
         factor = 0f;
-      lines.Add(GetStaggerText(health, factor, staggerDamage));
-      lines.Add("Mass: " + Format.Int(body.mass) + " (" + Format.Percent(1f - 5f / body.mass) + " knockback resistance)");
-      var damageModifiers = Patch.Character_GetDamageModifiers(obj);
+      lines.Add(GetStaggerText(health, factor, obj.m_staggerDamage));
+      lines.Add("Mass: " + Format.Int(mass) + " (" + Format.Percent(1f - 5f / mass) + " knockback resistance)");
+      var damageModifiers = obj.GetDamageModifiers();
       lines.Add(DamageModifierUtils.Get(damageModifiers, true, true));
       if (monsterAI && monsterAI.IsSleeping()) {
         var wakeUp = new List<string>();
@@ -130,7 +129,7 @@ namespace ESP {
           lines.Add("Patrol: " + Format.String(patrolPoint.ToString("F0")));
       }
       if (monsterAI.m_consumeItems.Count > 0) {
-        var items = Format.Name(monsterAI.m_consumeItems);
+        var items = Translate.Name(monsterAI.m_consumeItems);
         lines.Add(items);
       }
       return Format.JoinLines(lines);

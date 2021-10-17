@@ -1,14 +1,14 @@
 using System.Collections.Generic;
-using Text;
+using Service;
 
 namespace ESP {
   public partial class Texts {
     public static string Get(ItemDrop obj) {
-      if (!IsValid(obj) || !Settings.ItemDrops) return "";
+      if (!Helper.IsValid(obj) || !Settings.ItemDrops) return "";
       var lines = new List<string>();
       lines.Add("Stack size: " + Format.Int(obj.m_itemData.m_shared.m_maxStackSize));
-      var timer = Patch.ItemDrop_GetTimeSinceSpawned(obj);
-      var inBase = Patch.ItemDrop_IsInsideBase(obj);
+      var timer = obj.GetTimeSinceSpawned();
+      var inBase = obj.IsInsideBase();
       var playerInRange = Player.IsPlayerInRange(obj.transform.position, 25f);
       lines.Add(Format.ProgressPercent("Despawn timer", timer, 3600));
       if (inBase)

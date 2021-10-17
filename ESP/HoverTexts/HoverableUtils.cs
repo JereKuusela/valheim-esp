@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using Authorization;
-using Text;
+using Service;
 using UnityEngine;
 
 namespace ESP {
@@ -14,7 +13,7 @@ namespace ESP {
     }
     public string GetHoverName() {
       if (title == "")
-        title = Format.Name(this);
+        title = Translate.Name(this);
       return title;
     }
     private string title = "";

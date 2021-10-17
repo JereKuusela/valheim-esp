@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using Text;
+using Service;
 using UnityEngine;
 
 namespace ESP {
   public partial class Texts {
     public static string Get(Location obj) {
-      if (!IsValid(obj) || !Settings.Locations) return "";
+      if (!Helper.IsValid(obj) || !Settings.Locations) return "";
       var name = Utils.GetPrefabName(obj.gameObject).ToLower();
       var lines = new List<string>();
       var instances = ZoneSystem.instance.m_locationInstances;
@@ -97,7 +97,7 @@ namespace ESP {
     }
 
     public static string Get(RandomSpawn obj) {
-      if (!IsValid(obj)) return "";
+      if (!Helper.IsValid(obj)) return "";
       return "Chance to spawn: " + Format.Percent(obj.m_chanceToSpawn);
 
     }

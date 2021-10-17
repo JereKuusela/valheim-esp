@@ -1,6 +1,6 @@
 using System;
 using HarmonyLib;
-using Text;
+using Service;
 using UnityEngine;
 using Visualization;
 
@@ -99,7 +99,7 @@ namespace ESP {
         return;
       var color = GetColor(__instance);
       var obj = Draw.DrawMarkerLine(Tag.Pickable, __instance, color, Settings.PickableRayWidth);
-      Text.AddText(obj, Format.Name(__instance));
+      Text.AddText(obj, Translate.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(Location), "Awake")]
@@ -108,7 +108,7 @@ namespace ESP {
       if (Settings.LocationRayWidth == 0)
         return;
       var obj = Draw.DrawMarkerLine(Tag.Location, __instance, Settings.LocationRayColor, Settings.LocationRayWidth);
-      Text.AddText(obj, Format.Name(__instance));
+      Text.AddText(obj, Translate.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(Container), "Awake")]
@@ -128,7 +128,7 @@ namespace ESP {
       var width = LocationUtils.GetRayWidth(damages);
       var color = LocationUtils.GetRayColor(damages);
       var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
-      Text.AddText(obj, Format.Name(__instance));
+      Text.AddText(obj, Translate.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(MineRock5), "Start")]
@@ -139,7 +139,7 @@ namespace ESP {
       var width = LocationUtils.GetRayWidth(damages);
       var color = LocationUtils.GetRayColor(damages);
       var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
-      Text.AddText(obj, Format.Name(__instance));
+      Text.AddText(obj, Translate.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(Destructible), "Awake")]
@@ -150,7 +150,7 @@ namespace ESP {
       var width = LocationUtils.GetRayWidth(damages);
       var color = LocationUtils.GetRayColor(damages);
       var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
-      Text.AddText(obj, Format.Name(__instance));
+      Text.AddText(obj, Translate.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(TreeBase), "Awake")]
@@ -162,7 +162,7 @@ namespace ESP {
       var width = LocationUtils.GetRayWidth(damages);
       var color = LocationUtils.GetRayColor(damages);
       var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
-      Text.AddText(obj, Format.Name(__instance));
+      Text.AddText(obj, Translate.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(TreeLog), "Awake")]
@@ -173,7 +173,7 @@ namespace ESP {
       var width = LocationUtils.GetRayWidth(damages);
       var color = LocationUtils.GetRayColor(damages);
       var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
-      Text.AddText(obj, Format.Name(__instance));
+      Text.AddText(obj, Translate.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(CreatureSpawner), "Awake")]
@@ -190,7 +190,7 @@ namespace ESP {
       if (!IsEnabled(obj)) return;
       var color = GetColor(obj);
       var line = Draw.DrawMarkerLine(Tag.SpawnPoint, obj, color, Settings.CreatureSpawnersRayWidth);
-      Text.AddText(line, Format.Name(obj));
+      Text.AddText(line, Translate.Name(obj));
     }
   }
 }

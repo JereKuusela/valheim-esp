@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Text;
+using Service;
 using UnityEngine;
 
 namespace ESP {
@@ -49,13 +49,13 @@ namespace ESP {
     public static string GetNames(Heightmap.Biome biomes, Heightmap.Biome validBiome = BIOME_MAX) {
       var names = new List<string>();
       foreach (var biome in BIOMES)
-        if ((biomes & biome) > 0) names.Add(Format.String(Format.Name(biome), ((validBiome & biome) > 0)));
+        if ((biomes & biome) > 0) names.Add(Format.String(Translate.Name(biome), ((validBiome & biome) > 0)));
       if (names.Count == BIOMES.Length) return "";
       return Format.JoinRow(names);
     }
     public static string Get(Heightmap.Biome obj) {
-      var text = Format.Name(obj) + "\n" + EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment();
-      var envs = Patch.EnvMan_GetAvailableEnvironments(EnvMan.instance, obj);
+      var text = Translate.Name(obj) + "\n" + EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment();
+      var envs = EnvMan.instance.GetAvailableEnvironments(obj);
       var totalWeight = envs.Sum(env => env.m_weight);
       var avgWind = envs.Sum(EnvUtils.GetAvgWind) / totalWeight;
       text += "\n" + EnvUtils.GetWind() + " (" + Format.Percent(avgWind) + " on average), Current roll: " + EnvUtils.GetWindRoll();

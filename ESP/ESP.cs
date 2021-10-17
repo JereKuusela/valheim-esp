@@ -1,6 +1,6 @@
-﻿using Authorization;
-using BepInEx;
+﻿using BepInEx;
 using HarmonyLib;
+using Service;
 using Visualization;
 
 namespace ESP {
@@ -13,6 +13,7 @@ namespace ESP {
       harmony.PatchAll();
       Admin.Instance = new EspAdmin();
       SetupTagGroups();
+      MessageHud_UpdateMessage.GetMessage = Hud.GetMessage;
     }
 
     private void SetupTagGroups() {
@@ -53,7 +54,7 @@ namespace ESP {
     public static void Postfix(Console __instance) {
       if (!Settings.configFirstRun.Value) return;
       Settings.configFirstRun.Value = false;
-      var binds = Patch.BindList(__instance);
+      var binds = Terminal.m_bindList;
       if (binds == null) UnityEngine.Debug.LogError("No binds!");
       while (true) {
         var index = binds.FindIndex(item => item.Contains("esp_"));

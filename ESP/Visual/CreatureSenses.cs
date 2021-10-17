@@ -1,5 +1,5 @@
 using HarmonyLib;
-using Text;
+using Service;
 using UnityEngine;
 using Visualization;
 
@@ -50,7 +50,7 @@ namespace ESP {
     }
     public static void Postfix(BaseAI __instance, Character ___m_character) {
       if (CharacterUtils.IsExcluded(___m_character)) return;
-      var name = Format.Name(___m_character);
+      var name = Translate.Name(___m_character);
       var monsterAI = __instance.GetComponent<MonsterAI>();
       var procreation = __instance.GetComponent<Procreation>();
       var text = Texts.GetSenses(__instance, monsterAI, procreation);

@@ -1,44 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
-using Text;
+using Service;
 using UnityEngine;
 
 namespace ESP {
-
-  [HarmonyPatch(typeof(MessageHud), "UpdateMessage")]
-  public class MessageHud_GetBaseMessage : MonoBehaviour {
-    private static string BaseMessage = "";
-    // Use state to track when a default in game message arrives.
-    public static void Prefix(out string __state) {
-      __state = MessageHud.instance.m_messageText.text;
-    }
-    public static void Postfix(MessageHud __instance, float ___m_msgQueueTimer, string __state) {
-      if (__instance.m_messageText.text != __state)
-        BaseMessage = __instance.m_messageText.text;
-      // No more base game messages.
-      if (___m_msgQueueTimer >= 4f)
-        BaseMessage = "";
-      __instance.m_messageText.text = BaseMessage;
-    }
-  }
-
-
-  [HarmonyPatch(typeof(MessageHud), "Update")]
-  public class MessageHud_UpdateMessage : MonoBehaviour {
-    private static string GetShowHide(bool value) => value ? "Hide" : "Show";
-    private static List<string> GetInfo() {
-      if (!Settings.ShowHud) return new List<string>();
-      var position = Player.m_localPlayer.transform.position;
-      var lines = new List<string>();
-      lines.Add(GetEnvironment());
-      lines.Add(GetPosition(position));
-      lines.Add(GetSpeed() + ", " + GetNoise());
-      lines.Add(Ruler.GetText(position));
-      lines.Add(GetTrackedObjects());
-      return lines.Where(item => item != "").ToList();
-    }
-    private static List<string> GetFixedMessage() {
+  public static class Hud {
+    public static List<string> GetMessage() {
       var lines = new List<string>();
       // Wait for the game to load.
       if (Player.m_localPlayer == null) return lines;
@@ -50,7 +17,18 @@ namespace ESP {
       }
       return lines;
     }
-    private static string GetSpeed() => "Speed: " + Format.Float(Patch.CurrentVel(Player.m_localPlayer).magnitude, "0.#") + " m/s";
+    private static List<string> GetInfo() {
+      if (!Settings.ShowHud) return new List<string>();
+      var position = Player.m_localPlayer.transform.position;
+      var lines = new List<string>();
+      lines.Add(GetEnvironment());
+      lines.Add(GetPosition(position));
+      lines.Add(GetSpeed() + ", " + GetNoise());
+      lines.Add(Ruler.GetText(position));
+      lines.Add(GetTrackedObjects());
+      return lines.Where(item => item != "").ToList();
+    }
+    private static string GetSpeed() => "Speed: " + Format.Float(Player.m_localPlayer.m_currentVel.magnitude, "0.#") + " m/s";
     private static string GetNoise() => "Noise: " + Format.Int(Player.m_localPlayer.GetNoiseRange()) + " meters";
     private static string GetEnvironment() {
       if (!Settings.ShowTimeAndWeather) return "";
@@ -71,14 +49,14 @@ namespace ESP {
     // More careful solution would be using sectors but more complicated.
     private static float TrackUpdateLongTimer = 0;
     private static IDictionary<string, int> trackCache = new Dictionary<string, int>();
-    public static string GetTrackedObjects() {
+    private static string GetTrackedObjects() {
       if (Settings.TrackedObjects == "") return "";
       TrackUpdateTimer += Time.deltaTime;
       TrackUpdateLongTimer += Time.deltaTime;
       var tracked = Settings.TrackedObjects.Split(',');
       if (TrackUpdateTimer >= 1f) {
         TrackUpdateTimer = 0;
-        var itemsDrops = Patch.Instances(new ItemDrop());
+        var itemsDrops = ItemDrop.m_instances;
         foreach (var name in tracked) {
           var prefab = ZNetScene.instance.GetPrefab(name);
           var count = 0;
@@ -111,29 +89,5 @@ namespace ESP {
       return Format.JoinRow(tracks);
     }
 
-    public static void Postfix() {
-      var hud = MessageHud.instance;
-      var previousText = hud.m_messageText.text;
-      var lines = GetFixedMessage();
-      if (lines.Count == 0) return;
-
-      var previousPadding = 0;
-      while (previousText.StartsWith(" \n")) {
-        previousPadding++;
-        previousText = previousText.Substring(2);
-      }
-      var padding = previousPadding + lines.Count - 2;
-      for (var i = 0; i < padding; i++) lines.Insert(0, " ");
-      if (previousText != "") {
-        lines.Insert(0, " ");
-        lines.Add(" ");
-        lines.Add(previousText);
-      }
-      hud.m_messageText.text = Format.JoinLines(lines);
-      hud.m_messageText.CrossFadeAlpha(1f, 0f, true);
-      // Icon is not very relevant information and will pop up over the text.
-      hud.m_messageIcon.canvasRenderer.SetAlpha(0f);
-
-    }
   }
 }

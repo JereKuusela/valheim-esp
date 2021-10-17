@@ -1,5 +1,5 @@
-using Authorization;
 using HarmonyLib;
+using Service;
 using Visualization;
 
 namespace ESP {
@@ -22,11 +22,11 @@ namespace ESP {
   }
   [HarmonyPatch(typeof(Player), "Awake")]
   public class Player_Awake {
-    public static void Postfix(Player __instance, ref bool ___m_noPlacementCost, ref bool ___m_debugFly) {
+    public static void Postfix(Player __instance) {
       if (!Admin.Enabled || !Settings.UseDebugMode) return;
       Player.m_debugMode = true;
-      ___m_noPlacementCost = Settings.UseFreeBuild;
-      ___m_debugFly = Settings.UseFreeFly;
+      __instance.m_noPlacementCost = Settings.UseFreeBuild;
+      __instance.m_debugFly = Settings.UseFreeFly;
       __instance.SetGodMode(Settings.UseGodMode);
     }
   }

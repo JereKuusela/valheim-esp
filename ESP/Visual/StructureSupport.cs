@@ -12,7 +12,7 @@ namespace ESP {
         if (shown)
           item.Highlight();
         else
-          Patch.WearNTear_ResetHighlight(item);
+          item.ResetHighlight();
       });
     }
     ///<summary>Returns whether support information is available for a given structure.</summary>

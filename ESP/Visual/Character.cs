@@ -1,5 +1,5 @@
 using HarmonyLib;
-using Text;
+using Service;
 using UnityEngine;
 using Visualization;
 
@@ -29,7 +29,7 @@ namespace ESP {
     private static void DrawNoise(Character instance) {
       if (Settings.NoiseLineWidth == 0 || CharacterUtils.IsExcluded(instance))
         return;
-      var obj = Draw.DrawSphere(Tag.CreatureNoise, instance, Patch.NoiseRange(instance), Settings.NoiseColor, Settings.NoiseLineWidth);
+      var obj = Draw.DrawSphere(Tag.CreatureNoise, instance, instance.m_noiseRange, Settings.NoiseColor, Settings.NoiseLineWidth);
       obj.AddComponent<NoiseText>().character = instance;
     }
     public static void Postfix(Character __instance) {
@@ -47,7 +47,7 @@ namespace ESP {
   }
   public class NoiseText : MonoBehaviour, Hoverable {
     public string GetHoverText() => GetHoverName() + "\n" + Texts.GetNoise(character);
-    public string GetHoverName() => Format.Name(character);
+    public string GetHoverName() => Translate.Name(character);
     public Character character;
   }
   [HarmonyPatch(typeof(Character), "GetHoverText")]

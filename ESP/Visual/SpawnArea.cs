@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
-using Text;
+using Service;
 using UnityEngine;
 using Visualization;
 
 namespace ESP {
   public class SpawnAreaUtils {
     public static String Get(SpawnArea obj) {
-      var spawnTimer = Patch.SpawnTimer(obj);
       int near, total;
-      Patch.SpawnArea_GetInstances(obj, out near, out total);
+      obj.GetInstances(out near, out total);
       var lines = new List<string>(){
-        Format.ProgressPercent("Timer", spawnTimer, obj.m_spawnIntervalSec),
+        Format.ProgressPercent("Timer", obj.m_spawnTimer, obj.m_spawnIntervalSec),
         "Area: " + Format.Int(obj.m_spawnRadius) + " m",
         "Level up: " + Format.Percent(obj.m_levelupChance / 100f),
         "Trigger: " + Format.Int(obj.m_triggerDistance) + " m",

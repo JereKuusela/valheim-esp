@@ -1,6 +1,5 @@
 using System;
 using HarmonyLib;
-using Text;
 using UnityEngine;
 
 namespace ESP {
@@ -16,20 +15,20 @@ namespace ESP {
       var color = EffectAreaUtils.GetEffectColor(obj.m_type);
       var radius = obj.GetRadius() * obj.transform.lossyScale.x;
       var line = Visualization.Draw.DrawSphere(Tag.EffectArea, obj, Math.Max(0.5f, radius), color, Settings.EffectAreaLineWidth);
-      Visualization.Draw.AddText(line, text, Format.Radius(radius));
+      Visualization.Draw.AddText(line, text, Text.Radius(radius));
     }
     public static void Draw(PrivateArea obj) {
       var text = "Protection";
       if (!obj || IsDisabled(text)) return;
       var line = Visualization.Draw.DrawCylinder(Tag.EffectArea, obj, obj.m_radius, Settings.EffectAreaPrivateAreaColor, Settings.EffectAreaLineWidth);
-      Visualization.Draw.AddText(line, text, Format.Radius(obj.m_radius));
+      Visualization.Draw.AddText(line, text, Text.Radius(obj.m_radius));
     }
     public static void Draw(Container obj) {
       var text = "Container";
       var radius = Settings.CustomContainerEffectAreaRadius;
       if (!obj || IsDisabled(text) || radius == 0f) return;
       var line = Visualization.Draw.DrawSphere(Tag.EffectArea, obj, Math.Max(0.5f, radius), Settings.EffectAreaCustomContainerColor, Settings.EffectAreaLineWidth);
-      Visualization.Draw.AddText(line, text, Format.Radius(radius));
+      Visualization.Draw.AddText(line, text, Text.Radius(radius));
     }
     public static void Draw(CraftingStation obj) {
       DrawCover(obj);
@@ -40,14 +39,14 @@ namespace ESP {
       var radius = Settings.CustomCraftingEffectAreaRadius;
       if (!obj || IsDisabled(text) || radius == 0f) return;
       var line = Visualization.Draw.DrawSphere(Tag.EffectArea, obj, Math.Max(0.5f, radius), Settings.EffectAreaCustomCraftingColor, Settings.EffectAreaLineWidth);
-      Visualization.Draw.AddText(line, text, Format.Radius(radius));
+      Visualization.Draw.AddText(line, text, Text.Radius(radius));
     }
     public static void Draw(Piece obj) {
       if (!obj || obj.m_comfort == 0) return;
       var text = "Comfort";
       if (IsDisabled(text)) return;
       var line = Visualization.Draw.DrawSphere(Tag.EffectArea, obj, 10, Settings.EffectAreaComfortColor, Settings.EffectAreaLineWidth);
-      Visualization.Draw.AddText(line, text, Format.Radius(10));
+      Visualization.Draw.AddText(line, text, Text.Radius(10));
     }
     public static void Draw(Smoke obj) {
       if (!obj || Settings.SmokeLineWidth == 0) return;

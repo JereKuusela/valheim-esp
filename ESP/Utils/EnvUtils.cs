@@ -1,5 +1,5 @@
 using System;
-using Text;
+using Service;
 using UnityEngine;
 
 namespace ESP {
@@ -63,10 +63,10 @@ namespace ESP {
       var angle = 0f;
       var intensity = 0.5f;
       var time = (long)ZNet.instance.GetTimeSeconds();
-      Patch.EnvMan_AddWindOctave(EnvMan.instance, time, 1, ref angle, ref intensity);
-      Patch.EnvMan_AddWindOctave(EnvMan.instance, time, 2, ref angle, ref intensity);
-      Patch.EnvMan_AddWindOctave(EnvMan.instance, time, 4, ref angle, ref intensity);
-      Patch.EnvMan_AddWindOctave(EnvMan.instance, time, 8, ref angle, ref intensity);
+      EnvMan.instance.AddWindOctave(time, 1, ref angle, ref intensity);
+      EnvMan.instance.AddWindOctave(time, 2, ref angle, ref intensity);
+      EnvMan.instance.AddWindOctave(time, 4, ref angle, ref intensity);
+      EnvMan.instance.AddWindOctave(time, 8, ref angle, ref intensity);
       UnityEngine.Random.state = state;
       return Format.Percent(intensity) + " and " + Format.Degrees(angle * 180 / Math.PI);
     }

@@ -1,4 +1,4 @@
-namespace Text {
+namespace Service {
   public class Names {
     public static string GetName(Heightmap.Biome biome) {
       switch (biome) {

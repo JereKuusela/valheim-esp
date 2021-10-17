@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using HarmonyLib;
-using Text;
+using Service;
 using UnityEngine;
 
 namespace ESP {
@@ -10,14 +10,15 @@ namespace ESP {
     public static void Postfix(Skills.SkillType skillType, HitData.DamageTypes __instance, ref string __result) {
       if (!Settings.ExtraInfo || !Settings.AllDamageTypes) return;
       if (Player.m_localPlayer == null) return;
+      var obj = __instance;
 
       float minFactor;
       float maxFactor;
       Player.m_localPlayer.GetSkills().GetRandomSkillRange(out minFactor, out maxFactor, skillType);
-      if (__instance.m_chop != 0f)
-        __result += "\n$inventory_chop: " + Patch.DamageTypes_DamageRange(__instance, __instance.m_chop, minFactor, maxFactor) + ", " + Format.String("#CHOP_TIER", "orange");
-      if (__instance.m_pickaxe != 0f)
-        __result += "\n$inventory_pickaxe: " + Patch.DamageTypes_DamageRange(__instance, __instance.m_pickaxe, minFactor, maxFactor) + ", " + Format.String("#PICKAXE_TIER", "orange");
+      if (obj.m_chop != 0f)
+        __result += "\n$inventory_chop: " + obj.DamageRange(obj.m_chop, minFactor, maxFactor) + ", " + Format.String("#CHOP_TIER", "orange");
+      if (obj.m_pickaxe != 0f)
+        __result += "\n$inventory_pickaxe: " + obj.DamageRange(obj.m_pickaxe, minFactor, maxFactor) + ", " + Format.String("#PICKAXE_TIER", "orange");
     }
   }
   [HarmonyPatch(typeof(HitData.DamageTypes), "GetTooltipString", new Type[] { })]

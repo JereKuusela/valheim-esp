@@ -1,5 +1,5 @@
-using Authorization;
 using HarmonyLib;
+using Service;
 
 namespace ESP {
   [HarmonyPatch(typeof(Player), "RPC_UseStamina")]
@@ -19,7 +19,7 @@ namespace ESP {
   }
   [HarmonyPatch(typeof(Skills), "GetRandomSkillFactor")]
   public class Skills_GetRandomSkillFactor {
-    public static void Postfix(Skills __instance, ref float __result, Skills.SkillType skillType) {
+    public static void Postfix(ref float __result) {
       if (!Admin.Enabled) return;
       __result *= (1f + Settings.PlayerDamageBoost);
     }
