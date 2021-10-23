@@ -4,55 +4,47 @@ using UnityEngine;
 
 namespace ESP {
   public partial class Visual {
-    private static bool IsDisabled(string name) {
-      if (Settings.EffectAreaLineWidth == 0) return true;
-      return LocationUtils.IsIn(Settings.ExcludedAreaEffects, name);
-    }
     public static void Draw(EffectArea obj) {
       if (!obj) return;
+      var tag = Tag.GetEffectArea(obj.m_type);
+      if (Settings.IsDisabled(tag)) return;
       var text = EffectAreaUtils.GetTypeText(obj.m_type);
-      if (IsDisabled(text)) return;
-      var color = EffectAreaUtils.GetEffectColor(obj.m_type);
       var radius = obj.GetRadius() * obj.transform.lossyScale.x;
-      var line = Visualization.Draw.DrawSphere(Tag.EffectArea, obj, Math.Max(0.5f, radius), color, Settings.EffectAreaLineWidth);
+      var line = Visualization.Draw.DrawSphere(tag, obj, Math.Max(0.5f, radius));
       Visualization.Draw.AddText(line, text, Text.Radius(radius));
     }
     public static void Draw(PrivateArea obj) {
-      var text = "Protection";
-      if (!obj || IsDisabled(text)) return;
-      var line = Visualization.Draw.DrawCylinder(Tag.EffectArea, obj, obj.m_radius, Settings.EffectAreaPrivateAreaColor, Settings.EffectAreaLineWidth);
-      Visualization.Draw.AddText(line, text, Text.Radius(obj.m_radius));
+      if (!obj || Settings.IsDisabled(Tag.EffectAreaPrivateArea)) return;
+      var line = Visualization.Draw.DrawCylinder(Tag.EffectAreaPrivateArea, obj, obj.m_radius);
+      Visualization.Draw.AddText(line, "Protection", Text.Radius(obj.m_radius));
     }
     public static void Draw(Container obj) {
-      var text = "Container";
       var radius = Settings.CustomContainerEffectAreaRadius;
-      if (!obj || IsDisabled(text) || radius == 0f) return;
-      var line = Visualization.Draw.DrawSphere(Tag.EffectArea, obj, Math.Max(0.5f, radius), Settings.EffectAreaCustomContainerColor, Settings.EffectAreaLineWidth);
-      Visualization.Draw.AddText(line, text, Text.Radius(radius));
+      if (!obj || Settings.IsDisabled(Tag.EffectAreaCustomContainer) || radius == 0f) return;
+      var line = Visualization.Draw.DrawSphere(Tag.EffectAreaCustomContainer, obj, Math.Max(0.5f, radius));
+      Visualization.Draw.AddText(line, "Container", Text.Radius(radius));
     }
     public static void Draw(CraftingStation obj) {
       DrawCover(obj);
       DrawCustomEffectArea(obj);
     }
     public static void DrawCustomEffectArea(CraftingStation obj) {
-      var text = "Crafting station";
       var radius = Settings.CustomCraftingEffectAreaRadius;
-      if (!obj || IsDisabled(text) || radius == 0f) return;
-      var line = Visualization.Draw.DrawSphere(Tag.EffectArea, obj, Math.Max(0.5f, radius), Settings.EffectAreaCustomCraftingColor, Settings.EffectAreaLineWidth);
-      Visualization.Draw.AddText(line, text, Text.Radius(radius));
+      if (!obj || Settings.IsDisabled(Tag.EffectAreaCustomCrafting) || radius == 0f) return;
+      var line = Visualization.Draw.DrawSphere(Tag.EffectAreaCustomCrafting, obj, Math.Max(0.5f, radius));
+      Visualization.Draw.AddText(line, "Crafting station", Text.Radius(radius));
     }
     public static void Draw(Piece obj) {
-      if (!obj || obj.m_comfort == 0) return;
-      var text = "Comfort";
-      if (IsDisabled(text)) return;
-      var line = Visualization.Draw.DrawSphere(Tag.EffectArea, obj, 10, Settings.EffectAreaComfortColor, Settings.EffectAreaLineWidth);
-      Visualization.Draw.AddText(line, text, Text.Radius(10));
+      if (!obj) return;
+      if (Settings.IsDisabled(Tag.EffectAreaComfort)) return;
+      var line = Visualization.Draw.DrawSphere(Tag.EffectAreaComfort, obj, Constants.ComfortRadius);
+      Visualization.Draw.AddText(line, "Comfort", Text.Radius(10));
     }
     public static void Draw(Smoke obj) {
-      if (!obj || Settings.SmokeLineWidth == 0) return;
+      if (!obj || Settings.IsDisabled(Tag.Smoke)) return;
       var collider = obj.GetComponent<SphereCollider>();
       if (collider) {
-        var line = Visualization.Draw.DrawSphere(Tag.Smoke, obj, collider.radius * obj.transform.lossyScale.x, Settings.SmokeColor, Settings.SmokeLineWidth);
+        var line = Visualization.Draw.DrawSphere(Tag.Smoke, obj, collider.radius * obj.transform.lossyScale.x);
         Text.AddText(line);
       }
     }

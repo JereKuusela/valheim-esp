@@ -37,14 +37,22 @@ namespace ESP {
   [HarmonyPatch(typeof(SpawnArea), "Awake")]
   public class SpawnArea_Awake {
     public static void Postfix(SpawnArea __instance, float ___m_spawnTimer) {
-      if (Settings.SpawnAreasLineWidth == 0)
-        return;
-      var obj = Draw.DrawSphere(Tag.Spawner, __instance, __instance.m_triggerDistance, Settings.SpawnAreaTriggerColor, Settings.SpawnAreasLineWidth);
-      obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
-      obj = Draw.DrawSphere(Tag.Spawner, __instance, __instance.m_nearRadius, Settings.SpawnAreaNearColor, Settings.SpawnAreasLineWidth);
-      obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
-      obj = Draw.DrawSphere(Tag.Spawner, __instance, __instance.m_spawnRadius, Settings.SpawnAreaSpawnColor, Settings.SpawnAreasLineWidth);
-      obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
+      if (!Settings.IsDisabled(Tag.SpawnerRay)) {
+        var obj = Draw.DrawMarkerLine(Tag.SpawnerRay, __instance);
+        obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
+      }
+      if (!Settings.IsDisabled(Tag.SpawnerTriggerRange)) {
+        var obj = Draw.DrawSphere(Tag.SpawnerTriggerRange, __instance, __instance.m_triggerDistance);
+        obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
+      }
+      if (!Settings.IsDisabled(Tag.SpawnerLimitRange)) {
+        var obj = Draw.DrawSphere(Tag.SpawnerLimitRange, __instance, __instance.m_nearRadius);
+        obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
+      }
+      if (!Settings.IsDisabled(Tag.SpawnerSpawnRange)) {
+        var obj = Draw.DrawSphere(Tag.SpawnerSpawnRange, __instance, __instance.m_spawnRadius);
+        obj.AddComponent<SpawnAreaText>().spawnArea = __instance;
+      }
     }
   }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace Visualization {
     public const string TriggerLayer = "character_trigger";
 
     ///<summary>Creates the base object for drawing.</summary>
-    private static GameObject CreateObject(GameObject parent, string tag = "", bool fixRotation = false) {
+    private static GameObject CreateObject(GameObject parent, string tag, bool fixRotation = false) {
       var obj = new GameObject();
       obj.layer = LayerMask.NameToLayer(TriggerLayer);
       obj.transform.parent = parent.transform;
@@ -24,6 +25,7 @@ namespace Visualization {
     ///<summary>Creates a transform that rotates a forward line to a given direction.</summary>
     private static GameObject CreateLineRotater(GameObject parent, Vector3 start, Vector3 end) {
       var obj = new GameObject();
+      obj.name = parent.name;
       obj.layer = LayerMask.NameToLayer(TriggerLayer);
       obj.transform.parent = parent.transform;
       obj.transform.localPosition = start;
@@ -31,29 +33,31 @@ namespace Visualization {
       return obj;
     }
     ///<summary>Creates the line renderer object.</summary>
-    private static LineRenderer CreateRenderer(GameObject obj, Color color, float width) {
+    private static LineRenderer CreateRenderer(GameObject obj) {
       var renderer = obj.AddComponent<LineRenderer>();
       renderer.useWorldSpace = false;
       var material = new Material(Shader.Find("Particles/Standard Unlit"));
-      material.SetColor("_Color", color);
+      material.SetColor("_Color", GetColor(obj.name));
       material.SetFloat("_BlendOp", (float)UnityEngine.Rendering.BlendOp.Subtract);
       var texture = new Texture2D(1, 1);
       texture.SetPixel(0, 0, Color.gray);
       material.SetTexture("_MainTex", texture);
       renderer.material = material;
       renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-      renderer.widthMultiplier = width;
+      renderer.widthMultiplier = GetLineWidth(obj.name);
       return renderer;
     }
     ///<summary>Changes object color.</summary>
-    private static void ChangeColor(GameObject obj, Color color) {
-      foreach (var renderer in obj.GetComponentsInChildren<LineRenderer>(true))
-        renderer.material.SetColor("_Color", color);
+    private static void ChangeColor(GameObject obj) {
+      var color = GetColor(obj.name);
+      var renderer = obj.GetComponent<LineRenderer>();
+      if (renderer) renderer.material.SetColor("_Color", color);
     }
     ///<summary>Changes object line width.</summary>
-    private static void ChangeLineWidth(GameObject obj, float width) {
-      foreach (var renderer in obj.GetComponentsInChildren<LineRenderer>(true))
-        renderer.widthMultiplier = width;
+    private static void ChangeLineWidth(GameObject obj) {
+      var width = GetLineWidth(obj.name);
+      var renderer = obj.GetComponent<LineRenderer>();
+      if (renderer) renderer.widthMultiplier = width;
     }
     ///<summary>Adds an advanced collider to a complex shape (like cone).</summary>
     public static void AddMeshCollider(GameObject obj) {
@@ -80,16 +84,25 @@ namespace Visualization {
         return visualization != null && visualization.Tag == tag;
       }).ToArray();
     }
+    private static Dictionary<string, Color> colors = new Dictionary<string, Color>();
+    public static Color GetColor(string tag) => colors.ContainsKey(tag) ? colors[tag] : Color.white;
     ///<summary>Sets colors to visuals with a given tag.</summary>
     public static void SetColor(string tag, Color color) {
+      colors[tag] = color;
       foreach (var obj in Utils.GetVisualizations()) {
-        if (obj.Tag == tag) ChangeColor(obj.gameObject, color);
+        if (obj.Tag == tag) ChangeColor(obj.gameObject);
       }
     }
+    private static Dictionary<string, int> lineWidths = new Dictionary<string, int>();
+    public static float GetLineWidth(string tag) {
+      var width = Math.Max(1, lineWidths.ContainsKey(tag) ? lineWidths[tag] : 0);
+      return (float)width / 100f;
+    }
     ///<summary>Sets line width to visuals with a given tag.</summary>
-    public static void SetLineWidth(string tag, float width) {
+    public static void SetLineWidth(string tag, int width) {
+      lineWidths[tag] = width;
       foreach (var obj in Utils.GetVisualizations()) {
-        if (obj.Tag == tag) ChangeLineWidth(obj.gameObject, width);
+        if (obj.Tag == tag) ChangeLineWidth(obj.gameObject);
       }
     }
   }

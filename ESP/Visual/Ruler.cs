@@ -15,7 +15,7 @@ namespace ESP {
       obj.layer = LayerMask.NameToLayer(Draw.TriggerLayer);
       obj.transform.position = position;
       ruler = obj;
-      var line = Draw.DrawSphere("", obj, Settings.RulerRadius, Settings.RulerColor, Settings.RulerRadius);
+      var line = Draw.DrawSphere(Tag.Ruler, obj, Settings.configRulerRadius.Value);
       Draw.AddText(line, Format.Coordinates(position), "Ruler");
     }
     public static void Toggle(Vector3 position) {
@@ -23,7 +23,7 @@ namespace ESP {
       else Reset();
     }
     public static string GetText(Vector3 position) {
-      if (Settings.RulerRadius == 0f) return "";
+      if (Settings.IsDisabled(Tag.Ruler)) return "";
       if (ruler == null) return Format.String("J") + ": Set ruler point.";
       var delta = position - ruler.transform.position;
       var distXZ = Utils.DistanceXZ(position, ruler.transform.position);

@@ -27,9 +27,9 @@ namespace ESP {
   [HarmonyPatch(typeof(Character), "Awake")]
   public class Character_Awake {
     private static void DrawNoise(Character instance) {
-      if (Settings.NoiseLineWidth == 0 || CharacterUtils.IsExcluded(instance))
+      if (Settings.IsDisabled(Tag.CreatureNoise) || CharacterUtils.IsExcluded(instance))
         return;
-      var obj = Draw.DrawSphere(Tag.CreatureNoise, instance, instance.m_noiseRange, Settings.NoiseColor, Settings.NoiseLineWidth);
+      var obj = Draw.DrawSphere(Tag.CreatureNoise, instance, instance.m_noiseRange);
       obj.AddComponent<NoiseText>().character = instance;
     }
     public static void Postfix(Character __instance) {
@@ -39,10 +39,8 @@ namespace ESP {
 
   [HarmonyPatch(typeof(Character), "UpdateNoise")]
   public class Character_UpdateNoise : Component {
-    public static void Postfix(Character __instance, float ___m_noiseRange) {
-      if (Settings.NoiseLineWidth == 0 || CharacterUtils.IsExcluded(__instance))
-        return;
-      Draw.UpdateSphere(__instance, ___m_noiseRange, Settings.NoiseLineWidth);
+    public static void Postfix(Character __instance) {
+      Draw.UpdateSphere(__instance, __instance.m_noiseRange);
     }
   }
   public class NoiseText : MonoBehaviour, Hoverable {

@@ -54,9 +54,9 @@ namespace Visualization {
       renderer.SetPositions(segments);
     }
     ///<summary>Creates an arc on the X plane.</summary>
-    public static void DrawArcX(GameObject obj, Vector3 position, float radius, float angle, Color color, float width) {
-      var renderer = CreateRenderer(obj, color, width);
-      UpdateArcX(renderer, position, radius, angle, width);
+    public static void DrawArcX(GameObject obj, Vector3 position, float radius, float angle) {
+      var renderer = CreateRenderer(obj);
+      UpdateArcX(renderer, position, radius, angle, GetLineWidth(obj.name));
     }
     ///<summary>Updates existing arc on the Y plane.</summary>
     private static void UpdateArcY(LineRenderer renderer, Vector3 position, float radius, float angle, float width) {
@@ -65,9 +65,9 @@ namespace Visualization {
       renderer.SetPositions(segments);
     }
     ///<summary>Creates an arc on the Y plane.</summary>
-    public static void DrawArcY(GameObject obj, Vector3 position, float radius, float angle, Color color, float width) {
-      var renderer = CreateRenderer(obj, color, width);
-      UpdateArcY(renderer, position, radius, angle, width);
+    public static void DrawArcY(GameObject obj, Vector3 position, float radius, float angle) {
+      var renderer = CreateRenderer(obj);
+      UpdateArcY(renderer, position, radius, angle, GetLineWidth(obj.name));
     }
     ///<summary>Updates existing arc on the Z plane.</summary>
     private static void UpdateArcZ(LineRenderer renderer, Vector3 position, float radius, float angle, float width) {
@@ -76,16 +76,16 @@ namespace Visualization {
       renderer.SetPositions(segments);
     }
     ///<summary>Creates an arc on the Z plane.</summary>
-    public static void DrawArcZ(GameObject obj, Vector3 position, float radius, float angle, Color color, float width) {
-      var renderer = CreateRenderer(obj, color, width);
-      UpdateArcZ(renderer, position, radius, angle, width);
+    public static void DrawArcZ(GameObject obj, Vector3 position, float radius, float angle) {
+      var renderer = CreateRenderer(obj);
+      UpdateArcZ(renderer, position, radius, angle, GetLineWidth(obj.name));
     }
     ///<summary>Creates a renderer with two frontal arcs (vertical and horizontal).</summary>
-    public static GameObject DrawArc(string tag, MonoBehaviour parent, Vector3 position, float radius, float angle, Color color, float width) {
-      var obj = Draw.CreateObject(parent.gameObject, tag);
-      Draw.DrawArcY(Draw.CreateObject(obj), position, radius, angle, color, width);
-      Draw.DrawArcX(Draw.CreateObject(obj), position, radius, angle, color, width);
-      Draw.AddMeshCollider(obj);
+    public static GameObject DrawArc(string tag, MonoBehaviour parent, Vector3 position, float radius, float angle) {
+      var obj = CreateObject(parent.gameObject, tag);
+      DrawArcY(CreateObject(obj, tag), position, radius, angle);
+      DrawArcX(CreateObject(obj, tag), position, radius, angle);
+      AddMeshCollider(obj);
       return obj;
     }
   }

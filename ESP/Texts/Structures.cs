@@ -316,11 +316,11 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string Get(EffectArea obj) {
-      if (Settings.EffectAreaLineWidth == 0 || !Helper.IsValid(obj)) return "";
+      if (Settings.IsDisabled(Tag.GetEffectArea(obj.m_type)) || !Helper.IsValid(obj)) return "";
       return EffectAreaUtils.GetTypeText(obj.m_type) + " " + Text.Radius(obj.GetRadius());
     }
     public static string Get(PrivateArea obj) {
-      if (Settings.EffectAreaLineWidth == 0 || !Helper.IsValid(obj)) return "";
+      if (Settings.IsDisabled(Tag.EffectAreaPrivateArea) || !Helper.IsValid(obj)) return "";
       return "Protection " + Text.Radius(obj.m_radius);
     }
 
@@ -397,7 +397,8 @@ namespace ESP {
       var lines = new List<string>();
       var forwardSpeed = GetShipForwardSpeed(obj);
       var forwardAngle = 90f - Mathf.Atan2(obj.transform.forward.z, obj.transform.forward.x) / Math.PI * 180f;
-      var avgForwardSpeed = "(" + Format.Fixed(shipForwardSpeeds.Average()) + " avg)";
+      var avgForwardSpeed = "";
+      if (shipForwardSpeeds.Count > 0) avgForwardSpeed = " (" + Format.Fixed(shipForwardSpeeds.Average()) + " avg)";
       if (forwardSpeed < 0)
         lines.Add("Speed: " + Format.Fixed(-forwardSpeed) + " m/s away from " + Format.Int(forwardAngle) + " degrees " + avgForwardSpeed);
       else

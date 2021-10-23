@@ -133,28 +133,10 @@ Some use cases:
 	- Attack type and hitbox.
 	- Accuracy and projectile speed for bows.
 	- Secondary attack stats (damage multiplier, knocback multiplier, staggering multiplier).
-- Setting to overwrite player skill values (for easier testing).
-- Settings for player damage multiplier, player damage range and creature damage range.
+- Settings for player damage multiplier.
 - Setting to multiply stamina usage (easier testing when stamina is infinite).
 - Setting to enable permanent dodging (allows testing which attacks can be dodged).
 - Setting to multiply dig radius (for easier mining).
-- DPS can be toggled on and off with P key (which can also be used to reset the timer).
-- The DPS meter tracks start and end of attacks which makes it more accurate than the default DPS tool (which only tracks hits).
-- The DPS meter automatically stops when you stop attacking.
-- Message box on the left hide shows following statistics:
-	- Total time and amount of hits.
-	- DPS, total damage and damage per used stamina (includes all stamina usage).
-	- Also shows listed/base damage (what you see on weapon skills). This value ignores randomness and weapon skill (except for stamina usage).
-	- Used stamina per second and total used stamina.
-	- Caused staggering per second and total caused staggering.
-	- Attack speed and hits per second.
-	- Damage taken (per second and total).
-	- Damage to structures, trees, stones and other destructibles are tracked separately.
-- Experiencem meter can be toggled on and off with L key (which can also be used to reset the meter).
-- Message box on the left hide shows following statistics:
-	- Experience gain modifier.
-	- Experience gained per skill (both total and per minute).
-	- Current level and progress towards the next level.
 
 # Ruler
 
@@ -258,7 +240,6 @@ Some use cases:
 	- Created object when destroyed.
 	- Item drops with amounts and chances.
 	- World generator parameters.
-- Bounding boxes for mineral/stone support system to locate parts keeping the deposit from collapsing.
 - Stack size and despawn timer on dropped items.
 - Ship speed (both current and average), wind angle and wind strength on the HUD when sailing.
 

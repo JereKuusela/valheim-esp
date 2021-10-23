@@ -36,7 +36,6 @@ Todo:
  - Add master switch for all visuals.
  - Add master switch for all features.
  - Verify line widths (thicker for biome corners and smoke?)
- - Split DPS and experience tools to an own mod.
 
 Changes:
 - More precision to spawn and generator chance percentages.
@@ -51,4 +50,7 @@ Changes:
 - Removed setting groups which were quickly used show/hide visuals (better build your own with keybindings).
 - Fixed clock showing wrong time.
 - Removed DPS and experience meters as they are now in a own mod.
+- Added separate settings for spawner trigger, limit and spawn ranges.
+- Added rays for spawners.
+- Added Warm & Cozy effect area.
 

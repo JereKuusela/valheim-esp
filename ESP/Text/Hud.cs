@@ -7,8 +7,6 @@ namespace ESP {
   public static class Hud {
     public static List<string> GetMessage() {
       var lines = new List<string>();
-      // Wait for the game to load.
-      if (Player.m_localPlayer == null) return lines;
       lines.AddRange(GetInfo());
       var localShip = Ship.GetLocalShip();
       if (localShip) {

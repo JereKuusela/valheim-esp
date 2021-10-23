@@ -14,8 +14,6 @@ namespace ESP {
     public static string TrackedObjects => configTrackedObjects.Value;
     public static ConfigEntry<float> configTrackRadius;
     public static float TrackRadius => configTrackRadius.Value;
-
-    public static ConfigEntry<bool> configShowRuler;
     public static void InitHUD(ConfigFile config) {
       var section = "2. HUD";
       configShowHud = config.Bind(section, "Show HUD", true, "Show info and stats on HUD");
@@ -24,13 +22,6 @@ namespace ESP {
       configShowShipStatsOnHud = config.Bind(section, "Show ship stats", true, "Show ship stats on the hud");
       configTrackedObjects = config.Bind(section, "Tracked objects", "Serpent", "List of creature and item drop ids to track (separated by ,)");
       configTrackRadius = config.Bind(section, "Track radius", 500f, "Radius to find objects.");
-      configShowRuler = config.Bind(section, "Ruler enables", false, "Setting true enables rules at current location.");
-      configShowRuler.SettingChanged += (s, e) => {
-        if (configShowRuler.Value)
-          Ruler.Set(Player.m_localPlayer.transform.position);
-        else
-          Ruler.Reset();
-      };
     }
   }
 }

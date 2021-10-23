@@ -1,7 +1,6 @@
 using System;
 using HarmonyLib;
 using Service;
-using UnityEngine;
 using Visualization;
 
 namespace ESP {
@@ -19,40 +18,41 @@ namespace ESP {
     }
     private static bool IsResourceEnabled(string name) => !IsIn(Settings.ExcludedResources, name);
     public static bool IsEnabled(Pickable obj) {
-      if (Settings.PickableRayWidth == 0) return false;
+      var tag = GetTag(obj);
+      if (Settings.IsDisabled(tag)) return false;
       return IsResourceEnabled(obj.m_itemPrefab.name);
     }
     public static bool IsEnabled(MineRock obj) {
-      var width = LocationUtils.GetRayWidth(obj.m_damageModifiers);
-      if (width == 0) return false;
+      var tag = GetTag(obj.m_damageModifiers);
+      if (Settings.IsDisabled(tag)) return false;
       var text = obj.GetComponent<HoverText>();
       if (text) return IsResourceEnabled(text.m_text);
       return IsResourceEnabled(obj.m_name);
     }
     public static bool IsEnabled(MineRock5 obj) {
-      var width = LocationUtils.GetRayWidth(obj.m_damageModifiers);
-      if (width == 0) return false;
+      var tag = GetTag(obj.m_damageModifiers);
+      if (Settings.IsDisabled(tag)) return false;
       var text = obj.GetComponent<HoverText>();
       if (text) return IsResourceEnabled(text.m_text);
       return IsResourceEnabled(obj.m_name);
     }
     public static bool IsEnabled(TreeLog obj) {
-      var width = LocationUtils.GetRayWidth(obj.m_damages);
-      if (width == 0) return false;
+      var tag = GetTag(obj.m_damages);
+      if (Settings.IsDisabled(tag)) return false;
       var text = obj.GetComponent<HoverText>();
       if (text) return IsResourceEnabled(text.m_text);
       return IsResourceEnabled(obj.name);
     }
     public static bool IsEnabled(TreeBase obj) {
-      var width = LocationUtils.GetRayWidth(obj.m_damageModifiers);
-      if (width == 0) return false;
+      var tag = GetTag(obj.m_damageModifiers);
+      if (Settings.IsDisabled(tag)) return false;
       var text = obj.GetComponent<HoverText>();
       if (text) return IsResourceEnabled(text.m_text);
       return IsResourceEnabled(obj.name);
     }
     public static bool IsEnabled(Destructible obj) {
-      var width = LocationUtils.GetRayWidth(obj.m_damages);
-      if (width == 0) return false;
+      var tag = GetTag(obj.m_damages);
+      if (Settings.IsDisabled(tag)) return false;
       var text = obj.GetComponent<HoverText>();
       if (text) return IsResourceEnabled(text.m_text);
       return IsResourceEnabled(obj.name);
@@ -62,61 +62,42 @@ namespace ESP {
       if (modifiers.m_pickaxe == HitData.DamageModifier.Immune) return Tag.Tree;
       return Tag.Destructible;
     }
-    public static float GetRayWidth(HitData.DamageModifiers modifiers) {
-      if (modifiers.m_chop == HitData.DamageModifier.Immune) return Settings.OreRayWidth;
-      if (modifiers.m_pickaxe == HitData.DamageModifier.Immune) return Settings.TreeRayWidth;
-      return Settings.DestructibleRayWidth;
-    }
-    public static Color GetRayColor(HitData.DamageModifiers modifiers) {
-      if (modifiers.m_chop == HitData.DamageModifier.Immune) return Settings.OreRayColor;
-      if (modifiers.m_pickaxe == HitData.DamageModifier.Immune) return Settings.TreeRayColor;
-      return Settings.DestructibleRayColor;
+    public static string GetTag(Pickable obj) {
+      return obj.m_hideWhenPicked && obj.m_respawnTimeMinutes > 0f ? Tag.PickableRespawning : Tag.PickableOneTime;
     }
   }
   [HarmonyPatch(typeof(BaseAI), "Awake")]
   public class BaseAI_Ray {
     public static void Postfix(Character ___m_character) {
       var obj = ___m_character;
-      if (Settings.CreatureRayWidth == 0 || !CharacterUtils.IsTracked(obj)) return;
-      var line = Draw.DrawMarkerLine(Tag.TrackedCreature, obj, Settings.CreatureRayColor, Settings.CreatureRayWidth);
+      if (Settings.IsDisabled(Tag.TrackedCreature) || !CharacterUtils.IsTracked(obj)) return;
+      var line = Draw.DrawMarkerLine(Tag.TrackedCreature, obj);
       Text.AddText(line);
     }
   }
   [HarmonyPatch(typeof(Pickable), "Awake")]
   public class Pickable_Ray {
-    private static bool IsEnabled(Pickable instance) {
-      if (Settings.PickableRayWidth == 0) return false;
-      var name = instance.m_itemPrefab.name.ToLower();
-      var excluded = Settings.ExcludedResources.ToLower().Split(',');
-      if (Array.Exists(excluded, item => item == name)) return false;
-      return true;
-    }
-    private static Color GetColor(Pickable instance) {
-      return instance.m_hideWhenPicked && instance.m_respawnTimeMinutes > 0 ? Settings.PickableRespawningColor : Settings.PickableOneTimeColor;
-    }
     public static void Postfix(Pickable __instance, ZNetView ___m_nview) {
-      if (!IsEnabled(__instance))
-        return;
-      var color = GetColor(__instance);
-      var obj = Draw.DrawMarkerLine(Tag.Pickable, __instance, color, Settings.PickableRayWidth);
+      if (!LocationUtils.IsEnabled(__instance)) return;
+      var tag = LocationUtils.GetTag(__instance);
+      var obj = Draw.DrawMarkerLine(tag, __instance);
       Text.AddText(obj, Translate.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(Location), "Awake")]
   public class Location_Ray {
     public static void Postfix(Location __instance) {
-      if (Settings.LocationRayWidth == 0)
-        return;
-      var obj = Draw.DrawMarkerLine(Tag.Location, __instance, Settings.LocationRayColor, Settings.LocationRayWidth);
+      if (Settings.IsDisabled(Tag.Location)) return;
+      var obj = Draw.DrawMarkerLine(Tag.Location, __instance);
       Text.AddText(obj, Translate.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(Container), "Awake")]
   public class Container_Ray {
     public static void Postfix(Container __instance, Piece ___m_piece) {
-      if (Settings.ChestRayWidth == 0 || !___m_piece || ___m_piece.IsPlacedByPlayer()) return;
+      if (Settings.IsDisabled(Tag.Chest) || !___m_piece || ___m_piece.IsPlacedByPlayer()) return;
       var text = Format.String(__instance.GetHoverName());
-      var obj = Draw.DrawMarkerLine(Tag.Chest, __instance, Settings.ContainerRayColor, Settings.ChestRayWidth);
+      var obj = Draw.DrawMarkerLine(Tag.Chest, __instance);
       Text.AddText(obj, text);
     }
   }
@@ -125,9 +106,7 @@ namespace ESP {
     public static void Postfix(MineRock __instance) {
       if (!LocationUtils.IsEnabled(__instance)) return;
       var damages = __instance.m_damageModifiers;
-      var width = LocationUtils.GetRayWidth(damages);
-      var color = LocationUtils.GetRayColor(damages);
-      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
+      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance);
       Text.AddText(obj, Translate.Name(__instance));
     }
   }
@@ -136,9 +115,7 @@ namespace ESP {
     public static void Postfix(MineRock5 __instance) {
       if (!LocationUtils.IsEnabled(__instance)) return;
       var damages = __instance.m_damageModifiers;
-      var width = LocationUtils.GetRayWidth(damages);
-      var color = LocationUtils.GetRayColor(damages);
-      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
+      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance);
       Text.AddText(obj, Translate.Name(__instance));
     }
   }
@@ -147,9 +124,7 @@ namespace ESP {
     public static void Postfix(Destructible __instance) {
       if (!LocationUtils.IsEnabled(__instance)) return;
       var damages = __instance.m_damages;
-      var width = LocationUtils.GetRayWidth(damages);
-      var color = LocationUtils.GetRayColor(damages);
-      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
+      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance);
       Text.AddText(obj, Translate.Name(__instance));
     }
   }
@@ -159,9 +134,7 @@ namespace ESP {
 
       if (!LocationUtils.IsEnabled(__instance)) return;
       var damages = __instance.m_damageModifiers;
-      var width = LocationUtils.GetRayWidth(damages);
-      var color = LocationUtils.GetRayColor(damages);
-      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
+      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance);
       Text.AddText(obj, Translate.Name(__instance));
     }
   }
@@ -170,26 +143,22 @@ namespace ESP {
     public static void Postfix(TreeLog __instance) {
       if (!LocationUtils.IsEnabled(__instance)) return;
       var damages = __instance.m_damages;
-      var width = LocationUtils.GetRayWidth(damages);
-      var color = LocationUtils.GetRayColor(damages);
-      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance, color, width);
+      var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance);
       Text.AddText(obj, Translate.Name(__instance));
     }
   }
   [HarmonyPatch(typeof(CreatureSpawner), "Awake")]
   public class CreatureSpawner_Ray {
     private static bool IsEnabled(CreatureSpawner obj) {
-      if (Settings.CreatureSpawnersRayWidth == 0) return false;
+      var tag = obj.m_respawnTimeMinuts > 0f ? Tag.SpawnPointRespawning : Tag.SpawnPointOneTime;
+      if (Settings.IsDisabled(tag)) return false;
       return !LocationUtils.IsIn(Settings.ExcludedCreatureSpawners, obj.name);
-    }
-    private static Color GetColor(CreatureSpawner obj) {
-      return obj.m_respawnTimeMinuts > 0f ? Settings.SpawnerRespawningColor : Settings.SpawnerOneTimeColor;
     }
     public static void Postfix(CreatureSpawner __instance) {
       var obj = __instance;
       if (!IsEnabled(obj)) return;
-      var color = GetColor(obj);
-      var line = Draw.DrawMarkerLine(Tag.SpawnPoint, obj, color, Settings.CreatureSpawnersRayWidth);
+      var tag = obj.m_respawnTimeMinuts > 0f ? Tag.SpawnPointRespawning : Tag.SpawnPointOneTime;
+      var line = Draw.DrawMarkerLine(tag, obj);
       Text.AddText(line, Translate.Name(obj));
     }
   }

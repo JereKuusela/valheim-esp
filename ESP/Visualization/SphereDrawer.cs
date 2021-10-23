@@ -21,25 +21,27 @@ namespace Visualization {
       });
     }
     ///<summary>Updates an existing sphere.</summary>
-    public static void UpdateSphere(MonoBehaviour parent, float radius, float width) {
+    public static void UpdateSphere(MonoBehaviour parent, float radius) {
       var renderers = parent.GetComponentsInChildren<LineRenderer>();
       if (renderers.Length != 3) return;
+      var width = renderers[0].widthMultiplier;
       UpdateArcX(renderers[0], Vector3.zero, radius, 360f, width);
       UpdateArcY(renderers[1], Vector3.zero, radius, 360f, width);
       UpdateArcZ(renderers[2], Vector3.zero, radius, 360f, width);
       UpdateSphereCollider(parent, radius - width / 2f);
     }
     ///<summary>Creates a renderer with a sphere (x, y and z profiles).</summary>
-    public static GameObject DrawSphere(string tag, MonoBehaviour parent, float radius, Color color, float width)
-      => DrawSphere(tag, parent.gameObject, radius, color, width);
+    public static GameObject DrawSphere(string tag, MonoBehaviour parent, float radius)
+      => DrawSphere(tag, parent.gameObject, radius);
 
     ///<summary>Creates a renderer with a sphere (x, y and z profiles).</summary>
-    public static GameObject DrawSphere(string tag, GameObject parent, float radius, Color color, float width) {
+    public static GameObject DrawSphere(string tag, GameObject parent, float radius) {
       var obj = CreateObject(parent, tag);
-      DrawArcX(CreateObject(obj), Vector3.zero, radius, 360f, color, width);
+      DrawArcX(CreateObject(obj, tag), Vector3.zero, radius, 360f);
+      var width = GetLineWidth(tag);
       AddSphereCollider(obj, radius - width / 2f);
-      DrawArcY(CreateObject(obj), Vector3.zero, radius, 360f, color, width);
-      DrawArcZ(CreateObject(obj), Vector3.zero, radius, 360f, color, width);
+      DrawArcY(CreateObject(obj, tag), Vector3.zero, radius, 360f);
+      DrawArcZ(CreateObject(obj, tag), Vector3.zero, radius, 360f);
       return obj;
     }
   }

@@ -11,9 +11,6 @@ namespace Visualization {
     private static HashSet<string> tags = new HashSet<string>();
     public static List<string> GetTags => tags.ToList();
     private static Dictionary<string, string> tagToGroup = new Dictionary<string, string>();
-    public static void AddTag(string tag) {
-      tags.Add(tag);
-    }
     ///<summary>Returns whether a given visual tag is shown.</summary>
     public static bool IsTag(string name) => visible && visibleTags.Contains(name) && (!tagToGroup.ContainsKey(name));
     public static void Set(bool visibility) {
@@ -24,6 +21,7 @@ namespace Visualization {
     public static void ToggleTag(string tag) => SetTag(tag, !visibleTags.Contains(tag));
     ///<summary>Sets visibility of a tag.</summary>
     public static void SetTag(string tag, bool visibility) {
+      tags.Add(tag);
       if (visibility) visibleTags.Add(tag);
       else visibleTags.Remove(tag);
       UpdateTagVisibility(tag);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BepInEx.Configuration;
 using Visualization;
 
@@ -43,11 +44,11 @@ namespace ESP {
     private static List<string> OptionsFetcher() {
       var options = new List<string>();
       options.AddRange(Visibility.GetTags);
+      options = options.Where(tag => tag == Tag.ZoneCorner || tag == Tag.SpawnZone || (!tag.StartsWith(Tag.ZoneCorner) && tag.StartsWith(Tag.SpawnZone))).ToList();
       options.Add(Tool.ExtraInfo);
       options.Add(Tool.TimeAndWeather);
       options.Add(Tool.Position);
       options.Add(Tool.HUD);
-      options.Add(Tool.Ruler);
       options.Sort();
       return options;
     }
@@ -57,26 +58,34 @@ namespace ESP {
       if (name == Tool.TimeAndWeather.ToLower()) return configShowTimeAndWeather;
       if (name == Tool.Position.ToLower()) return configShowPosition;
       if (name == Tool.HUD.ToLower()) return configShowHud;
-      if (name == Tool.Ruler.ToLower()) return configShowRuler;
-      throw new NotImplementedException();
-    }
-    private static ConfigEntry<bool> GetEntry(string name) {
-      try {
-        return GetTagEntry(name);
-      } catch (NotImplementedException) { }
-      try {
-        return GetOtherEntry(name);
-      } catch (NotImplementedException) { }
-      throw new NotImplementedException();
+      throw new NotImplementedException(name);
     }
     private static void SetEntry(string name, bool value) {
-      var entry = GetEntry(name);
-      if (entry.Value != value)
-        entry.Value = value;
+      try {
+        var entry = GetTagEntry(name);
+        if (entry.Value < 0) return;
+        var intValue = value ? 1 : 0;
+        if (entry.Value != intValue)
+          entry.Value = intValue;
+      } catch (NotImplementedException) { }
+      try {
+        var entry = GetOtherEntry(name);
+        if (entry.Value != value)
+          entry.Value = value;
+      } catch (NotImplementedException) { }
+      throw new NotImplementedException(name);
     }
     private static void ToggleEntry(string name) {
-      var entry = GetEntry(name);
-      entry.Value = !entry.Value;
+      try {
+        var entry = GetTagEntry(name);
+        if (entry.Value < 0) return;
+        entry.Value = entry.Value > 0 ? 0 : 1;
+      } catch (NotImplementedException) { }
+      try {
+        var entry = GetOtherEntry(name);
+        entry.Value = !entry.Value;
+      } catch (NotImplementedException) { }
+      throw new NotImplementedException(name);
     }
   }
 }

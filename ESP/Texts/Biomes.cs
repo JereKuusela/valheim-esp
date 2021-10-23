@@ -1,35 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using Service;
 using UnityEngine;
 
 namespace ESP {
   public partial class Texts {
-    public static Color GetColor(Heightmap.Biome biome) {
-      switch (biome) {
-        case Heightmap.Biome.AshLands:
-          return Settings.BiomeAshlandsColor;
-        case Heightmap.Biome.BlackForest:
-          return Settings.BiomeBlackForestColor;
-        case Heightmap.Biome.DeepNorth:
-          return Settings.BiomeDeepNorthColor;
-        case Heightmap.Biome.Meadows:
-          return Settings.BiomeMeadowsColor;
-        case Heightmap.Biome.Mistlands:
-          return Settings.BiomeMistlandsColor;
-        case Heightmap.Biome.Mountain:
-          return Settings.BiomeMountainColor;
-        case Heightmap.Biome.Ocean:
-          return Settings.BiomeOceanColor;
-        case Heightmap.Biome.Plains:
-          return Settings.BiomePlainsColor;
-        case Heightmap.Biome.Swamp:
-          return Settings.BiomeSwampColor;
-        default:
-          return Settings.BiomeOtherColor;
-      }
-    }
-
     private static Heightmap.Biome[] BIOMES = new Heightmap.Biome[]{
       Heightmap.Biome.AshLands,
       Heightmap.Biome.BlackForest,
@@ -69,6 +45,29 @@ namespace ESP {
       var label = addLabel ? "Biomes: " : "";
       var biomeArea = (area == Heightmap.BiomeArea.Median) ? ", only full biomes" : "";
       return label + biomeText + biomeArea;
+    }
+  }
+
+  [HarmonyPatch(typeof(Minimap), "UpdateBiome")]
+
+  public class Minimap_ShowPos {
+    // Text doesn't always get updated so extra stuff must be reseted manually.
+    private static string previousText = "";
+    public static void Prefix(Minimap __instance) {
+      __instance.m_biomeNameLarge.text = previousText;
+
+    }
+    public static void Postfix(Minimap __instance, Player player) {
+      previousText = __instance.m_biomeNameLarge.text;
+      var mode = __instance.m_mode;
+      var position = player.transform.position;
+      if (mode == Minimap.MapMode.Large)
+        position = __instance.ScreenToWorldPoint(ZInput.IsMouseActive() ? Input.mousePosition : new Vector3((float)(Screen.width / 2), (float)(Screen.height / 2)));
+      var zone = ZoneSystem.instance.GetZone(position);
+      var positionText = "x: " + position.x.ToString("F0") + " z: " + position.z.ToString("F0");
+      var zoneText = "zone: " + zone.x + "/" + zone.y;
+      var text = "\n\n" + previousText + "\n" + zoneText + "\n" + positionText;
+      __instance.m_biomeNameLarge.text = text;
     }
   }
 }

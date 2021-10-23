@@ -28,33 +28,33 @@ namespace Visualization {
       collider.size = size;
     }
     ///<summary>Creates a line.</summary>
-    private static GameObject DrawLineSub(GameObject obj, Vector3 start, Vector3 end, Color color, float width) {
-      var renderer = CreateRenderer(obj, color, width);
+    private static GameObject DrawLineSub(GameObject obj, Vector3 start, Vector3 end) {
+      var renderer = CreateRenderer(obj);
       renderer.SetPosition(0, start);
       renderer.SetPosition(1, end);
       return obj;
     }
     ///<summary>Creates a renderer with a line that doesn't rotate with the object.</summary>
-    public static GameObject DrawLineWithFixedRotation(string tag, MonoBehaviour parent, Vector3 start, Vector3 end, Color color, float width) {
+    public static GameObject DrawLineWithFixedRotation(string tag, MonoBehaviour parent, Vector3 start, Vector3 end) {
       // Box colliders don't work with non-perpendicular lines so the line must be rotated from a forward line.
       var parentObj = CreateLineRotater(CreateObject(parent.gameObject, tag, true), start, end);
       var forwardEnd = Vector3.forward * (end - start).magnitude;
-      var obj = DrawLineSub(parentObj, Vector3.zero, forwardEnd, color, width);
+      var obj = DrawLineSub(parentObj, Vector3.zero, forwardEnd);
       Draw.AddBoxCollider(obj);
       return obj;
     }
     ///<summary>Creates a renderer with a vertical line (relative to the object) starting from the object center.</summary>
-    public static GameObject DrawMarkerLine(string tag, MonoBehaviour parent, Color color, float width) => DrawMarkerLine(tag, parent, color, width, Vector3.zero);
+    public static GameObject DrawMarkerLine(string tag, MonoBehaviour parent) => DrawMarkerLine(tag, parent, Vector3.zero);
 
     ///<summary>Creates a renderer with a vertical line (relative to the object).</summary>
-    public static GameObject DrawMarkerLine(string tag, MonoBehaviour parent, Color color, float width, Vector3 start) {
+    public static GameObject DrawMarkerLine(string tag, MonoBehaviour parent, Vector3 start) {
       var end = new Vector3(start.x, 500f, start.z);
-      var obj = DrawLineSub(CreateObject(parent.gameObject, tag, true), start, end, color, width);
+      var obj = DrawLineSub(CreateObject(parent.gameObject, tag, true), start, end);
       Draw.AddBoxCollider(obj);
       return obj;
     }
     ///<summary>Creates a renderer with a vertical line (relative to the object).</summary>
-    public static GameObject DrawBox(string tag, MonoBehaviour parent, Color color, float width, Vector3 center, Vector3 extents) {
+    public static GameObject DrawBox(string tag, MonoBehaviour parent, Vector3 center, Vector3 extents) {
       var corners = new Vector3[] {
         new Vector3(center.x - extents.x, center.y - extents.y, center.z - extents.z),
         new Vector3(center.x - extents.x, center.y - extents.y, center.z + extents.z),
@@ -75,7 +75,7 @@ namespace Visualization {
           if (start.y == end.y) same++;
           if (start.z == end.z) same++;
           if (same != 2) continue;
-          DrawLineSub(CreateObject(obj, tag), corners[i], corners[j], color, width);
+          DrawLineSub(CreateObject(obj, tag), corners[i], corners[j]);
         }
       }
       AddBoxCollider(obj, center, extents * 2.0f);
