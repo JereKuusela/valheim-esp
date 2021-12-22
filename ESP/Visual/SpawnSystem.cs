@@ -32,11 +32,14 @@ namespace ESP {
     }
     private static int GetTotalAmountOfSpawnSystems(SpawnSystem instance, Heightmap heightmap) {
       var totalAmount = 0;
-      foreach (SpawnSystem.SpawnData spawnData in instance.m_spawners) {
-        if (!spawnData.m_enabled || !heightmap.HaveBiome(spawnData.m_biome)) continue;
-        if (!spawnData.m_spawnAtDay && !spawnData.m_spawnAtNight) continue;
-        totalAmount++;
+      foreach (var list in instance.m_spawnLists) {
+        foreach (var spawnData in list.m_spawners) {
+          if (!spawnData.m_enabled || !heightmap.HaveBiome(spawnData.m_biome)) continue;
+          if (!spawnData.m_spawnAtDay && !spawnData.m_spawnAtNight) continue;
+          totalAmount++;
+        }
       }
+
       return totalAmount;
     }
     private static bool IsEnabled(SpawnSystem.SpawnData instance) {
@@ -50,7 +53,7 @@ namespace ESP {
       var biome = heightmap.GetBiome(obj.transform.position);
       var tag = Tag.GetZoneCorner(biome);
       if (Settings.IsDisabled(tag)) return;
-      obj.m_spawners.ForEach(spawnData => {
+      obj.m_spawnLists.ForEach(list => list.m_spawners.ForEach(spawnData => {
         num++;
         if (!spawnData.m_enabled || !heightmap.HaveBiome(spawnData.m_biome)) return;
         if (!spawnData.m_spawnAtDay && !spawnData.m_spawnAtNight) return;
@@ -63,7 +66,7 @@ namespace ESP {
         text.spawnData = spawnData;
         text.stableHashCode = stableHashCode;
         counter++;
-      });
+      }));
     }
     private static void DrawRandEventSystem(SpawnSystem instance) {
       if (Settings.IsDisabled(Tag.RandomEventSystem)) return;

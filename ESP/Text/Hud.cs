@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using Service;
 using UnityEngine;
 
@@ -24,6 +26,7 @@ namespace ESP {
       lines.Add(GetSpeed() + ", " + GetNoise());
       lines.Add(Ruler.GetText(position));
       lines.Add(GetTrackedObjects());
+      lines.Add(GetStaggerTracker());
       return lines.Where(item => item != "").ToList();
     }
     private static string GetSpeed() => "Speed: " + Format.Float(Player.m_localPlayer.m_currentVel.magnitude, "0.#") + " m/s";
@@ -31,6 +34,11 @@ namespace ESP {
     private static string GetEnvironment() {
       if (!Settings.ShowTimeAndWeather) return "";
       return EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment() + " (" + EnvUtils.GetWindHud() + ")";
+    }
+    private static string GetStaggerTracker() {
+      if (CreatureStagger.StaggerDuration == 0)
+        return "Stagger: ...";
+      return "Stagger: " + CreatureStagger.StaggerDuration;
     }
     private static string GetPosition(Vector3 position) {
       if (!Settings.ShowPosition) return "";
@@ -69,7 +77,10 @@ namespace ESP {
             var zdos = new List<ZDO>();
             ZDOMan.instance.GetAllZDOsWithPrefab(prefab.name, zdos);
             var position = Player.m_localPlayer.transform.position;
-            count = zdos.Where(zdo => Utils.DistanceXZ(zdo.GetPosition(), position) < Settings.TrackRadius).Count();
+            if (Settings.TrackRadius < 0)
+              count = zdos.Count();
+            else
+              count = zdos.Where(zdo => Utils.DistanceXZ(zdo.GetPosition(), position) < Settings.TrackRadius).Count();
           }
           trackCache[name] = count;
         }
@@ -87,5 +98,36 @@ namespace ESP {
       return Format.JoinRow(tracks);
     }
 
+
+
+
+    [HarmonyPatch(typeof(Character), "FixedUpdate")]
+    public class CreatureStagger {
+
+      private static long StaggerStart = 0;
+      private static ZDOID Id = ZDOID.None;
+      public static double StaggerDuration = 0;
+
+      public static void Postfix(Character __instance) {
+        bool isStaggering = __instance.IsStaggering();
+        if (StaggerStart == 0 && isStaggering) {
+          StaggerStart = ZNet.instance.GetTime().Ticks;
+          StaggerDuration = 0;
+          Id = __instance.GetZDOID();
+        }
+        var staggered = (ZNet.instance.GetTime() - new DateTime(StaggerStart)).TotalSeconds;
+        if (Id == __instance.GetZDOID() && !isStaggering) {
+          StaggerDuration = staggered;
+          StaggerStart = 0;
+          Id = ZDOID.None;
+        }
+        // If target dies while staggering.
+        if (staggered > 10) {
+          StaggerStart = 0;
+          Id = ZDOID.None;
+        }
+      }
+
+    }
   }
 }

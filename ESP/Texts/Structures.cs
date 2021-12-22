@@ -316,11 +316,11 @@ namespace ESP {
       return Format.JoinLines(lines);
     }
     public static string Get(EffectArea obj) {
-      if (Settings.IsDisabled(Tag.GetEffectArea(obj.m_type)) || !Helper.IsValid(obj)) return "";
+      if (!Helper.IsValid(obj) || Settings.IsDisabled(Tag.GetEffectArea(obj.m_type))) return "";
       return EffectAreaUtils.GetTypeText(obj.m_type) + " " + Text.Radius(obj.GetRadius());
     }
     public static string Get(PrivateArea obj) {
-      if (Settings.IsDisabled(Tag.EffectAreaPrivateArea) || !Helper.IsValid(obj)) return "";
+      if (!Helper.IsValid(obj) || Settings.IsDisabled(Tag.EffectAreaPrivateArea)) return "";
       return "Protection " + Text.Radius(obj.m_radius);
     }
 
