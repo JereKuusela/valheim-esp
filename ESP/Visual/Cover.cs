@@ -7,6 +7,7 @@ namespace ESP {
     private static void DrawCover(MonoBehaviour obj, Vector3 startPos, string name, string text, bool isPlayer = false) {
       var delta = startPos - obj.transform.position;
       var start = Constants.CoverRaycastStart;
+      if (Cover.m_coverRays == null) Cover.Setup();
       foreach (var vector in Cover.m_coverRays) {
         var tag = isPlayer ? Tag.PlayerCover : Tag.StructureCover;
         if (Physics.Raycast(startPos + vector * start, vector, out var raycastHit, Constants.CoverRayCastLength - start, Cover.m_coverRayMask))

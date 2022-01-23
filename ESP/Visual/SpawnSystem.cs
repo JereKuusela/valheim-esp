@@ -51,7 +51,7 @@ namespace ESP {
       var counter = -totalAmount / 2;
       var num = 0;
       var biome = heightmap.GetBiome(obj.transform.position);
-      var tag = Tag.GetZoneCorner(biome);
+      var tag = Tag.GetSpawnZone(biome);
       if (Settings.IsDisabled(tag)) return;
       obj.m_spawnLists.ForEach(list => list.m_spawners.ForEach(spawnData => {
         num++;

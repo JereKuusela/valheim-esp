@@ -19,27 +19,30 @@ namespace ESP {
 
 
     private static void InitCommands() {
-      new Terminal.ConsoleCommand("esp_enable", "[name] - Enables a given setting.", delegate (Terminal.ConsoleEventArgs args) {
+      new Terminal.ConsoleCommand("esp_enable", "[name1] [name2] [name3] ... - Enables given settings.", delegate (Terminal.ConsoleEventArgs args) {
         if (args.Length < 2) {
           args.Context.AddString("Missing name.");
           return;
         }
-        SetEntry(args[1], true);
-      }, isCheat: true, optionsFetcher: OptionsFetcher);
-      new Terminal.ConsoleCommand("esp_toggle", "[name] - Toggles a given setting.", delegate (Terminal.ConsoleEventArgs args) {
+        foreach (var arg in args[1].Split(' '))
+          SetEntry(arg, true);
+      }, optionsFetcher: OptionsFetcher);
+      new Terminal.ConsoleCommand("esp_toggle", "[name1] [name2] [name3] ... - Toggles given settings.", delegate (Terminal.ConsoleEventArgs args) {
         if (args.Length < 2) {
           args.Context.AddString("Missing name.");
           return;
         }
-        ToggleEntry(args[1]);
-      }, isCheat: true, optionsFetcher: OptionsFetcher);
-      new Terminal.ConsoleCommand("esp_disable", "[name] - Disbables a given setting.", delegate (Terminal.ConsoleEventArgs args) {
+        foreach (var arg in args[1].Split(' '))
+          ToggleEntry(arg);
+      }, optionsFetcher: OptionsFetcher);
+      new Terminal.ConsoleCommand("esp_disable", "[name1] [name2] [name3] ... - Disbables given settings.", delegate (Terminal.ConsoleEventArgs args) {
         if (args.Length < 2) {
           args.Context.AddString("Missing name.");
           return;
         }
-        SetEntry(args[1], false);
-      }, isCheat: true, optionsFetcher: OptionsFetcher);
+        foreach (var arg in args[1].Split(' '))
+          SetEntry(arg, false);
+      }, optionsFetcher: OptionsFetcher);
     }
     private static List<string> OptionsFetcher() {
       var options = new List<string>();
@@ -67,11 +70,13 @@ namespace ESP {
         var intValue = value ? 1 : 0;
         if (entry.Value != intValue)
           entry.Value = intValue;
+        return;
       } catch (NotImplementedException) { }
       try {
         var entry = GetOtherEntry(name);
         if (entry.Value != value)
           entry.Value = value;
+        return;
       } catch (NotImplementedException) { }
       throw new NotImplementedException(name);
     }
@@ -80,10 +85,12 @@ namespace ESP {
         var entry = GetTagEntry(name);
         if (entry.Value < 0) return;
         entry.Value = entry.Value > 0 ? 0 : 1;
+        return;
       } catch (NotImplementedException) { }
       try {
         var entry = GetOtherEntry(name);
         entry.Value = !entry.Value;
+        return;
       } catch (NotImplementedException) { }
       throw new NotImplementedException(name);
     }

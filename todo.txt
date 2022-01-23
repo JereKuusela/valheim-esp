@@ -38,19 +38,3 @@ Todo:
  - Verify line widths (thicker for biome corners and smoke?)
 
 Changes:
-- More precision to spawn and generator chance percentages.
-- Added cover ray visualization for players (disabled by default).
-- Fixed error when pickinng up items (also other similar cases fixed).
-- Removed mine rock support (separate mod exists for that with better support).
-- HUD now shows if the current location is blocked (for creature spawning, etc).
-- Creature tracker now works for all entities. Creature and item drops only check for loaded areas.
-- New setting for the range of the tracker (only works for other entities than creatures or item drops).
-- New settings which allow quickly toggling on/off features.
-- Added commands for toggling settings on/off (can be bound to keys).
-- Removed setting groups which were quickly used show/hide visuals (better build your own with keybindings).
-- Fixed clock showing wrong time.
-- Removed DPS and experience meters as they are now in a own mod.
-- Added separate settings for spawner trigger, limit and spawn ranges.
-- Added rays for spawners.
-- Added Warm & Cozy effect area.
-

@@ -20,11 +20,9 @@ namespace ESP {
     public static bool PlayerForceDodging => configPlayerForceDodging.Value;
     public static ConfigEntry<float> configTerrainEditMultiplier;
     public static float TerrainEditMultiplier => configTerrainEditMultiplier.Value;
-    public static ConfigEntry<bool> configFirstRun;
 
     public static void InitDev(ConfigFile config) {
       var section = "1. Dev";
-      configFirstRun = config.Bind(section, "First run", true, "If true, initializes keybinds on start up");
       configUseDebugMode = config.Bind(section, "Use debugmode", true, "Enable devcommands and debugmode automatically");
       configUseGodMode = config.Bind(section, "Use god mode", true, "Enable god mode automatically)");
       configUseFreeBuild = config.Bind(section, "Use free build", true, "Enable free build automatically");

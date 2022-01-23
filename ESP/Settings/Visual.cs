@@ -36,6 +36,7 @@ namespace ESP {
     public static ConfigEntry<int> configShowEffectAreasNoMonsters;
     public static ConfigEntry<int> configShowEffectAreasTeleport;
     public static ConfigEntry<int> configShowEffectAreasPlayerBase;
+    public static ConfigEntry<int> configShowEffectAreasWarmCozy;
     public static ConfigEntry<int> configShowEffectAreasOther;
     public static ConfigEntry<int> configShowEffectAreasCustomContainer;
     public static ConfigEntry<int> configShowEffectAreasCustomCrafting;
@@ -107,6 +108,7 @@ namespace ESP {
       if (name == Tag.EffectAreaNoMonsters.ToLower()) return configShowEffectAreasNoMonsters;
       if (name == Tag.EffectAreaOther.ToLower()) return configShowEffectAreasOther;
       if (name == Tag.EffectAreaPlayerBase.ToLower()) return configShowEffectAreasPlayerBase;
+      if (name == Tag.EffectAreaWarmCozy.ToLower()) return configShowEffectAreasWarmCozy;
       if (name == Tag.EffectAreaPrivateArea.ToLower()) return configShowEffectAreasPrivateArea;
       if (name == Tag.EffectAreaTeleport.ToLower()) return configShowEffectAreasTeleport;
       if (name == Tag.Smoke.ToLower()) return configShowSmoke;
@@ -124,7 +126,7 @@ namespace ESP {
     private static void InitVisuals(ConfigFile config) {
       var section = "4. Visuals";
 
-      configShowStructureCover = config.Bind(section, "Structure cover", 1, "");
+      configShowStructureCover = config.Bind(section, "Structure cover", 1, CreateDescription());
       OnChanged(configShowStructureCover, Tag.StructureCover);
       OnChanged(configShowStructureCover, Tag.StructureCoverBlocked);
       configShowStructureCover.SettingChanged += (s, e) => SupportUtils.UpdateVisibility();
@@ -218,6 +220,8 @@ namespace ESP {
       OnChanged(configShowEffectAreasOther, Tag.EffectAreaFire);
       configShowEffectAreasPlayerBase = config.Bind(section, "Area effects: Player base", 1, CreateDescription());
       OnChanged(configShowEffectAreasPlayerBase, Tag.EffectAreaPlayerBase);
+      configShowEffectAreasWarmCozy = config.Bind(section, "Area effects: Warm cozy", 1, CreateDescription());
+      OnChanged(configShowEffectAreasWarmCozy, Tag.EffectAreaWarmCozy);
       configShowEffectAreasPrivateArea = config.Bind(section, "Area effects: Private area", 1, CreateDescription());
       OnChanged(configShowEffectAreasPrivateArea, Tag.EffectAreaPrivateArea);
       configShowEffectAreasTeleport = config.Bind(section, "Area effects: Teleport", 1, CreateDescription());

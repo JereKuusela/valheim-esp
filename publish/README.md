@@ -1,6 +1,6 @@
 # ESP
 
-This mod adds lots of new information to tooltips and visualizes many hidden mechanics which can be used to improve your gameplay and perfect your build. Also includes a DPS meter.
+This mod adds lots of new information to tooltips and visualizes many hidden mechanics which can be used to improve your gameplay and perfect your build.
 
 Works on dedicated servers for server admins.
 
@@ -8,7 +8,6 @@ Some use cases:
 
 - Perfecting your builds with a better understanding of structure support, structure health, cover and smoke mechanics.
 - Spawn proofing your bases with the player base effect visualized.
-- Determining the best weapons for the job by using the DPS meter and checking the detailed weapon tooltips.
 - Finding the best ways to deal with tougher enemies by knowing their resistances and attacks.
 - Getting deeper insight of exact mechanics and interaction by looking at the detailed visualizations and tooltips.
 
@@ -17,9 +16,29 @@ Some use cases:
 1. Install the [BepInExPack Valheim](https://valheim.thunderstore.io/package/denikson/BepInExPack_Valheim/)
 2. Download the latest zip
 3. Extract it in the \<GameDirectory\>\BepInEx\plugins\ folder.
-4. Optionally also install the [Configuration manager](https://github.com/BepInEx/BepInEx.ConfigurationManager/releases/tag/v16.4).
+4. Recommended to also install the [Configuration manager](https://github.com/BepInEx/BepInEx.ConfigurationManager/releases/tag/v16.4) for easier configuring.
 
-# Structures
+Note: For all the mods I'm working on, this has the lowest priority and probably won't get update for a while.
+
+# Configuration
+
+By default, most features are active which adds too much information for most use cases. It's recommended to turn off most features, until you have a better idea what you are looking for.
+
+The best way is to use the configuration manager since it provides a decent UI and works during the game. Three values are possible for features:
+
+- 1: Feature is enabled.
+- 0: Feature is hidden. Enabling the feature will instantly make it visible.
+- -1: Feature is disabled. Enabling the feature may not appear until the area/object is reloaded.
+
+Another way is to use the commands `esp_toggle`, `esp_enable` and `esp_disable` but these don't allow fully disabling features (disable only sets value 0).
+
+However once you know what you need, you should bind the `esp_toggle` command to a key to quick turn features on/off. For example: `bind o esp_enable HUD ExtraInfo` would toggle the HUD and extra hover texts when pressing O button.
+
+Unfortunately the feature names for commands aren't documented yet (but the commands support autocomplete).
+
+# Features
+
+## Structures
 
 - Structure stability color for all structures.
 - Exact stability values (including the material type).
@@ -43,7 +62,7 @@ Some use cases:
 - Fuel amount of fireplace, torches and smelters.
 - Progression of beehives, smelters, kilns and windmills.
 
-# Gathering / Exploration
+## Gathering / Exploration
 
 - Growth timer, health and damage resistances of plants.
 - Visual indicator for pickables (green line when respawning, blue line when one time, stones and branches are turned off by default):
@@ -65,7 +84,7 @@ Some use cases:
 - Stack size and despawn timer on dropped items.
 - Ship speed (both current and average), wind angle and wind strength on the HUD when sailing.
 
-# Creatures
+## Creatures
 
 - Tracker to count amount of creatures in nearby areas (by default tracks Serpents).
 - Visual indicator for tracked creatures to make detecting them easier (magenta line).
@@ -88,7 +107,7 @@ Some use cases:
 	- Breeding limit.
 	- Wake up range and noise.
 
-# Environment
+## Environment
 
 - Time of the day, weather, wind, coordinates, altitude and forest factor on the HUD.
 - Coordinates on most tooltips.
@@ -101,7 +120,7 @@ Some use cases:
 	- Available events including their conditions. Grey color shows failed conditions and events that are not currently possible.
 	- If an event is going, shows event name, remaining time and event spawners.
 
-# Creature spawning
+## Creature spawning
 
 - Zone based spawners at middle of zones (color of the line depends on the biome):
 	- Name of the creature, spawn limit, max stars.
@@ -123,7 +142,7 @@ Some use cases:
 	- Max stars.
 	- Spawn limit with current and max amount.
 
-# Combat
+## Combat
 
 - Player speed and noise on the HUD.
 - More stats for weapons:
@@ -134,45 +153,43 @@ Some use cases:
 	- Attack type and hitbox.
 	- Accuracy and projectile speed for bows.
 	- Secondary attack stats (damage multiplier, knocback multiplier, staggering multiplier).
-- Setting to overwrite player skill values (for easier testing).
-- Settings for player damage multiplier, player damage range and creature damage range.
 - Setting to multiply stamina usage (easier testing when stamina is infinite).
 - Setting to enable permanent dodging (allows testing which attacks can be dodged).
 - Setting to multiply dig radius (for easier mining).
-- DPS can be toggled on and off with P key (which can also be used to reset the timer).
-- The DPS meter tracks start and end of attacks which makes it more accurate than the default DPS tool (which only tracks hits).
-- The DPS meter automatically stops when you stop attacking.
-- Message box on the left hide shows following statistics:
-	- Total time and amount of hits.
-	- DPS, total damage and damage per used stamina (includes all stamina usage).
-	- Also shows listed/base damage (what you see on weapon skills). This value ignores randomness and weapon skill (except for stamina usage).
-	- Used stamina per second and total used stamina.
-	- Caused staggering per second and total caused staggering.
-	- Attack speed and hits per second.
-	- Damage taken (per second and total).
-	- Damage to structures, trees, stones and other destructibles are tracked separately.
-- Experiencem meter can be toggled on and off with L key (which can also be used to reset the meter).
-- Message box on the left hide shows following statistics:
-	- Experience gain modifier.
-	- Experience gained per skill (both total and per minute).
-	- Current level and progress towards the next level.
 
-# Ruler
+## Ruler
 
 - Allows setting a reference point at the current location.
 - When sets, shows distance from the reference point (coordinates, distance and horizontal distance).
 
-
 # Changelog
 
-- v1.5.0:
+- v1.6:
+	- Added commands for toggling settings on/off (can be bound to keys).
+	- Added separate settings for spawner trigger, limit and spawn ranges.
+	- Added position rays for spawners.
+	- Added Warm & Cozy effect area.
+	- Added cover ray visualization for players (disabled by default).
+	- Added more precision to spawn and generator chance percentages.
+	- Added "is blocked" to the HUD (for creature spawning, etc).
+	- Added tracking of all entitires to the creature tracker. Creature and item drops only check for loaded areas.
+	- New setting for the range of the tracker (only works for other entities than creatures or item drops).
+	- New settings which allow quickly toggling on/off features.
+	- Fixed error when pickinng up items (also other similar cases fixed).
+	- Removed setting groups which were quickly used show/hide visuals (better build your own with keybindings).
+	- Fixed clock showing wrong time.
+	- Removed DPS and experience meters as they are now in a own mod.
+	- Removed mine rock support (separate mod exists for that with better support).
+
+- v1.5:
 	- Updated for Hearth & Home patch.
 	- Added average ship speed to HUD.
 	- Added setting to ignore forsaken power cooldowns.
 	- Added setting to set the maximum attack chain level.
 	- Added generator stats to locations.
-	- Added generator stats to vegetation (trees, plants, rocks, etc.)
-- v1.4.0:
+	- Added generator stats to vegetation (trees, plants, rocks, etc.).
+
+- v1.4:
 	- Added settings to customize all colors used by the visuals.
 	- Reordered settings to more sensible sections.
 	- Added sleeping status to sleeping enemies.
@@ -190,7 +207,8 @@ Some use cases:
 	- Fixed experience meter showing wrong values.
 	- Fixed smoke visual being affected by cover ray setting.
 	- Improved localization of some object names.
-- v1.3.0:
+
+- v1.3:
 	- Added item drops to resources like rocks, minerals and trees.
 	- Added chests contents to pregenerated chests.
 	- Added ruler. Ruler point can be set at the current location. HUD shows distance to the set location.
@@ -199,7 +217,8 @@ Some use cases:
 	- Windmills no longer show amount of smoke.
 	- Fixed ward protection radius shown as sphere instead of a cylinder.
 	- Fixed tool tiers being always stone / antler for creature attacks.
-- v1.2.0:
+
+- v1.2:
 	- Added minimum tool tiers to trees, ores and other destructibles tooltips.
 	- Added location ray to trees, ores and other destructibles (disabled by default).
 	- Added hit box type to weapon and enemy attack tooltips.
@@ -236,8 +255,10 @@ Some use cases:
 	- Fixed no monsters area of the trader being the wrong size.
 	- Reduced draw width of many visualizations (less clutter).
 	- Fixed rays not always being straight up.
-- v1.1.0:
+
+- v1.1:
 	- Enabled for dedicated servers (when server admin).
 	- Fixed structures flashing when disabling visuals.
-- v1.0.0:
+
+- v1.0:
 	- Initial release
