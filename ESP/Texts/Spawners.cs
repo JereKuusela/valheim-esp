@@ -106,6 +106,7 @@ namespace ESP {
       var ocean = Format.Range(spawnData.m_minOceanDepth, spawnData.m_maxOceanDepth);
       var hunt = spawnData.m_huntPlayer ? ", forces hunt mode" : "";
       lines.Add("Creature: " + Format.String(spawnData.m_prefab.name) + hunt);
+      lines.Add("Altitude: " + altitude + offset + ", Ocean depth: " + ocean + ", Tilt: " + tilt);
       lines.Add(progress + ", " + chance);
       var biomeString = Texts.GetBiomes(spawnData.m_biome, spawnData.m_biomeArea);
       if (biomeString.Length > 0)

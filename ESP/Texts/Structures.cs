@@ -100,8 +100,8 @@ namespace ESP {
     public static string Get(Destructible obj) {
       if (!Settings.Destructibles || !Helper.IsValid(obj)) return "";
       var lines = new List<string>();
-      var health = Helper.GetFloat(obj, "health", obj.m_health);
       var maxHealth = obj.m_health;
+      var health = Helper.GetFloat(obj, "health", maxHealth);
       lines.Add(Text.GetHealth(health, maxHealth));
       lines.Add("Hit noise: " + Format.Int(obj.m_hitNoise));
       lines.Add("Destroy noise: " + Format.Int(obj.m_destroyNoise));
@@ -128,9 +128,10 @@ namespace ESP {
     public static string Get(WearNTear obj) {
       if (!Settings.Structures || !Helper.IsValid(obj)) return "";
       var lines = new List<string>();
-      var health = obj.GetHealthPercentage();
+      var maxHealth = obj.m_health;
+      var health = Helper.GetFloat(obj, "health", maxHealth);
 
-      lines.Add(Text.GetHealth(health * obj.m_health, obj.m_health));
+      lines.Add(Text.GetHealth(health, maxHealth));
       lines.Add(DamageModifierUtils.Get(obj.m_damages, true, false));
 
       if (SupportUtils.Enabled(obj)) {

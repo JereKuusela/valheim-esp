@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
 using Service;
-using UnityEngine;
 
 namespace ESP {
   public partial class Texts {
@@ -43,32 +41,10 @@ namespace ESP {
       var biomeText = GetNames(biome);
       if (biomeText.Length == 0) return "";
       var label = addLabel ? "Biomes: " : "";
-      var biomeArea = (area == Heightmap.BiomeArea.Median) ? ", only full biomes" : "";
+      var edges = (area & Heightmap.BiomeArea.Edge) > 0;
+      var centers = (area & Heightmap.BiomeArea.Median) > 0;
+      var biomeArea = (edges && centers) ? "" : centers ? ", only full biomes" : edges ? ", only edge biomes" : "invalid biome area";
       return label + biomeText + biomeArea;
     }
   }
-
-  [HarmonyPatch(typeof(Minimap), "UpdateBiome")]
-
-  public class Minimap_ShowPos {
-    // Text doesn't always get updated so extra stuff must be reseted manually.
-    private static string previousText = "";
-    public static void Prefix(Minimap __instance) {
-      __instance.m_biomeNameLarge.text = previousText;
-
-    }
-    public static void Postfix(Minimap __instance, Player player) {
-      previousText = __instance.m_biomeNameLarge.text;
-      var mode = __instance.m_mode;
-      var position = player.transform.position;
-      if (mode == Minimap.MapMode.Large)
-        position = __instance.ScreenToWorldPoint(ZInput.IsMouseActive() ? Input.mousePosition : new Vector3((float)(Screen.width / 2), (float)(Screen.height / 2)));
-      var zone = ZoneSystem.instance.GetZone(position);
-      var positionText = "x: " + position.x.ToString("F0") + " z: " + position.z.ToString("F0");
-      var zoneText = "zone: " + zone.x + "/" + zone.y;
-      var text = "\n\n" + previousText + "\n" + zoneText + "\n" + positionText;
-      __instance.m_biomeNameLarge.text = text;
-    }
-  }
 }
-

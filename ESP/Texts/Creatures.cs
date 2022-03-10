@@ -118,7 +118,7 @@ namespace ESP {
         if (monsterAI.m_wakeupRange > 0)
           wakeUp.Add("Wake up range: " + Format.Float(monsterAI.m_wakeupRange) + " m");
         if (monsterAI.m_noiseWakeup)
-          wakeUp.Add("Wake up noise: " + Format.Float(monsterAI.m_noiseRangeScale) + "x");
+          wakeUp.Add("Wake up noise range: " + Format.Float(monsterAI.m_maxNoiseWakeupRange) + " m");
         lines.Add(Format.JoinRow(wakeUp));
       }
 

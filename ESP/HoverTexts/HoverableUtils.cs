@@ -70,7 +70,7 @@ namespace ESP {
       lines.Add(Texts.Get(obj.GetComponentInChildren<SmokeSpawner>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<Smoke>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<Container>()));
-      lines.Add(Texts.Get(obj.GetComponentInParent<Location>()));
+      lines.Add(Texts.Get(obj.GetComponentInParent<LocationProxy>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<RandomSpawn>()));
       lines.Add(Texts.GetVegetation(obj));
       if (Settings.ShowShipStats)

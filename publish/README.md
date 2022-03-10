@@ -164,6 +164,11 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 
 # Changelog
 
+- v1.7:
+	- Adds support for new noise parameters.
+	- Removes minimap coordinates as redundant.
+	- Fixes locations not showing generator info.
+
 - v1.6:
 	- Added commands for toggling settings on/off (can be bound to keys).
 	- Added separate settings for spawner trigger, limit and spawn ranges.
