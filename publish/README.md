@@ -14,7 +14,7 @@ Some use cases:
 # Manual Installation
 
 1. Install the [BepInExPack Valheim](https://valheim.thunderstore.io/package/denikson/BepInExPack_Valheim/)
-2. Download the latest zip
+2. Download the latest zip.
 3. Extract it in the \<GameDirectory\>\BepInEx\plugins\ folder.
 4. Recommended to also install the [Configuration manager](https://github.com/BepInEx/BepInEx.ConfigurationManager/releases/tag/v16.4) for easier configuring.
 
@@ -30,9 +30,15 @@ The best way is to use the configuration manager since it provides a decent UI a
 - 0: Feature is hidden. Enabling the feature will instantly make it visible.
 - -1: Feature is disabled. Enabling the feature may not appear until the area/object is reloaded.
 
-Another way is to use the commands `esp_toggle`, `esp_enable` and `esp_disable` but these don't allow fully disabling features (disable only sets value 0).
+Another way is to use the commands `esp_toggle`, `esp_enable` and `esp_disable`.
 
-However once you know what you need, you should bind the `esp_toggle` command to a key to quick turn features on/off. For example: `bind o esp_enable HUD ExtraInfo` would toggle the HUD and extra hover texts when pressing O button.
+- `esp_toggle`: Switches the value between 0 and 1.
+- `esp_enable`: Sets the value to 1.
+- `esp_disable`: Sets the value to -1.
+
+However once you know what you need, you should bind the `esp_toggle` command to a key to quick turn features on/off. For example: `bind o esp_toggle HUD ExtraInfo` would toggle the HUD and extra hover texts when pressing O button.
+
+Parameter `*` affects all settings. For example `esp_disable *` hides all features.
 
 Unfortunately the feature names for commands aren't documented yet (but the commands support autocomplete).
 
@@ -165,105 +171,111 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 # Changelog
 
 - v1.7:
+	- Adds support for `*` value to config commands.
 	- Adds support for new noise parameters.
+	- Changes the command `esp_disable` to set the values to -1 instead 0.
 	- Removes minimap coordinates as redundant.
+	- Removes some debug mode related settings as obsolete.
 	- Fixes locations not showing generator info.
+	- Fixes comfort visual being shown for all pieces.
+	- Fixes command autocomplete missing most keys.
+	- Fixes some settings not working correctly.
 
 - v1.6:
-	- Added commands for toggling settings on/off (can be bound to keys).
-	- Added separate settings for spawner trigger, limit and spawn ranges.
-	- Added position rays for spawners.
-	- Added Warm & Cozy effect area.
-	- Added cover ray visualization for players (disabled by default).
-	- Added more precision to spawn and generator chance percentages.
-	- Added "is blocked" to the HUD (for creature spawning, etc).
-	- Added tracking of all entitires to the creature tracker. Creature and item drops only check for loaded areas.
+	- Adds commands for toggling settings on/off (can be bound to keys).
+	- Adds separate settings for spawner trigger, limit and spawn ranges.
+	- Adds position rays for spawners.
+	- Adds Warm & Cozy effect area.
+	- Adds cover ray visualization for players (disabled by default).
+	- Adds more precision to spawn and generator chance percentages.
+	- Adds "is blocked" to the HUD (for creature spawning, etc).
+	- Adds tracking of all entitires to the creature tracker. Creature and item drops only check for loaded areas.
 	- New setting for the range of the tracker (only works for other entities than creatures or item drops).
 	- New settings which allow quickly toggling on/off features.
-	- Fixed error when pickinng up items (also other similar cases fixed).
-	- Removed setting groups which were quickly used show/hide visuals (better build your own with keybindings).
-	- Fixed clock showing wrong time.
-	- Removed DPS and experience meters as they are now in a own mod.
-	- Removed mine rock support (separate mod exists for that with better support).
+	- Fixes error when pickinng up items (also other similar cases fixed).
+	- Removes setting groups which were quickly used show/hide visuals (better build your own with keybindings).
+	- Fixes clock showing wrong time.
+	- Removes DPS and experience meters as they are now in a own mod.
+	- Removes mine rock support (separate mod exists for that with better support).
 
 - v1.5:
 	- Updated for Hearth & Home patch.
-	- Added average ship speed to HUD.
-	- Added setting to ignore forsaken power cooldowns.
-	- Added setting to set the maximum attack chain level.
-	- Added generator stats to locations.
-	- Added generator stats to vegetation (trees, plants, rocks, etc.).
+	- Adds average ship speed to HUD.
+	- Adds setting to ignore forsaken power cooldowns.
+	- Adds setting to set the maximum attack chain level.
+	- Adds generator stats to locations.
+	- Adds generator stats to vegetation (trees, plants, rocks, etc.).
 
 - v1.4:
-	- Added settings to customize all colors used by the visuals.
+	- Adds settings to customize all colors used by the visuals.
 	- Reordered settings to more sensible sections.
-	- Added sleeping status to sleeping enemies.
-	- Added wake up range and noise for sleeping enemies.
-	- Added setting to set the player always dodging (to test which attacks can be dodged).
-	- Added setting to increase player damage (past the damage cap).
-	- Added setting to multiply stamina usage (for no stamina usage).
-	- Added setting to multiply dig radius (causes visual glitches).
-	- Added visual for mine rock support bounding boxes (disabled by default).
-	- Added settings for custom spheres to containers and crafting stations (for people using "craft from containers" mods).
+	- Adds sleeping status to sleeping enemies.
+	- Adds wake up range and noise for sleeping enemies.
+	- Adds setting to set the player always dodging (to test which attacks can be dodged).
+	- Adds setting to increase player damage (past the damage cap).
+	- Adds setting to multiply stamina usage (for no stamina usage).
+	- Adds setting to multiply dig radius (causes visual glitches).
+	- Adds visual for mine rock support bounding boxes (disabled by default).
+	- Adds settings for custom spheres to containers and crafting stations (for people using "craft from containers" mods).
 	- Changing the setting that was used to exclude pickables to exclude all resources.
-	- Added wildcard (*) support to tracking and exclusions.
+	- Adds wildcard (*) support to tracking and exclusions.
 	- Changed experience meter to ignore the first experience gain so that experience per minute shows up correctly.
-	- Added current skill level, experience amount and experience limit to experience meter.
-	- Fixed experience meter showing wrong values.
-	- Fixed smoke visual being affected by cover ray setting.
+	- Adds current skill level, experience amount and experience limit to experience meter.
+	- Fixes experience meter showing wrong values.
+	- Fixes smoke visual being affected by cover ray setting.
 	- Improved localization of some object names.
 
 - v1.3:
-	- Added item drops to resources like rocks, minerals and trees.
-	- Added chests contents to pregenerated chests.
-	- Added ruler. Ruler point can be set at the current location. HUD shows distance to the set location.
+	- Adds item drops to resources like rocks, minerals and trees.
+	- Adds chests contents to pregenerated chests.
+	- Adds ruler. Ruler point can be set at the current location. HUD shows distance to the set location.
 	- Improved experience meter to automatically update the experience gain percentage.
 	- Torches no longer show cover system as they don't use it.
 	- Windmills no longer show amount of smoke.
-	- Fixed ward protection radius shown as sphere instead of a cylinder.
-	- Fixed tool tiers being always stone / antler for creature attacks.
+	- Fixes ward protection radius shown as sphere instead of a cylinder.
+	- Fixes tool tiers being always stone / antler for creature attacks.
 
 - v1.2:
-	- Added minimum tool tiers to trees, ores and other destructibles tooltips.
-	- Added location ray to trees, ores and other destructibles (disabled by default).
-	- Added hit box type to weapon and enemy attack tooltips.
-	- Added tool tier to weapons and enemy attack tooltips.
-	- Added visual range for comfort.
-	- Added setting for disabling visualization for certain structure effects.
-	- Added comfort amount and category to structure tooltips.
-	- Added stack size, despawn timer and despawn info to the item drop tooltips.
-	- Added visual range for bed, beehive, crafting station, fermenter, fireplace and windmill cover systems.
-	- Added cover percentage to structure tooltips.
-	- Added wind limit and current amount to the fireplace/torch tooltips.
-	- Added roof limit text to the fireplace/torch tooltips.
-	- Added smoke stats to smelters and fireplaces tooltips.
-	- Added visualization for smoke, including custom tooltip.
-	- Added creature tracker that shows amount of tracked creatures nearby (Serpent tracked by default).
+	- Adds minimum tool tiers to trees, ores and other destructibles tooltips.
+	- Adds location ray to trees, ores and other destructibles (disabled by default).
+	- Adds hit box type to weapon and enemy attack tooltips.
+	- Adds tool tier to weapons and enemy attack tooltips.
+	- Adds visual range for comfort.
+	- Adds setting for disabling visualization for certain structure effects.
+	- Adds comfort amount and category to structure tooltips.
+	- Adds stack size, despawn timer and despawn info to the item drop tooltips.
+	- Adds visual range for bed, beehive, crafting station, fermenter, fireplace and windmill cover systems.
+	- Adds cover percentage to structure tooltips.
+	- Adds wind limit and current amount to the fireplace/torch tooltips.
+	- Adds roof limit text to the fireplace/torch tooltips.
+	- Adds smoke stats to smelters and fireplaces tooltips.
+	- Adds visualization for smoke, including custom tooltip.
+	- Adds creature tracker that shows amount of tracked creatures nearby (Serpent tracked by default).
 	- Changed creauture rays to only work for tracked creatures.
-	- Added object coordinates to tooltips.
+	- Adds object coordinates to tooltips.
 	- Improved message system to show everything at the same time (including messages from the game).
-	- Added wind strength, current coordinates and forest factor to the HUD.
-	- Added experience meter which can be used to track experience gain.
+	- Adds wind strength, current coordinates and forest factor to the HUD.
+	- Adds experience meter which can be used to track experience gain.
 	- Enemy attacks no longer show damage, hit box or other info for non-attacks.
 	- Item stands and crafting station upgrades now show additional information.
-	- Fixed visualization toggle affecting whether support data was shown on tooltips.
-	- Fixed ward damage resistances not showing chop and pickaxe immunity.
-	- Fixed resistant resistance not showing in some cases.
-	- Fixed battleaxe not showing secondary attack stats.
+	- Fixes visualization toggle affecting whether support data was shown on tooltips.
+	- Fixes ward damage resistances not showing chop and pickaxe immunity.
+	- Fixes resistant resistance not showing in some cases.
+	- Fixes battleaxe not showing secondary attack stats.
 	- Deathsquito hardcoded to be immune to staggering (no stagger animation).
 	- Creature tooltip now shows while the creature is staggering.
 	- Spawn zones now show the spawn radius from players.
-	- Fixed the visualization of structure support not automatically updating.
-	- Added localization to many object names.
+	- Fixes the visualization of structure support not automatically updating.
+	- Adds localization to many object names.
 	- Improved custom tooltips that nothing is shown when extra info is turned off.
-	- Fixed marker lines not always being vertical.
-	- Fixed no monsters area of the trader being the wrong size.
+	- Fixes marker lines not always being vertical.
+	- Fixes no monsters area of the trader being the wrong size.
 	- Reduced draw width of many visualizations (less clutter).
-	- Fixed rays not always being straight up.
+	- Fixes rays not always being straight up.
 
 - v1.1:
 	- Enabled for dedicated servers (when server admin).
-	- Fixed structures flashing when disabling visuals.
+	- Fixes structures flashing when disabling visuals.
 
 - v1.0:
 	- Initial release

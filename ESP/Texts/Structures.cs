@@ -7,7 +7,7 @@ using UnityEngine;
 namespace ESP {
   public partial class Texts {
     private static string Get(Piece.ComfortGroup group) {
-      if (group == Piece.ComfortGroup.Banner) return "Banne";
+      if (group == Piece.ComfortGroup.Banner) return "Banner";
       if (group == Piece.ComfortGroup.Bed) return "Bed";
       if (group == Piece.ComfortGroup.Chair) return "Chair";
       if (group == Piece.ComfortGroup.Fire) return "Fire";

@@ -35,10 +35,10 @@ namespace ESP {
       Visualization.Draw.AddText(line, "Crafting station", Text.Radius(radius));
     }
     public static void Draw(Piece obj) {
-      if (!obj) return;
+      if (!obj || obj.m_comfort == 0) return;
       if (Settings.IsDisabled(Tag.EffectAreaComfort)) return;
       var line = Visualization.Draw.DrawSphere(Tag.EffectAreaComfort, obj, Constants.ComfortRadius);
-      Visualization.Draw.AddText(line, "Comfort", Text.Radius(10));
+      Visualization.Draw.AddText(line, $"Comfort {obj.m_comfort} {obj.m_comfortGroup}", Text.Radius(10));
     }
     public static void Draw(Smoke obj) {
       if (!obj || Settings.IsDisabled(Tag.Smoke)) return;

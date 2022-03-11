@@ -43,7 +43,7 @@ namespace ESP {
     public static ConfigEntry<int> configShowChests;
     public static ConfigEntry<int> configShowOres;
     public static ConfigEntry<int> configShowTrees;
-    public static ConfigEntry<int> configShowDestrucibles;
+    public static ConfigEntry<int> configShowDestructibles;
     public static ConfigEntry<int> configShowLocations;
     public static ConfigEntry<int> configShowStructureSupport;
 
@@ -69,7 +69,7 @@ namespace ESP {
       if (name == Tag.Chest.ToLower()) return configShowChests;
       if (name == Tag.Tree.ToLower()) return configShowTrees;
       if (name == Tag.Ore.ToLower()) return configShowOres;
-      if (name == Tag.Destructible.ToLower()) return configShowDestrucibles;
+      if (name == Tag.Destructible.ToLower()) return configShowDestructibles;
       if (name == Tag.SpawnPointOneTime.ToLower()) return configShowSpawnPointsOneTime;
       if (name == Tag.SpawnPointRespawning.ToLower()) return configShowSpawnPointsRespawning;
       if (name == Tag.SpawnerRay.ToLower()) return configShowSpawnerRays;
@@ -164,8 +164,8 @@ namespace ESP {
       OnChanged(configShowTrees, Tag.Tree);
       configShowOres = config.Bind(section, "Ore rays", 1, CreateDescription());
       OnChanged(configShowOres, Tag.Ore);
-      configShowDestrucibles = config.Bind(section, "Destructible rays", 1, CreateDescription());
-      OnChanged(configShowDestrucibles, Tag.Destructible);
+      configShowDestructibles = config.Bind(section, "Destructible rays", 1, CreateDescription());
+      OnChanged(configShowDestructibles, Tag.Destructible);
       configShowSpawnPointsOneTime = config.Bind(section, "Spawn points (one time)", 1, CreateDescription());
       OnChanged(configShowSpawnPointsOneTime, Tag.SpawnPointOneTime);
       configShowSpawnPointsRespawning = config.Bind(section, "Spawn points (respawning)", 1, CreateDescription());
@@ -213,11 +213,11 @@ namespace ESP {
       configShowEffectAreasFire = config.Bind(section, "Area effects: Fire", 1, CreateDescription());
       OnChanged(configShowEffectAreasFire, Tag.EffectAreaFire);
       configShowEffectAreasHeat = config.Bind(section, "Area effects: Heat", 1, CreateDescription());
-      OnChanged(configShowEffectAreasHeat, Tag.EffectAreaFire);
+      OnChanged(configShowEffectAreasHeat, Tag.EffectAreaHeat);
       configShowEffectAreasNoMonsters = config.Bind(section, "Area effects: No monsters", 1, CreateDescription());
       OnChanged(configShowEffectAreasNoMonsters, Tag.EffectAreaNoMonsters);
       configShowEffectAreasOther = config.Bind(section, "Area effects: Other", -1, CreateDescription());
-      OnChanged(configShowEffectAreasOther, Tag.EffectAreaFire);
+      OnChanged(configShowEffectAreasOther, Tag.EffectAreaOther);
       configShowEffectAreasPlayerBase = config.Bind(section, "Area effects: Player base", 1, CreateDescription());
       OnChanged(configShowEffectAreasPlayerBase, Tag.EffectAreaPlayerBase);
       configShowEffectAreasWarmCozy = config.Bind(section, "Area effects: Warm cozy", 1, CreateDescription());

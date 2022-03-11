@@ -24,30 +24,42 @@ namespace ESP {
           args.Context.AddString("Missing name.");
           return;
         }
-        foreach (var arg in args[1].Split(' '))
-          SetEntry(arg, true);
+        var entries = args[1].Split(' ').ToList();
+        if (args[1] == "*")
+          entries = OptionsFetcher();
+        foreach (var arg in entries)
+          SetEntry(arg, 1);
       }, optionsFetcher: OptionsFetcher);
       new Terminal.ConsoleCommand("esp_toggle", "[name1] [name2] [name3] ... - Toggles given settings.", delegate (Terminal.ConsoleEventArgs args) {
         if (args.Length < 2) {
           args.Context.AddString("Missing name.");
           return;
         }
-        foreach (var arg in args[1].Split(' '))
+        var entries = args[1].Split(' ').ToList();
+        if (args[1] == "*")
+          entries = OptionsFetcher();
+        foreach (var arg in entries)
           ToggleEntry(arg);
       }, optionsFetcher: OptionsFetcher);
-      new Terminal.ConsoleCommand("esp_disable", "[name1] [name2] [name3] ... - Disbables given settings.", delegate (Terminal.ConsoleEventArgs args) {
+      new Terminal.ConsoleCommand("esp_disable", "[name1] [name2] [name3] ... - Disables given settings.", delegate (Terminal.ConsoleEventArgs args) {
         if (args.Length < 2) {
           args.Context.AddString("Missing name.");
           return;
         }
-        foreach (var arg in args[1].Split(' '))
-          SetEntry(arg, false);
+        var entries = args[1].Split(' ').ToList();
+        if (args[1] == "*")
+          entries = OptionsFetcher();
+        foreach (var arg in entries)
+          SetEntry(arg, -1);
       }, optionsFetcher: OptionsFetcher);
     }
     private static List<string> OptionsFetcher() {
       var options = new List<string>();
       options.AddRange(Visibility.GetTags);
-      options = options.Where(tag => tag == Tag.ZoneCorner || tag == Tag.SpawnZone || (!tag.StartsWith(Tag.ZoneCorner) && tag.StartsWith(Tag.SpawnZone))).ToList();
+      options = options.Where(tag => !tag.StartsWith(Tag.ZoneCorner) && !tag.StartsWith(Tag.SpawnZone)).ToList();
+      // Collection tags are not listed automatically.
+      options.Add(Tag.ZoneCorner);
+      options.Add(Tag.SpawnZone);
       options.Add(Tool.ExtraInfo);
       options.Add(Tool.TimeAndWeather);
       options.Add(Tool.Position);
@@ -63,19 +75,17 @@ namespace ESP {
       if (name == Tool.HUD.ToLower()) return configShowHud;
       throw new NotImplementedException(name);
     }
-    private static void SetEntry(string name, bool value) {
+    private static void SetEntry(string name, int value) {
       try {
         var entry = GetTagEntry(name);
-        if (entry.Value < 0) return;
-        var intValue = value ? 1 : 0;
-        if (entry.Value != intValue)
-          entry.Value = intValue;
+        if (entry.Value != value)
+          entry.Value = value;
         return;
       } catch (NotImplementedException) { }
       try {
         var entry = GetOtherEntry(name);
-        if (entry.Value != value)
-          entry.Value = value;
+        if (entry.Value != value > 0)
+          entry.Value = value > 0;
         return;
       } catch (NotImplementedException) { }
       throw new NotImplementedException(name);
