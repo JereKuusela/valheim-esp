@@ -4,7 +4,7 @@ using Service;
 
 namespace ESP {
   [BepInDependency("valheim.jerekuusela.dps", BepInDependency.DependencyFlags.SoftDependency)]
-  [BepInPlugin("valheim.jerekuusela.esp", "ESP", "1.7.0.0")]
+  [BepInPlugin("valheim.jerekuusela.esp", "ESP", "1.8.0.0")]
   public class ESP : BaseUnityPlugin {
     public void Awake() {
       Settings.Init(Config);

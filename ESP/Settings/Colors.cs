@@ -29,7 +29,6 @@ namespace ESP {
     public static ConfigEntry<string> configCreaturePartnerCheckColor;
     public static ConfigEntry<string> configCreatureFoodCheckColor;
     public static ConfigEntry<string> configCreatureEatRangeColor;
-    public static ConfigEntry<string> configRulerColor;
     public static ConfigEntry<string> configSpawnerRayColor;
     public static ConfigEntry<string> configSpawnerTriggerColor;
     public static ConfigEntry<string> configSpawnerNearColor;
@@ -108,8 +107,6 @@ namespace ESP {
       OnColorChanged(configCreatureFoodCheckColor, Tag.CreatureFoodSearchRange);
       configCreatureEatRangeColor = config.Bind(section, "Creature eat range sphere", "black", "");
       OnColorChanged(configCreatureEatRangeColor, Tag.CreatureEatingRange);
-      configRulerColor = config.Bind(section, "Ruler", "red", "");
-      OnColorChanged(configRulerColor, Tag.Ruler);
       configSpawnerRayColor = config.Bind(section, "Spawner ray", "red", "");
       OnColorChanged(configSpawnerRayColor, Tag.SpawnerRay);
       configSpawnerTriggerColor = config.Bind(section, "Spawner trigger sphere", "red", "");

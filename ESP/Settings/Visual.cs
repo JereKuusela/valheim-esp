@@ -46,8 +46,6 @@ namespace ESP {
     public static ConfigEntry<int> configShowDestructibles;
     public static ConfigEntry<int> configShowLocations;
     public static ConfigEntry<int> configShowStructureSupport;
-
-    public static ConfigEntry<int> configShowRuler;
     private static ConfigEntry<int> GetTagEntry(string name) {
       name = name.ToLower();
       if (name == Tag.StructureCover.ToLower()) return configShowStructureCover;
@@ -114,7 +112,6 @@ namespace ESP {
       if (name == Tag.Smoke.ToLower()) return configShowSmoke;
       if (name == Tag.PlayerCover.ToLower()) return configShowPlayerCover;
       if (name == Tag.PlayerCoverBlocked.ToLower()) return configShowPlayerCover;
-      if (name == Tag.Ruler.ToLower()) return configShowRuler;
       throw new NotImplementedException(name);
     }
     public static bool IsDisabled(string name) => GetTagEntry(name).Value < 0;
@@ -231,14 +228,6 @@ namespace ESP {
       configShowPlayerCover = config.Bind(section, "Player cover", 0, CreateDescription());
       OnChanged(configShowPlayerCover, Tag.PlayerCover);
       OnChanged(configShowPlayerCover, Tag.PlayerCoverBlocked);
-      configShowRuler = config.Bind(section, "Ruler", 0, "Setting true enables rules at current location.");
-      OnChanged(configShowRuler, Tag.Ruler);
-      configShowRuler.SettingChanged += (s, e) => {
-        if (configShowRuler.Value > 0)
-          Ruler.Set(Player.m_localPlayer.transform.position);
-        else
-          Ruler.Reset();
-      };
     }
   }
 }

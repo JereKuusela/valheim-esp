@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ESP {
   public partial class Visual {
     public static void Draw(EffectArea obj) {
-      if (!obj) return;
+      if (!obj || !obj.m_collider) return;
       var tag = Tag.GetEffectArea(obj.m_type);
       if (Settings.IsDisabled(tag)) return;
       var text = EffectAreaUtils.GetTypeText(obj.m_type);

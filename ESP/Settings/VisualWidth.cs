@@ -27,7 +27,6 @@ namespace ESP {
     public static float CustomContainerEffectAreaRadius => configCustomContainerEffectAreaRadius.Value;
     public static ConfigEntry<float> configCustomCraftingEffectAreaRadius;
     public static float CustomCraftingEffectAreaRadius => configCustomCraftingEffectAreaRadius.Value;
-    public static ConfigEntry<int> configRulerRadius;
     public static ConfigEntry<int> configChestRayWidth;
     public static ConfigEntry<int> configOreRayWidth;
     public static ConfigEntry<int> configTreeRayWidth;
@@ -105,8 +104,6 @@ namespace ESP {
       OnWidthChanged(configPickableOneTimeRayWidth, Tag.PickableOneTime);
       configPickableRespawningRayWidth = config.Bind(section, "Pickable rays (respawning)", 2, "");
       OnWidthChanged(configPickableRespawningRayWidth, Tag.PickableRespawning);
-      configRulerRadius = config.Bind(section, "Ruler point radius", 10, "");
-      OnWidthChanged(configRulerRadius, Tag.Ruler);
       configChestRayWidth = config.Bind(section, "Chest rays", 2, "");
       OnWidthChanged(configChestRayWidth, Tag.Chest);
       configOreRayWidth = config.Bind(section, "Ore rays", 2, "");

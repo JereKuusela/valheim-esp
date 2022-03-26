@@ -163,12 +163,11 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 - Setting to enable permanent dodging (allows testing which attacks can be dodged).
 - Setting to multiply dig radius (for easier mining).
 
-## Ruler
-
-- Allows setting a reference point at the current location.
-- When sets, shows distance from the reference point (coordinates, distance and horizontal distance).
 
 # Changelog
+
+- v1.8:
+	- Removes the ruler feature (split to a separate mod).
 
 - v1.7:
 	- Adds support for `*` value to config commands.

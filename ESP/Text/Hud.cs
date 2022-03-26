@@ -23,14 +23,14 @@ namespace ESP {
       var lines = new List<string>();
       lines.Add(GetEnvironment());
       lines.Add(GetPosition(position));
-      lines.Add(GetSpeed() + ", " + GetNoise());
-      lines.Add(Ruler.GetText(position));
+      lines.Add(GetSpeed() + ", " + GetNoise() + ", " + GetLight());
       lines.Add(GetTrackedObjects());
       lines.Add(GetStaggerTracker());
       return lines.Where(item => item != "").ToList();
     }
     private static string GetSpeed() => "Speed: " + Format.Float(Player.m_localPlayer.m_currentVel.magnitude, "0.#") + " m/s";
     private static string GetNoise() => "Noise: " + Format.Int(Player.m_localPlayer.GetNoiseRange()) + " meters";
+    private static string GetLight() => "Light: " + Format.Percent(StealthSystem.instance.GetLightFactor(Player.m_localPlayer.GetCenterPoint()));
     private static string GetEnvironment() {
       if (!Settings.ShowTimeAndWeather) return "";
       return EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment() + " (" + EnvUtils.GetWindHud() + ")";

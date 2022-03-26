@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using Service;
 using UnityEngine;
 
@@ -65,21 +66,20 @@ namespace ESP {
       }
       return Format.JoinLines(lines);
     }
-    private static int[] IgnoredLayers = new int[] { LayerMask.NameToLayer("character_trigger"), LayerMask.NameToLayer("viewblock") };
+    public static int[] IgnoredLayers = new int[] { LayerMask.NameToLayer("character_trigger"), LayerMask.NameToLayer("viewblock"), LayerMask.NameToLayer("pathblocker") };
+
     private static string GetBoundingBox(MonoBehaviour obj) {
-      var colliders = obj.GetComponentsInChildren<Collider>().Where(collider => !IgnoredLayers.Contains(collider.gameObject.layer)).ToArray();
-      if (colliders.Length > 1) {
-        var layers = Format.JoinRow(colliders.Select(collider => LayerMask.LayerToName(collider.gameObject.layer)));
-        return "Bounds: " + Format.String("Multiple colliders not supported", "red") + ", Layers: " + layers;
-      }
-      var size = colliders[0].bounds.size;
+      var colliders = obj.GetComponentsInChildren<Collider>().Where(collider => !Texts.IgnoredLayers.Contains(collider.gameObject.layer)).ToArray();
+      var layers = Format.JoinRow(colliders.Select(collider => LayerMask.LayerToName(collider.gameObject.layer)).ToHashSet());
+
+      var size = BoundsCache.Bounds[Utils.GetPrefabName(obj.gameObject)];
       var scale = obj.transform.lossyScale;
       var scaleText = Format.Coordinates(scale, "F2");
       if (Math.Abs(scale.x - scale.y) < 0.01f && Math.Abs(scale.x - scale.z) < 0.01f) {
-        if (Math.Abs(scale.x - 1.0f) < 0.01f) return "Bounds: " + Format.Coordinates(size, "F3");
+        if (Math.Abs(scale.x - 1.0f) < 0.01f) return $"Bounds: {Format.Coordinates(size, "F3")} ({layers})";
         scaleText = Format.Float(scale.x);
       }
-      return "Bounds: " + Format.Coordinates(size, "F2") + " with scale " + scaleText;
+      return $"Bounds: {Format.Coordinates(size, "F2")} with scale {scaleText} ({layers})";
     }
     public static string Get(TreeBase obj) {
       if (!Settings.Destructibles || !Helper.IsValid(obj)) return "";
@@ -462,6 +462,25 @@ namespace ESP {
     public static string GetCover(Windmill obj) {
       if (!Helper.IsValid(obj)) return "";
       return GetCover(CoverUtils.GetCoverPoint(obj), 0, false);
+    }
+  }
+
+  [HarmonyPatch(typeof(ZNetView), "Awake")]
+  public class BoundsCache {
+
+    public static Dictionary<string, Vector3> Bounds = new Dictionary<string, Vector3>();
+    public static void Postfix(ZNetView __instance) {
+      if (__instance.transform.rotation == Quaternion.identity && !Bounds.ContainsKey(__instance.GetPrefabName())) {
+        var colliders = __instance.GetComponentsInChildren<Collider>().Where(collider => !Texts.IgnoredLayers.Contains(collider.gameObject.layer)).ToArray();
+        if (colliders.Length == 0) {
+          Bounds[__instance.GetPrefabName()] = Vector3.zero;
+          return;
+        }
+        var bounds = colliders[0].bounds;
+        foreach (var collider in colliders)
+          bounds.Encapsulate(collider.bounds);
+        Bounds[__instance.GetPrefabName()] = bounds.size;
+      }
     }
   }
 }

@@ -97,7 +97,6 @@ namespace ESP {
     public const string SpawnZoneSwamp = "SpawnZoneSwamp";
     public const string SpawnZoneUnknown = "SpawnZoneUnknown";
     public const string RandomEventSystem = "RandomEventSystem";
-    public const string Ruler = "Ruler";
     public const string EffectAreaPrivateArea = "EffectAreaPrivateArea";
     public const string EffectAreaComfort = "EffectAreaComfort";
     public const string EffectAreaBurning = "EffectAreaBurning";
