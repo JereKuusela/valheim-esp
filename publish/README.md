@@ -168,6 +168,7 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 
 - v1.8:
 	- Removes the ruler feature (split to a separate mod).
+	- Fixes errors with custom crafting stations.
 
 - v1.7:
 	- Adds support for `*` value to config commands.
