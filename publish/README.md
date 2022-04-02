@@ -159,12 +159,14 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 	- Attack type and hitbox.
 	- Accuracy and projectile speed for bows.
 	- Secondary attack stats (damage multiplier, knocback multiplier, staggering multiplier).
-- Setting to multiply stamina usage (easier testing when stamina is infinite).
-- Setting to enable permanent dodging (allows testing which attacks can be dodged).
-- Setting to multiply dig radius (for easier mining).
 
 
 # Changelog
+
+- v1.9:
+	- Removes remaining cheat settings as obsolete.
+	- Fixes errors with ships.
+	- Fixes the bounds check causing errors with some objects.
 
 - v1.8:
 	- Removes the ruler feature (split to a separate mod).
