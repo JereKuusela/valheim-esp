@@ -167,6 +167,8 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 	- Removes remaining cheat settings as obsolete.
 	- Fixes errors with ships.
 	- Fixes the bounds check causing errors with some objects.
+	- Fixes spawn system rays having too much spacing ending up in wrong zones.
+	- Fixes spawn systems of new creatures having wrong timer.
 
 - v1.8:
 	- Removes the ruler feature (split to a separate mod).

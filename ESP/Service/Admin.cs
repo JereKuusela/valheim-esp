@@ -14,7 +14,7 @@ public static class Admin {
     set => Instance.Checking = value;
   }
   ///<summary>Checks for admin status. Terminal is used for the output.</summary>
-  public static void Check(Terminal terminal = null) => Instance.Check(terminal);
+  public static void Check() => Instance.Check();
   ///<summary>Verifies the admin status with a given text. Shouldn't be called directly.</summary>
   public static void Verify(string text) => Instance.Verify(text);
 }
@@ -22,36 +22,34 @@ public static class Admin {
 public interface IAdmin {
   bool Enabled { get; set; }
   bool Checking { get; set; }
-  void Check(Terminal terminal = null);
+  void Check();
   void Verify(string text);
 }
 
 ///<summary>Admin checker. Can be extended by overloading OnSuccess and OnFail.</summary>
 public class DefaultAdmin : IAdmin {
   public virtual bool Enabled { get; set; }
-  private Terminal Terminal;
   ///<summary>Admin status is checked by issuing a dummy unban command.</summary>
-  public void Check(Terminal terminal = null) {
+  public void Check() {
     if (!ZNet.instance) return;
-    Terminal = terminal ?? Console.instance;
     Checking = true;
     if (ZNet.instance.IsServer())
-      OnSuccess(Terminal);
+      OnSuccess();
     else
       ZNet.instance.Unban("admintest");
   }
   public void Verify(string text) {
     if (text == "Unbanning user admintest")
-      OnSuccess(Terminal);
+      OnSuccess();
     else
-      OnFail(Terminal);
+      OnFail();
   }
   public virtual bool Checking { get; set; }
-  protected virtual void OnSuccess(Terminal terminal) {
+  protected virtual void OnSuccess() {
     Checking = false;
     Enabled = true;
   }
-  protected virtual void OnFail(Terminal terminal) {
+  protected virtual void OnFail() {
     Checking = false;
     Enabled = false;
   }
@@ -74,6 +72,6 @@ public class CheckAdmin {
     __state = ___m_firstSpawn;
   }
   static void Postfix(bool ___m_firstSpawn, bool __state) {
-    if (__state && !___m_firstSpawn && !Admin.Checking) Admin.Check(Console.instance);
+    if (__state && !___m_firstSpawn && !Admin.Checking) Admin.Check();
   }
 }

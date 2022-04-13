@@ -1,6 +1,7 @@
 ﻿using BepInEx.Configuration;
 namespace ESP;
 public partial class Settings {
+#nullable disable
   public static ConfigEntry<string> configExcludedCreatures;
   public static string ExcludedCreatures => configExcludedCreatures.Value;
   public static ConfigEntry<string> configExcludedCreatureSpawners;

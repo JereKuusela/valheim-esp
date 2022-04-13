@@ -40,9 +40,9 @@ public class Character_UpdateNoise : Component {
   }
 }
 public class NoiseText : MonoBehaviour, Hoverable {
-  public string GetHoverText() => GetHoverName() + "\n" + Texts.GetNoise(character);
-  public string GetHoverName() => Translate.Name(character);
-  public Character character;
+  public string GetHoverText() => character == null ? "" : GetHoverName() + "\n" + Texts.GetNoise(character);
+  public string GetHoverName() => character == null ? "" : Translate.Name(character);
+  public Character? character;
 }
 [HarmonyPatch(typeof(Character), nameof(Character.GetHoverText))]
 public class Character_GetHoverText {

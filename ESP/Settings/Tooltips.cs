@@ -1,6 +1,7 @@
 using BepInEx.Configuration;
 namespace ESP;
 public partial class Settings {
+#nullable disable
   public static ConfigEntry<bool> configDrops;
   public static bool Drops => configDrops.Value;
   public static ConfigEntry<bool> configBreeding;

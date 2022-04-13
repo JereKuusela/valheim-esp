@@ -3,6 +3,7 @@ using BepInEx.Configuration;
 using Visualization;
 namespace ESP;
 public partial class Settings {
+#nullable disable
   public static ConfigEntry<int> configShowCreatureFireRange;
   public static ConfigEntry<int> configShowTrackedCreatures;
   public static ConfigEntry<int> configShowCreatureBreedingTotalRange;

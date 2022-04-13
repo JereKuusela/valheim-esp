@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Service;
-using UnityEngine;
 namespace ESP;
 public partial class Texts {
   private static string GetTime(CreatureSpawner obj) {
@@ -89,7 +88,7 @@ public partial class Texts {
       forest = ", only inside forests";
     }
 
-    var instances = SpawnSystem.GetNrOfInstances(spawnData.m_prefab, Vector3.zero, 0f, true, false);
+    var instances = SpawnSystem.GetNrOfInstances(spawnData.m_prefab, Player.m_localPlayer.transform.position, 0f, true, false);
     var progress = Format.ProgressPercent("Attempt", timeSinceSpawned, spawnData.m_spawnInterval);
     var chance = Format.Percent(spawnData.m_spawnChance / 100.0) + " chance";
     var weather = spawnData.m_requiredEnvironments.Count > 0 ? (", Weather: " + Format.String(Format.JoinRow(spawnData.m_requiredEnvironments))) : "";
@@ -166,7 +165,7 @@ public partial class Texts {
       forest = ", only inside forests";
     }
 
-    var instances = SpawnSystem.GetNrOfInstances(spawnData.m_prefab, Vector3.zero, 0f, false, false);
+    var instances = SpawnSystem.GetNrOfInstances(spawnData.m_prefab, Player.m_localPlayer.transform.position, 0f, false, false);
     var weather = spawnData.m_requiredEnvironments.Count > 0 ? (", Weather: " + Format.String(Format.JoinRow(spawnData.m_requiredEnvironments))) : "";
     var global = spawnData.m_requiredGlobalKey != "" ? (", Bosses: " + Format.String(spawnData.m_requiredGlobalKey)) : "";
     var spawns = Format.Progress(instances, spawnData.m_maxSpawned);

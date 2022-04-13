@@ -33,10 +33,10 @@ public class Player_AddHoverForVisuals {
 public class StaticText : MonoBehaviour, Hoverable {
   public string GetHoverText() => Format.String(title) + "\n" + text;
   public string GetHoverName() => title;
-  public string title;
-  public string text;
+  public string title = "";
+  public string text = "";
 }
 /// <summary>Custom component to allow finding visualizations more easily.</summary>
 public class Visualization : MonoBehaviour {
-  public string Tag;
+  public string Tag = "";
 }

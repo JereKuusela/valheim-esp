@@ -48,24 +48,26 @@ public class SpawnSystem_Awake {
     var heightmap = obj.m_heightmap;
     var totalAmount = GetTotalAmountOfSpawnSystems(obj, heightmap);
     var counter = -totalAmount / 2;
-    var num = 0;
     var biome = heightmap.GetBiome(obj.transform.position);
     var tag = Tag.GetSpawnZone(biome);
     if (Settings.IsDisabled(tag)) return;
-    obj.m_spawnLists.ForEach(list => list.m_spawners.ForEach(spawnData => {
-      num++;
-      if (!spawnData.m_enabled || !heightmap.HaveBiome(spawnData.m_biome)) return;
-      if (!spawnData.m_spawnAtDay && !spawnData.m_spawnAtNight) return;
-      if (!IsEnabled(spawnData)) return;
-      var stableHashCode = ("b_" + spawnData.m_prefab.name + num.ToString()).GetStableHashCode();
-      Vector3 position = new(counter * 2 * Settings.configSpawnZoneRayWidth.Value, 0, 0);
-      var line = Draw.DrawMarkerLine(tag, obj, position);
-      var text = line.AddComponent<SpawnSystemText>();
-      text.spawnSystem = obj;
-      text.spawnData = spawnData;
-      text.stableHashCode = stableHashCode;
-      counter++;
-    }));
+    obj.m_spawnLists.ForEach(list => {
+      var num = 0;
+      list.m_spawners.ForEach(spawnData => {
+        num++;
+        if (!spawnData.m_enabled || !heightmap.HaveBiome(spawnData.m_biome)) return;
+        if (!spawnData.m_spawnAtDay && !spawnData.m_spawnAtNight) return;
+        if (!IsEnabled(spawnData)) return;
+        var stableHashCode = ("b_" + spawnData.m_prefab.name + num.ToString()).GetStableHashCode();
+        Vector3 position = new(counter * 3f * Settings.configSpawnZoneRayWidth.Value / 100f, 0, 0);
+        var line = Draw.DrawMarkerLine(tag, obj, position);
+        var text = line.AddComponent<SpawnSystemText>();
+        text.spawnSystem = obj;
+        text.spawnData = spawnData;
+        text.stableHashCode = stableHashCode;
+        counter++;
+      });
+    });
   }
   private static void DrawRandEventSystem(SpawnSystem instance) {
     if (Settings.IsDisabled(Tag.RandomEventSystem)) return;
@@ -80,15 +82,15 @@ public class SpawnSystem_Awake {
 }
 
 public class RandEventSystemText : MonoBehaviour, Hoverable {
-  public string GetHoverText() => Texts.GetRandomEvent(spawnSystem);
+  public string GetHoverText() => spawnSystem != null ? Texts.GetRandomEvent(spawnSystem) : "";
   public string GetHoverName() => "Random events";
-  public SpawnSystem spawnSystem;
+  public SpawnSystem? spawnSystem;
 }
 public class SpawnSystemText : MonoBehaviour, Hoverable {
-  public string GetHoverText() => Texts.Get(spawnSystem, spawnData, stableHashCode);
-  public string GetHoverName() => spawnData.m_name.Length > 0 ? spawnData.m_name : spawnData.m_prefab.name;
-  public SpawnSystem spawnSystem;
-  public SpawnSystem.SpawnData spawnData;
+  public string GetHoverText() => spawnSystem == null || spawnData == null ? "" : Texts.Get(spawnSystem, spawnData, stableHashCode);
+  public string GetHoverName() => spawnData == null ? "" : spawnData.m_name.Length > 0 ? spawnData.m_name : spawnData.m_prefab.name;
+  public SpawnSystem? spawnSystem;
+  public SpawnSystem.SpawnData? spawnData;
   public int stableHashCode;
 }
 

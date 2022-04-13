@@ -7,6 +7,7 @@ public partial class Visual {
     var delta = startPos - obj.transform.position;
     var start = Constants.CoverRaycastStart;
     if (Cover.m_coverRays == null) Cover.Setup();
+    if (Cover.m_coverRays == null) return;
     foreach (var vector in Cover.m_coverRays) {
       var tag = isPlayer ? Tag.PlayerCover : Tag.StructureCover;
       if (Physics.Raycast(startPos + vector * start, vector, out var raycastHit, Constants.CoverRayCastLength - start, Cover.m_coverRayMask))

@@ -1,6 +1,7 @@
 ﻿using BepInEx.Configuration;
 namespace ESP;
 public partial class Settings {
+#nullable disable
   public static ConfigEntry<bool> configShowShipStatsOnHud;
   public static bool ShowShipStatsOnHud => configShowShipStatsOnHud.Value;
   public static ConfigEntry<bool> configShowHud;

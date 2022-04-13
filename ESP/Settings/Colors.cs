@@ -3,6 +3,7 @@ using UnityEngine;
 using Visualization;
 namespace ESP;
 public partial class Settings {
+#nullable disable
   public static Color ParseColor(string color) {
     if (ColorUtility.TryParseHtmlString(color, out var parsed)) return parsed;
     return Color.white;

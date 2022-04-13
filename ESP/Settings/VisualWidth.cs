@@ -2,6 +2,7 @@
 using Visualization;
 namespace ESP;
 public partial class Settings {
+#nullable disable
   public static ConfigEntry<int> configCreatureFireLineWidth;
   public static ConfigEntry<int> configTrackedCreatureRayWidth;
   public static ConfigEntry<int> configBreedingLineWidth;

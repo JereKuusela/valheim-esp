@@ -56,7 +56,7 @@ public class SpawnArea_Awake {
 }
 
 public class SpawnAreaText : MonoBehaviour, Hoverable {
-  public string GetHoverText() => GetHoverName() + "\n" + SpawnAreaUtils.Get(spawnArea);
-  public string GetHoverName() => Format.String(spawnArea.name);
-  public SpawnArea spawnArea;
+  public string GetHoverText() => spawnArea == null ? "" : GetHoverName() + "\n" + SpawnAreaUtils.Get(spawnArea);
+  public string GetHoverName() => spawnArea == null ? "" : Format.String(spawnArea.name);
+  public SpawnArea? spawnArea;
 }
