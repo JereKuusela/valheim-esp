@@ -45,20 +45,20 @@ public partial class Visual {
     DrawCover(obj, CoverUtils.GetCoverPoint(obj), Translate.Name(obj), Texts.GetCover(obj), true);
   }
   private static void UpdateCover(MonoBehaviour obj, Vector3 startPos, string text, bool isPlayer = false) {
-    var renderers = Visualization.Draw.GetRenderers(obj, Tag.StructureCover);
+    var tags = isPlayer ? new string[] { Tag.PlayerCover, Tag.PlayerCoverBlocked } : new string[] { Tag.StructureCover, Tag.StructureCoverBlocked };
+    var renderers = Visualization.Draw.GetRenderers(obj, tags);
     var vectors = Cover.m_coverRays;
     if (renderers.Length != vectors.Length) return;
     var start = Constants.CoverRaycastStart;
     var index = 0;
     foreach (var vector in vectors) {
-      RaycastHit raycastHit;
       var tag = isPlayer ? Tag.PlayerCover : Tag.StructureCover;
+      RaycastHit raycastHit;
       if (Physics.Raycast(startPos + vector * start, vector, out raycastHit, Constants.CoverRayCastLength - start, Cover.m_coverRayMask))
         tag = isPlayer ? Tag.PlayerCoverBlocked : Tag.StructureCoverBlocked;
       var renderer = renderers[index];
       var color = Visualization.Draw.GetColor(tag);
       renderer.material.SetColor("_Color", color);
-      renderer.transform.parent.transform.rotation = Quaternion.identity;
       var staticText = renderer.GetComponent<StaticText>();
       if (staticText) staticText.text = text;
       index++;

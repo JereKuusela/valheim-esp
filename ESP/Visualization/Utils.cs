@@ -39,4 +39,11 @@ public class StaticText : MonoBehaviour, Hoverable {
 /// <summary>Custom component to allow finding visualizations more easily.</summary>
 public class Visualization : MonoBehaviour {
   public string Tag = "";
+
+  public Quaternion? FixedRotation;
+
+  public void Update() {
+    if (FixedRotation.HasValue)
+      transform.rotation = FixedRotation.Value;
+  }
 }

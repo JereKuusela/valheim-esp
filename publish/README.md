@@ -165,6 +165,7 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 
 - v1.9:
 	- Removes remaining cheat settings as obsolete.
+	- Fixes structure and player cover not updating. Thanks Nodus Cursorius!
 	- Fixes errors with ships.
 	- Fixes the bounds check causing errors with some objects.
 	- Fixes spawn system rays having too much spacing ending up in wrong zones.

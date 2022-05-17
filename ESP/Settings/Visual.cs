@@ -133,7 +133,7 @@ public partial class Settings {
     OnChanged(configShowCreatureNoise, Tag.CreatureNoise);
     configShowCreatureHearRange = config.Bind(section, "Creature hear range", 1, CreateDescription());
     OnChanged(configShowCreatureHearRange, Tag.CreatureHearRange);
-    configShowCreatureViewRange = config.Bind(section, "Creature vuew range", 1, CreateDescription());
+    configShowCreatureViewRange = config.Bind(section, "Creature view range", 1, CreateDescription());
     OnChanged(configShowCreatureViewRange, Tag.CreatureViewRange);
     configShowCreatureAlertRange = config.Bind(section, "Creature alert range", 1, CreateDescription());
     OnChanged(configShowCreatureAlertRange, Tag.CreatureAlertRange);

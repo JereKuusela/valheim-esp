@@ -36,9 +36,11 @@ public partial class Draw {
   ///<summary>Creates a renderer with a line that doesn't rotate with the object.</summary>
   public static GameObject DrawLineWithFixedRotation(string tag, MonoBehaviour parent, Vector3 start, Vector3 end) {
     // Box colliders don't work with non-perpendicular lines so the line must be rotated from a forward line.
-    var parentObj = CreateLineRotater(CreateObject(parent.gameObject, tag, true), start, end);
-    var forwardEnd = Vector3.forward * (end - start).magnitude;
-    var obj = DrawLineSub(parentObj, Vector3.zero, forwardEnd);
+    var rotation = Quaternion.FromToRotation(Vector3.forward, end - start);
+    var parentObj = CreateObject(parent.gameObject, tag, rotation);
+    var forwardStart = Quaternion.Inverse(rotation) * start;
+    var forwardEnd = Quaternion.Inverse(rotation) * end;
+    var obj = DrawLineSub(parentObj, forwardStart, forwardEnd);
     Draw.AddBoxCollider(obj);
     return obj;
   }
@@ -48,7 +50,7 @@ public partial class Draw {
   ///<summary>Creates a renderer with a vertical line (relative to the object).</summary>
   public static GameObject DrawMarkerLine(string tag, MonoBehaviour parent, Vector3 start) {
     Vector3 end = new(start.x, 500f, start.z);
-    var obj = DrawLineSub(CreateObject(parent.gameObject, tag, true), start, end);
+    var obj = DrawLineSub(CreateObject(parent.gameObject, tag, Quaternion.identity), start, end);
     Draw.AddBoxCollider(obj);
     return obj;
   }
@@ -64,7 +66,7 @@ public partial class Draw {
         new (center.x + extents.x, center.y + extents.y, center.z - extents.z),
         new (center.x + extents.x, center.y + extents.y, center.z + extents.z),
       };
-    var obj = CreateObject(parent.gameObject, tag, true);
+    var obj = CreateObject(parent.gameObject, tag, Quaternion.identity);
     for (var i = 0; i < corners.Length; i++) {
       var start = corners[i];
       for (var j = i + 1; j < corners.Length; j++) {

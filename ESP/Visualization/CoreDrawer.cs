@@ -7,28 +7,19 @@ public partial class Draw : Component {
   public const string TriggerLayer = "character_trigger";
 
   ///<summary>Creates the base object for drawing.</summary>
-  private static GameObject CreateObject(GameObject parent, string tag, bool fixRotation = false) {
+  private static GameObject CreateObject(GameObject parent, string tag, Quaternion? fixedRotation = null) {
     GameObject obj = new();
     obj.layer = LayerMask.NameToLayer(TriggerLayer);
     obj.transform.parent = parent.transform;
     obj.transform.localPosition = Vector3.zero;
-    if (!fixRotation)
-      obj.transform.localRotation = Quaternion.identity;
+    obj.transform.localRotation = Quaternion.identity;
     if (tag != "") {
       obj.name = tag;
-      obj.AddComponent<Visualization>().Tag = tag;
+      var visual = obj.AddComponent<Visualization>();
+      visual.Tag = tag;
+      visual.FixedRotation = fixedRotation;
       obj.SetActive(Visibility.IsTag(tag));
     }
-    return obj;
-  }
-  ///<summary>Creates a transform that rotates a forward line to a given direction.</summary>
-  private static GameObject CreateLineRotater(GameObject parent, Vector3 start, Vector3 end) {
-    GameObject obj = new();
-    obj.name = parent.name;
-    obj.layer = LayerMask.NameToLayer(TriggerLayer);
-    obj.transform.parent = parent.transform;
-    obj.transform.localPosition = start;
-    obj.transform.localRotation = Quaternion.FromToRotation(Vector3.forward, end - start);
     return obj;
   }
   ///<summary>Creates the line renderer object.</summary>
@@ -77,10 +68,14 @@ public partial class Draw : Component {
     component.title = title;
   }
   ///<summary>Returns renderers with a given tag.</summary>
-  public static LineRenderer[] GetRenderers(MonoBehaviour obj, string tag) {
+  public static LineRenderer[] GetRenderers(MonoBehaviour obj, string tag) => GetRenderers(obj, new[] { tag });
+  ///<summary>Returns renderers with a given tag.</summary>
+  public static LineRenderer[] GetRenderers(MonoBehaviour obj, string[] tags) {
+    var set = tags.ToHashSet();
     return obj.GetComponentsInChildren<LineRenderer>(true).Where(renderer => {
       var visualization = renderer.GetComponent<Visualization>();
-      return visualization != null && visualization.Tag == tag;
+      if (!visualization) return false;
+      return set.Contains(visualization.Tag);
     }).ToArray();
   }
   private static Dictionary<string, Color> colors = new();
