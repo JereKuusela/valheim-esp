@@ -42,7 +42,7 @@ public static class Hud {
   private static string GetPosition(Vector3 position) {
     if (!Settings.ShowPosition) return "";
     List<string> lines = new(){
-        EnvUtils.GetLocation(position),
+        EnvUtils.GetPosition(position),
         EnvUtils.GetAltitude(position),
         EnvUtils.GetForest(position),
         EnvUtils.GetBlocked(position)

@@ -163,7 +163,12 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 
 # Changelog
 
-- v1.9:
+- v1.10
+	- Changes coordinate format from x,y,z to x,z,y (better matches other mods).
+	- Changes all features to be disabled by default.
+	- Fixes conflict with Better Archery mod.
+
+- v1.9
 	- Removes remaining cheat settings as obsolete.
 	- Fixes structure and player cover not updating. Thanks Nodus Cursorius!
 	- Fixes errors with ships.
@@ -171,11 +176,11 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 	- Fixes spawn system rays having too much spacing ending up in wrong zones.
 	- Fixes spawn systems of new creatures having wrong timer.
 
-- v1.8:
+- v1.8
 	- Removes the ruler feature (split to a separate mod).
 	- Fixes errors with custom crafting stations.
 
-- v1.7:
+- v1.7
 	- Adds support for `*` value to config commands.
 	- Adds support for new noise parameters.
 	- Changes the command `esp_disable` to set the values to -1 instead 0.
@@ -186,7 +191,7 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 	- Fixes command autocomplete missing most keys.
 	- Fixes some settings not working correctly.
 
-- v1.6:
+- v1.6
 	- Adds commands for toggling settings on/off (can be bound to keys).
 	- Adds separate settings for spawner trigger, limit and spawn ranges.
 	- Adds position rays for spawners.
@@ -203,7 +208,7 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 	- Removes DPS and experience meters as they are now in a own mod.
 	- Removes mine rock support (separate mod exists for that with better support).
 
-- v1.5:
+- v1.5
 	- Updated for Hearth & Home patch.
 	- Adds average ship speed to HUD.
 	- Adds setting to ignore forsaken power cooldowns.
@@ -211,7 +216,7 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 	- Adds generator stats to locations.
 	- Adds generator stats to vegetation (trees, plants, rocks, etc.).
 
-- v1.4:
+- v1.4
 	- Adds settings to customize all colors used by the visuals.
 	- Reordered settings to more sensible sections.
 	- Adds sleeping status to sleeping enemies.
@@ -230,7 +235,7 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 	- Fixes smoke visual being affected by cover ray setting.
 	- Improved localization of some object names.
 
-- v1.3:
+- v1.3
 	- Adds item drops to resources like rocks, minerals and trees.
 	- Adds chests contents to pregenerated chests.
 	- Adds ruler. Ruler point can be set at the current location. HUD shows distance to the set location.
@@ -240,7 +245,7 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 	- Fixes ward protection radius shown as sphere instead of a cylinder.
 	- Fixes tool tiers being always stone / antler for creature attacks.
 
-- v1.2:
+- v1.2
 	- Adds minimum tool tiers to trees, ores and other destructibles tooltips.
 	- Adds location ray to trees, ores and other destructibles (disabled by default).
 	- Adds hit box type to weapon and enemy attack tooltips.
@@ -278,9 +283,9 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 	- Reduced draw width of many visualizations (less clutter).
 	- Fixes rays not always being straight up.
 
-- v1.1:
+- v1.1
 	- Enabled for dedicated servers (when server admin).
 	- Fixes structures flashing when disabling visuals.
 
-- v1.0:
+- v1.0
 	- Initial release

@@ -75,7 +75,7 @@ public class EnvUtils {
   }
   public static double GetAvgWind(EnvEntry env) => (env.m_env.m_windMin + env.m_env.m_windMax) / 2.0 * env.m_weight;
 
-  public static string GetLocation(Vector3 position) => "Position: " + Format.Coordinates(position);
+  public static string GetPosition(Vector3 position) => "Position: " + Format.Coordinates(position);
   public static string GetAltitude(Vector3 position) => "Altitude: " + Format.Int(position.y - ZoneSystem.instance.m_waterLevel);
   public static string GetBlocked(Vector3 position) => ZoneSystem.instance.IsBlocked(position) ? "blocked" : "";
   public static string GetForest(Vector3 position) {

@@ -16,7 +16,7 @@ public partial class Settings {
   public static float TrackRadius => configTrackRadius.Value;
   public static void InitHUD(ConfigFile config) {
     var section = "1. HUD";
-    configShowHud = config.Bind(section, "Show HUD", true, "Show info and stats on HUD");
+    configShowHud = config.Bind(section, "Show HUD", false, "Show info and stats on HUD");
     configShowTimeAndWeather = config.Bind(section, "Show current time and weather", true, "Show current time and weather on the hud");
     configShowPosition = config.Bind(section, "Show current position", true, "Show current position on the hud");
     configShowShipStatsOnHud = config.Bind(section, "Show ship stats", true, "Show ship stats on the hud");

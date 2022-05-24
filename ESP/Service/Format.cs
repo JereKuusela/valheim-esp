@@ -33,7 +33,8 @@ public class Format {
   public static string Int(double value, string color = "yellow") => String(value.ToString("N0"), color);
   public static string ProgressPercent(string header, double value, double limit) => header + ": " + Progress(value, limit) + " seconds (" + Percent(value / limit) + ")";
   public static string Coordinates(Vector3 coordinates, string format = "F0", string color = "yellow") {
-    var values = coordinates.ToString(format).Replace("(", "").Replace(")", "").Split(',').Select(value => Format.String(value.Trim(), color));
+    Vector3 swapped = new(coordinates.x, coordinates.z, coordinates.y);
+    var values = swapped.ToString(format).Replace("(", "").Replace(")", "").Split(',').Select(value => Format.String(value.Trim(), color));
     return Format.JoinRow(values);
   }
   public static string JoinLines(IEnumerable<string> lines) => string.Join("\n", lines.Where(line => line != ""));

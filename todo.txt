@@ -2,15 +2,8 @@ General:
  * New text class for visuals that gets text based on the object? (onei issue is that then you would get all info)
   * Actions: E to freeze creature, numbers to start events when hovering the event ray, etc
 
-Drawer:
- - Some kind of color customization (rgb + string to color).
- * List of priority names (different color and width can be set).
-
 HUD:
  - Current stamina consumption
-
-Structures:
- - Dimensions? Hitboxes visualized?
 
 Creatures:
  - Move speed (depending how it moves?)
@@ -25,16 +18,10 @@ Todo:
  - Windmill base line cover comparison (since 4-5 are blocked by the propeller).
  - Expand patrol points to include spawn points (since spawn point is used as fallback)
  - Show object classnames on hover.
- - Experience meter to also include the first value (at least to total, over time to use average?).
  - Creatures: Add if creature doesn't attack objects to hover.
  - Weapon skill.
 
  - Creature faction and group.
- - Coords and zone to bigger minimap (copy from upgrade world).
  - Only in forests is twice on enemy spawn zones.
  - Fix percentage precision for some, only spawn/generator stuff needs more precision!
- - Add master switch for all visuals.
- - Add master switch for all features.
  - Verify line widths (thicker for biome corners and smoke?)
-
-Changes:

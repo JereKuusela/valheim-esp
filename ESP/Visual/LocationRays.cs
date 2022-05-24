@@ -17,6 +17,7 @@ public class LocationUtils {
   }
   private static bool IsResourceEnabled(string name) => !IsIn(Settings.ExcludedResources, name);
   public static bool IsEnabled(Pickable obj) {
+    if (!obj.m_itemPrefab) return false;
     var tag = GetTag(obj);
     if (Settings.IsDisabled(tag)) return false;
     return IsResourceEnabled(obj.m_itemPrefab.name);
