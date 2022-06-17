@@ -163,6 +163,9 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 
 # Changelog
 
+- v1.11
+	- Adds visual rays for GemstoneSpawners (Jewelcrafting mod).
+
 - v1.10
 	- Changes coordinate format from x,y,z to x,z,y (better matches other mods).
 	- Changes all features to be disabled by default.
