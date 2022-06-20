@@ -7,7 +7,7 @@ namespace ESP;
 public class JewelcraftingPatcher {
   public static void DoPatching(Assembly assembly) {
     if (assembly == null) return;
-    Harmony harmony = new("valheim.jerekuusela.esp.jewelcrafting");
+    Harmony harmony = new("esp.jewelcrafting");
     var mOriginal = AccessTools.Method(assembly.GetType("Jewelcrafting.DestructibleSetup+GemSpawner"), "Awake");
     if (mOriginal == null) {
       ESP.Log.LogWarning("\"Jewelcrafting\" detected. Unable to patch \"Awake\" for visual rays.");

@@ -4,16 +4,19 @@ using BepInEx.Logging;
 using HarmonyLib;
 using Service;
 namespace ESP;
-[BepInDependency("valheim.jerekuusela.dps", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency("dps", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("org.bepinex.plugins.jewelcrafting", BepInDependency.DependencyFlags.SoftDependency)]
-[BepInPlugin("valheim.jerekuusela.esp", "ESP", "1.11.0.0")]
+[BepInPlugin(GUID, NAME, VERSION)]
 public class ESP : BaseUnityPlugin {
+  const string GUID = "esp";
+  const string NAME = "ESP";
+  const string VERSION = "1.11";
   private static ManualLogSource? Logs;
   public static ManualLogSource Log => Logs!;
   public void Awake() {
     Logs = Logger;
     Settings.Init(Config);
-    Harmony harmony = new("valheim.jerekuusela.esp");
+    Harmony harmony = new(GUID);
     harmony.PatchAll();
     Admin.Instance = new EspAdmin();
     MessageHud_UpdateMessage.GetMessage = Hud.GetMessage;

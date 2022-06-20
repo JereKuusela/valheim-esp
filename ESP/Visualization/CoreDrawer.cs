@@ -26,7 +26,7 @@ public partial class Draw : Component {
   private static LineRenderer CreateRenderer(GameObject obj) {
     var renderer = obj.AddComponent<LineRenderer>();
     renderer.useWorldSpace = false;
-    Material material = new(Shader.Find("Particles/Standard Unlit"));
+    Material material = new(Shader.Find("Particles/Standard Unlit2"));
     material.SetColor("_Color", GetColor(obj.name));
     material.SetFloat("_BlendOp", (float)UnityEngine.Rendering.BlendOp.Subtract);
     Texture2D texture = new(1, 1);

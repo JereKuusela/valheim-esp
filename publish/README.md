@@ -16,7 +16,7 @@ Some use cases:
 1. Install the [BepInExPack Valheim](https://valheim.thunderstore.io/package/denikson/BepInExPack_Valheim/)
 2. Download the latest zip.
 3. Extract it in the \<GameDirectory\>\BepInEx\plugins\ folder.
-4. Recommended to also install the [Configuration manager](https://github.com/BepInEx/BepInEx.ConfigurationManager/releases/tag/v16.4) for easier configuring.
+4. Recommended to also install the [Configuration manager](https://valheim.thunderstore.io/package/Azumatt/Official_BepInEx_ConfigurationManager/) for easier configuring.
 
 Note: For all the mods I'm working on, this has the lowest priority and probably won't get update for a while.
 
@@ -165,6 +165,8 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 
 - v1.11
 	- Adds visual rays for GemstoneSpawners (Jewelcrafting mod).
+	- Changes the GUID which resets the configuration.
+	- Fixes visuals not working the new Unity version.
 
 - v1.10
 	- Changes coordinate format from x,y,z to x,z,y (better matches other mods).
