@@ -163,6 +163,10 @@ Unfortunately the feature names for commands aren't documented yet (but the comm
 
 # Changelog
 
+- v1.12
+	- Adds visual rays and texts for boss altars.
+	- Improves compatibility with Spawner Tweaks and Structure Tweaks mods.
+
 - v1.11
 	- Adds visual rays for GemstoneSpawners (Jewelcrafting mod).
 	- Changes the GUID which resets the configuration.

@@ -30,6 +30,9 @@
     <Reference Include="UnityEngine.UIModule.dll">
       <HintPath>..\..\Libs\UnityEngine.UIModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule.dll">
+      <HintPath>..\..\Libs\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.InputLegacyModule.dll">
       <HintPath>..\..\Libs\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>

@@ -4,7 +4,7 @@ using UnityEngine;
 using Visualization;
 namespace ESP;
 
-[HarmonyPatch(typeof(SpawnSystem), nameof(SpawnSystem.Awake))]
+[HarmonyPatch(typeof(SpawnSystem), nameof(SpawnSystem.Awake)), HarmonyPriority(Priority.Last)]
 public class SpawnSystem_Awake {
   private static void DrawBiomes(SpawnSystem obj) {
     var heightmap = obj.m_heightmap;

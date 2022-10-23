@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Service;
@@ -107,5 +108,61 @@ public partial class Texts {
     if (!Helper.IsValid(obj)) return "";
     return "Chance to spawn: " + Format.Percent(obj.m_chanceToSpawn);
 
+  }
+
+  static int Respawn = "override_respawn".GetStableHashCode();
+  static int SpawnTime = "spawn_time".GetStableHashCode();
+  private static string GetItem(OfferingBowl obj) {
+    if (obj.m_useItemStands) return "Item stands: " + obj.m_itemstandMaxRange + " m";
+    return "Item: " + obj.m_bossItems + " of " + obj.m_bossItem.GetHoverName();
+  }
+  private static string GetRespawnTime(OfferingBowl obj) {
+    var view = obj.GetComponentInParent<ZNetView>();
+    var ret = "";
+    DataUtils.Float(view, Respawn, respawn => {
+      DataUtils.Long(view, SpawnTime, spawnTime => {
+        var now = ZNet.instance.GetTime();
+        var date = new DateTime(spawnTime);
+        var elapsed = (now - date).TotalMinutes;
+        ret = "Cooldown: " + Format.Int(elapsed) + " / " + Format.Int(respawn) + " minutes";
+      });
+    });
+    return ret;
+  }
+  public static string Get(OfferingBowl obj) {
+    if (!obj) return "";
+    List<string> lines = new(){
+        "Spawn: " + Utils.GetPrefabName(obj.m_bossPrefab),
+        GetItem(obj),
+        GetRespawnTime(obj),
+        "Area: " + Format.Int(obj.m_spawnBossMaxDistance) + " m"};
+    return Format.JoinLines(lines);
+  }
+
+  public static string Get(SpawnArea obj) {
+    if (!obj) return "";
+    int near, total;
+    obj.GetInstances(out near, out total);
+    List<string> lines = new(){
+        Format.ProgressPercent("Timer", obj.m_spawnTimer, obj.m_spawnIntervalSec),
+        "Area: " + Format.Int(obj.m_spawnRadius) + " m",
+        "Level up: " + Format.Percent(obj.m_levelupChance / 100f),
+        "Trigger: " + Format.Int(obj.m_triggerDistance) + " m",
+        "Near limit: " + Format.Progress(near, obj.m_maxNear) + " within " + Format.Int(obj.m_nearRadius) + " m",
+        "Far limit: " +  Format.Progress(total, obj.m_maxTotal) + " within " + Format.Int(obj.m_farRadius) + " m"
+      };
+    if (obj.m_onGroundOnly) {
+      lines.Add("Only on ground");
+    }
+
+    lines.Add(" ");
+    var totalWeight = 0f;
+    foreach (var data in obj.m_prefabs)
+      totalWeight += data.m_weight;
+    foreach (var data in obj.m_prefabs) {
+      var level = Format.Range(data.m_minLevel, data.m_maxLevel);
+      lines.Add(data.m_prefab.name + ": " + Format.Percent(data.m_weight / totalWeight) + " with level " + level);
+    }
+    return Format.JoinLines(lines);
   }
 }

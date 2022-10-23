@@ -23,6 +23,9 @@ public partial class Settings {
   public static ConfigEntry<int> configShowSpawnerTriggerRanges;
   public static ConfigEntry<int> configShowSpawnerLimitRanges;
   public static ConfigEntry<int> configShowSpawnerSpawnRanges;
+  public static ConfigEntry<int> configShowAltarRays;
+  public static ConfigEntry<int> configShowAltarItemStandRange;
+  public static ConfigEntry<int> configShowAltarSpawnRadius;
   public static ConfigEntry<int> configShowSpawnPointsOneTime;
   public static ConfigEntry<int> configShowSpawnPointsRespawning;
   public static ConfigEntry<int> configShowZoneCorners;
@@ -74,6 +77,9 @@ public partial class Settings {
     if (name == Tag.SpawnerTriggerRange.ToLower()) return configShowSpawnerTriggerRanges;
     if (name == Tag.SpawnerLimitRange.ToLower()) return configShowSpawnerLimitRanges;
     if (name == Tag.SpawnerSpawnRange.ToLower()) return configShowSpawnerSpawnRanges;
+    if (name == Tag.AltarRay.ToLower()) return configShowAltarRays;
+    if (name == Tag.AltarItemStandRange.ToLower()) return configShowAltarItemStandRange;
+    if (name == Tag.AltarSpawnRadius.ToLower()) return configShowAltarSpawnRadius;
     if (name == Tag.ZoneCorner.ToLower()) return configShowZoneCorners;
     if (name == Tag.ZoneCornerAshlands.ToLower()) return configShowZoneCorners;
     if (name == Tag.ZoneCornerBlackForest.ToLower()) return configShowZoneCorners;
@@ -175,6 +181,12 @@ public partial class Settings {
     OnChanged(configShowSpawnerRays, Tag.SpawnerLimitRange);
     configShowSpawnerSpawnRanges = config.Bind(section, "Creature spawner spawn ranges", -1, CreateDescription());
     OnChanged(configShowSpawnerRays, Tag.SpawnerSpawnRange);
+    configShowAltarRays = config.Bind(section, "Altar rays", -1, CreateDescription());
+    OnChanged(configShowAltarRays, Tag.AltarRay);
+    configShowAltarItemStandRange = config.Bind(section, "Altar item stand range", -1, CreateDescription());
+    OnChanged(configShowAltarItemStandRange, Tag.AltarItemStandRange);
+    configShowAltarSpawnRadius = config.Bind(section, "Altar spawn radius", -1, CreateDescription());
+    OnChanged(configShowAltarSpawnRadius, Tag.AltarSpawnRadius);
     configShowSpawnZones = config.Bind(section, "Spawn zones", -1, CreateDescription());
     OnChanged(configShowSpawnZones, Tag.SpawnZoneAshlands);
     OnChanged(configShowSpawnZones, Tag.SpawnZoneBlackForest);

@@ -48,15 +48,15 @@ public partial class Visual {
     }
   }
 }
-[HarmonyPatch(typeof(EffectArea), nameof(EffectArea.Awake))]
+[HarmonyPatch(typeof(EffectArea), nameof(EffectArea.Awake)), HarmonyPriority(Priority.Last)]
 public class EffectArea_Visual {
   static void Postfix(EffectArea __instance) => Visual.Draw(__instance);
 }
-[HarmonyPatch(typeof(PrivateArea), nameof(PrivateArea.Awake))]
+[HarmonyPatch(typeof(PrivateArea), nameof(PrivateArea.Awake)), HarmonyPriority(Priority.Last)]
 public class PrivateArea_Visual {
   static void Postfix(PrivateArea __instance) => Visual.Draw(__instance);
 }
-[HarmonyPatch(typeof(Piece), nameof(Piece.Awake))]
+[HarmonyPatch(typeof(Piece), nameof(Piece.Awake)), HarmonyPriority(Priority.Last)]
 public class Piece_Visual {
   static void Postfix(Piece __instance) {
     Visual.Draw(__instance);
@@ -69,7 +69,7 @@ public class Piece_Visual {
     Visual.Draw(__instance.GetComponent<Windmill>());
   }
 }
-[HarmonyPatch(typeof(Smoke), nameof(Smoke.Awake))]
+[HarmonyPatch(typeof(Smoke), nameof(Smoke.Awake)), HarmonyPriority(Priority.Last)]
 public class Smoke_Visual {
   static void Postfix(Smoke __instance) => Visual.Draw(__instance);
 }
@@ -86,7 +86,7 @@ public class CraftingStation_Visual_Update {
 public class Fermenter_Visual_Update {
   static void Postfix(Fermenter __instance) => Visual.Update(__instance);
 }
-[HarmonyPatch(typeof(Beehive), nameof(Beehive.Awake))]
+[HarmonyPatch(typeof(Beehive), nameof(Beehive.Awake)), HarmonyPriority(Priority.Last)]
 public class Beehive_Updater {
   // Calls a trivial function to be used as a timer.
   static void Postfix(Beehive __instance) => __instance.InvokeRepeating("GetHoverName", 2f, 2f);
@@ -99,7 +99,7 @@ public class Beehive_Visual_Update {
 public class Fireplace_Visual_Update {
   static void Postfix(Fireplace __instance) => Visual.Update(__instance);
 }
-[HarmonyPatch(typeof(Bed), nameof(Bed.Awake))]
+[HarmonyPatch(typeof(Bed), nameof(Bed.Awake)), HarmonyPriority(Priority.Last)]
 public class Bed_Updater {
   // Calls a trivial function to be used as a timer.
   static void Postfix(Bed __instance) => __instance.InvokeRepeating("GetHoverName", 2f, 2f);
@@ -112,7 +112,7 @@ public class Bed_Visual_Update {
 public class Windmill_Visual_Update {
   static void Postfix(Windmill __instance) => Visual.Update(__instance);
 }
-[HarmonyPatch(typeof(Player), nameof(Player.Awake))]
+[HarmonyPatch(typeof(Player), nameof(Player.Awake)), HarmonyPriority(Priority.Last)]
 public class Player_Cover {
   static void Postfix(Player __instance) => Visual.DrawCover(__instance);
 }

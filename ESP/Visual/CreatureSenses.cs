@@ -3,7 +3,7 @@ using Service;
 using UnityEngine;
 using Visualization;
 namespace ESP;
-[HarmonyPatch(typeof(BaseAI), nameof(BaseAI.Awake))]
+[HarmonyPatch(typeof(BaseAI), nameof(BaseAI.Awake)), HarmonyPriority(Priority.Last)]
 public class BaseAI_Awake {
   private static void DrawHearRange(BaseAI obj, string name, string text) {
     if (Settings.IsDisabled(Tag.CreatureHearRange) | !obj) return;

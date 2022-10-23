@@ -71,6 +71,8 @@ public partial class Text {
     lines.Add(Texts.Get(obj.GetComponentInParent<Container>()));
     lines.Add(Texts.Get(obj.GetComponentInParent<LocationProxy>()));
     lines.Add(Texts.Get(obj.GetComponentInParent<RandomSpawn>()));
+    lines.Add(Texts.Get(obj.GetComponentInParent<SpawnArea>()));
+    lines.Add(Texts.Get(obj.GetComponentInParent<OfferingBowl>()));
     lines.Add(Texts.GetVegetation(obj));
     if (Settings.ShowShipStats)
       lines.Add(Texts.Get(obj.GetComponentInParent<Ship>()));

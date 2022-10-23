@@ -4,7 +4,7 @@ using HarmonyLib;
 using UnityEngine;
 namespace Service;
 // Prepends a custom message to the hud.
-[HarmonyPatch(typeof(MessageHud), nameof(MessageHud.Update))]
+[HarmonyPatch(typeof(MessageHud), nameof(MessageHud.Update)), HarmonyPriority(Priority.Low)]
 public class MessageHud_UpdateMessage : MonoBehaviour {
   public static Func<List<string>> GetMessage = () => new() { "Default message. Replace with your own function." };
   static void Postfix(MessageHud __instance) {
@@ -12,17 +12,11 @@ public class MessageHud_UpdateMessage : MonoBehaviour {
     if (Player.m_localPlayer == null) return;
     if (Hud.IsUserHidden()) return;
     var hud = __instance;
+    hud.m_messageText.alignment = TextAnchor.UpperLeft;
     var previousText = hud.m_messageText.text;
     var lines = GetMessage();
     if (lines.Count == 0) return;
-    while (previousText.StartsWith(" \n"))
-      previousText = previousText.Substring(2);
-    var previousLines = previousText != "" ? previousText.Split('\n').Length : 0;
-    var padding = previousLines + lines.Count - 2;
-    for (var i = 0; i < padding; i++) lines.Insert(0, " ");
     if (previousText != "") {
-      lines.Insert(0, " ");
-      lines.Insert(0, " ");
       lines.Add(" ");
       lines.Add(previousText);
     }

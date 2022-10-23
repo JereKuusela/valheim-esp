@@ -74,6 +74,9 @@ public static class Tag {
   public const string SpawnerTriggerRange = "SpawnerTriggerRange";
   public const string SpawnerLimitRange = "SpawnerNearRange";
   public const string SpawnerSpawnRange = "SpawnerSpawnRange";
+  public const string AltarRay = "AltarRay";
+  public const string AltarSpawnRadius = "AltarSpawnRadius";
+  public const string AltarItemStandRange = "AltarItemStandRange";
   public const string ZoneCorner = "ZoneCorner";
   public const string ZoneCornerAshlands = "ZoneCornerAshlands";
   public const string ZoneCornerBlackForest = "ZoneCornerBlackForest";

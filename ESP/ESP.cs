@@ -4,22 +4,20 @@ using BepInEx.Logging;
 using HarmonyLib;
 using Service;
 namespace ESP;
-[BepInDependency("dps", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInDependency("org.bepinex.plugins.jewelcrafting", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInPlugin(GUID, NAME, VERSION)]
 public class ESP : BaseUnityPlugin {
   const string GUID = "esp";
   const string NAME = "ESP";
-  const string VERSION = "1.11";
+  const string VERSION = "1.12";
   private static ManualLogSource? Logs;
   public static ManualLogSource Log => Logs!;
   public void Awake() {
     Logs = Logger;
     Settings.Init(Config);
-    Harmony harmony = new(GUID);
-    harmony.PatchAll();
-    Admin.Instance = new EspAdmin();
     MessageHud_UpdateMessage.GetMessage = Hud.GetMessage;
+    new Harmony(GUID).PatchAll();
+    Admin.Instance = new EspAdmin();
   }
   public void Start() {
     if (Chainloader.PluginInfos.TryGetValue("org.bepinex.plugins.jewelcrafting", out var info))

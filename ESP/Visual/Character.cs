@@ -5,6 +5,7 @@ using Visualization;
 namespace ESP;
 public class CharacterUtils {
   public static bool IsExcluded(Character instance) {
+    if (!instance) return true;
     var name = instance.name;
     var m_name = instance.m_name;
     var localized = Localization.instance.Localize(instance.m_name);
@@ -12,6 +13,7 @@ public class CharacterUtils {
     return LocationUtils.IsIn(excluded, name) || LocationUtils.IsIn(excluded, m_name) || LocationUtils.IsIn(excluded, localized);
   }
   public static bool IsTracked(Character instance) {
+    if (!instance) return false;
     var name = instance.name;
     var m_name = instance.m_name;
     var localized = Localization.instance.Localize(instance.m_name);
@@ -20,7 +22,7 @@ public class CharacterUtils {
   }
 
 }
-[HarmonyPatch(typeof(Character), nameof(Character.Awake))]
+[HarmonyPatch(typeof(Character), nameof(Character.Awake)), HarmonyPriority(Priority.Last)]
 public class Character_Awake {
   private static void DrawNoise(Character instance) {
     if (Settings.IsDisabled(Tag.CreatureNoise) || CharacterUtils.IsExcluded(instance))

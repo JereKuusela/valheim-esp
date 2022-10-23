@@ -30,7 +30,7 @@ public static class SupportUtils {
 }
 
 ///<summary>Adds automatic highlight for structures.</summary>
-[HarmonyPatch(typeof(WearNTear), nameof(WearNTear.Awake))]
+[HarmonyPatch(typeof(WearNTear), nameof(WearNTear.Awake)), HarmonyPriority(Priority.Last)]
 public class WearNTear_AutoHighlight {
   static void Postfix(WearNTear __instance) {
     if (!SupportUtils.VisualEnabled(__instance)) return;

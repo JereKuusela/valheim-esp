@@ -4,11 +4,15 @@ namespace ESP;
 public class HoverText_GetHoverText {
   static void Postfix(HoverText __instance, ref string __result) => Text.AddTexts(__instance.gameObject, ref __result);
 }
-[HarmonyPatch(typeof(Destructible), nameof(Destructible.Awake))]
+[HarmonyPatch(typeof(SpawnArea), nameof(SpawnArea.Awake)), HarmonyPriority(Priority.Last)]
+public class SpawnArea_Awake_AddHover {
+  static void Postfix(SpawnArea __instance) => Text.AddHoverText(__instance);
+}
+[HarmonyPatch(typeof(Destructible), nameof(Destructible.Awake)), HarmonyPriority(Priority.Last)]
 public class Destructible_Awake_AddHover {
   static void Postfix(Destructible __instance) => Text.AddHoverText(__instance);
 }
-[HarmonyPatch(typeof(WearNTear), nameof(WearNTear.Awake))]
+[HarmonyPatch(typeof(WearNTear), nameof(WearNTear.Awake)), HarmonyPriority(Priority.Last)]
 public class WearNTear_Awake_AddHover {
   static void Postfix(WearNTear __instance) => Text.AddHoverText(__instance);
 }
@@ -19,6 +23,10 @@ public class Beehive_GetHoverText {
 [HarmonyPatch(typeof(ItemDrop), nameof(ItemDrop.GetHoverText))]
 public class ItemDrop_GetHoverText {
   static void Postfix(Beehive __instance, ref string __result) => Text.AddTexts(__instance.gameObject, ref __result);
+}
+[HarmonyPatch(typeof(OfferingBowl), nameof(OfferingBowl.GetHoverText))]
+public class OfferingBowl_GetHoverText {
+  static void Postfix(OfferingBowl __instance, ref string __result) => Text.AddTexts(__instance.gameObject, ref __result);
 }
 [HarmonyPatch(typeof(Chair), nameof(Chair.GetHoverText))]
 public class Chair_GetHoverText {

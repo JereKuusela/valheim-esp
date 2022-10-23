@@ -66,7 +66,7 @@ public class LocationUtils {
     return obj.m_hideWhenPicked && obj.m_respawnTimeMinutes > 0f ? Tag.PickableRespawning : Tag.PickableOneTime;
   }
 }
-[HarmonyPatch(typeof(BaseAI), nameof(BaseAI.Awake))]
+[HarmonyPatch(typeof(BaseAI), nameof(BaseAI.Awake)), HarmonyPriority(Priority.Last)]
 public class BaseAI_Ray {
   static void Postfix(Character ___m_character) {
     var obj = ___m_character;
@@ -75,7 +75,7 @@ public class BaseAI_Ray {
     Text.AddText(line);
   }
 }
-[HarmonyPatch(typeof(Pickable), nameof(Pickable.Awake))]
+[HarmonyPatch(typeof(Pickable), nameof(Pickable.Awake)), HarmonyPriority(Priority.Last)]
 public class Pickable_Ray {
   static void Postfix(Pickable __instance, ZNetView ___m_nview) {
     if (!LocationUtils.IsEnabled(__instance)) return;
@@ -84,7 +84,7 @@ public class Pickable_Ray {
     Text.AddText(obj, Translate.Name(__instance));
   }
 }
-[HarmonyPatch(typeof(Location), nameof(Location.Awake))]
+[HarmonyPatch(typeof(Location), nameof(Location.Awake)), HarmonyPriority(Priority.Last)]
 public class Location_Ray {
   static void Postfix(Location __instance) {
     if (Settings.IsDisabled(Tag.Location)) return;
@@ -92,7 +92,7 @@ public class Location_Ray {
     Text.AddText(obj, Translate.Name(__instance));
   }
 }
-[HarmonyPatch(typeof(Container), nameof(Container.Awake))]
+[HarmonyPatch(typeof(Container), nameof(Container.Awake)), HarmonyPriority(Priority.Last)]
 public class Container_Ray {
   static void Postfix(Container __instance, Piece ___m_piece) {
     if (Settings.IsDisabled(Tag.Chest) || !___m_piece || ___m_piece.IsPlacedByPlayer()) return;
@@ -119,7 +119,7 @@ public class MineRock5_Ray {
     Text.AddText(obj, Translate.Name(__instance));
   }
 }
-[HarmonyPatch(typeof(Destructible), nameof(Destructible.Awake))]
+[HarmonyPatch(typeof(Destructible), nameof(Destructible.Awake)), HarmonyPriority(Priority.Last)]
 public class Destructible_Ray {
   static void Postfix(Destructible __instance) {
     if (!LocationUtils.IsEnabled(__instance)) return;
@@ -128,7 +128,7 @@ public class Destructible_Ray {
     Text.AddText(obj, Translate.Name(__instance));
   }
 }
-[HarmonyPatch(typeof(TreeBase), nameof(TreeBase.Awake))]
+[HarmonyPatch(typeof(TreeBase), nameof(TreeBase.Awake)), HarmonyPriority(Priority.Last)]
 public class TreeBase_Ray {
   static void Postfix(TreeBase __instance) {
     if (!LocationUtils.IsEnabled(__instance)) return;
@@ -137,7 +137,7 @@ public class TreeBase_Ray {
     Text.AddText(obj, Translate.Name(__instance));
   }
 }
-[HarmonyPatch(typeof(TreeLog), nameof(TreeLog.Awake))]
+[HarmonyPatch(typeof(TreeLog), nameof(TreeLog.Awake)), HarmonyPriority(Priority.Last)]
 public class TreeLog_Ray {
   static void Postfix(TreeLog __instance) {
     if (!LocationUtils.IsEnabled(__instance)) return;
@@ -146,18 +146,49 @@ public class TreeLog_Ray {
     Text.AddText(obj, Translate.Name(__instance));
   }
 }
-[HarmonyPatch(typeof(CreatureSpawner), nameof(CreatureSpawner.Awake))]
+[HarmonyPatch(typeof(CreatureSpawner), nameof(CreatureSpawner.Awake)), HarmonyPriority(Priority.Last)]
 public class CreatureSpawner_Ray {
   private static bool IsEnabled(CreatureSpawner obj) {
     var tag = obj.m_respawnTimeMinuts > 0f ? Tag.SpawnPointRespawning : Tag.SpawnPointOneTime;
     if (Settings.IsDisabled(tag)) return false;
     return !LocationUtils.IsIn(Settings.ExcludedCreatureSpawners, obj.name);
   }
+  [HarmonyPriority(Priority.Last)]
   static void Postfix(CreatureSpawner __instance) {
     var obj = __instance;
     if (!IsEnabled(obj)) return;
     var tag = obj.m_respawnTimeMinuts > 0f ? Tag.SpawnPointRespawning : Tag.SpawnPointOneTime;
     var line = Draw.DrawMarkerLine(tag, obj);
     Text.AddText(line, Translate.Name(obj));
+  }
+}
+
+[HarmonyPatch(typeof(OfferingBowl), nameof(OfferingBowl.Awake)), HarmonyPriority(Priority.Last)]
+public class OfferingBowl_Awake {
+  static void Postfix(OfferingBowl __instance) {
+    if (!Settings.IsDisabled(Tag.AltarRay)) {
+      var obj = Draw.DrawMarkerLine(Tag.AltarRay, __instance);
+      Text.AddText(obj);
+    }
+    if (!Settings.IsDisabled(Tag.AltarItemStandRange) && __instance.m_useItemStands)
+      Draw.DrawSphere(Tag.AltarItemStandRange, __instance, __instance.m_itemstandMaxRange);
+    if (!Settings.IsDisabled(Tag.SpawnerLimitRange))
+      Draw.DrawSphere(Tag.SpawnerLimitRange, __instance, __instance.m_spawnBossMaxDistance);
+  }
+}
+
+[HarmonyPatch(typeof(SpawnArea), nameof(SpawnArea.Awake)), HarmonyPriority(Priority.Last)]
+public class SpawnArea_Awake {
+  static void Postfix(SpawnArea __instance) {
+    if (!Settings.IsDisabled(Tag.SpawnerRay)) {
+      var obj = Draw.DrawMarkerLine(Tag.SpawnerRay, __instance);
+      Text.AddText(obj);
+    }
+    if (!Settings.IsDisabled(Tag.SpawnerTriggerRange))
+      Draw.DrawSphere(Tag.SpawnerTriggerRange, __instance, __instance.m_triggerDistance);
+    if (!Settings.IsDisabled(Tag.SpawnerLimitRange))
+      Draw.DrawSphere(Tag.SpawnerLimitRange, __instance, __instance.m_nearRadius);
+    if (!Settings.IsDisabled(Tag.SpawnerSpawnRange))
+      Draw.DrawSphere(Tag.SpawnerSpawnRange, __instance, __instance.m_spawnRadius);
   }
 }

@@ -17,6 +17,9 @@ public partial class Settings {
   public static ConfigEntry<int> configSpawnerTriggerRangeLineWidth;
   public static ConfigEntry<int> configSpawnerLimitRangeLineWidth;
   public static ConfigEntry<int> configSpawnerSpawnRangeLineWidth;
+  public static ConfigEntry<int> configAltarRayWidth;
+  public static ConfigEntry<int> configAltarItemStandRangeLineWidth;
+  public static ConfigEntry<int> configAltarSpawnRadiusLineWidth;
   public static ConfigEntry<int> configSpawntPointOneTimeRayWidth;
   public static ConfigEntry<int> configSpawntPointRespawningRayWidth;
   public static ConfigEntry<int> configZoneCornerRayWidth;
@@ -75,6 +78,12 @@ public partial class Settings {
     OnWidthChanged(configSpawnerLimitRangeLineWidth, Tag.SpawnerLimitRange);
     configSpawnerSpawnRangeLineWidth = config.Bind(section, "Creature spawner spawn range", 2, "");
     OnWidthChanged(configSpawnerSpawnRangeLineWidth, Tag.SpawnerSpawnRange);
+    configAltarRayWidth = config.Bind(section, "Boss altar rays", 2, "");
+    OnWidthChanged(configAltarRayWidth, Tag.AltarRay);
+    configAltarItemStandRangeLineWidth = config.Bind(section, "Boss altar item stand range", 2, "");
+    OnWidthChanged(configAltarItemStandRangeLineWidth, Tag.AltarItemStandRange);
+    configAltarSpawnRadiusLineWidth = config.Bind(section, "Boss altar spawn radius", 2, "");
+    OnWidthChanged(configAltarSpawnRadiusLineWidth, Tag.AltarSpawnRadius);
     configSpawnZoneRayWidth = config.Bind(section, "Spawn zones", 10, "");
     OnWidthChanged(configSpawnZoneRayWidth, Tag.SpawnZoneAshlands);
     OnWidthChanged(configSpawnZoneRayWidth, Tag.SpawnZoneBlackForest);

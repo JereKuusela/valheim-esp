@@ -466,7 +466,7 @@ public partial class Texts {
   }
 }
 
-[HarmonyPatch(typeof(ZNetView), nameof(ZNetView.Awake))]
+[HarmonyPatch(typeof(ZNetView), nameof(ZNetView.Awake)), HarmonyPriority(Priority.Last)]
 public class BoundsCache {
 
   public static Dictionary<string, Vector3> Bounds = new();

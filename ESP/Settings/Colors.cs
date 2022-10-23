@@ -33,6 +33,9 @@ public partial class Settings {
   public static ConfigEntry<string> configSpawnerTriggerColor;
   public static ConfigEntry<string> configSpawnerNearColor;
   public static ConfigEntry<string> configSpawnerSpawnColor;
+  public static ConfigEntry<string> configAltarRayColor;
+  public static ConfigEntry<string> configAltarItemStandRangeColor;
+  public static ConfigEntry<string> configAltarSpawnRadiusColor;
   public static ConfigEntry<string> configEffectAreaPrivateAreaColor;
   public static ConfigEntry<string> configEffectAreaComfortColor;
   public static ConfigEntry<string> configEffectAreaBurningColor;
@@ -115,6 +118,12 @@ public partial class Settings {
     OnColorChanged(configSpawnerNearColor, Tag.SpawnerLimitRange);
     configSpawnerSpawnColor = config.Bind(section, "Spawner spawn sphere", "cyan", "");
     OnColorChanged(configSpawnerSpawnColor, Tag.SpawnerSpawnRange);
+    configAltarRayColor = config.Bind(section, "Altar ray", "red", "");
+    OnColorChanged(configAltarRayColor, Tag.AltarRay);
+    configAltarItemStandRangeColor = config.Bind(section, "Altar item stand range sphere", "red", "");
+    OnColorChanged(configAltarItemStandRangeColor, Tag.AltarItemStandRange);
+    configAltarSpawnRadiusColor = config.Bind(section, "Altar spawn radius sphere", "red", "");
+    OnColorChanged(configAltarSpawnRadiusColor, Tag.AltarSpawnRadius);
     configEffectAreaPrivateAreaColor = config.Bind(section, "Ward effect sphere", "gray", "");
     OnColorChanged(configEffectAreaPrivateAreaColor, Tag.EffectAreaPlayerBase);
     configEffectAreaComfortColor = config.Bind(section, "Comfort effect sphere", "cyan", "");
