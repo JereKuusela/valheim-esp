@@ -67,6 +67,7 @@ public static class Tag {
   public const string Chest = "Chest";
   public const string Tree = "Tree";
   public const string Ore = "Ore";
+  public const string TrophySpeak = "TrophySpeak";
   public const string Destructible = "Destructible";
   public const string SpawnPointOneTime = "SpawnPointOneTime";
   public const string SpawnPointRespawning = "SpawnPointRespawning";

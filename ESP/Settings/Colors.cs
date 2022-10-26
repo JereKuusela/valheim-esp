@@ -15,6 +15,7 @@ public partial class Settings {
   public static ConfigEntry<string> configChestRayColor;
   public static ConfigEntry<string> configOreRayColor;
   public static ConfigEntry<string> configTreeRayColor;
+  public static ConfigEntry<string> configTrophySpeakColor;
   public static ConfigEntry<string> configDestructibleRayColor;
   public static ConfigEntry<string> configSpawnPointOneTimeColor;
   public static ConfigEntry<string> configSpawnPointRespawningColor;
@@ -80,6 +81,8 @@ public partial class Settings {
     OnColorChanged(configOreRayColor, Tag.Ore);
     configTreeRayColor = config.Bind(section, "Tree ray", "white", "");
     OnColorChanged(configTreeRayColor, Tag.Tree);
+    configTrophySpeakColor = config.Bind(section, "Trophy speak sphere", "magenta", "");
+    OnColorChanged(configTrophySpeakColor, Tag.TrophySpeak);
     configDestructibleRayColor = config.Bind(section, "Destructible ray", "white", "");
     OnColorChanged(configDestructibleRayColor, Tag.Destructible);
     configSpawnPointOneTimeColor = config.Bind(section, "Spawn point ray (one time)", "red", "");

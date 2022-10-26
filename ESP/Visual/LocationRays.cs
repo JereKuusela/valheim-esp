@@ -137,6 +137,13 @@ public class TreeBase_Ray {
     Text.AddText(obj, Translate.Name(__instance));
   }
 }
+[HarmonyPatch(typeof(RandomSpeak), nameof(RandomSpeak.Start)), HarmonyPriority(Priority.Last)]
+public class RandomSpeak_Sphere {
+  static void Postfix(RandomSpeak __instance) {
+    if (!Settings.IsDisabled(Tag.TrophySpeak))
+      Draw.DrawSphere(Tag.TrophySpeak, __instance, __instance.m_triggerDistance);
+  }
+}
 [HarmonyPatch(typeof(TreeLog), nameof(TreeLog.Awake)), HarmonyPriority(Priority.Last)]
 public class TreeLog_Ray {
   static void Postfix(TreeLog __instance) {

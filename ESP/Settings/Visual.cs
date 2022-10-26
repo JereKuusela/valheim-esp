@@ -47,6 +47,7 @@ public partial class Settings {
   public static ConfigEntry<int> configShowOres;
   public static ConfigEntry<int> configShowTrees;
   public static ConfigEntry<int> configShowDestructibles;
+  public static ConfigEntry<int> configShowTrophySpeaks;
   public static ConfigEntry<int> configShowLocations;
   public static ConfigEntry<int> configShowStructureSupport;
   private static ConfigEntry<int> GetTagEntry(string name) {
@@ -71,6 +72,7 @@ public partial class Settings {
     if (name == Tag.Tree.ToLower()) return configShowTrees;
     if (name == Tag.Ore.ToLower()) return configShowOres;
     if (name == Tag.Destructible.ToLower()) return configShowDestructibles;
+    if (name == Tag.TrophySpeak.ToLower()) return configShowTrophySpeaks;
     if (name == Tag.SpawnPointOneTime.ToLower()) return configShowSpawnPointsOneTime;
     if (name == Tag.SpawnPointRespawning.ToLower()) return configShowSpawnPointsRespawning;
     if (name == Tag.SpawnerRay.ToLower()) return configShowSpawnerRays;
@@ -167,6 +169,8 @@ public partial class Settings {
     OnChanged(configShowTrees, Tag.Tree);
     configShowOres = config.Bind(section, "Ore rays", -1, CreateDescription());
     OnChanged(configShowOres, Tag.Ore);
+    configShowTrophySpeaks = config.Bind(section, "Trophy speak spheres", -1, CreateDescription());
+    OnChanged(configShowTrophySpeaks, Tag.TrophySpeak);
     configShowDestructibles = config.Bind(section, "Destructible rays", -1, CreateDescription());
     OnChanged(configShowDestructibles, Tag.Destructible);
     configShowSpawnPointsOneTime = config.Bind(section, "Spawn points (one time)", -1, CreateDescription());

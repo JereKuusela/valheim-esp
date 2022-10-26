@@ -132,7 +132,7 @@ public partial class Texts {
   public static string Get(OfferingBowl obj) {
     if (!obj) return "";
     List<string> lines = new(){
-        "Spawn: " + Utils.GetPrefabName(obj.m_bossPrefab),
+        "Spawn: " + (obj.m_bossPrefab ? Utils.GetPrefabName(obj.m_bossPrefab) : ""),
         GetItem(obj),
         GetRespawnTime(obj),
         "Area: " + Format.Int(obj.m_spawnBossMaxDistance) + " m"};

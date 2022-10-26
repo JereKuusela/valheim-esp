@@ -34,6 +34,7 @@ public partial class Settings {
   public static ConfigEntry<int> configOreRayWidth;
   public static ConfigEntry<int> configTreeRayWidth;
   public static ConfigEntry<int> configDestructibleRayWidth;
+  public static ConfigEntry<int> configTrophySpeakSphereWidth;
   public static ConfigEntry<int> configLocationRayWidth;
 
   private static void OnWidthChanged(ConfigEntry<int> entry, string tag) {
@@ -119,6 +120,8 @@ public partial class Settings {
     OnWidthChanged(configOreRayWidth, Tag.Ore);
     configTreeRayWidth = config.Bind(section, "Tree rays", 2, "");
     OnWidthChanged(configTreeRayWidth, Tag.Tree);
+    configTrophySpeakSphereWidth = config.Bind(section, "Trophy speak spheres", 10, "");
+    OnWidthChanged(configTrophySpeakSphereWidth, Tag.TrophySpeak);
     configDestructibleRayWidth = config.Bind(section, "Destructible rays", 2, "");
     OnWidthChanged(configDestructibleRayWidth, Tag.Destructible);
     configLocationRayWidth = config.Bind(section, "Location rays", 10, "");
