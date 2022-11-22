@@ -5,18 +5,22 @@ using HarmonyLib;
 using Service;
 using UnityEngine;
 namespace ESP;
-public static class Hud {
-  public static List<string> GetMessage() {
+public static class Hud
+{
+  public static List<string> GetMessage()
+  {
     List<string> lines = new();
     lines.AddRange(GetInfo());
     var localShip = Ship.GetLocalShip();
-    if (localShip) {
+    if (localShip)
+    {
       lines.Add(" ");
       lines.AddRange(Texts.Get(localShip).Split('\n').Where(line => line != ""));
     }
     return lines;
   }
-  private static List<string> GetInfo() {
+  private static List<string> GetInfo()
+  {
     if (!Settings.ShowHud) return new();
     var position = Player.m_localPlayer.transform.position;
     List<string> lines = new();
@@ -30,16 +34,19 @@ public static class Hud {
   private static string GetSpeed() => "Speed: " + Format.Float(Player.m_localPlayer.m_currentVel.magnitude, "0.#") + " m/s";
   private static string GetNoise() => "Noise: " + Format.Int(Player.m_localPlayer.GetNoiseRange()) + " meters";
   private static string GetLight() => "Light: " + Format.Percent(StealthSystem.instance.GetLightFactor(Player.m_localPlayer.GetCenterPoint()));
-  private static string GetEnvironment() {
+  private static string GetEnvironment()
+  {
     if (!Settings.ShowTimeAndWeather) return "";
     return EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment() + " (" + EnvUtils.GetWindHud() + ")";
   }
-  private static string GetStaggerTracker() {
+  private static string GetStaggerTracker()
+  {
     if (CreatureStagger.StaggerDuration == 0)
       return "Stagger: ...";
     return "Stagger: " + CreatureStagger.StaggerDuration;
   }
-  private static string GetPosition(Vector3 position) {
+  private static string GetPosition(Vector3 position)
+  {
     if (!Settings.ShowPosition) return "";
     List<string> lines = new(){
         EnvUtils.GetPosition(position),
@@ -54,15 +61,18 @@ public static class Hud {
   // More careful solution would be using sectors but more complicated.
   private static float TrackUpdateLongTimer = 0;
   private static Dictionary<string, int> trackCache = new();
-  private static string GetTrackedObjects() {
+  private static string GetTrackedObjects()
+  {
     if (Settings.TrackedObjects == "") return "";
     TrackUpdateTimer += Time.deltaTime;
     TrackUpdateLongTimer += Time.deltaTime;
     var tracked = Settings.TrackedObjects.Split(',');
-    if (TrackUpdateTimer >= 1f) {
+    if (TrackUpdateTimer >= 1f)
+    {
       TrackUpdateTimer = 0;
       var itemsDrops = ItemDrop.m_instances;
-      foreach (var name in tracked) {
+      foreach (var name in tracked)
+      {
         var prefab = ZNetScene.instance.GetPrefab(name);
         var count = 0;
         if (prefab == null)
@@ -71,7 +81,8 @@ public static class Hud {
           count = SpawnSystem.GetNrOfInstances(prefab, Player.m_localPlayer.transform.position, 0f);
         else if (prefab.GetComponent<ItemDrop>() != null)
           count = itemsDrops.Where(item => item.name.Replace("(Clone)", "") == prefab.name).Sum(item => item.m_itemData.m_stack);
-        else {
+        else
+        {
           if (TrackUpdateLongTimer < 5f) continue;
           List<ZDO> zdos = new();
           ZDOMan.instance.GetAllZDOsWithPrefab(prefab.name, zdos);
@@ -86,7 +97,8 @@ public static class Hud {
       if (TrackUpdateLongTimer >= 5f) TrackUpdateLongTimer = 0f;
     }
 
-    var tracks = tracked.Select(name => {
+    var tracks = tracked.Select(name =>
+    {
       if (!trackCache.ContainsKey(name))
         return "";
       if (trackCache[name] < 0)
@@ -101,27 +113,32 @@ public static class Hud {
 
 
   [HarmonyPatch(typeof(Character), nameof(Character.FixedUpdate))]
-  public class CreatureStagger {
+  public class CreatureStagger
+  {
 
     private static long StaggerStart = 0;
     private static ZDOID Id = ZDOID.None;
     public static double StaggerDuration = 0;
 
-    static void Postfix(Character __instance) {
+    static void Postfix(Character __instance)
+    {
       bool isStaggering = __instance.IsStaggering();
-      if (StaggerStart == 0 && isStaggering) {
+      if (StaggerStart == 0 && isStaggering)
+      {
         StaggerStart = ZNet.instance.GetTime().Ticks;
         StaggerDuration = 0;
         Id = __instance.GetZDOID();
       }
       var staggered = (ZNet.instance.GetTime() - new DateTime(StaggerStart)).TotalSeconds;
-      if (Id == __instance.GetZDOID() && !isStaggering) {
+      if (Id == __instance.GetZDOID() && !isStaggering)
+      {
         StaggerDuration = staggered;
         StaggerStart = 0;
         Id = ZDOID.None;
       }
       // If target dies while staggering.
-      if (staggered > 10) {
+      if (staggered > 10)
+      {
         StaggerStart = 0;
         Id = ZDOID.None;
       }

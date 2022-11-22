@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 namespace Service;
-public class Translate {
+public class Translate
+{
   public static string Name(string name, string color = "yellow") => Format.String(Localization.instance.Localize(name).Replace("(Clone)", ""), color);
   public static string Name(Heightmap.Biome obj, string color = "yellow") => Name(Names.GetName(obj), color);
   private static string Name(Character obj) => obj ? obj.m_name : "";
   public static string Name(ItemDrop.ItemData obj, string color = "yellow") => obj != null ? Name(obj.m_shared.m_name, color) : "";
-  private static string Name(Pickable obj) => obj ? obj.m_itemPrefab.name : "";
+  private static string Name(Pickable obj) => obj ? string.IsNullOrEmpty(obj.m_overrideName) ? obj.m_itemPrefab?.name ?? "" : obj.m_overrideName : "";
   public static string Name(CreatureSpawner obj) => obj ? Utils.GetPrefabName(obj.m_creaturePrefab) : "";
   public static string Name(IEnumerable<GameObject> objs, string color = "yellow") => Format.JoinRow(objs.Select(prefab => Name(prefab, color)));
   public static string Name(IEnumerable<ItemDrop> objs, string color = "yellow") => Format.JoinRow(objs.Select(prefab => Name(prefab, color)));
@@ -21,7 +22,8 @@ public class Translate {
   private static string Name(Destructible obj) => obj ? obj.name : "";
   private static string Name(Smoke obj) => obj ? "Smoke" : "";
   private static string Name(HoverText obj) => obj ? obj.m_text : "";
-  public static string Name(MonoBehaviour obj, string color = "yellow") {
+  public static string Name(MonoBehaviour obj, string color = "yellow")
+  {
     var text = "";
     if (text == "") text = Name(obj.GetComponentInParent<HoverText>());
     if (text == "") text = Name(obj.GetComponentInParent<Smoke>());

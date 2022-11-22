@@ -1,5 +1,6 @@
 namespace ESP;
-public static class Constants {
+public static class Constants
+{
   public const float CoverRayCastLength = 30f;
   public const float CoverRaycastStart = 0.5f;
   public const float CoverBedLimit = 0.8f;
@@ -13,8 +14,10 @@ public static class Constants {
   public const float ComfortRadius = 10f;
   public const float CreatureFireLimitRadius = 3f;
 }
-public static class Tag {
-  public static string GetZoneCorner(Heightmap.Biome biome) {
+public static class Tag
+{
+  public static string GetZoneCorner(Heightmap.Biome biome)
+  {
     if (biome == Heightmap.Biome.AshLands) return Tag.ZoneCornerAshlands;
     if (biome == Heightmap.Biome.BlackForest) return Tag.ZoneCornerBlackForest;
     if (biome == Heightmap.Biome.DeepNorth) return Tag.ZoneCornerDeepNorth;
@@ -26,7 +29,8 @@ public static class Tag {
     if (biome == Heightmap.Biome.Swamp) return Tag.ZoneCornerSwamp;
     return Tag.ZoneCornerUnknown;
   }
-  public static string GetSpawnZone(Heightmap.Biome biome) {
+  public static string GetSpawnZone(Heightmap.Biome biome)
+  {
     if (biome == Heightmap.Biome.AshLands) return Tag.SpawnZoneAshlands;
     if (biome == Heightmap.Biome.BlackForest) return Tag.SpawnZoneBlackForest;
     if (biome == Heightmap.Biome.DeepNorth) return Tag.SpawnZoneDeepNorth;
@@ -38,7 +42,8 @@ public static class Tag {
     if (biome == Heightmap.Biome.Swamp) return Tag.SpawnZoneSwamp;
     return Tag.SpawnZoneUnknown;
   }
-  public static string GetEffectArea(EffectArea.Type type) {
+  public static string GetEffectArea(EffectArea.Type type)
+  {
     if ((type & EffectArea.Type.Burning) != 0) return Tag.EffectAreaBurning;
     if ((type & EffectArea.Type.Heat) != 0) return Tag.EffectAreaHeat;
     if ((type & EffectArea.Type.Fire) != 0) return Tag.EffectAreaFire;
@@ -117,7 +122,8 @@ public static class Tag {
   public const string PlayerCover = "PlayerCover";
   public const string PlayerCoverBlocked = "PlayerCoverBlocked";
 }
-public static class Tool {
+public static class Tool
+{
   public const string ExtraInfo = "ExtraInfo";
   public const string TimeAndWeather = "TimeAndWeather";
   public const string Position = "Position";

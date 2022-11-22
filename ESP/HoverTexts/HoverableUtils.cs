@@ -3,43 +3,53 @@ using Service;
 using UnityEngine;
 namespace ESP;
 /// <summary>Custom text that doesn't show anything without content.</summary>
-public class CustomHoverText : MonoBehaviour, Hoverable {
-  public string GetHoverText() {
+public class CustomHoverText : MonoBehaviour, Hoverable
+{
+  public string GetHoverText()
+  {
     var text = "";
     Text.AddTexts(gameObject, ref text);
     if (text == "") return "";
     return GetHoverName() + text;
   }
-  public string GetHoverName() {
+  public string GetHoverName()
+  {
     if (title == "")
       title = Translate.Name(this);
     return title;
   }
   private string title = "";
 }
-public partial class Text {
+public partial class Text
+{
 
   ///<summary>Adds a self-updating text to a given object.</summary>
-  public static void AddText(GameObject obj) {
+  public static void AddText(GameObject obj)
+  {
     obj.AddComponent<CustomHoverText>();
   }
   ///<summary>Adds a text to a given object (uses the in-game text).</summary>
-  public static void AddText(GameObject obj, string text) {
+  public static void AddText(GameObject obj, string text)
+  {
     obj.AddComponent<HoverText>().m_text = text;
   }
-  public static bool extraInfo {
+  public static bool extraInfo
+  {
     get => Settings.ExtraInfo && Admin.Enabled;
-    set {
+    set
+    {
       if (value)
         Admin.Check();
       Settings.configExtraInfo.Value = value;
     }
   }
-  public static void AddHoverText(MonoBehaviour obj) {
+  public static void AddHoverText(MonoBehaviour obj)
+  {
     if (obj.gameObject.GetComponent<Hoverable>() == null)
       obj.gameObject.AddComponent<CustomHoverText>();
   }
-  public static void AddTexts(GameObject obj, ref string __result) {
+  public static void AddTexts(GameObject obj, ref string __result)
+  {
     if (!extraInfo) return;
     List<string> lines = new();
     lines.Add("Coordinates: " + Format.Coordinates(obj.transform.position));

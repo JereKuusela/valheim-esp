@@ -1,6 +1,7 @@
 ﻿using BepInEx.Configuration;
 namespace ESP;
-public partial class Settings {
+public partial class Settings
+{
 #nullable disable
   public static ConfigEntry<bool> configShowShipStatsOnHud;
   public static bool ShowShipStatsOnHud => configShowShipStatsOnHud.Value;
@@ -14,7 +15,8 @@ public partial class Settings {
   public static string TrackedObjects => configTrackedObjects.Value;
   public static ConfigEntry<float> configTrackRadius;
   public static float TrackRadius => configTrackRadius.Value;
-  public static void InitHUD(ConfigFile config) {
+  public static void InitHUD(ConfigFile config)
+  {
     var section = "1. HUD";
     configShowHud = config.Bind(section, "Show HUD", false, "Show info and stats on HUD");
     configShowTimeAndWeather = config.Bind(section, "Show current time and weather", true, "Show current time and weather on the hud");

@@ -1,11 +1,14 @@
 using System;
 using UnityEngine;
 namespace Visualization;
-public partial class Draw {
+public partial class Draw
+{
   ///<summary>Adds a collider to a sphere</summary>
-  public static void AddSphereCollider(GameObject obj, float radius) {
+  public static void AddSphereCollider(GameObject obj, float radius)
+  {
     var renderers = obj.GetComponentsInChildren<LineRenderer>();
-    Array.ForEach(renderers, renderer => {
+    Array.ForEach(renderers, renderer =>
+    {
       var collider = obj.AddComponent<SphereCollider>();
       collider.isTrigger = true;
       collider.center = Vector3.zero;
@@ -13,14 +16,17 @@ public partial class Draw {
     });
   }
   ///<summary>Updates the collider of a sphere</summary>
-  public static void UpdateSphereCollider(MonoBehaviour obj, float radius) {
+  public static void UpdateSphereCollider(MonoBehaviour obj, float radius)
+  {
     var colliders = obj.GetComponentsInChildren<SphereCollider>();
-    Array.ForEach(colliders, collider => {
+    Array.ForEach(colliders, collider =>
+    {
       collider.radius = radius;
     });
   }
   ///<summary>Updates an existing sphere.</summary>
-  public static void UpdateSphere(MonoBehaviour parent, float radius) {
+  public static void UpdateSphere(MonoBehaviour parent, float radius)
+  {
     var renderers = parent.GetComponentsInChildren<LineRenderer>();
     if (renderers.Length != 3) return;
     var width = renderers[0].widthMultiplier;
@@ -34,7 +40,8 @@ public partial class Draw {
     => DrawSphere(tag, parent.gameObject, radius);
 
   ///<summary>Creates a renderer with a sphere (x, y and z profiles).</summary>
-  public static GameObject DrawSphere(string tag, GameObject parent, float radius) {
+  public static GameObject DrawSphere(string tag, GameObject parent, float radius)
+  {
     var obj = CreateObject(parent, tag);
     DrawArcX(CreateObject(obj, tag), Vector3.zero, radius, 360f);
     var width = GetLineWidth(tag);

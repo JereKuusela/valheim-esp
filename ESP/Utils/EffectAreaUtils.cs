@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using Service;
 namespace ESP;
-public class EffectAreaUtils {
+public class EffectAreaUtils
+{
 
-  public static String GetTypeText(EffectArea.Type type) {
+  public static String GetTypeText(EffectArea.Type type)
+  {
     List<string> types = new();
     if ((type & EffectArea.Type.Burning) != 0) types.Add("Burning");
     if ((type & EffectArea.Type.Heat) != 0) types.Add("Heat");

@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using Service;
 namespace ESP;
-public partial class Texts {
-  public static string GetChopTier(int tier) {
+public partial class Texts
+{
+  public static string GetChopTier(int tier)
+  {
     if (tier > 4) return "Blackmetal+";
     if (tier == 4) return "Blackmetal";
     if (tier == 3) return "Iron";
@@ -10,13 +12,15 @@ public partial class Texts {
     if (tier == 1) return "Flint";
     return "Stone";
   }
-  public static string GetPickaxeTier(int tier) {
+  public static string GetPickaxeTier(int tier)
+  {
     if (tier > 2) return "Iron+";
     if (tier == 2) return "Iron";
     if (tier == 1) return "Bronze";
     return "Antler";
   }
-  public static string GetToolTier(int tier, bool chop, bool pickaxe) {
+  public static string GetToolTier(int tier, bool chop, bool pickaxe)
+  {
     List<string> lines = new();
     if (chop)
       lines.Add("Axe: " + Format.String(Texts.GetChopTier(tier)));
@@ -24,7 +28,8 @@ public partial class Texts {
       lines.Add("Pickaxe: " + Format.String(Texts.GetPickaxeTier(tier)));
     return Format.JoinLines(lines);
   }
-  private static string GetAttackTypeName(Attack.AttackType type) {
+  private static string GetAttackTypeName(Attack.AttackType type)
+  {
     if (type == Attack.AttackType.Area) return "Horizontal";
     if (type == Attack.AttackType.Horizontal) return "Horizontal";
     if (type == Attack.AttackType.Projectile) return "Projectile";
@@ -33,14 +38,16 @@ public partial class Texts {
     return "";
   }
   public static string GetAttackType(Attack attack, string color = "yellow") => Format.String(GetAttackTypeName(attack.m_attackType), color);
-  public static string GetStaminaText(Attack attack, Skills.SkillType skillType) {
+  public static string GetStaminaText(Attack attack, Skills.SkillType skillType)
+  {
     if (attack == null) return "";
     var maxStamina = attack.m_attackStamina;
     var skillFactor = Player.m_localPlayer.GetSkillFactor(skillType);
     var stamina = maxStamina * (1 - 0.33f * skillFactor);
     return "Stamina: " + Format.Int(maxStamina, "orange") + " " + Format.String("(" + Format.Float(stamina) + ")");
   }
-  public static string GetHitboxText(Attack attack, string color = "yellow") {
+  public static string GetHitboxText(Attack attack, string color = "yellow")
+  {
     if (attack == null || attack.m_attackType == Attack.AttackType.Projectile) return "";
     List<string> texts = new();
     if (attack.m_attackRange > 0)
@@ -55,13 +62,17 @@ public partial class Texts {
       texts.Add(Format.Float(attack.m_attackOffset, Format.FORMAT, color) + " offset");
     return "Hit: " + Format.JoinRow(texts);
   }
-  public static string GetProjectileText(Attack attack, float holdDuration = 0, string color = "yellow") {
+  public static string GetProjectileText(Attack attack, float holdDuration = 0, string color = "yellow")
+  {
     if (attack == null || attack.m_attackType != Attack.AttackType.Projectile) return "";
     List<string> texts = new();
-    if (holdDuration > 0) {
+    if (holdDuration > 0)
+    {
       texts.Add("Spread: " + Format.Range(attack.m_projectileAccuracy, attack.m_projectileAccuracyMin, color));
       texts.Add("Velocity: " + Format.Range(attack.m_projectileVelMin, attack.m_projectileVel, color));
-    } else {
+    }
+    else
+    {
       texts.Add("Spread: " + Format.Int(attack.m_projectileAccuracy, color));
       texts.Add("Velocity: " + Format.Int(attack.m_projectileVel, color));
     }
@@ -71,7 +82,8 @@ public partial class Texts {
       texts.Add("Projectiles: " + Format.Multiplier(attack.m_projectiles, color));
     return Format.JoinRow(texts);
   }
-  public static string GetAttackSpeed(string animation, float holdDuration) {
+  public static string GetAttackSpeed(string animation, float holdDuration)
+  {
     if (animation == "atgeir_attack") return "2.98 s (0.84 + 0.86 + 1.28)";
     if (animation == "atgeir_secondary") return "1.54 s";
     if (animation == "battleaxe_attack") return "3.21 s (1.58 + 0.92 + 0.71)";
@@ -93,7 +105,8 @@ public partial class Texts {
     if (animation == "sword_secondary") return "1.84 s";
     return "";
   }
-  public static string GetAttackSpeed(Attack attack, float holdDuration = 0, string color = "yellow") {
+  public static string GetAttackSpeed(Attack attack, float holdDuration = 0, string color = "yellow")
+  {
     if (attack == null) return "";
     var animation = attack.m_attackAnimation;
     var text = GetAttackSpeed(animation, holdDuration);

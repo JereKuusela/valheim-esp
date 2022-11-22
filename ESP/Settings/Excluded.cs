@@ -1,6 +1,7 @@
 ﻿using BepInEx.Configuration;
 namespace ESP;
-public partial class Settings {
+public partial class Settings
+{
 #nullable disable
   public static ConfigEntry<string> configExcludedCreatures;
   public static string ExcludedCreatures => configExcludedCreatures.Value;
@@ -11,7 +12,8 @@ public partial class Settings {
   public static ConfigEntry<string> configExcludedResources;
   public static string ExcludedResources => configExcludedResources.Value;
 
-  public static void InitExcluded(ConfigFile config) {
+  public static void InitExcluded(ConfigFile config)
+  {
     var section = "4. Excluded";
     configExcludedCreatures = config.Bind(section, "Creatures", "", "List of creatures separated by ,");
     configExcludedSpawnSystems = config.Bind(section, "Spawn systems", "Seagal,FireFlies", "List of creatures separated by , that are not visualized");

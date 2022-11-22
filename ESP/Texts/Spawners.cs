@@ -3,28 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using Service;
 namespace ESP;
-public partial class Texts {
-  private static string GetTime(CreatureSpawner obj) {
+public partial class Texts
+{
+  private static string GetTime(CreatureSpawner obj)
+  {
     if (!obj.m_spawnAtDay)
       return "Only during " + Format.String("night");
     if (!obj.m_spawnAtNight)
       return "Only during " + Format.String("day");
     return "";
   }
-  private static String GetRespawnTime(CreatureSpawner obj) {
+  private static String GetRespawnTime(CreatureSpawner obj)
+  {
     if (obj.m_respawnTimeMinuts == 0) return "Never";
     var elapsed = Helper.GetElapsed(obj, "alive_time");
     var elapsedString = elapsed == 0 ? "Alive" : elapsed.ToString("N0");
     return elapsedString + " / " + (60 * obj.m_respawnTimeMinuts).ToString("N0") + " seconds";
   }
-  private static string GetRespawnTime(Pickable obj) {
+  private static string GetRespawnTime(Pickable obj)
+  {
     if (!obj.m_hideWhenPicked || obj.m_respawnTimeMinutes == 0) return "Never";
     var elapsed = Helper.GetElapsed(obj, "picked_time") / 60;
     var picked = Helper.GetBool(obj, "picked");
     var elapsedText = picked ? Format.Int(elapsed) : Format.String("Not picked");
     return elapsedText + " / " + Format.Int(obj.m_respawnTimeMinutes) + " minutes";
   }
-  public static string Get(Pickable obj) {
+  public static string Get(Pickable obj)
+  {
     if (!Helper.IsValid(obj) || !Settings.Support) return "";
     List<string> lines = new();
     var respawn = GetRespawnTime(obj);
@@ -34,7 +39,8 @@ public partial class Texts {
     return Format.JoinLines(lines);
   }
 
-  public static string Get(CreatureSpawner obj) {
+  public static string Get(CreatureSpawner obj)
+  {
     if (!Helper.IsValid(obj)) return "";
     var respawn = GetRespawnTime(obj);
     var noise = obj.m_triggerNoise > 0 ? " with noise of " + Format.Int(obj.m_triggerNoise) : "";
@@ -48,15 +54,18 @@ public partial class Texts {
     return Format.JoinLines(lines);
   }
 
-  private static string GetEventText() {
+  private static string GetEventText()
+  {
     var obj = RandEventSystem.instance;
     return Text.GetAttempt(obj.m_eventTimer, obj.m_eventIntervalMin * 60, obj.m_eventChance);
   }
-  private static string GetEventsText() {
+  private static string GetEventsText()
+  {
     var instance = RandEventSystem.instance;
     var zdo = ZDOMan.instance.GetZDO(Player.m_localPlayer.GetZDOID());
     var currentBiome = WorldGenerator.instance.GetBiome(Player.m_localPlayer.transform.position);
-    var texts = instance.m_events.Where(randomEvent => randomEvent.m_enabled && randomEvent.m_random).Select(randomEvent => {
+    var texts = instance.m_events.Where(randomEvent => randomEvent.m_enabled && randomEvent.m_random).Select(randomEvent =>
+    {
       var validBiome = (currentBiome & randomEvent.m_biome) > 0;
       var validBase = instance.CheckBase(randomEvent, zdo);
       var validKeys = instance.HaveGlobalKeys(randomEvent);
@@ -70,21 +79,26 @@ public partial class Texts {
     });
     return Format.JoinLines(texts);
   }
-  private static string GetSpawnerText(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode) {
+  private static string GetSpawnerText(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode)
+  {
     List<string> lines = new();
     var timeSinceSpawned = Helper.GetElapsed(obj, stableHashCode, 0);
     var time = "";
-    if (!spawnData.m_spawnAtDay) {
+    if (!spawnData.m_spawnAtDay)
+    {
       time = ", only during " + Format.String("night");
     }
-    if (!spawnData.m_spawnAtNight) {
+    if (!spawnData.m_spawnAtNight)
+    {
       time = ", only during " + Format.String("day");
     }
     var forest = "";
-    if (!spawnData.m_inForest) {
+    if (!spawnData.m_inForest)
+    {
       forest = ", only outside forests";
     }
-    if (!spawnData.m_outsideForest) {
+    if (!spawnData.m_outsideForest)
+    {
       forest = ", only inside forests";
     }
 
@@ -113,17 +127,20 @@ public partial class Texts {
     lines.Add(level + ", Group size: " + group + groupRadius);
     return Format.JoinLines(lines);
   }
-  public static string GetRandomEvent(SpawnSystem obj) {
+  public static string GetRandomEvent(SpawnSystem obj)
+  {
     var randEvent = RandEventSystem.instance;
     var text = GetEventText() + "\n\n";
     var num = 0;
     var currentEvent = randEvent.GetCurrentRandomEvent();
     if (currentEvent == null || randEvent.GetCurrentSpawners() == null)
       text += GetEventsText();
-    else {
+    else
+    {
       text += Format.ProgressPercent(currentEvent.m_name, currentEvent.m_time, currentEvent.m_duration) + "\n";
       var spawners = randEvent.GetCurrentSpawners();
-      var texts = spawners.Select(spawnData => {
+      var texts = spawners.Select(spawnData =>
+      {
         num++;
         var stableHashCode = ("e_" + spawnData.m_prefab.name + num.ToString()).GetStableHashCode();
         return GetSpawnerText(obj, spawnData, stableHashCode);
@@ -133,7 +150,8 @@ public partial class Texts {
     return text;
   }
 
-  private static string GetZoneText(SpawnSystem obj) {
+  private static string GetZoneText(SpawnSystem obj)
+  {
     var position = obj.transform.position;
     var heightmap = obj.m_heightmap;
     var zone = ZoneSystem.instance.GetZone(position);
@@ -146,22 +164,27 @@ public partial class Texts {
     text += "\n";
     return text;
   }
-  public static string Get(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode) {
+  public static string Get(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode)
+  {
     List<string> lines = new();
     lines.Add(GetZoneText(obj));
     var timeSinceSpawned = Helper.GetElapsed(obj, stableHashCode, 0);
     var time = "";
-    if (!spawnData.m_spawnAtDay) {
+    if (!spawnData.m_spawnAtDay)
+    {
       time = ", only during " + Format.String("night");
     }
-    if (!spawnData.m_spawnAtNight) {
+    if (!spawnData.m_spawnAtNight)
+    {
       time = ", only during " + Format.String("day");
     }
     var forest = "";
-    if (!spawnData.m_inForest) {
+    if (!spawnData.m_inForest)
+    {
       forest = ", only outside forests";
     }
-    if (!spawnData.m_outsideForest) {
+    if (!spawnData.m_outsideForest)
+    {
       forest = ", only inside forests";
     }
 

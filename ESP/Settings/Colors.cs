@@ -2,9 +2,11 @@ using BepInEx.Configuration;
 using UnityEngine;
 using Visualization;
 namespace ESP;
-public partial class Settings {
+public partial class Settings
+{
 #nullable disable
-  public static Color ParseColor(string color) {
+  public static Color ParseColor(string color)
+  {
     if (ColorUtility.TryParseHtmlString(color, out var parsed)) return parsed;
     return Color.white;
   }
@@ -61,11 +63,13 @@ public partial class Settings {
   public static ConfigEntry<string> configBiomePlainsColor;
   public static ConfigEntry<string> configBiomeSwampColor;
   public static ConfigEntry<string> configBiomeOtherColor;
-  private static void OnColorChanged(ConfigEntry<string> entry, string tag) {
+  private static void OnColorChanged(ConfigEntry<string> entry, string tag)
+  {
     entry.SettingChanged += (s, e) => Draw.SetColor(tag, ParseColor(entry.Value));
     Draw.SetColor(tag, ParseColor(entry.Value));
   }
-  private static void InitColors(ConfigFile config) {
+  private static void InitColors(ConfigFile config)
+  {
     var section = "5. Colors (predefined, #RRGGBB, #RRGGBBAA)";
     configCreatureRayColor = config.Bind(section, "Creature ray", "magenta", "");
     OnColorChanged(configCreatureRayColor, Tag.TrackedCreature);

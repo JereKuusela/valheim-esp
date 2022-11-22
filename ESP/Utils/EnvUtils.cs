@@ -2,14 +2,17 @@ using System;
 using Service;
 using UnityEngine;
 namespace ESP;
-public class EnvUtils {
+public class EnvUtils
+{
   public static string GetCurrentEnvironment() => Format.String(EnvMan.instance.GetCurrentEnvironment().m_name);
-  public static string GetProgress() {
+  public static string GetProgress()
+  {
     var limit = EnvMan.instance.m_environmentDuration;
     var value = ZNet.instance.GetTimeSeconds() % limit;
     return Format.ProgressPercent("Next", value, limit);
   }
-  public static string GetEnvironmentRoll() {
+  public static string GetEnvironmentRoll()
+  {
     var seed = (long)ZNet.instance.GetTimeSeconds() / EnvMan.instance.m_environmentDuration;
     var state = UnityEngine.Random.state;
     UnityEngine.Random.InitState((int)seed);
@@ -17,7 +20,8 @@ public class EnvUtils {
     UnityEngine.Random.state = state;
     return Format.Percent(roll) + " (seed " + seed + ")";
   }
-  private static string GetClock() {
+  private static string GetClock()
+  {
     var limit = EnvMan.instance.m_dayLengthSec;
     var fraction = (ZNet.instance.GetTimeSeconds() % limit) / limit;
     var seconds = fraction * 3600 * 24;
@@ -25,11 +29,13 @@ public class EnvUtils {
     var minutes = Math.Floor((seconds - hours * 3600) / 60);
     return hours.ToString().PadLeft(2, '0') + ":" + minutes.ToString().PadLeft(2, '0');
   }
-  public static string GetTime() {
+  public static string GetTime()
+  {
     var time = EnvMan.instance.IsCold() ? "Night" : "Day";
     return Format.String(GetClock()) + " (" + Format.String(time) + ")";
   }
-  public static string GetEnvironment(EnvEntry env, float totalWeight) {
+  public static string GetEnvironment(EnvEntry env, float totalWeight)
+  {
     var current = EnvMan.instance.GetCurrentEnvironment().m_name;
     var text = Format.String(env.m_env.m_name, env.m_env.m_name == current);
     text += " (" + Format.Percent(env.m_weight / totalWeight) + "): ";
@@ -48,16 +54,19 @@ public class EnvUtils {
       text += ", " + Format.String("Wet");
     return text;
   }
-  public static string GetWindWithAngle() {
+  public static string GetWindWithAngle()
+  {
     var windDir = EnvMan.instance.GetWindDir();
     var angle = Mathf.Atan2(windDir.x, windDir.z) / Math.PI * 180f;
     return GetWind() + " from " + Format.Int(angle) + " degrees";
   }
-  public static string GetWind() {
+  public static string GetWind()
+  {
     var windIntensity = EnvMan.instance.GetWindIntensity();
     return "Wind: " + Format.Percent(windIntensity);
   }
-  public static string GetWindRoll() {
+  public static string GetWindRoll()
+  {
     UnityEngine.Random.State state = UnityEngine.Random.state;
     var angle = 0f;
     var intensity = 0.5f;
@@ -69,7 +78,8 @@ public class EnvUtils {
     UnityEngine.Random.state = state;
     return Format.Percent(intensity) + " and " + Format.Degrees(angle * 180 / Math.PI);
   }
-  public static string GetWindHud() {
+  public static string GetWindHud()
+  {
     var windIntensity = EnvMan.instance.GetWindIntensity();
     return Format.Percent(windIntensity) + " wind";
   }
@@ -78,7 +88,8 @@ public class EnvUtils {
   public static string GetPosition(Vector3 position) => "Position: " + Format.Coordinates(position);
   public static string GetAltitude(Vector3 position) => "Altitude: " + Format.Int(position.y - ZoneSystem.instance.m_waterLevel);
   public static string GetBlocked(Vector3 position) => ZoneSystem.instance.IsBlocked(position) ? "blocked" : "";
-  public static string GetForest(Vector3 position) {
+  public static string GetForest(Vector3 position)
+  {
     var inForest = WorldGenerator.InForest(position);
     return (inForest ? "Forest" : "No forest") + " (" + Format.Float(WorldGenerator.GetForestFactor(position)) + ")";
   }

@@ -4,13 +4,16 @@ using System.Linq;
 using Service;
 using UnityEngine;
 namespace ESP;
-public partial class Texts {
-  public static string Get(LocationProxy obj) {
+public partial class Texts
+{
+  public static string Get(LocationProxy obj)
+  {
     if (!Helper.IsValid(obj) || !Settings.Locations) return "";
     var name = Utils.GetPrefabName(obj.m_instance).ToLower();
     List<string> lines = new();
     var instances = ZoneSystem.instance.m_locationInstances;
-    foreach (var l in ZoneSystem.instance.m_locations) {
+    foreach (var l in ZoneSystem.instance.m_locations)
+    {
       if (!l.m_enable) continue;
       if (l.m_prefabName.ToLower() != name) continue;
       var count = instances.Values.Where(instance => instance.m_location.m_prefabName == l.m_prefabName).Count();
@@ -54,12 +57,14 @@ public partial class Texts {
     return Format.JoinLines(lines);
   }
 
-  public static string GetVegetation(GameObject obj) {
+  public static string GetVegetation(GameObject obj)
+  {
     if (!obj || !Settings.Vegetation) return "";
     var root = obj.transform.parent == null ? obj : obj.transform.parent.gameObject;
     var name = Utils.GetPrefabName(root).ToLower();
     List<string> lines = new();
-    foreach (var v in ZoneSystem.instance.m_vegetation) {
+    foreach (var v in ZoneSystem.instance.m_vegetation)
+    {
       if (!v.m_enable) continue;
       if (Utils.GetPrefabName(v.m_prefab).ToLower() != name) continue;
       if (v.m_max < 1)
@@ -104,7 +109,8 @@ public partial class Texts {
     return Format.JoinLines(lines);
   }
 
-  public static string Get(RandomSpawn obj) {
+  public static string Get(RandomSpawn obj)
+  {
     if (!Helper.IsValid(obj)) return "";
     return "Chance to spawn: " + Format.Percent(obj.m_chanceToSpawn);
 
@@ -112,15 +118,19 @@ public partial class Texts {
 
   static int Respawn = "override_respawn".GetStableHashCode();
   static int SpawnTime = "spawn_time".GetStableHashCode();
-  private static string GetItem(OfferingBowl obj) {
+  private static string GetItem(OfferingBowl obj)
+  {
     if (obj.m_useItemStands) return "Item stands: " + obj.m_itemstandMaxRange + " m";
     return "Item: " + obj.m_bossItems + " of " + obj.m_bossItem.GetHoverName();
   }
-  private static string GetRespawnTime(OfferingBowl obj) {
+  private static string GetRespawnTime(OfferingBowl obj)
+  {
     var view = obj.GetComponentInParent<ZNetView>();
     var ret = "";
-    DataUtils.Float(view, Respawn, respawn => {
-      DataUtils.Long(view, SpawnTime, spawnTime => {
+    DataUtils.Float(view, Respawn, respawn =>
+    {
+      DataUtils.Long(view, SpawnTime, spawnTime =>
+      {
         var now = ZNet.instance.GetTime();
         var date = new DateTime(spawnTime);
         var elapsed = (now - date).TotalMinutes;
@@ -129,7 +139,8 @@ public partial class Texts {
     });
     return ret;
   }
-  public static string Get(OfferingBowl obj) {
+  public static string Get(OfferingBowl obj)
+  {
     if (!obj) return "";
     List<string> lines = new(){
         "Spawn: " + (obj.m_bossPrefab ? Utils.GetPrefabName(obj.m_bossPrefab) : ""),
@@ -139,7 +150,8 @@ public partial class Texts {
     return Format.JoinLines(lines);
   }
 
-  public static string Get(SpawnArea obj) {
+  public static string Get(SpawnArea obj)
+  {
     if (!obj) return "";
     int near, total;
     obj.GetInstances(out near, out total);
@@ -151,7 +163,8 @@ public partial class Texts {
         "Near limit: " + Format.Progress(near, obj.m_maxNear) + " within " + Format.Int(obj.m_nearRadius) + " m",
         "Far limit: " +  Format.Progress(total, obj.m_maxTotal) + " within " + Format.Int(obj.m_farRadius) + " m"
       };
-    if (obj.m_onGroundOnly) {
+    if (obj.m_onGroundOnly)
+    {
       lines.Add("Only on ground");
     }
 
@@ -159,7 +172,8 @@ public partial class Texts {
     var totalWeight = 0f;
     foreach (var data in obj.m_prefabs)
       totalWeight += data.m_weight;
-    foreach (var data in obj.m_prefabs) {
+    foreach (var data in obj.m_prefabs)
+    {
       var level = Format.Range(data.m_minLevel, data.m_maxLevel);
       lines.Add(data.m_prefab.name + ": " + Format.Percent(data.m_weight / totalWeight) + " with level " + level);
     }

@@ -1,7 +1,10 @@
 namespace Service;
-public class Names {
-  public static string GetName(Heightmap.Biome biome) {
-    switch (biome) {
+public class Names
+{
+  public static string GetName(Heightmap.Biome biome)
+  {
+    switch (biome)
+    {
       case Heightmap.Biome.AshLands:
         return "Ash Lands";
       case Heightmap.Biome.BlackForest:

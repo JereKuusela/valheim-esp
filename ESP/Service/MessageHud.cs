@@ -5,9 +5,11 @@ using UnityEngine;
 namespace Service;
 // Prepends a custom message to the hud.
 [HarmonyPatch(typeof(MessageHud), nameof(MessageHud.Update)), HarmonyPriority(Priority.Low)]
-public class MessageHud_UpdateMessage : MonoBehaviour {
+public class MessageHud_UpdateMessage : MonoBehaviour
+{
   public static Func<List<string>> GetMessage = () => new() { "Default message. Replace with your own function." };
-  static void Postfix(MessageHud __instance) {
+  static void Postfix(MessageHud __instance)
+  {
     // Wait for the game to load.
     if (Player.m_localPlayer == null) return;
     if (Hud.IsUserHidden()) return;
@@ -16,7 +18,8 @@ public class MessageHud_UpdateMessage : MonoBehaviour {
     var previousText = hud.m_messageText.text;
     var lines = GetMessage();
     if (lines.Count == 0) return;
-    if (previousText != "") {
+    if (previousText != "")
+    {
       lines.Add(" ");
       lines.Add(previousText);
     }
@@ -30,12 +33,15 @@ public class MessageHud_UpdateMessage : MonoBehaviour {
 // Track message change to ensure a clean slate in every update.
 // This allows multiple mods to work with the hud.
 [HarmonyPatch(typeof(MessageHud), nameof(MessageHud.UpdateMessage))]
-public class MessageHud_GetBaseMessage : MonoBehaviour {
+public class MessageHud_GetBaseMessage : MonoBehaviour
+{
   private static string BaseMessage = "";
-  static void Prefix(out string __state) {
+  static void Prefix(out string __state)
+  {
     __state = MessageHud.instance.m_messageText.text;
   }
-  static void Postfix(MessageHud __instance, float ___m_msgQueueTimer, string __state) {
+  static void Postfix(MessageHud __instance, float ___m_msgQueueTimer, string __state)
+  {
     if (__instance.m_messageText.text != __state)
       BaseMessage = __instance.m_messageText.text;
     // No more base game messages.

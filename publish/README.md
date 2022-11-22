@@ -15,6 +15,9 @@ Donations: [Buy me a computer](https://www.buymeacoffee.com/jerekuusela)
 
 # Changelog
 
+- v1.13
+	- Update for Mistlands PTB.
+
 - v1.12
 	- Adds visual rays and texts for boss altars.
 	- Adds a visual sphere for trophy speaks.

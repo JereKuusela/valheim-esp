@@ -1,7 +1,8 @@
 ﻿using BepInEx.Configuration;
 using Visualization;
 namespace ESP;
-public partial class Settings {
+public partial class Settings
+{
 #nullable disable
   public static ConfigEntry<int> configCreatureFireLineWidth;
   public static ConfigEntry<int> configTrackedCreatureRayWidth;
@@ -37,11 +38,13 @@ public partial class Settings {
   public static ConfigEntry<int> configTrophySpeakSphereWidth;
   public static ConfigEntry<int> configLocationRayWidth;
 
-  private static void OnWidthChanged(ConfigEntry<int> entry, string tag) {
+  private static void OnWidthChanged(ConfigEntry<int> entry, string tag)
+  {
     entry.SettingChanged += (s, e) => Draw.SetLineWidth(tag, entry.Value);
     Draw.SetLineWidth(tag, entry.Value);
   }
-  public static void InitVisualWidth(ConfigFile config) {
+  public static void InitVisualWidth(ConfigFile config)
+  {
     var section = "6. Width of visuals";
     configCustomContainerEffectAreaRadius = config.Bind(section, "Custom radius for containers", 0.0f, "Custom effect area sphere for containers (0 to disable)");
     configCustomCraftingEffectAreaRadius = config.Bind(section, "Custom radius for crafting stations", 0.0f, "Custom effect area sphere for crafting stations (0 to disable)");

@@ -5,8 +5,10 @@ using Service;
 using UnityEngine;
 namespace ESP;
 [HarmonyPatch(typeof(HitData.DamageTypes), nameof(HitData.DamageTypes.GetTooltipString), new[] { typeof(Skills.SkillType) })]
-public class DamageTypes_GetTooltipStringWithSkill {
-  static void Postfix(Skills.SkillType skillType, HitData.DamageTypes __instance, ref string __result) {
+public class DamageTypes_GetTooltipStringWithSkill
+{
+  static void Postfix(Skills.SkillType skillType, HitData.DamageTypes __instance, ref string __result)
+  {
     if (!Settings.ExtraInfo || !Settings.AllDamageTypes) return;
     if (Player.m_localPlayer == null) return;
     var obj = __instance;
@@ -21,8 +23,10 @@ public class DamageTypes_GetTooltipStringWithSkill {
   }
 }
 [HarmonyPatch(typeof(HitData.DamageTypes), nameof(HitData.DamageTypes.GetTooltipString), new Type[] { })]
-public class DamageTypes_GetTooltipString {
-  static void Postfix(HitData.DamageTypes __instance, ref string __result) {
+public class DamageTypes_GetTooltipString
+{
+  static void Postfix(HitData.DamageTypes __instance, ref string __result)
+  {
     if (!Settings.ExtraInfo || !Settings.AllDamageTypes) return;
     __result = __result.Replace("$inventory_lightning: <color=yellow>0", "$inventory_lightning: <color=yellow>" + __instance.m_lightning.ToString());
     if (__instance.m_chop != 0f)
@@ -32,8 +36,10 @@ public class DamageTypes_GetTooltipString {
   }
 }
 [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip), new[] { typeof(ItemDrop.ItemData), typeof(int), typeof(bool) })]
-public class ItemDropItemData_GetTooltip {
-  static void Postfix(ItemDrop.ItemData item, ref string __result) {
+public class ItemDropItemData_GetTooltip
+{
+  static void Postfix(ItemDrop.ItemData item, ref string __result)
+  {
     if (!Settings.ExtraInfo || !Settings.AllDamageTypes) return;
     var data = item.m_shared;
     __result = __result.Replace("#CHOP_TIER", Texts.GetChopTier(data.m_toolTier));
@@ -48,8 +54,9 @@ public class ItemDropItemData_GetTooltip {
     var split = __result.Split('\n').ToList();
     var damage = item.GetDamage();
 
-    var holdDuration = data.m_holdDurationMin * (1f - skillFactor);
-    if (data.m_attack != null && Texts.GetAttackSpeed(data.m_attack) != "") {
+    var holdDuration = data.m_attack.m_drawDurationMin * (1f - skillFactor);
+    if (data.m_attack != null && Texts.GetAttackSpeed(data.m_attack) != "")
+    {
       var attack = data.m_attack;
       if (attack.m_damageMultiplier != 1.0)
         split.Add("Damage: " + Format.Multiplier(attack.m_damageMultiplier, "orange"));
@@ -65,7 +72,8 @@ public class ItemDropItemData_GetTooltip {
       split.Add(Texts.GetProjectileText(attack, holdDuration, "orange"));
       split.Add(Texts.GetHitboxText(attack, "orange"));
     }
-    if (data.m_secondaryAttack != null && Texts.GetAttackSpeed(data.m_secondaryAttack) != "") {
+    if (data.m_secondaryAttack != null && Texts.GetAttackSpeed(data.m_secondaryAttack) != "")
+    {
       var attack = data.m_secondaryAttack;
       split.Add("Secondary");
       if (attack.m_damageMultiplier != 1.0)

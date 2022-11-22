@@ -1,6 +1,7 @@
 using BepInEx.Configuration;
 namespace ESP;
-public partial class Settings {
+public partial class Settings
+{
 #nullable disable
   public static ConfigEntry<bool> configDrops;
   public static bool Drops => configDrops.Value;
@@ -36,7 +37,8 @@ public partial class Settings {
   public static bool Locations => configLocations.Value;
   public static ConfigEntry<bool> configVegetation;
   public static bool Vegetation => configVegetation.Value;
-  public static void InitTooltips(ConfigFile config) {
+  public static void InitTooltips(ConfigFile config)
+  {
     var section = "2. Tooltips";
     configExtraInfo = config.Bind(section, "Show extra info on tooltips", false, "Show extra info on tooltips and hover texts (toggle with O button in the game)");
     configResistances = config.Bind(section, "Resistances", true, "Show resistances for creatures and structures");

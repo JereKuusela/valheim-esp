@@ -2,7 +2,8 @@
 using BepInEx.Configuration;
 using Visualization;
 namespace ESP;
-public partial class Settings {
+public partial class Settings
+{
 #nullable disable
   public static ConfigEntry<int> configShowCreatureFireRange;
   public static ConfigEntry<int> configShowTrackedCreatures;
@@ -50,7 +51,8 @@ public partial class Settings {
   public static ConfigEntry<int> configShowTrophySpeaks;
   public static ConfigEntry<int> configShowLocations;
   public static ConfigEntry<int> configShowStructureSupport;
-  private static ConfigEntry<int> GetTagEntry(string name) {
+  private static ConfigEntry<int> GetTagEntry(string name)
+  {
     name = name.ToLower();
     if (name == Tag.StructureCover.ToLower()) return configShowStructureCover;
     if (name == Tag.StructureCoverBlocked.ToLower()) return configShowStructureCover;
@@ -124,11 +126,13 @@ public partial class Settings {
   }
   public static bool IsDisabled(string name) => GetTagEntry(name).Value < 0;
   private static ConfigDescription CreateDescription() => new ConfigDescription("", new AcceptableValueRange<int>(-1, 1));
-  private static void OnChanged(ConfigEntry<int> entry, string tag) {
+  private static void OnChanged(ConfigEntry<int> entry, string tag)
+  {
     entry.SettingChanged += (s, e) => Visibility.SetTag(tag, entry.Value > 0);
     Visibility.SetTag(tag, entry.Value > 0);
   }
-  private static void InitVisuals(ConfigFile config) {
+  private static void InitVisuals(ConfigFile config)
+  {
     var section = "3. Visuals";
 
     configShowStructureCover = config.Bind(section, "Structure cover", -1, CreateDescription());
