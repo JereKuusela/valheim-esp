@@ -9,7 +9,7 @@ public class DamageTypes_GetTooltipStringWithSkill
 {
   static void Postfix(Skills.SkillType skillType, HitData.DamageTypes __instance, ref string __result)
   {
-    if (!Settings.ExtraInfo || !Settings.AllDamageTypes) return;
+    if (!Settings.ExtraInfo || !Settings.WeaponInfo) return;
     if (Player.m_localPlayer == null) return;
     var obj = __instance;
 
@@ -27,8 +27,7 @@ public class DamageTypes_GetTooltipString
 {
   static void Postfix(HitData.DamageTypes __instance, ref string __result)
   {
-    if (!Settings.ExtraInfo || !Settings.AllDamageTypes) return;
-    __result = __result.Replace("$inventory_lightning: <color=yellow>0", "$inventory_lightning: <color=yellow>" + __instance.m_lightning.ToString());
+    if (!Settings.ExtraInfo || !Settings.WeaponInfo) return;
     if (__instance.m_chop != 0f)
       __result += "\n$inventory_chop: " + Format.Int(__instance.m_chop) + " " + Format.String("(#CHOP_TIER)");
     if (__instance.m_pickaxe != 0f)
@@ -40,7 +39,7 @@ public class ItemDropItemData_GetTooltip
 {
   static void Postfix(ItemDrop.ItemData item, ref string __result)
   {
-    if (!Settings.ExtraInfo || !Settings.AllDamageTypes) return;
+    if (!Settings.ExtraInfo || !Settings.WeaponInfo) return;
     var data = item.m_shared;
     __result = __result.Replace("#CHOP_TIER", Texts.GetChopTier(data.m_toolTier));
     __result = __result.Replace("#PICKAXE_TIER", Texts.GetPickaxeTier(data.m_toolTier));
@@ -54,8 +53,9 @@ public class ItemDropItemData_GetTooltip
     var split = __result.Split('\n').ToList();
     var damage = item.GetDamage();
 
-    var holdDuration = data.m_attack.m_drawDurationMin * (1f - skillFactor);
-    if (data.m_attack != null && Texts.GetAttackSpeed(data.m_attack) != "")
+    var drawDuration = data.m_attack.m_drawDurationMin;
+    drawDuration = Mathf.Lerp(drawDuration, drawDuration * 0.2f, skillFactor);
+    if (data.m_attack != null && data.m_attack.m_attackAnimation != "")
     {
       var attack = data.m_attack;
       if (attack.m_damageMultiplier != 1.0)
@@ -65,14 +65,20 @@ public class ItemDropItemData_GetTooltip
       if (attack.m_forceMultiplier != 1.0)
         split.Add("Knockback: " + Format.Multiplier(attack.m_forceMultiplier, "orange"));
       split.Add(Texts.GetStaminaText(attack, data.m_skillType));
+      split.Add(Texts.GetEitrText(attack, data.m_skillType));
+      split.Add(Texts.GetHealthText(attack, data.m_skillType));
       if (!attack.m_lowerDamagePerHit)
         split.Add(Format.String("No multitarget penalty", "orange"));
-      split.Add(Texts.GetAttackSpeed(attack, holdDuration, "orange"));
+      split.Add(Texts.GetAttackSpeed(attack, drawDuration, "orange"));
       split.Add(Texts.GetAttackType(attack, "orange"));
-      split.Add(Texts.GetProjectileText(attack, holdDuration, "orange"));
+      split.Add(Texts.GetProjectileText(attack, drawDuration, "orange"));
       split.Add(Texts.GetHitboxText(attack, "orange"));
+      if (attack.m_raiseSkillAmount != 1.0)
+        split.Add("Experience gain: " + Format.Multiplier(attack.m_raiseSkillAmount, "orange"));
+      if (attack.m_requiresReload && attack.m_reloadTime != 1.0)
+        split.Add("Reload: " + Format.Float(Mathf.Lerp(attack.m_reloadTime, attack.m_reloadTime * 0.5f, skillFactor), "orange"));
     }
-    if (data.m_secondaryAttack != null && Texts.GetAttackSpeed(data.m_secondaryAttack) != "")
+    if (data.m_secondaryAttack != null && data.m_secondaryAttack.m_attackAnimation != "")
     {
       var attack = data.m_secondaryAttack;
       split.Add("Secondary");
@@ -83,12 +89,16 @@ public class ItemDropItemData_GetTooltip
       if (attack.m_forceMultiplier != 1.0)
         split.Add("Knockback: " + Format.Multiplier(attack.m_forceMultiplier, "orange"));
       split.Add(Texts.GetStaminaText(attack, data.m_skillType));
+      split.Add(Texts.GetEitrText(attack, data.m_skillType));
+      split.Add(Texts.GetHealthText(attack, data.m_skillType));
       if (!attack.m_lowerDamagePerHit)
         split.Add(Format.String("No multitarget penalty", "orange"));
       split.Add(Texts.GetAttackType(attack, "orange"));
-      split.Add(Texts.GetAttackSpeed(attack, holdDuration, "orange"));
-      split.Add(Texts.GetProjectileText(attack, holdDuration, "orange"));
+      split.Add(Texts.GetAttackSpeed(attack, drawDuration, "orange"));
+      split.Add(Texts.GetProjectileText(attack, drawDuration, "orange"));
       split.Add(Texts.GetHitboxText(attack, "orange"));
+      if (attack.m_raiseSkillAmount != 1.0)
+        split.Add("Experience gain: " + Format.Multiplier(attack.m_raiseSkillAmount, "orange"));
     }
     __result = Format.JoinLines(split.Where(line => line != "").Select(line => line.StartsWith("$item_knockback") ? line + knockback : line));
   }

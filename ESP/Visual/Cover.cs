@@ -56,8 +56,10 @@ public partial class Visual
   }
   private static void UpdateCover(MonoBehaviour obj, Vector3 startPos, string text, bool isPlayer = false)
   {
+    if (!obj) return;
     var tags = isPlayer ? new string[] { Tag.PlayerCover, Tag.PlayerCoverBlocked } : new string[] { Tag.StructureCover, Tag.StructureCoverBlocked };
     var renderers = Visualization.Draw.GetRenderers(obj, tags);
+    if (Cover.m_coverRays == null) return;
     var vectors = Cover.m_coverRays;
     if (renderers.Length != vectors.Length) return;
     var start = Constants.CoverRaycastStart;

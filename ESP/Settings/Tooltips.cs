@@ -15,8 +15,8 @@ public partial class Settings
   public static bool Resistances => configResistances.Value;
   public static ConfigEntry<bool> configExtraInfo;
   public static bool ExtraInfo => configExtraInfo.Value;
-  public static ConfigEntry<bool> configAllDamageTypes;
-  public static bool AllDamageTypes => configAllDamageTypes.Value;
+  public static ConfigEntry<bool> configWeaponInfo;
+  public static bool WeaponInfo => configWeaponInfo.Value;
   public static ConfigEntry<bool> configShowProgress;
   public static bool Progress => configShowProgress.Value;
   public static ConfigEntry<bool> configSupport;
@@ -51,7 +51,7 @@ public partial class Settings
     configDrops = config.Bind(section, "Drops", true, "Show creature drops");
     configBreeding = config.Bind(section, "Breeding", true, "Show taming and breeding related information");
     configStatus = config.Bind(section, "Status effects", true, "Show creature status effects");
-    configAllDamageTypes = config.Bind(section, "All damage types", true, "Show all damage types on weapon tooltips");
+    configWeaponInfo = config.Bind(section, "Weapon info", true, "Show extra info on weapon tooltips");
     configShowProgress = config.Bind(section, "Show progress", true, "Show progress for plants and structures");
     configSupport = config.Bind(section, "Show stats", true, "Show support for structures");
     configLocations = config.Bind(section, "Locations", true, "Show generator stats for locations");

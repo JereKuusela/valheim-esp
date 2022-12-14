@@ -42,9 +42,36 @@ public partial class Texts
   {
     if (attack == null) return "";
     var maxStamina = attack.m_attackStamina;
+    if (maxStamina == 0f) return "";
     var skillFactor = Player.m_localPlayer.GetSkillFactor(skillType);
     var stamina = maxStamina * (1 - 0.33f * skillFactor);
     return "Stamina: " + Format.Int(maxStamina, "orange") + " " + Format.String("(" + Format.Float(stamina) + ")");
+  }
+  public static string GetEitrText(Attack attack, Skills.SkillType skillType)
+  {
+    if (attack == null) return "";
+    var maxEitr = attack.m_attackEitr;
+    if (maxEitr == 0f) return "";
+    var skillFactor = Player.m_localPlayer.GetSkillFactor(skillType);
+    var eitr = maxEitr * (1 - 0.33f * skillFactor);
+    return "Eitr: " + Format.Int(maxEitr, "orange") + " " + Format.String("(" + Format.Float(eitr) + ")");
+  }
+  public static string GetHealthText(Attack attack, Skills.SkillType skillType)
+  {
+    if (attack == null) return "";
+    var maxHealth = attack.m_attackHealth;
+    var maxPercent = attack.m_attackHealthPercentage / 100f;
+    if (maxHealth == 0f && maxPercent == 0f) return "";
+    var skillFactor = Player.m_localPlayer.GetSkillFactor(skillType);
+    var health = maxHealth * (1 - 0.33f * skillFactor);
+    var percent = maxPercent * (1 - 0.33f * skillFactor);
+    if (maxHealth != 0f && maxPercent != 0f)
+      return "Health: " + Format.Int(maxHealth, "orange") + " + " + Format.PercentInt(maxPercent) + " " + Format.String("(" + Format.Float(health) + " + " + Format.Percent(percent) + ")");
+    if (maxHealth != 0f)
+      return "Health: " + Format.Int(maxHealth, "orange") + " " + Format.String("(" + Format.Float(health) + ")");
+    if (maxPercent != 0f)
+      return "Health: " + Format.PercentInt(maxPercent, "orange") + " " + Format.String("(" + Format.Percent(percent) + ")");
+    return "";
   }
   public static string GetHitboxText(Attack attack, string color = "yellow")
   {
@@ -103,7 +130,7 @@ public partial class Texts
     if (animation == "swing_pickaxe") return "1.4 s";
     if (animation == "swing_sledge") return "2.12 s";
     if (animation == "sword_secondary") return "1.84 s";
-    return "";
+    return animation;
   }
   public static string GetAttackSpeed(Attack attack, float holdDuration = 0, string color = "yellow")
   {
