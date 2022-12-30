@@ -248,5 +248,6 @@ public partial class Settings
     configShowPlayerCover = config.Bind(section, "Player cover", -1, CreateDescription());
     OnChanged(configShowPlayerCover, Tag.PlayerCover);
     OnChanged(configShowPlayerCover, Tag.PlayerCoverBlocked);
+    Visibility.SetTag(Tag.Terrain, true);
   }
 }

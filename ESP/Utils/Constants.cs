@@ -121,6 +121,7 @@ public static class Tag
   public const string Smoke = "Smoke";
   public const string PlayerCover = "PlayerCover";
   public const string PlayerCoverBlocked = "PlayerCoverBlocked";
+  public const string Terrain = "Terrain";
 }
 public static class Tool
 {

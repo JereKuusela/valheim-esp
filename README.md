@@ -26,6 +26,7 @@ Another way is to use the commands `esp_toggle`, `esp_enable` and `esp_disable`.
 - `esp_toggle`: Switches the value between 0 and 1.
 - `esp_enable`: Sets the value to 1.
 - `esp_disable`: Sets the value to -1.
+- `esp_terrain [radius]`: Visualizes the terrain within the radius.
 
 However once you know what you need, you should bind the `esp_toggle` command to a key to quick turn features on/off. For example: `bind o esp_toggle HUD ExtraInfo` would toggle the HUD and extra hover texts when pressing O button.
 

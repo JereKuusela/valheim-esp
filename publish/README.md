@@ -15,6 +15,10 @@ Donations: [Buy me a computer](https://www.buymeacoffee.com/jerekuusela)
 
 # Changelog
 
+- v1.16
+	- Adds a new command `esp_terrain` to visualize terrain.
+	- Adds a new setting to set terrain visual line width.
+
 - v1.15
 	- Adds more weapon stats to tool tips.
 	- Fixes some errors.

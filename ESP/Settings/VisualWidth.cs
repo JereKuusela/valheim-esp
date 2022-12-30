@@ -37,6 +37,7 @@ public partial class Settings
   public static ConfigEntry<int> configDestructibleRayWidth;
   public static ConfigEntry<int> configTrophySpeakSphereWidth;
   public static ConfigEntry<int> configLocationRayWidth;
+  public static ConfigEntry<int> configTerrainRayWidth;
 
   private static void OnWidthChanged(ConfigEntry<int> entry, string tag)
   {
@@ -144,5 +145,7 @@ public partial class Settings
     OnWidthChanged(configEffectAreaLineWidth, Tag.EffectAreaWarmCozy);
     configNoiseLineWidth = config.Bind(section, "Noise", 2, "");
     OnWidthChanged(configNoiseLineWidth, Tag.CreatureNoise);
+    configTerrainRayWidth = config.Bind(section, "Terrain rays", 2, "");
+    OnWidthChanged(configTerrainRayWidth, Tag.Terrain);
   }
 }

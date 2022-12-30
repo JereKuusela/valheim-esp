@@ -20,7 +20,7 @@ public partial class Settings
 
   private static void InitCommands()
   {
-    new Terminal.ConsoleCommand("esp_enable", "[name1] [name2] [name3] ... - Enables given settings.", (Terminal.ConsoleEventArgs args) =>
+    new Terminal.ConsoleCommand("esp_enable", "[name1] [name2] [name3] ... - Enables given settings.", args =>
     {
       if (args.Length < 2)
       {
@@ -33,7 +33,7 @@ public partial class Settings
       foreach (var arg in entries)
         SetEntry(arg, 1);
     }, optionsFetcher: OptionsFetcher);
-    new Terminal.ConsoleCommand("esp_toggle", "[name1] [name2] [name3] ... - Toggles given settings.", (Terminal.ConsoleEventArgs args) =>
+    new Terminal.ConsoleCommand("esp_toggle", "[name1] [name2] [name3] ... - Toggles given settings.", args =>
     {
       if (args.Length < 2)
       {
@@ -46,7 +46,7 @@ public partial class Settings
       foreach (var arg in entries)
         ToggleEntry(arg);
     }, optionsFetcher: OptionsFetcher);
-    new Terminal.ConsoleCommand("esp_disable", "[name1] [name2] [name3] ... - Disables given settings.", (Terminal.ConsoleEventArgs args) =>
+    new Terminal.ConsoleCommand("esp_disable", "[name1] [name2] [name3] ... - Disables given settings.", args =>
     {
       if (args.Length < 2)
       {
@@ -59,6 +59,13 @@ public partial class Settings
       foreach (var arg in entries)
         SetEntry(arg, -1);
     }, optionsFetcher: OptionsFetcher);
+    new Terminal.ConsoleCommand("esp_terrain", "[radius] - Inspects terrain.", args =>
+    {
+      if (!Player.m_localPlayer) return;
+      var pos = Player.m_localPlayer.transform.position;
+      var radius = args.TryParameterFloat(1, 10f);
+      Visual.DrawHeightmap(pos, radius);
+    });
   }
   private static List<string> OptionsFetcher()
   {
