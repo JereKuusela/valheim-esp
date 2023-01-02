@@ -29,16 +29,16 @@ public partial class Visual
           var paint = hm.GetPaintMask(j, i);
           line.GetComponent<LineRenderer>().material.SetColor("_Color", paint);
           renderers.Add(line);
-          var height = hm.m_heights[j * size + i].ToString("F2", CultureInfo.InvariantCulture);
+          var height = hm.m_heights[j * size + i].ToString("F4", CultureInfo.InvariantCulture);
           var level = "";
           var smooth = "";
           if (tc)
           {
             var num2 = i * size + j;
-            level = tc.m_levelDelta[num2].ToString("F2", CultureInfo.InvariantCulture);
-            smooth = tc.m_smoothDelta[num2].ToString("F2", CultureInfo.InvariantCulture);
+            level = tc.m_levelDelta[num2].ToString("F4", CultureInfo.InvariantCulture);
+            smooth = tc.m_smoothDelta[num2].ToString("F4", CultureInfo.InvariantCulture);
           }
-          Visualization.Draw.AddText(line, "Terrain", "Height: " + height + "\nLevel: " + level + "\nSmooth: " + smooth + "\nPaint: " + paint.ToString("F2"));
+          Visualization.Draw.AddText(line, "Terrain", "Height: " + height + "\nLevel: " + level + "\nSmooth: " + smooth + "\nPaint: " + paint.ToString("F4"));
         }
       }
     }

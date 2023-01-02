@@ -106,12 +106,15 @@ public partial class Texts
   }
   public static string Get(Character obj, BaseAI baseAI, MonsterAI monsterAI)
   {
-    if (!Settings.Resistances || !Helper.IsValid(obj) || !baseAI || !monsterAI)
+    if (!Settings.Resistances || !Helper.IsValid(obj) || !baseAI)
       return "";
     List<string> lines = new();
     var mass = obj.m_body.mass;
-    lines.Add(GetState(obj, baseAI, monsterAI));
-    lines.Add(monsterAI.m_aiStatus);
+    if (monsterAI)
+    {
+      lines.Add(GetState(obj, baseAI, monsterAI));
+      lines.Add(monsterAI.m_aiStatus);
+    }
     var health = obj.GetMaxHealth();
     lines.Add(Text.GetHealth(obj.GetHealth(), health));
     var factor = obj.m_staggerDamageFactor;
@@ -119,6 +122,7 @@ public partial class Texts
     if ((obj.m_name == "Deathsquito"))
       factor = 0f;
     lines.Add(GetStaggerText(health, factor, obj.m_staggerDamage));
+    lines.Add("Faction: " + obj.GetFaction().ToString());
     lines.Add("Mass: " + Format.Int(mass) + " (" + Format.Percent(1f - 5f / mass) + " knockback resistance)");
     var damageModifiers = obj.GetDamageModifiers();
     lines.Add(DamageModifierUtils.Get(damageModifiers, true, true));
@@ -139,7 +143,7 @@ public partial class Texts
       if (patrol)
         lines.Add("Patrol: " + Format.String(patrolPoint.ToString("F0")));
     }
-    if (monsterAI.m_consumeItems.Count > 0)
+    if (monsterAI && monsterAI.m_consumeItems.Count > 0)
     {
       var items = Translate.Name(monsterAI.m_consumeItems);
       lines.Add(items);

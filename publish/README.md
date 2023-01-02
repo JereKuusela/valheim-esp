@@ -18,6 +18,8 @@ Donations: [Buy me a computer](https://www.buymeacoffee.com/jerekuusela)
 - v1.16
 	- Adds a new command `esp_terrain` to visualize terrain.
 	- Adds a new setting to set terrain visual line width.
+	- Adds faction to the creature info.
+	- Adds info for animals.
 
 - v1.15
 	- Adds more weapon stats to tool tips.
