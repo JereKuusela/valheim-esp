@@ -76,7 +76,6 @@ Unfortunately the feature names for commands aren't documented (but the commands
 	- Created object when destroyed.
 	- Item drops with amounts and chances.
 	- World generator parameters.
-- Bounding boxes for mineral/stone support system to locate parts keeping the deposit from collapsing.
 - Stack size and despawn timer on dropped items.
 - Ship speed (both current and average), wind angle and wind strength on the HUD when sailing.
 
