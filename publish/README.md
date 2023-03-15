@@ -20,6 +20,7 @@ Donations: [Buy me a computer](https://www.buymeacoffee.com/jerekuusela)
 	- Adds a new setting to set terrain visual line width.
 	- Adds faction to the creature info.
 	- Adds info for animals.
+	- Improves health display for infinite health.
 
 - v1.15
 	- Adds more weapon stats to tool tips.

@@ -32,13 +32,14 @@ public partial class Visual
           var height = hm.m_heights[j * size + i].ToString("F4", CultureInfo.InvariantCulture);
           var level = "";
           var smooth = "";
+          var num2 = i * size + j;
           if (tc)
           {
-            var num2 = i * size + j;
             level = tc.m_levelDelta[num2].ToString("F4", CultureInfo.InvariantCulture);
             smooth = tc.m_smoothDelta[num2].ToString("F4", CultureInfo.InvariantCulture);
           }
-          Visualization.Draw.AddText(line, "Terrain", "Height: " + height + "\nLevel: " + level + "\nSmooth: " + smooth + "\nPaint: " + paint.ToString("F4"));
+          var text = $"Index: {num2}, i: {i}, j: {j}\nHeight: {height}\nLevel: {level}\nSmooth: {smooth}\nPaint: {paint.ToString("F4")}";
+          Visualization.Draw.AddText(line, "Terrain", text);
         }
       }
     }

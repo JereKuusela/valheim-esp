@@ -24,7 +24,9 @@ public partial class Text
     return Format.JoinRow(keys);
   }
   public static string GetHealth(double health, double limit)
-    => "Health: " + Format.Progress(health, limit) + " (" + Format.Percent(health / limit) + ")";
-
+  {
+    if (health > 1E10) return "Health: Infinite/" + Format.Int(limit);
+    return "Health: " + Format.Progress(health, limit) + " (" + Format.Percent(health / limit) + ")";
+  }
   public static string Radius(float radius) => "Radius: " + Format.Float(radius);
 }
