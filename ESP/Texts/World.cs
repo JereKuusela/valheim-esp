@@ -121,7 +121,7 @@ public partial class Texts
   private static string GetItem(OfferingBowl obj)
   {
     if (obj.m_useItemStands) return "Item stands: " + obj.m_itemstandMaxRange + " m";
-    return "Item: " + obj.m_bossItems + " of " + obj.m_bossItem.GetHoverName();
+    return "Item: " + obj.m_bossItems + " of " + (obj.m_bossItem?.GetHoverName() ?? "nothing");
   }
   private static string GetRespawnTime(OfferingBowl obj)
   {

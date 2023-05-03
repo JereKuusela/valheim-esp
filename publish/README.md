@@ -15,6 +15,10 @@ Donations: [Buy me a computer](https://www.buymeacoffee.com/jerekuusela)
 
 # Changelog
 
+- v1.17
+	- Fixes error with empty custom boss altars.
+	- Fixes error with empty pickables.
+
 - v1.16
 	- Adds a new command `esp_terrain` to visualize terrain.
 	- Adds a new setting to set terrain visual line width.

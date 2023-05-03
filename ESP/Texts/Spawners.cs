@@ -22,7 +22,7 @@ public partial class Texts
   }
   private static string GetRespawnTime(Pickable obj)
   {
-    if (!obj.m_hideWhenPicked || obj.m_respawnTimeMinutes == 0) return "Never";
+    if (obj.m_respawnTimeMinutes == 0) return "Never";
     var elapsed = Helper.GetElapsed(obj, "picked_time") / 60;
     var picked = Helper.GetBool(obj, "picked");
     var elapsedText = picked ? Format.Int(elapsed) : Format.String("Not picked");
@@ -30,9 +30,10 @@ public partial class Texts
   }
   public static string Get(Pickable obj)
   {
-    if (!Helper.IsValid(obj) || !Settings.Support) return "";
+    if (!Helper.IsValid(obj) || !Settings.Pickables) return "";
     List<string> lines = new();
     var respawn = GetRespawnTime(obj);
+    lines.Add("Item: " + Format.String(obj.m_itemPrefab ? Utils.GetPrefabName(obj.m_itemPrefab) : "None"));
     lines.Add("Respawn: " + respawn);
     if (obj.m_amount > 1)
       lines.Add("Amount: " + Format.Int(obj.m_amount));
