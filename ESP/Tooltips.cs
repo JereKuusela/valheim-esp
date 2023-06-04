@@ -13,9 +13,7 @@ public class DamageTypes_GetTooltipStringWithSkill
     if (Player.m_localPlayer == null) return;
     var obj = __instance;
 
-    float minFactor;
-    float maxFactor;
-    Player.m_localPlayer.GetSkills().GetRandomSkillRange(out minFactor, out maxFactor, skillType);
+    Player.m_localPlayer.GetSkills().GetRandomSkillRange(out float minFactor, out float maxFactor, skillType);
     if (obj.m_chop != 0f)
       __result += "\n$inventory_chop: " + obj.DamageRange(obj.m_chop, minFactor, maxFactor) + ", " + Format.String("#CHOP_TIER", "orange");
     if (obj.m_pickaxe != 0f)
@@ -43,9 +41,7 @@ public class ItemDropItemData_GetTooltip
     var data = item.m_shared;
     __result = __result.Replace("#CHOP_TIER", Texts.GetChopTier(data.m_toolTier));
     __result = __result.Replace("#PICKAXE_TIER", Texts.GetPickaxeTier(data.m_toolTier));
-    float minFactor;
-    float maxFactor;
-    Player.m_localPlayer.GetSkills().GetRandomSkillRange(out minFactor, out maxFactor, data.m_skillType);
+    Player.m_localPlayer.GetSkills().GetRandomSkillRange(out float minFactor, out float maxFactor, data.m_skillType);
     var skillFactor = Player.m_localPlayer.GetSkillFactor(data.m_skillType);
     int minKnockback = Mathf.RoundToInt(data.m_attackForce * minFactor);
     int maxKnockback = Mathf.RoundToInt(data.m_attackForce * maxFactor);

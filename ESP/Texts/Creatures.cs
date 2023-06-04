@@ -138,8 +138,7 @@ public partial class Texts
 
     if (baseAI)
     {
-      Vector3 patrolPoint;
-      var patrol = baseAI.GetPatrolPoint(out patrolPoint);
+      var patrol = baseAI.GetPatrolPoint(out Vector3 patrolPoint);
       if (patrol)
         lines.Add("Patrol: " + Format.String(patrolPoint.ToString("F0")));
     }

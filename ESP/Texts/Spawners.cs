@@ -43,9 +43,9 @@ public partial class Texts
   public static string Get(CreatureSpawner obj)
   {
     if (!Helper.IsValid(obj)) return "";
+    List<string> lines = new();
     var respawn = GetRespawnTime(obj);
     var noise = obj.m_triggerNoise > 0 ? " with noise of " + Format.Int(obj.m_triggerNoise) : "";
-    List<string> lines = new();
     lines.Add("Respawn: " + Format.String(respawn));
     lines.Add(Text.GetLevel(obj.m_minLevel, obj.m_maxLevel, 10));
     var timeText = GetTime(obj);
@@ -84,7 +84,7 @@ public partial class Texts
   {
     List<string> lines = new();
     var timeSinceSpawned = Helper.GetElapsed(obj, stableHashCode, 0);
-    var time = "";
+    /*var time = "";
     if (!spawnData.m_spawnAtDay)
     {
       time = ", only during " + Format.String("night");
@@ -92,7 +92,7 @@ public partial class Texts
     if (!spawnData.m_spawnAtNight)
     {
       time = ", only during " + Format.String("day");
-    }
+    }*/
     var forest = "";
     if (!spawnData.m_inForest)
     {
@@ -106,8 +106,8 @@ public partial class Texts
     var instances = SpawnSystem.GetNrOfInstances(spawnData.m_prefab, Player.m_localPlayer.transform.position, 0f, true, false);
     var progress = Format.ProgressPercent("Attempt", timeSinceSpawned, spawnData.m_spawnInterval);
     var chance = Format.Percent(spawnData.m_spawnChance / 100.0) + " chance";
-    var weather = spawnData.m_requiredEnvironments.Count > 0 ? (", Weather: " + Format.String(Format.JoinRow(spawnData.m_requiredEnvironments))) : "";
-    var global = spawnData.m_requiredGlobalKey != "" ? (", Bosses: " + Format.String(spawnData.m_requiredGlobalKey)) : "";
+    //var weather = spawnData.m_requiredEnvironments.Count > 0 ? (", Weather: " + Format.String(Format.JoinRow(spawnData.m_requiredEnvironments))) : "";
+    //var global = spawnData.m_requiredGlobalKey != "" ? (", Bosses: " + Format.String(spawnData.m_requiredGlobalKey)) : "";
     var spawns = Format.Progress(instances, spawnData.m_maxSpawned);
     var spawnDistance = Format.Int(spawnData.m_spawnDistance) + " meters";
     var level = Text.GetLevel(spawnData.m_minLevel, spawnData.m_maxLevel, 10, spawnData.m_levelUpMinCenterDistance);
@@ -121,7 +121,7 @@ public partial class Texts
     lines.Add("Creature: " + Format.String(spawnData.m_prefab.name) + hunt);
     lines.Add("Altitude: " + altitude + offset + ", Ocean depth: " + ocean + ", Tilt: " + tilt);
     lines.Add(progress + ", " + chance);
-    var biomeString = Texts.GetBiomes(spawnData.m_biome, spawnData.m_biomeArea);
+    var biomeString = GetBiomes(spawnData.m_biome, spawnData.m_biomeArea);
     if (biomeString.Length > 0)
       lines.Add(biomeString + forest);
     lines.Add("Creature limit: " + spawns + ", Distance limit: " + spawnDistance);
@@ -159,8 +159,8 @@ public partial class Texts
     var text = "Zone: " + Format.String(zone.x + ";" + zone.y);
     var biome = heightmap.GetBiome(position);
     var biomeArea = heightmap.GetBiomeArea();
-    var biomeAreaString = ((biomeArea == Heightmap.BiomeArea.Median) ? ", full" : "");
-    var area = heightmap.GetBiomeArea();
+    var biomeAreaString = biomeArea == Heightmap.BiomeArea.Median ? ", full" : "";
+    // var area = heightmap.GetBiomeArea();
     text += " (" + Translate.Name(biome) + biomeAreaString + ")";
     text += "\n";
     return text;
@@ -168,8 +168,8 @@ public partial class Texts
   public static string Get(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode)
   {
     List<string> lines = new();
-    lines.Add(GetZoneText(obj));
     var timeSinceSpawned = Helper.GetElapsed(obj, stableHashCode, 0);
+    lines.Add(GetZoneText(obj));
     var time = "";
     if (!spawnData.m_spawnAtDay)
     {

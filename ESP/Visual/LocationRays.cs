@@ -91,7 +91,7 @@ public class BaseAI_Ray
 [HarmonyPatch(typeof(Pickable), nameof(Pickable.Awake)), HarmonyPriority(Priority.Last)]
 public class Pickable_Ray
 {
-  static void Postfix(Pickable __instance, ZNetView ___m_nview)
+  static void Postfix(Pickable __instance)
   {
     if (!LocationUtils.IsEnabled(__instance)) return;
     var tag = LocationUtils.GetTag(__instance);

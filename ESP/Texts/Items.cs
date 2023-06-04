@@ -7,8 +7,8 @@ public partial class Texts
   {
     if (!Helper.IsValid(obj) || !Settings.ItemDrops) return "";
     List<string> lines = new();
-    lines.Add("Stack size: " + Format.Int(obj.m_itemData.m_shared.m_maxStackSize));
     var timer = obj.GetTimeSinceSpawned();
+    lines.Add("Stack size: " + Format.Int(obj.m_itemData.m_shared.m_maxStackSize));
     var inBase = obj.IsInsideBase();
     var playerInRange = Player.IsPlayerInRange(obj.transform.position, 25f);
     lines.Add(Format.ProgressPercent("Despawn timer", timer, 3600));

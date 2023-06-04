@@ -3,7 +3,7 @@ using Service;
 namespace ESP;
 public class DamageModifierUtils
 {
-  private static HitData.DamageType[] DAMAGE_TYPES = new[]{
+  private static readonly HitData.DamageType[] DAMAGE_TYPES = new[]{
       HitData.DamageType.Blunt,
       HitData.DamageType.Chop,
       HitData.DamageType.Fire,

@@ -5,6 +5,7 @@ namespace ESP;
 public partial class Settings
 {
 #nullable disable
+  public static ConfigEntry<int> configShowAttackRange;
   public static ConfigEntry<int> configShowCreatureFireRange;
   public static ConfigEntry<int> configShowTrackedCreatures;
   public static ConfigEntry<int> configShowCreatureBreedingTotalRange;
@@ -61,6 +62,7 @@ public partial class Settings
     if (name == Tag.CreatureHearRange.ToLower()) return configShowCreatureHearRange;
     if (name == Tag.CreatureViewRange.ToLower()) return configShowCreatureViewRange;
     if (name == Tag.CreatureAlertRange.ToLower()) return configShowCreatureAlertRange;
+    if (name == Tag.Attack.ToLower()) return configShowAttackRange;
     if (name == Tag.CreatureFireRange.ToLower()) return configShowCreatureFireRange;
     if (name == Tag.CreatureBreedingTotalRange.ToLower()) return configShowCreatureBreedingTotalRange;
     if (name == Tag.CreatureBreedingPartnerRange.ToLower()) return configShowCreatureBreedingPartnerRange;
@@ -125,7 +127,7 @@ public partial class Settings
     throw new NotImplementedException(name);
   }
   public static bool IsDisabled(string name) => GetTagEntry(name).Value < 0;
-  private static ConfigDescription CreateDescription() => new ConfigDescription("", new AcceptableValueRange<int>(-1, 1));
+  private static ConfigDescription CreateDescription() => new("", new AcceptableValueRange<int>(-1, 1));
   private static void OnChanged(ConfigEntry<int> entry, string tag)
   {
     entry.SettingChanged += (s, e) => Visibility.SetTag(tag, entry.Value > 0);
@@ -135,6 +137,8 @@ public partial class Settings
   {
     var section = "3. Visuals";
 
+    configShowAttackRange = config.Bind(section, "Attack range", -1, CreateDescription());
+    OnChanged(configShowAttackRange, Tag.Attack);
     configShowStructureCover = config.Bind(section, "Structure cover", -1, CreateDescription());
     OnChanged(configShowStructureCover, Tag.StructureCover);
     OnChanged(configShowStructureCover, Tag.StructureCoverBlocked);

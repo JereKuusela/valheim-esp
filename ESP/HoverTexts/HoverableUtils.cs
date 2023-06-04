@@ -33,7 +33,7 @@ public partial class Text
   {
     obj.AddComponent<HoverText>().m_text = text;
   }
-  public static bool extraInfo
+  public static bool ExtraInfo
   {
     get => Settings.ExtraInfo && Admin.Enabled;
     set
@@ -50,11 +50,11 @@ public partial class Text
   }
   public static void AddTexts(GameObject obj, ref string __result)
   {
-    if (!extraInfo) return;
+    if (!ExtraInfo) return;
     List<string> lines = new();
-    lines.Add("Coordinates: " + Format.Coordinates(obj.transform.position));
     var character = obj.GetComponentInParent<Character>();
     var baseAI = obj.GetComponentInParent<BaseAI>();
+    lines.Add("Coordinates: " + Format.Coordinates(obj.transform.position));
     lines.Add(Texts.Get(obj.GetComponentInParent<TreeLog>()));
     lines.Add(Texts.Get(obj.GetComponentInParent<TreeBase>()));
     lines.Add(Texts.Get(obj.GetComponentInParent<Destructible>()));

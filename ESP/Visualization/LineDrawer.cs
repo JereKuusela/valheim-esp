@@ -38,6 +38,14 @@ public partial class Draw
     renderer.SetPosition(1, end);
     return obj;
   }
+  ///<summary>Creates a renderer with a line.</summary>
+  public static GameObject DrawLine(string tag, MonoBehaviour parent, Vector3 start, Vector3 end)
+  {
+    var parentObj = CreateObject(parent.gameObject, tag);
+    var obj = DrawLineSub(parentObj, start, end);
+    AddBoxCollider(obj);
+    return obj;
+  }
   ///<summary>Creates a renderer with a line that doesn't rotate with the object.</summary>
   public static GameObject DrawLineWithFixedRotation(string tag, MonoBehaviour parent, Vector3 start, Vector3 end)
   {
@@ -47,7 +55,7 @@ public partial class Draw
     var forwardStart = Quaternion.Inverse(rotation) * start;
     var forwardEnd = Quaternion.Inverse(rotation) * end;
     var obj = DrawLineSub(parentObj, forwardStart, forwardEnd);
-    Draw.AddBoxCollider(obj);
+    AddBoxCollider(obj);
     return obj;
   }
   ///<summary>Creates a renderer with a vertical line (relative to the object) starting from the object center.</summary>

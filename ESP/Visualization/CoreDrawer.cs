@@ -10,8 +10,10 @@ public partial class Draw : Component
   ///<summary>Creates the base object for drawing.</summary>
   private static GameObject CreateObject(GameObject parent, string tag, Quaternion? fixedRotation = null)
   {
-    GameObject obj = new();
-    obj.layer = LayerMask.NameToLayer(TriggerLayer);
+    GameObject obj = new()
+    {
+      layer = LayerMask.NameToLayer(TriggerLayer)
+    };
     obj.transform.parent = parent.transform;
     obj.transform.localPosition = Vector3.zero;
     obj.transform.localRotation = Quaternion.identity;
@@ -89,7 +91,7 @@ public partial class Draw : Component
       return set.Contains(visualization.Tag);
     }).ToArray();
   }
-  private static Dictionary<string, Color> colors = new();
+  private static readonly Dictionary<string, Color> colors = new();
   public static Color GetColor(string tag) => colors.ContainsKey(tag) ? colors[tag] : Color.white;
   ///<summary>Sets colors to visuals with a given tag.</summary>
   public static void SetColor(string tag, Color color)
@@ -100,7 +102,7 @@ public partial class Draw : Component
       if (obj.Tag == tag) ChangeColor(obj.gameObject);
     }
   }
-  private static Dictionary<string, int> lineWidths = new();
+  private static readonly Dictionary<string, int> lineWidths = new();
   public static float GetLineWidth(string tag)
   {
     var width = Math.Max(1, lineWidths.ContainsKey(tag) ? lineWidths[tag] : 0);

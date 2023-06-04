@@ -49,15 +49,17 @@ public partial class Texts
   }
   public static string GetSenses(BaseAI obj, MonsterAI monsterAI, Procreation procreation)
   {
-    List<string> lines = new();
-    lines.Add(FireRange(obj));
-    lines.Add(ViewRange(obj));
-    lines.Add(AlertRange(monsterAI));
-    lines.Add(Hearing(obj));
-    lines.Add(BreedingLimit(procreation));
-    lines.Add(PartnerSearch(procreation));
-    lines.Add(FoodLimit(monsterAI));
-    lines.Add(GetEatRange(monsterAI));
+    List<string> lines = new()
+    {
+      FireRange(obj),
+      ViewRange(obj),
+      AlertRange(monsterAI),
+      Hearing(obj),
+      BreedingLimit(procreation),
+      PartnerSearch(procreation),
+      FoodLimit(monsterAI),
+      GetEatRange(monsterAI)
+    };
     return Format.JoinLines(lines);
   }
 }

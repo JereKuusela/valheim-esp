@@ -10,6 +10,7 @@ public partial class Settings
     if (ColorUtility.TryParseHtmlString(color, out var parsed)) return parsed;
     return Color.white;
   }
+  public static ConfigEntry<string> configAttackRayColor;
   public static ConfigEntry<string> configCreatureRayColor;
   public static ConfigEntry<string> configPickableOneTimeColor;
   public static ConfigEntry<string> configPickableRespawningColor;
@@ -71,6 +72,8 @@ public partial class Settings
   private static void InitColors(ConfigFile config)
   {
     var section = "5. Colors (predefined, #RRGGBB, #RRGGBBAA)";
+    configAttackRayColor = config.Bind(section, "Attack ray", "magenta", "");
+    OnColorChanged(configAttackRayColor, Tag.Attack);
     configCreatureRayColor = config.Bind(section, "Creature ray", "magenta", "");
     OnColorChanged(configCreatureRayColor, Tag.TrackedCreature);
     configPickableOneTimeColor = config.Bind(section, "Pickable ray (one time)", "green", "");

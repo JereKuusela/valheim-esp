@@ -3,28 +3,18 @@ public class Names
 {
   public static string GetName(Heightmap.Biome biome)
   {
-    switch (biome)
+    return biome switch
     {
-      case Heightmap.Biome.AshLands:
-        return "Ash Lands";
-      case Heightmap.Biome.BlackForest:
-        return "Black Forest";
-      case Heightmap.Biome.DeepNorth:
-        return "Deep North";
-      case Heightmap.Biome.Meadows:
-        return "Meadows";
-      case Heightmap.Biome.Mistlands:
-        return "Mistlands";
-      case Heightmap.Biome.Mountain:
-        return "Mountain";
-      case Heightmap.Biome.Ocean:
-        return "Ocean";
-      case Heightmap.Biome.Plains:
-        return "Plains";
-      case Heightmap.Biome.Swamp:
-        return "Swamp";
-      default:
-        return "";
-    }
+      Heightmap.Biome.AshLands => "Ash Lands",
+      Heightmap.Biome.BlackForest => "Black Forest",
+      Heightmap.Biome.DeepNorth => "Deep North",
+      Heightmap.Biome.Meadows => "Meadows",
+      Heightmap.Biome.Mistlands => "Mistlands",
+      Heightmap.Biome.Mountain => "Mountain",
+      Heightmap.Biome.Ocean => "Ocean",
+      Heightmap.Biome.Plains => "Plains",
+      Heightmap.Biome.Swamp => "Swamp",
+      _ => "",
+    };
   }
 }

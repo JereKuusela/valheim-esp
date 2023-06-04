@@ -66,8 +66,10 @@ public partial class Texts
     var character = obj.GetComponent<Character>();
     var monsterAI = obj.GetComponent<MonsterAI>();
     if (!character) return "";
-    List<string> lines = new();
-    lines.Add(GetFed(obj, monsterAI));
+    List<string> lines = new()
+    {
+      GetFed(obj, monsterAI)
+    };
     if (character.IsTamed())
     {
       lines.Add(GetLove(procreation));

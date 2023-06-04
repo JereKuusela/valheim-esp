@@ -13,7 +13,7 @@ public partial class Visual
     foreach (var vector in Cover.m_coverRays)
     {
       var tag = isPlayer ? Tag.PlayerCover : Tag.StructureCover;
-      if (Physics.Raycast(startPos + vector * start, vector, out var raycastHit, Constants.CoverRayCastLength - start, Cover.m_coverRayMask))
+      if (Physics.Raycast(startPos + vector * start, vector, out _, Constants.CoverRayCastLength - start, Cover.m_coverRayMask))
         tag = isPlayer ? Tag.PlayerCoverBlocked : Tag.StructureCoverBlocked;
       var line = Visualization.Draw.DrawLineWithFixedRotation(tag, obj, delta + vector * start, delta + vector * Constants.CoverRayCastLength);
       Visualization.Draw.AddText(line, name, text);
@@ -67,8 +67,7 @@ public partial class Visual
     foreach (var vector in vectors)
     {
       var tag = isPlayer ? Tag.PlayerCover : Tag.StructureCover;
-      RaycastHit raycastHit;
-      if (Physics.Raycast(startPos + vector * start, vector, out raycastHit, Constants.CoverRayCastLength - start, Cover.m_coverRayMask))
+      if (Physics.Raycast(startPos + vector * start, vector, out RaycastHit raycastHit, Constants.CoverRayCastLength - start, Cover.m_coverRayMask))
         tag = isPlayer ? Tag.PlayerCoverBlocked : Tag.StructureCoverBlocked;
       var renderer = renderers[index];
       var color = Visualization.Draw.GetColor(tag);

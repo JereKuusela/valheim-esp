@@ -5,17 +5,17 @@ using UnityEngine;
 namespace ESP;
 public partial class Visual
 {
-  private static List<GameObject> renderers = new List<GameObject>();
+  private static readonly List<GameObject> renderers = new();
   public static void DrawHeightmap(Vector3 pos, float radius)
   {
     List<Heightmap> hms = new();
     Heightmap.FindHeightmap(pos, radius, hms);
     foreach (var renderer in renderers)
-      UnityEngine.Object.Destroy(renderer);
+      Object.Destroy(renderer);
     renderers.Clear();
     foreach (var hm in hms)
     {
-      var size = (hm.m_width + 1);
+      var size = hm.m_width + 1;
       var tc = TerrainComp.FindTerrainCompiler(hm.transform.position);
       for (var i = 0; i < size; i++)
       {
@@ -38,7 +38,7 @@ public partial class Visual
             level = tc.m_levelDelta[num2].ToString("F4", CultureInfo.InvariantCulture);
             smooth = tc.m_smoothDelta[num2].ToString("F4", CultureInfo.InvariantCulture);
           }
-          var text = $"Index: {num2}, i: {i}, j: {j}\nHeight: {height}\nLevel: {level}\nSmooth: {smooth}\nPaint: {paint.ToString("F4")}";
+          var text = $"Index: {num2}, i: {i}, j: {j}\nHeight: {height}\nLevel: {level}\nSmooth: {smooth}\nPaint: {paint:F4}";
           Visualization.Draw.AddText(line, "Terrain", text);
         }
       }

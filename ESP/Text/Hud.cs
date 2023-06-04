@@ -23,12 +23,14 @@ public static class Hud
   {
     if (!Settings.ShowHud) return new();
     var position = Player.m_localPlayer.transform.position;
-    List<string> lines = new();
-    lines.Add(GetEnvironment());
-    lines.Add(GetPosition(position));
-    lines.Add(GetSpeed() + ", " + GetNoise() + ", " + GetLight());
-    lines.Add(GetTrackedObjects());
-    lines.Add(GetStaggerTracker());
+    List<string> lines = new()
+    {
+      GetEnvironment(),
+      GetPosition(position),
+      GetSpeed() + ", " + GetNoise() + ", " + GetLight(),
+      GetTrackedObjects(),
+      GetStaggerTracker()
+    };
     return lines.Where(item => item != "").ToList();
   }
   private static string GetSpeed() => "Speed: " + Format.Float(Player.m_localPlayer.m_currentVel.magnitude, "0.#") + " m/s";
@@ -60,7 +62,7 @@ public static class Hud
   // ZDO tracks take a while for big worlds so have a longer timer for them.
   // More careful solution would be using sectors but more complicated.
   private static float TrackUpdateLongTimer = 0;
-  private static Dictionary<string, int> trackCache = new();
+  private static readonly Dictionary<string, int> trackCache = new();
   private static string GetTrackedObjects()
   {
     if (Settings.TrackedObjects == "") return "";

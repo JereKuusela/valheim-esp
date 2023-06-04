@@ -128,8 +128,10 @@ public partial class Texts
   {
     // Utility object without nView.
     if (!Settings.Destructibles || !obj) return "";
-    List<string> lines = new();
-    lines.Add(Get(obj.m_dropWhenDestroyed, 1));
+    List<string> lines = new()
+    {
+      Get(obj.m_dropWhenDestroyed, 1)
+    };
     return Format.JoinLines(lines);
   }
   private static string GetMaterialName(WearNTear.MaterialType material)
@@ -152,8 +154,7 @@ public partial class Texts
 
     if (SupportUtils.Enabled(obj))
     {
-      float maxSupport, minSupport, horizontalLoss, verticalLoss;
-      obj.GetMaterialProperties(out maxSupport, out minSupport, out horizontalLoss, out verticalLoss);
+      obj.GetMaterialProperties(out float maxSupport, out float minSupport, out float horizontalLoss, out float verticalLoss);
       var support = Math.Min(Helper.GetFloat(obj, "support", maxSupport), maxSupport);
       lines.Add(Format.String(GetMaterialName(obj.m_materialType)) + ": " + Format.Progress(support, minSupport) + " support");
       lines.Add(Format.Percent(horizontalLoss) + " horizontal loss, " + Format.Percent(verticalLoss) + " vertical loss");
@@ -239,18 +240,20 @@ public partial class Texts
   public static string Get(SmokeSpawner obj)
   {
     if (!Helper.IsValid(obj)) return "";
-    List<string> lines = new();
-    lines.Add(GetSmokeLimit());
-    lines.Add("Produces smoke every " + Format.Float(obj.m_interval) + " s, unless smoke within " + Format.Float(obj.m_testRadius) + " m");
+    List<string> lines = new()
+    {
+      GetSmokeLimit(),
+      "Produces smoke every " + Format.Float(obj.m_interval) + " s, unless smoke within " + Format.Float(obj.m_testRadius) + " m"
+    };
     return Format.JoinLines(lines);
   }
   public static string Get(Smoke obj)
   {
     if (!Helper.IsValid(obj)) return "";
     List<string> lines = new();
+    var collider = obj.GetComponent<SphereCollider>();
     lines.Add(": " + Format.Progress(Smoke.GetTotalSmoke(), Constants.SmokeAmountLimit, true));
     lines.Add(Format.ProgressPercent("Expires", obj.m_time, obj.m_ttl));
-    var collider = obj.GetComponent<SphereCollider>();
     if (collider)
       lines.Add("Radius: " + Format.Float(collider.radius * obj.transform.lossyScale.x));
     var body = obj.m_body;
@@ -397,9 +400,11 @@ public partial class Texts
   public static string Get(Smelter obj)
   {
     if (!Settings.Structures || !Settings.Progress || !Helper.IsValid(obj)) return "";
-    List<string> lines = new();
-    lines.Add(GetProgressText(obj));
-    lines.Add(GetFuelText(obj));
+    List<string> lines = new()
+    {
+      GetProgressText(obj),
+      GetFuelText(obj)
+    };
     if (obj.m_windmill)
       lines.Add(GetPowerText(obj.m_windmill));
     else
@@ -411,7 +416,7 @@ public partial class Texts
   {
     var forward = ship.transform.forward * 1f;
     forward.y = 0;
-    var forwardAngle = 90f - Mathf.Atan2(ship.transform.forward.z, ship.transform.forward.x) / Math.PI * 180f;
+    // var forwardAngle = 90f - Mathf.Atan2(ship.transform.forward.z, ship.transform.forward.x) / Math.PI * 180f;
     var windDir = EnvMan.instance.GetWindDir() * 1f;
     windDir.y = 0;
     return Vector3.Angle(forward, windDir);
@@ -430,8 +435,8 @@ public partial class Texts
     return velocity.magnitude;
   }
   const int SPEED_COUNT = 2000;
-  private static Queue<float> shipForwardSpeeds = new(SPEED_COUNT + 1);
-  private static Queue<float> shipSpeeds = new(SPEED_COUNT + 1);
+  private static readonly Queue<float> shipForwardSpeeds = new(SPEED_COUNT + 1);
+  private static readonly Queue<float> shipSpeeds = new(SPEED_COUNT + 1);
   public static void UpdateAverageSpeed(Ship obj)
   {
     if (obj == null)
@@ -478,8 +483,7 @@ public partial class Texts
     foreach (var vector in Cover.m_coverRays)
     {
       total++;
-      RaycastHit raycastHit;
-      if (Physics.Raycast(startPos + vector * start, vector, out raycastHit, Constants.CoverRayCastLength - start, Cover.m_coverRayMask))
+      if (Physics.Raycast(startPos + vector * start, vector, out RaycastHit raycastHit, Constants.CoverRayCastLength - start, Cover.m_coverRayMask))
         hits++;
     }
 

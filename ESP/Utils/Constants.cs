@@ -53,6 +53,7 @@ public static class Tag
     if ((type & EffectArea.Type.WarmCozyArea) != 0) return Tag.EffectAreaWarmCozy;
     return Tag.EffectAreaOther;
   }
+  public const string Attack = "Attack";
   public const string StructureCover = "StructureCover";
   public const string StructureCoverBlocked = "StructureCoverBlocked";
   public const string StructureSupport = "StructureSupport";

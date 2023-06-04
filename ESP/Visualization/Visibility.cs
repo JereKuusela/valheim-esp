@@ -8,10 +8,10 @@ public class Visibility : Component
 
   ///<summary Global visibility (intended for admin checks).</summary>
   private static bool visible = false;
-  private static HashSet<string> visibleTags = new();
-  private static HashSet<string> tags = new();
+  private static readonly HashSet<string> visibleTags = new();
+  private static readonly HashSet<string> tags = new();
   public static List<string> GetTags => tags.ToList();
-  private static Dictionary<string, string> tagToGroup = new();
+  private static readonly Dictionary<string, string> tagToGroup = new();
   ///<summary>Returns whether a given visual tag is shown.</summary>
   public static bool IsTag(string name) => visible && visibleTags.Contains(name) && (!tagToGroup.ContainsKey(name));
   public static void Set(bool visibility)

@@ -153,8 +153,7 @@ public partial class Texts
   public static string Get(SpawnArea obj)
   {
     if (!obj) return "";
-    int near, total;
-    obj.GetInstances(out near, out total);
+    obj.GetInstances(out int near, out int total);
     List<string> lines = new(){
         Format.ProgressPercent("Timer", obj.m_spawnTimer, obj.m_spawnIntervalSec),
         "Area: " + Format.Int(obj.m_spawnRadius) + " m",

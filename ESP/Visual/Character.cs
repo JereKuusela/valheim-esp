@@ -72,7 +72,7 @@ public class BaseAI_Pathfinding
   {
     __state = ___m_lastFindPathTime;
   }
-  static void Postfix(BaseAI __instance, float __state, float ___m_lastFindPathTime, bool __result)
+  static void Postfix(float __state, float ___m_lastFindPathTime)
   {
     if (__state == ___m_lastFindPathTime) return;
   }
