@@ -42,7 +42,7 @@ public partial class Settings
     var section = "2. Tooltips";
     configExtraInfo = config.Bind(section, "Show extra info on tooltips", false, "Show extra info on tooltips and hover texts (toggle with O button in the game)");
     configResistances = config.Bind(section, "Resistances", true, "Show resistances for creatures and structures");
-    configAttacks = config.Bind(section, "Attacks", true, "Show creature attacks");
+    configAttacks = config.Bind(section, "Attacks", false, "Show creature attacks");
     configStructures = config.Bind(section, "Structures", true, "Show structure stats (health, resistances, support, etc.)");
     configCreatures = config.Bind(section, "Creatures", true, "Show creature stats (health, resistances, drops, attacks, taming, etc.)");
     configDestructibles = config.Bind(section, "Destructibles", true, "Show destructible stats (health, resistances)");
@@ -55,7 +55,7 @@ public partial class Settings
     configShowProgress = config.Bind(section, "Show progress", true, "Show progress for plants and structures");
     configSupport = config.Bind(section, "Show stats", true, "Show support for structures");
     configLocations = config.Bind(section, "Locations", true, "Show generator stats for locations");
-    configVegetation = config.Bind(section, "Vegetation", true, "Show generator stats for vegetation");
+    configVegetation = config.Bind(section, "Vegetation", false, "Show generator stats for vegetation");
     configShowShipStats = config.Bind(section, "Show ship stats", true, "Show ship speed and wind direction on the ship");
   }
 }

@@ -54,11 +54,11 @@ public partial class Texts
         text += ", " + Format.String("priority");
 
       if (!isNonAttack)
-        text += ", " + Texts.GetAttackType(attack);
-      var hitbox = Texts.GetHitboxText(attack);
+        text += ", " + GetAttackType(attack);
+      var hitbox = GetHitboxText(attack);
       if (!isNonAttack && hitbox != "")
         text += ", " + hitbox;
-      var projectile = Texts.GetProjectileText(attack);
+      var projectile = GetProjectileText(attack);
       if (!isNonAttack && projectile != "")
         text += ", " + projectile;
       if (!attack.m_lowerDamagePerHit)
@@ -75,7 +75,7 @@ public partial class Texts
       }
       return text;
     });
-    return "\n" + Format.JoinLines(texts);
+    return Format.JoinLines(texts);
   }
 
   public static string GetNoise(Character obj) => "Noise: " + Format.Int(obj.m_noiseRange);
@@ -119,7 +119,7 @@ public partial class Texts
     lines.Add(Text.GetHealth(obj.GetHealth(), health));
     var factor = obj.m_staggerDamageFactor;
     // Doesn't have stagger animation so hardcoded to be immune.
-    if ((obj.m_name == "Deathsquito"))
+    if (obj.m_name == "Deathsquito")
       factor = 0f;
     lines.Add(GetStaggerText(health, factor, obj.m_staggerDamage));
     lines.Add("Faction: " + obj.GetFaction().ToString());

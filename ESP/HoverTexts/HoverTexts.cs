@@ -125,22 +125,32 @@ public class TeleportWorld_GetHoverText
 {
   static void Postfix(TeleportWorld __instance, ref string __result) => Text.AddTexts(__instance.gameObject, ref __result);
 }
-[HarmonyPatch(typeof(Smelter), nameof(Smelter.UpdateHoverTexts))]
-public partial class HoverTextUtils
+[HarmonyPatch(typeof(Smelter), nameof(Smelter.OnHoverAddOre))]
+public class OnHoverAddOre
 {
-  private static void UpdateSwitches(Smelter instance, string text)
+  static string Postfix(string result, Smelter __instance)
   {
-    var oreSwitch = instance.m_addOreSwitch;
-    var woodSwitch = instance.m_addWoodSwitch;
-    var emptySwitch = instance.m_emptyOreSwitch;
-    if (oreSwitch) oreSwitch.m_hoverText += text;
-    if (woodSwitch) woodSwitch.m_hoverText += text;
-    if (emptySwitch) emptySwitch.m_hoverText += text;
-  }
-  static void Postfix(Smelter __instance)
-  {
-    var text = "";
-    Text.AddTexts(__instance.gameObject, ref text);
-    UpdateSwitches(__instance, text);
+    Text.AddTexts(__instance.gameObject, ref result);
+    return result;
   }
 }
+[HarmonyPatch(typeof(Smelter), nameof(Smelter.OnHoverAddFuel))]
+public class OnHoverAddFuel
+{
+  static string Postfix(string result, Smelter __instance)
+  {
+    Text.AddTexts(__instance.gameObject, ref result);
+    return result;
+  }
+}
+
+[HarmonyPatch(typeof(Smelter), nameof(Smelter.OnHoverEmptyOre))]
+public class OnHoverEmptyOre
+{
+  static string Postfix(string result, Smelter __instance)
+  {
+    Text.AddTexts(__instance.gameObject, ref result);
+    return result;
+  }
+}
+

@@ -72,7 +72,7 @@ public static class Hud
     if (TrackUpdateTimer >= 1f)
     {
       TrackUpdateTimer = 0;
-      var itemsDrops = ItemDrop.m_instances;
+      var itemsDrops = ItemDrop.s_instances;
       foreach (var name in tracked)
       {
         var prefab = ZNetScene.instance.GetPrefab(name);
@@ -86,8 +86,8 @@ public static class Hud
         else
         {
           if (TrackUpdateLongTimer < 5f) continue;
-          List<ZDO> zdos = new();
-          ZDOMan.instance.GetAllZDOsWithPrefab(prefab.name, zdos);
+          var hash = prefab.name.GetStableHashCode();
+          var zdos = ZDOMan.instance.m_objectsByID.Values.Where(zdo => zdo.m_prefab == hash).ToList();
           var position = Player.m_localPlayer.transform.position;
           if (Settings.TrackRadius < 0)
             count = zdos.Count();
@@ -114,7 +114,7 @@ public static class Hud
 
 
 
-  [HarmonyPatch(typeof(Character), nameof(Character.FixedUpdate))]
+  [HarmonyPatch(typeof(Character), nameof(Character.CustomFixedUpdate))]
   public class CreatureStagger
   {
 
@@ -124,6 +124,13 @@ public static class Hud
 
     static void Postfix(Character __instance)
     {
+      // For start up screen.
+      if (!__instance || !__instance.m_nview || !__instance.m_nview.IsValid())
+      {
+        StaggerStart = 0;
+        Id = ZDOID.None;
+        return;
+      }
       bool isStaggering = __instance.IsStaggering();
       if (StaggerStart == 0 && isStaggering)
       {
@@ -138,7 +145,7 @@ public static class Hud
         StaggerStart = 0;
         Id = ZDOID.None;
       }
-      // If target dies while staggering.
+      // Fail safe.
       if (staggered > 10)
       {
         StaggerStart = 0;

@@ -1,5 +1,9 @@
 - v1.18
-	- Adds a visual for melee attack hitboxes ange.
+	- Adds a visual for melee attack hitboxes range.
+  - Adds the prefab id to the hover text.
+  - Changes the default value of creature attacks and vegetation info to false.
+  - Moves the coordinates to bottom of the hover text.
+  - Updated for the new game version.
 
 - v1.17
 	- Fixes error with empty custom boss altars.

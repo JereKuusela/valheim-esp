@@ -54,7 +54,7 @@ public partial class Text
     List<string> lines = new();
     var character = obj.GetComponentInParent<Character>();
     var baseAI = obj.GetComponentInParent<BaseAI>();
-    lines.Add("Coordinates: " + Format.Coordinates(obj.transform.position));
+    lines.Add("Id: " + Translate.Name(obj));
     lines.Add(Texts.Get(obj.GetComponentInParent<TreeLog>()));
     lines.Add(Texts.Get(obj.GetComponentInParent<TreeBase>()));
     lines.Add(Texts.Get(obj.GetComponentInParent<Destructible>()));
@@ -94,6 +94,7 @@ public partial class Text
     lines.Add(Texts.Get(baseAI, obj.GetComponentInParent<Growup>()));
     if (obj.GetComponentInParent<BaseAI>())
       lines.Add(Texts.GetAttack(obj.GetComponentInParent<Humanoid>()));
+    lines.Add("Coordinates: " + Format.Coordinates(obj.transform.position));
     __result += "\n" + Format.JoinLines(lines);
   }
 }

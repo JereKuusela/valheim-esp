@@ -8,7 +8,7 @@ public static class SupportUtils
   ///<summary>Sets visibility of the support visual for all structures.</summary>
   public static void UpdateVisibility()
   {
-    WearNTear.GetAllInstaces().Where(item => item.m_supports).ToList().ForEach(item =>
+    WearNTear.s_allInstances.Where(item => item.m_supports).ToList().ForEach(item =>
     {
       var shown = VisualEnabled(item);
       if (shown)
