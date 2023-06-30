@@ -54,7 +54,7 @@ public partial class Text
     List<string> lines = new();
     var character = obj.GetComponentInParent<Character>();
     var baseAI = obj.GetComponentInParent<BaseAI>();
-    lines.Add("Id: " + Translate.Name(obj));
+    lines.Add("Id: " + Translate.Id(obj));
     lines.Add(Texts.Get(obj.GetComponentInParent<TreeLog>()));
     lines.Add(Texts.Get(obj.GetComponentInParent<TreeBase>()));
     lines.Add(Texts.Get(obj.GetComponentInParent<Destructible>()));

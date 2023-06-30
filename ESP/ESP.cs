@@ -10,7 +10,7 @@ public class ESP : BaseUnityPlugin
 {
   const string GUID = "esp";
   const string NAME = "ESP";
-  const string VERSION = "1.18";
+  const string VERSION = "1.19";
   private static ManualLogSource? Logs;
   public static ManualLogSource Log => Logs!;
   public void Awake()

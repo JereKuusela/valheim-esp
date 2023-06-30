@@ -10,7 +10,7 @@ public class Translate
   public static string Name(ItemDrop.ItemData obj, string color = "yellow") => obj != null ? Name(obj.m_shared.m_name, color) : "";
   private static string Name(Pickable obj) => obj ? string.IsNullOrEmpty(obj.m_overrideName) ? obj.m_itemPrefab?.name ?? "" : obj.m_overrideName : "";
   public static string Name(CreatureSpawner obj) => obj ? Utils.GetPrefabName(obj.m_creaturePrefab) : "";
-  public static string Name(IEnumerable<GameObject> objs, string color = "yellow") => Format.JoinRow(objs.Select(prefab => Name(prefab, color)));
+  public static string Name(IEnumerable<GameObject> objs, string color = "yellow") => Format.JoinRow(objs.Select(prefab => Id(prefab, color)));
   public static string Name(IEnumerable<ItemDrop> objs, string color = "yellow") => Format.JoinRow(objs.Select(prefab => Name(prefab, color)));
   private static string Name(Bed obj) => obj ? obj.GetHoverName() : "";
   private static string Name(Piece obj) => obj ? obj.m_name : "";
@@ -38,8 +38,19 @@ public class Translate
     if (text == "") text = Name(obj.GetComponentInParent<Destructible>());
     if (text == "") text = Name(obj.GetComponentInParent<Character>());
     if (text == "") text = Name(obj.GetComponentInParent<Piece>());
-    if (text == "") text = Name(obj.gameObject, color);
+    if (text == "") text = Id(obj.gameObject, color);
     return Name(text, color);
   }
-  public static string Name(GameObject obj, string color = "yellow") => obj ? Name(Utils.GetPrefabName(obj), color) : "";
+  public static string Id(GameObject obj, string color = "yellow")
+  {
+    if (!obj) return "";
+    var view = obj.GetComponentInParent<ZNetView>();
+    if (view)
+    {
+      var hash = view.GetZDO()?.GetPrefab() ?? 0;
+      if (ZNetScene.instance.m_namedPrefabs.TryGetValue(hash, out var prefab))
+        return Format.String(prefab.name, color);
+    }
+    return Format.String(Utils.GetPrefabName(obj), color);
+  }
 }

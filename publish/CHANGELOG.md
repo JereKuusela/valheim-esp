@@ -1,3 +1,6 @@
+- v1.19
+	- Fixes id display not working correctly.
+
 - v1.18
 	- Adds a visual for melee attack hitboxes range.
   - Adds the prefab id to the hover text.

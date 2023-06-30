@@ -24,7 +24,7 @@ public partial class Texts
     lines.Add(Text.GetHealth(health, maxHealth));
     lines.Add("Hit noise: " + Format.Int(obj.m_hitNoise));
     if (obj.m_subLogPrefab)
-      lines.Add("Destroy creates: " + Format.Int(obj.m_subLogPoints.Length) + " " + Translate.Name(obj.m_subLogPrefab));
+      lines.Add("Destroy creates: " + Format.Int(obj.m_subLogPoints.Length) + " " + Translate.Id(obj.m_subLogPrefab));
     lines.Add(Texts.GetToolTier(obj.m_minToolTier, obj.m_damages.m_chop != HitData.DamageModifier.Immune, obj.m_damages.m_pickaxe != HitData.DamageModifier.Immune));
     lines.Add(DamageModifierUtils.Get(obj.m_damages, false, false));
     lines.Add(Get(obj.m_dropWhenDestroyed, 1));
@@ -44,7 +44,7 @@ public partial class Texts
         var averageText = Format.Float(averageItems);
         if (areas > 1)
           averageText += " * " + Format.Int(areas) + " = " + Format.Float(areas * averageItems);
-        return Translate.Name(drop.m_item, "white") + ": " + Format.Range(drop.m_stackMin, drop.m_stackMax) + " items (" + averageText + " on average)";
+        return Translate.Id(drop.m_item, "white") + ": " + Format.Range(drop.m_stackMin, drop.m_stackMax) + " items (" + averageText + " on average)";
       });
       lines.AddRange(drops);
     }
@@ -68,7 +68,7 @@ public partial class Texts
         var averageText = Format.Float(averageItems);
         if (areas > 1)
           averageText += " * " + Format.Int(areas) + " = " + Format.Float(areas * averageItems);
-        return Translate.Name(drop.m_item, "white") + ": " + chanceText + Format.Range(min, max) + " items (" + averageText + " on average)";
+        return Translate.Id(drop.m_item, "white") + ": " + chanceText + Format.Range(min, max) + " items (" + averageText + " on average)";
       });
       lines.AddRange(drops);
     }
@@ -101,7 +101,7 @@ public partial class Texts
     lines.Add(Text.GetHealth(health, maxHealth));
     lines.Add("Hit noise: " + Format.Int(100));
     if (obj.m_logPrefab)
-      lines.Add("Destroy creates: " + Translate.Name(obj.m_logPrefab));
+      lines.Add("Destroy creates: " + Translate.Id(obj.m_logPrefab));
 
     lines.Add(Texts.GetToolTier(obj.m_minToolTier, obj.m_damageModifiers.m_chop != HitData.DamageModifier.Immune, obj.m_damageModifiers.m_pickaxe != HitData.DamageModifier.Immune));
     lines.Add(DamageModifierUtils.Get(obj.m_damageModifiers, false, false));
@@ -119,7 +119,7 @@ public partial class Texts
     lines.Add("Hit noise: " + Format.Int(obj.m_hitNoise));
     lines.Add("Destroy noise: " + Format.Int(obj.m_destroyNoise));
     if (obj.m_spawnWhenDestroyed)
-      lines.Add("Destroy creates: " + Translate.Name(obj.m_spawnWhenDestroyed));
+      lines.Add("Destroy creates: " + Translate.Id(obj.m_spawnWhenDestroyed));
     lines.Add(Texts.GetToolTier(obj.m_minToolTier, obj.m_damages.m_chop != HitData.DamageModifier.Immune, obj.m_damages.m_pickaxe != HitData.DamageModifier.Immune));
     lines.Add(DamageModifierUtils.Get(obj.m_damages, false, false));
     return Format.JoinLines(lines);
