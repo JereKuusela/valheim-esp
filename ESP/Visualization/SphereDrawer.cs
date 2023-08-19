@@ -50,4 +50,28 @@ public partial class Draw
     DrawArcZ(CreateObject(obj, tag), Vector3.zero, radius, 360f);
     return obj;
   }
+  ///<summary>Creates a renderer with a capsule (two spheres and lines between them).</summary>
+  public static GameObject DrawCapsule(string tag, MonoBehaviour parent, float radius, float height)
+  => DrawCapsule(tag, parent.gameObject, radius, height);
+
+  ///<summary>Creates a renderer with a capsule (two spheres and lines between them).</summary>
+  public static GameObject DrawCapsule(string tag, GameObject parent, float radius, float height)
+  {
+    var obj = CreateObject(parent, tag);
+    var topCenter = Vector3.up * (height - radius);
+    var bottomCenter = Vector3.up * radius;
+    var width = GetLineWidth(tag) / 2f;
+    var r = Mathf.Max(0, radius - width);
+    DrawArcX(CreateObject(obj, tag), topCenter, radius, 360f);
+    DrawArcY(CreateObject(obj, tag), topCenter, radius, 360f);
+    DrawArcZ(CreateObject(obj, tag), topCenter, radius, 360f);
+    DrawArcX(CreateObject(obj, tag), bottomCenter, radius, 360f);
+    DrawArcY(CreateObject(obj, tag), bottomCenter, radius, 360f);
+    DrawArcZ(CreateObject(obj, tag), bottomCenter, radius, 360f);
+    DrawLineSub(CreateObject(obj, tag), topCenter + Vector3.left * r, bottomCenter + Vector3.left * r);
+    DrawLineSub(CreateObject(obj, tag), topCenter + Vector3.right * r, bottomCenter + Vector3.right * r);
+    DrawLineSub(CreateObject(obj, tag), topCenter + Vector3.forward * r, bottomCenter + Vector3.forward * r);
+    DrawLineSub(CreateObject(obj, tag), topCenter + Vector3.back * r, bottomCenter + Vector3.back * r);
+    return obj;
+  }
 }

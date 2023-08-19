@@ -15,7 +15,7 @@ public partial class Draw
       var collider = obj.AddComponent<BoxCollider>();
       collider.isTrigger = true;
       collider.center = start + (end - start) / 2;
-      var size = (end - start);
+      var size = end - start;
       size.x = Math.Abs(size.x);
       size.y = Math.Abs(size.y);
       size.z = Math.Abs(size.z);
@@ -66,23 +66,28 @@ public partial class Draw
   {
     Vector3 end = new(start.x, 500f, start.z);
     var obj = DrawLineSub(CreateObject(parent.gameObject, tag, Quaternion.identity), start, end);
-    Draw.AddBoxCollider(obj);
+    AddBoxCollider(obj);
     return obj;
   }
   ///<summary>Creates a renderer with a vertical line (relative to the object).</summary>
-  public static GameObject DrawBox(string tag, MonoBehaviour parent, Vector3 center, Vector3 extents)
+  public static GameObject DrawBox(string tag, MonoBehaviour parent, Vector3 size)
   {
+    var extents = size / 2f;
+    var width = GetLineWidth(tag) / 2f;
+    if (width > extents.x) width = extents.x;
+    if (width > extents.y) width = extents.y;
+    if (width > extents.z) width = extents.z;
     var corners = new Vector3[] {
-        new (center.x - extents.x, center.y - extents.y, center.z - extents.z),
-        new (center.x - extents.x, center.y - extents.y, center.z + extents.z),
-        new (center.x - extents.x, center.y + extents.y, center.z - extents.z),
-        new (center.x - extents.x, center.y + extents.y, center.z + extents.z),
-        new (center.x + extents.x, center.y - extents.y, center.z - extents.z),
-        new (center.x + extents.x, center.y - extents.y, center.z + extents.z),
-        new (center.x + extents.x, center.y + extents.y, center.z - extents.z),
-        new (center.x + extents.x, center.y + extents.y, center.z + extents.z),
+        new (-extents.x + width, -extents.y + width, -extents.z + width),
+        new (-extents.x + width, -extents.y + width,  extents.z - width),
+        new (-extents.x + width,  extents.y - width, -extents.z + width),
+        new (-extents.x + width,  extents.y - width,  extents.z - width),
+        new ( extents.x - width, -extents.y + width, -extents.z + width),
+        new ( extents.x - width, -extents.y + width,  extents.z - width),
+        new ( extents.x - width,  extents.y - width, -extents.z + width),
+        new ( extents.x - width,  extents.y - width,  extents.z - width),
       };
-    var obj = CreateObject(parent.gameObject, tag, Quaternion.identity);
+    var obj = CreateObject(parent.gameObject, tag);
     for (var i = 0; i < corners.Length; i++)
     {
       var start = corners[i];
@@ -97,7 +102,6 @@ public partial class Draw
         DrawLineSub(CreateObject(obj, tag), corners[i], corners[j]);
       }
     }
-    AddBoxCollider(obj, center, extents * 2.0f);
     return obj;
   }
 }

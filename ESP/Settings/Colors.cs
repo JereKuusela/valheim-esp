@@ -10,6 +10,9 @@ public partial class Settings
     if (ColorUtility.TryParseHtmlString(color, out var parsed)) return parsed;
     return Color.white;
   }
+  public static ConfigEntry<string> configCreatureCollidersColor;
+  public static ConfigEntry<string> configStructureCollidersColor;
+  public static ConfigEntry<string> configDestructibleCollidersColor;
   public static ConfigEntry<string> configAttackRayColor;
   public static ConfigEntry<string> configCreatureRayColor;
   public static ConfigEntry<string> configPickableOneTimeColor;
@@ -72,6 +75,12 @@ public partial class Settings
   private static void InitColors(ConfigFile config)
   {
     var section = "5. Colors (predefined, #RRGGBB, #RRGGBBAA)";
+    configCreatureCollidersColor = config.Bind(section, "Creature colliders", "magenta", "");
+    OnColorChanged(configCreatureCollidersColor, Tag.CreatureCollider);
+    configStructureCollidersColor = config.Bind(section, "Structure colliders", "magenta", "");
+    OnColorChanged(configStructureCollidersColor, Tag.StructureCollider);
+    configDestructibleCollidersColor = config.Bind(section, "Destructible colliders", "magenta", "");
+    OnColorChanged(configDestructibleCollidersColor, Tag.DestructibleCollider);
     configAttackRayColor = config.Bind(section, "Attack ray", "magenta", "");
     OnColorChanged(configAttackRayColor, Tag.Attack);
     configCreatureRayColor = config.Bind(section, "Creature ray", "magenta", "");

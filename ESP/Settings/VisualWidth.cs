@@ -4,6 +4,9 @@ namespace ESP;
 public partial class Settings
 {
 #nullable disable
+  public static ConfigEntry<int> configCreatureCollidersLineWidth;
+  public static ConfigEntry<int> configStructureCollidersLineWidth;
+  public static ConfigEntry<int> configDestructibleCollidersLineWidth;
   public static ConfigEntry<int> configCreatureFireLineWidth;
   public static ConfigEntry<int> configTrackedCreatureRayWidth;
   public static ConfigEntry<int> configBreedingLineWidth;
@@ -50,6 +53,12 @@ public partial class Settings
     configCustomContainerEffectAreaRadius = config.Bind(section, "Custom radius for containers", 0.0f, "Custom effect area sphere for containers (0 to disable)");
     configCustomCraftingEffectAreaRadius = config.Bind(section, "Custom radius for crafting stations", 0.0f, "Custom effect area sphere for crafting stations (0 to disable)");
 
+    configCreatureCollidersLineWidth = config.Bind(section, "Creature colliders", 2, "");
+    OnWidthChanged(configCreatureCollidersLineWidth, Tag.CreatureCollider);
+    configStructureCollidersLineWidth = config.Bind(section, "Structure colliders", 2, "");
+    OnWidthChanged(configStructureCollidersLineWidth, Tag.StructureCollider);
+    configDestructibleCollidersLineWidth = config.Bind(section, "Destructible colliders", 2, "");
+    OnWidthChanged(configDestructibleCollidersLineWidth, Tag.DestructibleCollider);
     configCreatureFireLineWidth = config.Bind(section, "Creature fire alert range", 2, "");
     OnWidthChanged(configCreatureFireLineWidth, Tag.CreatureFireRange);
     configSenseLineWidth = config.Bind(section, "Creature senses", 2, "");

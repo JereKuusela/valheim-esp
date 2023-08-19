@@ -64,16 +64,3 @@ public class Character_GetHoverText
     Text.AddTexts(__instance.gameObject, ref __result);
   }
 }
-
-[HarmonyPatch(typeof(BaseAI), nameof(BaseAI.FindPath))]
-public class BaseAI_Pathfinding
-{
-  static void Prefix(out float __state, float ___m_lastFindPathTime)
-  {
-    __state = ___m_lastFindPathTime;
-  }
-  static void Postfix(float __state, float ___m_lastFindPathTime)
-  {
-    if (__state == ___m_lastFindPathTime) return;
-  }
-}

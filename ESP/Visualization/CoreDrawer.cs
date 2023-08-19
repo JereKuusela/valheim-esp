@@ -106,7 +106,7 @@ public partial class Draw : Component
   public static float GetLineWidth(string tag)
   {
     var width = Math.Max(1, lineWidths.ContainsKey(tag) ? lineWidths[tag] : 0);
-    return (float)width / 100f;
+    return width / 100f;
   }
   ///<summary>Sets line width to visuals with a given tag.</summary>
   public static void SetLineWidth(string tag, int width)

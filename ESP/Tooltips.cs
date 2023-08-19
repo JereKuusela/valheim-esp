@@ -32,7 +32,7 @@ public class DamageTypes_GetTooltipString
       __result += "\n$inventory_pickaxe: " + Format.Int(__instance.m_pickaxe) + " " + Format.String("(#PICKAXE_TIER)");
   }
 }
-[HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip), new[] { typeof(ItemDrop.ItemData), typeof(int), typeof(bool) })]
+[HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip), typeof(ItemDrop.ItemData), typeof(int), typeof(bool), typeof(float))]
 public class ItemDropItemData_GetTooltip
 {
   static void Postfix(ItemDrop.ItemData item, ref string __result)

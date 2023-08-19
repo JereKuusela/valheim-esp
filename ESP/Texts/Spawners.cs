@@ -13,7 +13,7 @@ public partial class Texts
       return "Only during " + Format.String("day");
     return "";
   }
-  private static String GetRespawnTime(CreatureSpawner obj)
+  private static string GetRespawnTime(CreatureSpawner obj)
   {
     if (obj.m_respawnTimeMinuts == 0) return "Never";
     var elapsed = Helper.GetElapsed(obj, "alive_time");
@@ -63,26 +63,33 @@ public partial class Texts
   private static string GetEventsText()
   {
     var instance = RandEventSystem.instance;
+    RandEventSystem.PlayerEventData playerEventData = new()
+    {
+      baseValue = Player.m_localPlayer.m_baseValue,
+      position = Player.m_localPlayer.transform.position,
+      possibleEvents = Player.m_localPlayer.m_readyEvents.ToHashSet()
+    };
+    List<RandEventSystem.PlayerEventData> data = [playerEventData];
     var zdo = ZDOMan.instance.GetZDO(Player.m_localPlayer.GetZDOID());
     var currentBiome = WorldGenerator.instance.GetBiome(Player.m_localPlayer.transform.position);
     var texts = instance.m_events.Where(randomEvent => randomEvent.m_enabled && randomEvent.m_random).Select(randomEvent =>
     {
       var validBiome = (currentBiome & randomEvent.m_biome) > 0;
-      var validBase = instance.CheckBase(randomEvent, zdo);
-      var validKeys = instance.HaveGlobalKeys(randomEvent);
+      var validBase = instance.CheckBase(randomEvent, playerEventData);
+      var validKeys = instance.HaveGlobalKeys(randomEvent, data);
       var valid = validBiome && validBase && validKeys;
-      List<string> parts = new(){
-          Texts.GetNames(randomEvent.m_biome, currentBiome),
-          Text.GetGlobalKeys(randomEvent.m_requiredGlobalKeys, randomEvent.m_notRequiredGlobalKeys),
-          randomEvent.m_nearBaseOnly ? Format.String("player base", validBase) : ""
-        };
+      List<string> parts = [
+        GetNames(randomEvent.m_biome, currentBiome),
+        Text.GetGlobalKeys(randomEvent.m_requiredGlobalKeys, randomEvent.m_notRequiredGlobalKeys),
+        randomEvent.m_nearBaseOnly ? Format.String("player base", validBase) : ""
+      ];
       return Format.String(randomEvent.m_name, valid) + ": " + Format.JoinRow(parts);
     });
     return Format.JoinLines(texts);
   }
   private static string GetSpawnerText(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode)
   {
-    List<string> lines = new();
+    List<string> lines = [];
     var timeSinceSpawned = Helper.GetElapsed(obj, stableHashCode, 0);
     /*var time = "";
     if (!spawnData.m_spawnAtDay)
@@ -167,7 +174,7 @@ public partial class Texts
   }
   public static string Get(SpawnSystem obj, SpawnSystem.SpawnData spawnData, int stableHashCode)
   {
-    List<string> lines = new();
+    List<string> lines = [];
     var timeSinceSpawned = Helper.GetElapsed(obj, stableHashCode, 0);
     lines.Add(GetZoneText(obj));
     var time = "";

@@ -5,6 +5,9 @@ namespace ESP;
 public partial class Settings
 {
 #nullable disable
+  public static ConfigEntry<int> configShowCreatureColliders;
+  public static ConfigEntry<int> configShowStructureColliders;
+  public static ConfigEntry<int> configShowDestructibleColliders;
   public static ConfigEntry<int> configShowAttackRange;
   public static ConfigEntry<int> configShowCreatureFireRange;
   public static ConfigEntry<int> configShowTrackedCreatures;
@@ -55,6 +58,9 @@ public partial class Settings
   private static ConfigEntry<int> GetTagEntry(string name)
   {
     name = name.ToLower();
+    if (name == Tag.CreatureCollider.ToLower()) return configShowCreatureColliders;
+    if (name == Tag.StructureCollider.ToLower()) return configShowStructureColliders;
+    if (name == Tag.DestructibleCollider.ToLower()) return configShowDestructibleColliders;
     if (name == Tag.StructureCover.ToLower()) return configShowStructureCover;
     if (name == Tag.StructureCoverBlocked.ToLower()) return configShowStructureCover;
     if (name == Tag.StructureSupport.ToLower()) return configShowStructureSupport;
@@ -136,7 +142,12 @@ public partial class Settings
   private static void InitVisuals(ConfigFile config)
   {
     var section = "3. Visuals";
-
+    configShowCreatureColliders = config.Bind(section, "Creature colliders", -1, CreateDescription());
+    OnChanged(configShowCreatureColliders, Tag.CreatureCollider);
+    configShowStructureColliders = config.Bind(section, "Structure colliders", -1, CreateDescription());
+    OnChanged(configShowStructureColliders, Tag.StructureCollider);
+    configShowDestructibleColliders = config.Bind(section, "Destructible colliders", -1, CreateDescription());
+    OnChanged(configShowDestructibleColliders, Tag.DestructibleCollider);
     configShowAttackRange = config.Bind(section, "Attack range", -1, CreateDescription());
     OnChanged(configShowAttackRange, Tag.Attack);
     configShowStructureCover = config.Bind(section, "Structure cover", -1, CreateDescription());
