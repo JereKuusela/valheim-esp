@@ -70,7 +70,6 @@ public partial class Texts
       possibleEvents = Player.m_localPlayer.m_readyEvents.ToHashSet()
     };
     List<RandEventSystem.PlayerEventData> data = [playerEventData];
-    var zdo = ZDOMan.instance.GetZDO(Player.m_localPlayer.GetZDOID());
     var currentBiome = WorldGenerator.instance.GetBiome(Player.m_localPlayer.transform.position);
     var texts = instance.m_events.Where(randomEvent => randomEvent.m_enabled && randomEvent.m_random).Select(randomEvent =>
     {
