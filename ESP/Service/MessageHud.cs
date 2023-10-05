@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using TMPro;
 using UnityEngine;
 namespace Service;
 // Prepends a custom message to the hud.
@@ -14,7 +15,7 @@ public class MessageHud_UpdateMessage : MonoBehaviour
     if (Player.m_localPlayer == null) return;
     if (Hud.IsUserHidden()) return;
     var hud = __instance;
-    hud.m_messageText.alignment = TextAnchor.UpperLeft;
+    hud.m_messageText.alignment = TextAlignmentOptions.TopLeft;
     var previousText = hud.m_messageText.text;
     var lines = GetMessage();
     if (lines.Count == 0) return;

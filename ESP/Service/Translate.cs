@@ -7,7 +7,7 @@ public class Translate
   public static string Name(string name, string color = "yellow") => Format.String(Localization.instance.Localize(name).Replace("(Clone)", ""), color);
   public static string Name(Heightmap.Biome obj, string color = "yellow") => Name(Names.GetName(obj), color);
   private static string Name(Character obj) => obj ? obj.m_name : "";
-  public static string Name(ItemDrop.ItemData obj, string color = "yellow") => obj != null ? Name(obj.m_shared.m_name, color) : "";
+  public static string Name(ItemDrop.ItemData obj, string color = "yellow") => obj?.m_dropPrefab ? Name(Utils.GetPrefabName(obj?.m_dropPrefab), color) : Name(obj?.m_shared?.m_name ?? "");
   private static string Name(Pickable obj) => obj ? string.IsNullOrEmpty(obj.m_overrideName) ? obj.m_itemPrefab?.name ?? "" : obj.m_overrideName : "";
   public static string Name(CreatureSpawner obj) => obj ? Utils.GetPrefabName(obj.m_creaturePrefab) : "";
   public static string Name(IEnumerable<GameObject> objs, string color = "yellow") => Format.JoinRow(objs.Select(prefab => Id(prefab, color)));

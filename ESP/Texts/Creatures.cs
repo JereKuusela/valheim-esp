@@ -178,7 +178,7 @@ public partial class Texts
         float chance = drop.m_chance;
         if (drop.m_levelMultiplier)
         {
-          chance *= (float)num;
+          chance *= num;
         }
         int min = drop.m_amountMin;
         int max = Math.Max(min, drop.m_amountMax - 1);  // -1 because exclusive on the random range.
