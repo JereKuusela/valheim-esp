@@ -7,7 +7,7 @@ public class EffectAreaUtils
 
   public static String GetTypeText(EffectArea.Type type)
   {
-    List<string> types = new();
+    List<string> types = [];
     if ((type & EffectArea.Type.Burning) != 0) types.Add("Burning");
     if ((type & EffectArea.Type.Heat) != 0) types.Add("Heat");
     if ((type & EffectArea.Type.Fire) != 0) types.Add("Fire");

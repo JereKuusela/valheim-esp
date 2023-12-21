@@ -34,7 +34,7 @@ public class DamageModifierUtils
     var name = DamageTypeToString(damageType);
     var modifier = modifiers.GetModifier(damageType);
     if (ignoreNeutral && modifier == HitData.DamageModifier.Immune) return name + ": " + Format.String("x0");
-    if ((ignoreNeutral && !ignoreIgnore) && modifier == HitData.DamageModifier.Ignore) return name + ": " + Format.String("x0");
+    if (ignoreNeutral && !ignoreIgnore && modifier == HitData.DamageModifier.Ignore) return name + ": " + Format.String("x0");
     if (modifier == HitData.DamageModifier.Resistant) return name + ": " + Format.String("x0.5");
     if (modifier == HitData.DamageModifier.VeryResistant) return name + ": " + Format.String("x0.25");
     if (modifier == HitData.DamageModifier.Weak) return name + ": " + Format.String("x1.5");

@@ -18,7 +18,7 @@ public partial class Texts
   public static string Get(TreeLog obj)
   {
     if (!Settings.Destructibles || !Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var maxHealth = obj.m_health;
     var health = Helper.GetFloat(obj, "health", maxHealth);
     lines.Add(Text.GetHealth(health, maxHealth));
@@ -33,7 +33,7 @@ public partial class Texts
   public static string Get(DropTable obj, int areas)
   {
     if (obj == null || obj.m_drops.Count == 0) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     if (obj.m_oneOfEach && obj.m_dropMin == obj.m_dropMax && obj.m_dropMin == obj.m_drops.Count)
     {
       // All items are guaranteed to drop.
@@ -95,7 +95,7 @@ public partial class Texts
   public static string Get(TreeBase obj)
   {
     if (!Settings.Destructibles || !Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var maxHealth = obj.m_health;
     var health = Helper.GetFloat(obj, "health", maxHealth);
     lines.Add(Text.GetHealth(health, maxHealth));
@@ -112,7 +112,7 @@ public partial class Texts
   public static string Get(Destructible obj)
   {
     if (!Settings.Destructibles || !Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var maxHealth = obj.m_health;
     var health = Helper.GetFloat(obj, "health", maxHealth);
     lines.Add(Text.GetHealth(health, maxHealth));
@@ -128,10 +128,10 @@ public partial class Texts
   {
     // Utility object without nView.
     if (!Settings.Destructibles || !obj) return "";
-    List<string> lines = new()
-    {
+    List<string> lines =
+    [
       Get(obj.m_dropWhenDestroyed, 1)
-    };
+    ];
     return Format.JoinLines(lines);
   }
   private static string GetMaterialName(WearNTear.MaterialType material)
@@ -145,7 +145,7 @@ public partial class Texts
   public static string Get(WearNTear obj)
   {
     if (!Settings.Structures || !Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var maxHealth = obj.m_health;
     var health = Helper.GetFloat(obj, "health", maxHealth);
 
@@ -177,7 +177,7 @@ public partial class Texts
   public static string Get(Beehive obj)
   {
     if (!Settings.Structures || !Settings.Progress || !Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var limit = obj.m_secPerUnit;
     if (limit > 0)
     {
@@ -214,7 +214,7 @@ public partial class Texts
   public static string Get(CookingStation obj)
   {
     if (!Settings.Structures || !Settings.Progress || !Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     for (var slot = 0; slot < obj.m_slots.Length; slot++)
       lines.Add(GetSlotText(obj, slot));
     return Format.JoinLines(lines);
@@ -222,7 +222,7 @@ public partial class Texts
   public static string Get(Fermenter obj)
   {
     if (!Settings.Structures || !Settings.Progress || !Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var limit = obj.m_fermentationDuration;
     if (limit > 0)
     {
@@ -240,17 +240,17 @@ public partial class Texts
   public static string Get(SmokeSpawner obj)
   {
     if (!Helper.IsValid(obj)) return "";
-    List<string> lines = new()
-    {
+    List<string> lines =
+    [
       GetSmokeLimit(),
       "Produces smoke every " + Format.Float(obj.m_interval) + " s, unless smoke within " + Format.Float(obj.m_testRadius) + " m"
-    };
+    ];
     return Format.JoinLines(lines);
   }
   public static string Get(Smoke obj)
   {
     if (!Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var collider = obj.GetComponent<SphereCollider>();
     lines.Add(": " + Format.Progress(Smoke.GetTotalSmoke(), Constants.SmokeAmountLimit, true));
     lines.Add(Format.ProgressPercent("Expires", obj.m_time, obj.m_ttl));
@@ -269,7 +269,7 @@ public partial class Texts
   public static string Get(Fireplace obj)
   {
     if (!Settings.Structures || !Settings.Progress || !Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var limit = obj.m_secPerFuel;
     if (limit > 0)
     {
@@ -302,7 +302,7 @@ public partial class Texts
   public static string GetCover(Fireplace obj)
   {
     if (!Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     if (CoverUtils.ChecksCover(obj)) lines.Add(GetCover(CoverUtils.GetCoverPoint(obj), Constants.CoverFireplaceLimit, false));
     lines.Add(GetWind(obj));
     lines.Add(GetDistanceFromRoof(obj));
@@ -311,7 +311,7 @@ public partial class Texts
   public static string Get(MineRock obj)
   {
     if (!Settings.Destructibles || !Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var maxHealth = obj.m_health;
     var areas = obj.m_hitAreas;
     var index = 0;
@@ -332,7 +332,7 @@ public partial class Texts
   public static string Get(MineRock5 obj)
   {
     if (!Settings.Destructibles || !Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var maxHealth = obj.m_health;
     var areas = obj.m_hitAreas;
     var remaining = areas.Count(area => area.m_health > 0f);
@@ -347,7 +347,7 @@ public partial class Texts
   public static string Get(Plant obj)
   {
     if (!Settings.Progress || !Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var limit = obj.GetGrowTime();
     if (limit > 0)
     {
@@ -400,15 +400,12 @@ public partial class Texts
   public static string Get(Smelter obj)
   {
     if (!Settings.Structures || !Settings.Progress || !Helper.IsValid(obj)) return "";
-    List<string> lines = new()
-    {
+    List<string> lines =
+    [
       GetProgressText(obj),
-      GetFuelText(obj)
-    };
-    if (obj.m_windmill)
-      lines.Add(GetPowerText(obj.m_windmill));
-    else
-      lines.Add(GetSmokeLimit());
+      GetFuelText(obj),
+      obj.m_windmill ? GetPowerText(obj.m_windmill) : GetSmokeLimit(),
+    ];
     return Format.JoinLines(lines);
   }
 
@@ -453,7 +450,7 @@ public partial class Texts
   public static string Get(Ship obj)
   {
     if (!Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var forwardSpeed = GetShipForwardSpeed(obj);
     var forwardAngle = 90f - Mathf.Atan2(obj.transform.forward.z, obj.transform.forward.x) / Math.PI * 180f;
     var avgForwardSpeed = "";
@@ -474,7 +471,7 @@ public partial class Texts
   }
   private static string GetCover(Vector3 startPos, double limit, bool checkRoof = true, bool minLimit = true)
   {
-    List<string> lines = new();
+    List<string> lines = [];
     var start = Constants.CoverRaycastStart;
     var total = 0;
     var hits = 0;
@@ -536,7 +533,7 @@ public partial class Texts
 public class BoundsCache
 {
 
-  public static Dictionary<string, Vector3> Bounds = new();
+  public static Dictionary<string, Vector3> Bounds = [];
   static void Postfix(ZNetView __instance)
   {
     if (__instance.transform.rotation == Quaternion.identity && !Bounds.ContainsKey(__instance.GetPrefabName()))

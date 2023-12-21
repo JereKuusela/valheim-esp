@@ -6,7 +6,7 @@ public partial class Texts
   public static string Get(ItemDrop obj)
   {
     if (!Helper.IsValid(obj) || !Settings.ItemDrops) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var timer = obj.GetTimeSinceSpawned();
     lines.Add("Stack size: " + Format.Int(obj.m_itemData.m_shared.m_maxStackSize));
     var inBase = obj.IsInsideBase();

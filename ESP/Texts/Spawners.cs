@@ -31,7 +31,7 @@ public partial class Texts
   public static string Get(Pickable obj)
   {
     if (!Helper.IsValid(obj) || !Settings.Pickables) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var respawn = GetRespawnTime(obj);
     lines.Add("Item: " + Format.String(obj.m_itemPrefab ? Utils.GetPrefabName(obj.m_itemPrefab) : "None"));
     lines.Add("Respawn: " + respawn);
@@ -43,7 +43,7 @@ public partial class Texts
   public static string Get(CreatureSpawner obj)
   {
     if (!Helper.IsValid(obj)) return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var respawn = GetRespawnTime(obj);
     var noise = obj.m_triggerNoise > 0 ? " with noise of " + Format.Int(obj.m_triggerNoise) : "";
     lines.Add("Respawn: " + Format.String(respawn));
@@ -67,7 +67,7 @@ public partial class Texts
     {
       baseValue = Player.m_localPlayer.m_baseValue,
       position = Player.m_localPlayer.transform.position,
-      possibleEvents = Player.m_localPlayer.m_readyEvents.ToHashSet()
+      possibleEvents = [.. Player.m_localPlayer.m_readyEvents]
     };
     List<RandEventSystem.PlayerEventData> data = [playerEventData];
     var currentBiome = WorldGenerator.instance.GetBiome(Player.m_localPlayer.transform.position);

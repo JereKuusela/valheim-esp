@@ -23,7 +23,7 @@ public partial class Draw
     for (int i = 0; i <= segments; i++)
     {
       points[i] = position + GetArcSegmentX(currentAngle, radius);
-      currentAngle += (angle / segments);
+      currentAngle += angle / segments;
     }
     return points;
   }
@@ -36,7 +36,7 @@ public partial class Draw
     for (int i = 0; i <= segments; i++)
     {
       points[i] = position + GetArcSegmentY(currentAngle, radius);
-      currentAngle += (angle / segments);
+      currentAngle += angle / segments;
     }
     return points;
   }
@@ -49,7 +49,7 @@ public partial class Draw
     for (int i = 0; i <= segments; i++)
     {
       points[i] = position + GetArcSegmentZ(currentAngle, radius);
-      currentAngle += (angle / segments);
+      currentAngle += angle / segments;
     }
     return points;
   }

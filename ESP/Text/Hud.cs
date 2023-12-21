@@ -9,8 +9,7 @@ public static class Hud
 {
   public static List<string> GetMessage()
   {
-    List<string> lines = new();
-    lines.AddRange(GetInfo());
+    List<string> lines = [.. GetInfo()];
     var localShip = Ship.GetLocalShip();
     if (localShip)
     {
@@ -21,16 +20,16 @@ public static class Hud
   }
   private static List<string> GetInfo()
   {
-    if (!Settings.ShowHud) return new();
+    if (!Settings.ShowHud) return [];
     var position = Player.m_localPlayer.transform.position;
-    List<string> lines = new()
-    {
+    List<string> lines =
+    [
       GetEnvironment(),
       GetPosition(position),
       GetSpeed() + ", " + GetNoise() + ", " + GetLight(),
       GetTrackedObjects(),
       GetStaggerTracker()
-    };
+    ];
     return lines.Where(item => item != "").ToList();
   }
   private static string GetSpeed() => "Speed: " + Format.Float(Player.m_localPlayer.m_currentVel.magnitude, "0.#") + " m/s";
@@ -50,19 +49,19 @@ public static class Hud
   private static string GetPosition(Vector3 position)
   {
     if (!Settings.ShowPosition) return "";
-    List<string> lines = new(){
+    List<string> lines = [
         EnvUtils.GetPosition(position),
         EnvUtils.GetAltitude(position),
         EnvUtils.GetForest(position),
         EnvUtils.GetBlocked(position)
-      };
+      ];
     return Format.JoinRow(lines);
   }
   private static float TrackUpdateTimer = 0;
   // ZDO tracks take a while for big worlds so have a longer timer for them.
   // More careful solution would be using sectors but more complicated.
   private static float TrackUpdateLongTimer = 0;
-  private static readonly Dictionary<string, int> trackCache = new();
+  private static readonly Dictionary<string, int> trackCache = [];
   private static string GetTrackedObjects()
   {
     if (Settings.TrackedObjects == "") return "";

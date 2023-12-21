@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ESP;
 public partial class Visual
 {
-  private static readonly List<GameObject> renderers = new();
+  private static readonly List<GameObject> renderers = [];
   // Copy paste from old Valheim code.
   private static Vector3 CalcNormal(Heightmap hm, int x, int y)
   {
@@ -30,7 +30,7 @@ public partial class Visual
   }
   public static void DrawHeightmap(Vector3 pos, float radius)
   {
-    List<Heightmap> hms = new();
+    List<Heightmap> hms = [];
     Heightmap.FindHeightmap(pos, radius, hms);
     foreach (var renderer in renderers)
       Object.Destroy(renderer);

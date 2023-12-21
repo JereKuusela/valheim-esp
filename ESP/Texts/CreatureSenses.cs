@@ -49,8 +49,8 @@ public partial class Texts
   }
   public static string GetSenses(BaseAI obj, MonsterAI monsterAI, Procreation procreation)
   {
-    List<string> lines = new()
-    {
+    List<string> lines =
+    [
       FireRange(obj),
       ViewRange(obj),
       AlertRange(monsterAI),
@@ -59,7 +59,7 @@ public partial class Texts
       PartnerSearch(procreation),
       FoodLimit(monsterAI),
       GetEatRange(monsterAI)
-    };
+    ];
     return Format.JoinLines(lines);
   }
 }

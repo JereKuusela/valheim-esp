@@ -23,7 +23,7 @@ public class EnvUtils
   private static string GetClock()
   {
     var limit = EnvMan.instance.m_dayLengthSec;
-    var fraction = (ZNet.instance.GetTimeSeconds() % limit) / limit;
+    var fraction = ZNet.instance.GetTimeSeconds() % limit / limit;
     var seconds = fraction * 3600 * 24;
     var hours = Math.Floor(seconds / 3600);
     var minutes = Math.Floor((seconds - hours * 3600) / 60);

@@ -91,7 +91,7 @@ public partial class Draw : Component
       return set.Contains(visualization.Tag);
     }).ToArray();
   }
-  private static readonly Dictionary<string, Color> colors = new();
+  private static readonly Dictionary<string, Color> colors = [];
   public static Color GetColor(string tag) => colors.ContainsKey(tag) ? colors[tag] : Color.white;
   ///<summary>Sets colors to visuals with a given tag.</summary>
   public static void SetColor(string tag, Color color)
@@ -102,7 +102,7 @@ public partial class Draw : Component
       if (obj.Tag == tag) ChangeColor(obj.gameObject);
     }
   }
-  private static readonly Dictionary<string, int> lineWidths = new();
+  private static readonly Dictionary<string, int> lineWidths = [];
   public static float GetLineWidth(string tag)
   {
     var width = Math.Max(1, lineWidths.ContainsKey(tag) ? lineWidths[tag] : 0);

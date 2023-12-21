@@ -1,31 +1,22 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Service;
 namespace ESP;
 public partial class Texts
 {
-  private static Heightmap.Biome[] BIOMES = new[]{
-      Heightmap.Biome.AshLands,
-      Heightmap.Biome.BlackForest,
-      Heightmap.Biome.DeepNorth,
-      Heightmap.Biome.Meadows,
-      Heightmap.Biome.Mistlands,
-      Heightmap.Biome.Mountain,
-      Heightmap.Biome.Ocean,
-      Heightmap.Biome.Plains,
-      Heightmap.Biome.Swamp
-    };
-
-  private const Heightmap.Biome BIOME_MAX = Heightmap.Biome.AshLands | Heightmap.Biome.BlackForest
-   | Heightmap.Biome.DeepNorth | Heightmap.Biome.Meadows | Heightmap.Biome.Mistlands
-   | Heightmap.Biome.Mountain | Heightmap.Biome.Ocean | Heightmap.Biome.Plains | Heightmap.Biome.Swamp;
-
-  public static string GetNames(Heightmap.Biome biomes, Heightmap.Biome validBiome = BIOME_MAX)
+  public static string GetNames(Heightmap.Biome biome, Heightmap.Biome validBiome = (Heightmap.Biome)(-1))
   {
-    List<string> names = new();
-    foreach (var biome in BIOMES)
-      if ((biomes & biome) > 0) names.Add(Format.String(Translate.Name(biome), ((validBiome & biome) > 0)));
-    if (names.Count == BIOMES.Length) return "";
+    if (biome == Heightmap.Biome.None) return "None";
+    var number = 1;
+    var biomeNumber = (int)biome;
+    List<string> names = [];
+    while (number <= biomeNumber)
+    {
+      if ((number & biomeNumber) > 0)
+        names.Add(Format.String(Enum.GetName(typeof(Heightmap.Biome), biome), (validBiome & biome) > 0));
+      number *= 2;
+    }
     return Format.JoinRow(names);
   }
   public static string Get(Heightmap.Biome obj)

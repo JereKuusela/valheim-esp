@@ -52,7 +52,7 @@ public partial class Text
   public static void AddTexts(GameObject obj, ref string __result)
   {
     if (!ExtraInfo) return;
-    List<string> lines = new();
+    List<string> lines = [];
     var character = obj.GetComponentInParent<Character>();
     var baseAI = obj.GetComponentInParent<BaseAI>();
     lines.Add("Id: " + Translate.Id(obj));

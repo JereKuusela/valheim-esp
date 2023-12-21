@@ -10,7 +10,7 @@ public partial class Texts
   {
     if (!Helper.IsValid(obj) || !Settings.Locations) return "";
     var name = Utils.GetPrefabName(obj.m_instance).ToLower();
-    List<string> lines = new();
+    List<string> lines = [];
     var instances = ZoneSystem.instance.m_locationInstances;
     foreach (var l in ZoneSystem.instance.m_locations)
     {
@@ -35,7 +35,7 @@ public partial class Texts
         lines.Add("Exterior radius: " + Format.Meters(l.m_location.m_exteriorRadius));
       if (l.m_location.m_hasInterior)
         lines.Add("Interior radius: " + Format.Meters(l.m_location.m_interiorRadius));
-      List<string> flags = new();
+      List<string> flags = [];
       if (l.m_prioritized)
         flags.Add("Prioritized");
       if (l.m_centerFirst)
@@ -62,7 +62,7 @@ public partial class Texts
     if (!obj || !Settings.Vegetation) return "";
     var root = obj.transform.parent == null ? obj : obj.transform.parent.gameObject;
     var name = Utils.GetPrefabName(root).ToLower();
-    List<string> lines = new();
+    List<string> lines = [];
     foreach (var v in ZoneSystem.instance.m_vegetation)
     {
       if (!v.m_enable) continue;
@@ -74,7 +74,7 @@ public partial class Texts
       lines[lines.Count() - 1] += " in " + GetBiomes(v.m_biome, v.m_biomeArea, false);
       if (v.m_groupSizeMax > 1)
         lines.Add("Group size: " + Format.Range(v.m_groupSizeMin, v.m_groupSizeMax) + " within " + Format.Meters(v.m_groupRadius));
-      List<string> conditions = new();
+      List<string> conditions = [];
       if (v.m_minAltitude != v.m_maxAltitude)
         conditions.Add("Altitude: " + Format.Range(v.m_minAltitude, v.m_maxAltitude));
       if (v.m_minOceanDepth != v.m_maxOceanDepth)
@@ -86,7 +86,7 @@ public partial class Texts
       if (v.m_inForest)
         conditions.Add("Forest: " + Format.Range(v.m_forestTresholdMin, v.m_forestTresholdMax));
       lines.Add(Format.JoinRow(conditions));
-      List<string> properties = new();
+      List<string> properties = [];
       if (v.m_snapToWater)
         properties.Add("Snaps to water");
       if (v.m_forcePlacement)
@@ -142,11 +142,11 @@ public partial class Texts
   public static string Get(OfferingBowl obj)
   {
     if (!obj) return "";
-    List<string> lines = new(){
+    List<string> lines = [
         "Spawn: " + (obj.m_bossPrefab ? Utils.GetPrefabName(obj.m_bossPrefab) : ""),
         GetItem(obj),
         GetRespawnTime(obj),
-        "Area: " + Format.Int(obj.m_spawnBossMaxDistance) + " m"};
+        "Area: " + Format.Int(obj.m_spawnBossMaxDistance) + " m"];
     return Format.JoinLines(lines);
   }
 
@@ -154,14 +154,14 @@ public partial class Texts
   {
     if (!obj) return "";
     obj.GetInstances(out int near, out int total);
-    List<string> lines = new(){
+    List<string> lines = [
         Format.ProgressPercent("Timer", obj.m_spawnTimer, obj.m_spawnIntervalSec),
         "Area: " + Format.Int(obj.m_spawnRadius) + " m",
         "Level up: " + Format.Percent(obj.m_levelupChance / 100f),
         "Trigger: " + Format.Int(obj.m_triggerDistance) + " m",
         "Near limit: " + Format.Progress(near, obj.m_maxNear) + " within " + Format.Int(obj.m_nearRadius) + " m",
         "Far limit: " +  Format.Progress(total, obj.m_maxTotal) + " within " + Format.Int(obj.m_farRadius) + " m"
-      };
+      ];
     if (obj.m_onGroundOnly)
     {
       lines.Add("Only on ground");

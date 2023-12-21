@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -5,7 +6,7 @@ namespace Service;
 public class Translate
 {
   public static string Name(string name, string color = "yellow") => Format.String(Localization.instance.Localize(name).Replace("(Clone)", ""), color);
-  public static string Name(Heightmap.Biome obj, string color = "yellow") => Name(Names.GetName(obj), color);
+  public static string Name(Heightmap.Biome obj, string color = "yellow") => Name(Enum.GetName(typeof(Heightmap.Biome), obj), color);
   private static string Name(Character obj) => obj ? obj.m_name : "";
   public static string Name(ItemDrop.ItemData obj, string color = "yellow") => obj?.m_dropPrefab ? Name(Utils.GetPrefabName(obj?.m_dropPrefab), color) : Name(obj?.m_shared?.m_name ?? "");
   private static string Name(Pickable obj) => obj ? string.IsNullOrEmpty(obj.m_overrideName) ? obj.m_itemPrefab?.name ?? "" : obj.m_overrideName : "";

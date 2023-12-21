@@ -21,7 +21,7 @@ public partial class Texts
   }
   public static string GetToolTier(int tier, bool chop, bool pickaxe)
   {
-    List<string> lines = new();
+    List<string> lines = [];
     if (chop)
       lines.Add("Axe: " + Format.String(Texts.GetChopTier(tier)));
     if (pickaxe)
@@ -76,7 +76,7 @@ public partial class Texts
   public static string GetHitboxText(Attack attack, string color = "yellow")
   {
     if (attack == null || attack.m_attackType == Attack.AttackType.Projectile) return "";
-    List<string> texts = new();
+    List<string> texts = [];
     if (attack.m_attackRange > 0)
       texts.Add(Format.Float(attack.m_attackRange, Format.FORMAT, color) + " m");
     if (attack.m_attackAngle > 0)
@@ -92,7 +92,7 @@ public partial class Texts
   public static string GetProjectileText(Attack attack, float holdDuration = 0, string color = "yellow")
   {
     if (attack == null || attack.m_attackType != Attack.AttackType.Projectile) return "";
-    List<string> texts = new();
+    List<string> texts = [];
     if (holdDuration > 0)
     {
       texts.Add("Spread: " + Format.Range(attack.m_projectileAccuracy, attack.m_projectileAccuracyMin, color));

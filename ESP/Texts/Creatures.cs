@@ -90,7 +90,7 @@ public partial class Texts
   }
   private static string GetState(Character character, BaseAI baseAI, MonsterAI monsterAI)
   {
-    List<string> state = new();
+    List<string> state = [];
     if (monsterAI && monsterAI.IsAlerted())
       state.Add(Format.String("Alerted", "red"));
     if (monsterAI && monsterAI.HuntPlayer())
@@ -108,7 +108,7 @@ public partial class Texts
   {
     if (!Settings.Resistances || !Helper.IsValid(obj) || !baseAI)
       return "";
-    List<string> lines = new();
+    List<string> lines = [];
     var mass = obj.m_body.mass;
     if (monsterAI)
     {
@@ -128,7 +128,7 @@ public partial class Texts
     lines.Add(DamageModifierUtils.Get(damageModifiers, true, true));
     if (monsterAI && monsterAI.IsSleeping())
     {
-      List<string> wakeUp = new();
+      List<string> wakeUp = [];
       if (monsterAI.m_wakeupRange > 0)
         wakeUp.Add("Wake up range: " + Format.Float(monsterAI.m_wakeupRange) + " m");
       if (monsterAI.m_noiseWakeup)
@@ -169,7 +169,7 @@ public partial class Texts
 
   private static List<string> GetDropTexts(CharacterDrop characterDrop, Character character)
   {
-    List<string> list = new();
+    List<string> list = [];
     int num = character ? Mathf.Max(1, (int)Mathf.Pow(2f, (float)(character.GetLevel() - 1))) : 1;
     foreach (CharacterDrop.Drop drop in characterDrop.m_drops)
     {

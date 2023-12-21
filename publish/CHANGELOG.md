@@ -1,3 +1,6 @@
+- v1.22
+  - Adds support for showing extra biomes.
+
 - v1.21
   - Fixes attack names not showing.
   - Fixed for the new patch.

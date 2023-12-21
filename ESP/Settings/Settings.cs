@@ -69,8 +69,7 @@ public partial class Settings
   }
   private static List<string> OptionsFetcher()
   {
-    List<string> options = new();
-    options.AddRange(Visibility.GetTags);
+    List<string> options = [.. Visibility.GetTags];
     options = options.Where(tag => !tag.StartsWith(Tag.ZoneCorner) && !tag.StartsWith(Tag.SpawnZone)).ToList();
     // Collection tags are not listed automatically.
     options.Add(Tag.ZoneCorner);
