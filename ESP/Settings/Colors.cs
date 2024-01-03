@@ -18,6 +18,7 @@ public partial class Settings
   public static ConfigEntry<string> configPickableOneTimeColor;
   public static ConfigEntry<string> configPickableRespawningColor;
   public static ConfigEntry<string> configLocationRayColor;
+  public static ConfigEntry<string> configEventZoneRayColor;
   public static ConfigEntry<string> configChestRayColor;
   public static ConfigEntry<string> configOreRayColor;
   public static ConfigEntry<string> configTreeRayColor;
@@ -91,6 +92,8 @@ public partial class Settings
     OnColorChanged(configPickableRespawningColor, Tag.PickableRespawning);
     configLocationRayColor = config.Bind(section, "Location ray", "black", "");
     OnColorChanged(configLocationRayColor, Tag.Location);
+    configEventZoneRayColor = config.Bind(section, "Event zone ray", "black", "");
+    OnColorChanged(configEventZoneRayColor, Tag.EventZone);
     configChestRayColor = config.Bind(section, "Chest ray", "white", "");
     OnColorChanged(configChestRayColor, Tag.Chest);
     configOreRayColor = config.Bind(section, "Ore ray", "gray", "");

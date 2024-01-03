@@ -1,5 +1,6 @@
 - v1.22
   - Adds support for showing extra biomes.
+  - Adds support for event zones.
 
 - v1.21
   - Fixes attack names not showing.

@@ -43,10 +43,10 @@ Unfortunately the feature names for commands aren't documented (but the commands
 - Cover limit and current cover.
 - Wind limit on fireplaces and torches (extinguishes the fire unless properly covered).
 - Smoke visualized (black sphere):
-	- Radius of the smoke.
-	- Current and target velocity.
-	- Mass.
-	- Timer for destruction.
+  - Radius of the smoke.
+  - Current and target velocity.
+  - Mass.
+  - Timer for destruction.
 - Smoke stats on structures that generate smoke.
 - Blocked by smoke timer on fireplaces.
 - Comfort range visualized (cyan sphere).
@@ -62,20 +62,20 @@ Unfortunately the feature names for commands aren't documented (but the commands
 
 - Growth timer, health and damage resistances of plants.
 - Visual indicator for pickables (green line when respawning, blue line when one time, stones and branches are turned off by default):
-	- Respawn timer.
-	- World generator parameters.
+  - Respawn timer.
+  - World generator parameters.
 - Visual indicator for hidden chests (white line).
-	- Possible chest items and their chances.
+  - Possible chest items and their chances.
 - Visual indicator for pregenerated structures (black line).
-	- World generator parameters.
+  - World generator parameters.
 - Visual indicator for trees, minerals and other destructibles (gray line, turned off by default):
-	- Current and max health.
-	- Damage resistances.
-	- Required tool tiers.
-	- Noise created when hit.
-	- Created object when destroyed.
-	- Item drops with amounts and chances.
-	- World generator parameters.
+  - Current and max health.
+  - Damage resistances.
+  - Required tool tiers.
+  - Noise created when hit.
+  - Created object when destroyed.
+  - Item drops with amounts and chances.
+  - World generator parameters.
 - Stack size and despawn timer on dropped items.
 - Ship speed (both current and average), wind angle and wind strength on the HUD when sailing.
 
@@ -90,63 +90,62 @@ Unfortunately the feature names for commands aren't documented (but the commands
 - Breeding limit range (cyan sphere) and partner check range for breedable creatures (magenta sphere).
 - Food search check range (gray sphere) and eating range for tameable creatures (white sphere).
 - Lots of stats on tooltips:
-	- Status: is alerted, is in hunt mode, is staggering, is sleeping and current action.
-	- Current and max health.
-	- Accumulated stagger and stagger limit.
-	- Mass and knockback resistance.
-	- Damage resistances.
-	- Item drops.
-	- Attacks with damage, tool tier, range, hitbox and cooldown.
-	- Food timer.
-	- Breeding progress.
-	- Breeding limit.
-	- Wake up range and noise.
+  - Status: is alerted, is in hunt mode, is staggering, is sleeping and current action.
+  - Current and max health.
+  - Accumulated stagger and stagger limit.
+  - Mass and knockback resistance.
+  - Damage resistances.
+  - Item drops.
+  - Attacks with damage, tool tier, range, hitbox and cooldown.
+  - Food timer.
+  - Breeding progress.
+  - Breeding limit.
+  - Wake up range and noise.
 
 ## Environment
 
 - Time of the day, weather, wind, coordinates, altitude and forest factor on the HUD.
 - Coordinates on most tooltips.
 - Zone corners are visualized with the color of the biome:
-	- Biome, time of the day, weather, wind and average wind on zone corner tooltips.
-	- Avalaible weathers including their chances, wind limits and other properties.
-	- Timer for the next weather change.
+  - Biome, time of the day, weather, wind and average wind on zone corner tooltips.
+  - Avalaible weathers including their chances, wind limits and other properties.
+  - Timer for the next weather change.
 - Random event system at middle of zones (black line):
-	- Timer for the next event check.
-	- Available events including their conditions. Grey color shows failed conditions and events that are not currently possible.
-	- If an event is going, shows event name, remaining time and event spawners.
+  - Timer for the next event check.
+  - Available events including their conditions. Grey color shows failed conditions and events that are not currently possible.
+  - If an event is going, shows event name, remaining time and event spawners.
 
 ## Creature spawning
 
 - Zone based spawners at middle of zones (color of the line depends on the biome):
-	- Name of the creature, spawn limit, max stars.
-	- Required global keys (boss kills), biome, time of the day, weather and altitude.
-	- Timer for the next spawn attemp.
-	- Amount of creatures spawned.
+  - Name of the creature, spawn limit, max stars.
+  - Required global keys (boss kills), biome, time of the day, weather and altitude.
+  - Timer for the next spawn attemp.
+  - Amount of creatures spawned.
 - Zone based event spawners at middle of zones (black line):
-	- If no event going, shows available events.
+  - If no event going, shows available events.
 - Creature spawn points visualized (yellow for respawning, red for one time).
-	- Respawn timer.
-	- Max stars.
-	- Is a patrol point (creatures tries to return if it gets too far).
-	- Trigger range.
+  - Respawn timer.
+  - Max stars.
+  - Is a patrol point (creatures tries to return if it gets too far).
+  - Trigger range.
 - Physical spawners visualized:
-	- Trigger range (red sphere).
-	- Spawn range (cyan sphere).
-	- Spawn limit range (white sphere).
-	- Spawned creatures with the chances.
-	- Max stars.
-	- Spawn limit with current and max amount.
+  - Trigger range (red sphere).
+  - Spawn range (cyan sphere).
+  - Spawn limit range (white sphere).
+  - Spawned creatures with the chances.
+  - Max stars.
+  - Spawn limit with current and max amount.
 - Boss altars visualized.
 
 ## Combat
 
 - Player speed and noise on the HUD.
 - More stats for weapons:
-	- Chop and pickaxe damages.
-	- Tool tier.
-	- Attack speed.
-	- Stamina usage (max and with current weapon skill),
-	- Attack type and hitbox.
-	- Accuracy and projectile speed for bows.
-	- Secondary attack stats (damage multiplier, knocback multiplier, staggering multiplier).
-
+  - Chop and pickaxe damages.
+  - Tool tier.
+  - Attack speed.
+  - Stamina usage (max and with current weapon skill),
+  - Attack type and hitbox.
+  - Accuracy and projectile speed for bows.
+  - Secondary attack stats (damage multiplier, knocback multiplier, staggering multiplier).

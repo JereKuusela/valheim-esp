@@ -40,6 +40,7 @@ public partial class Settings
   public static ConfigEntry<int> configDestructibleRayWidth;
   public static ConfigEntry<int> configTrophySpeakSphereWidth;
   public static ConfigEntry<int> configLocationRayWidth;
+  public static ConfigEntry<int> configEventZoneRayWidth;
   public static ConfigEntry<int> configTerrainRayWidth;
 
   private static void OnWidthChanged(ConfigEntry<int> entry, string tag)
@@ -139,6 +140,8 @@ public partial class Settings
     OnWidthChanged(configDestructibleRayWidth, Tag.Destructible);
     configLocationRayWidth = config.Bind(section, "Location rays", 10, "");
     OnWidthChanged(configLocationRayWidth, Tag.Location);
+    configEventZoneRayWidth = config.Bind(section, "Event zone rays", 10, "");
+    OnWidthChanged(configEventZoneRayWidth, Tag.EventZone);
     configEffectAreaLineWidth = config.Bind(section, "Area effects", 2, "");
     OnWidthChanged(configEffectAreaLineWidth, Tag.EffectAreaBurning);
     OnWidthChanged(configEffectAreaLineWidth, Tag.EffectAreaComfort);

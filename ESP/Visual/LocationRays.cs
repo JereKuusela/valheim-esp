@@ -204,6 +204,24 @@ public class CreatureSpawner_Ray
     Text.AddText(line, Translate.Name(obj));
   }
 }
+// EventZone doesn't have awake but most have timed destruction.
+[HarmonyPatch(typeof(TimedDestruction), nameof(TimedDestruction.Awake)), HarmonyPriority(Priority.Last)]
+public class EventZone_Ray
+{
+  static void Postfix(TimedDestruction __instance)
+  {
+    if (Settings.IsDisabled(Tag.EventZone)) return;
+    var obj = __instance.GetComponent<EventZone>();
+    if (!obj) return;
+    var line = Draw.DrawMarkerLine(Tag.EventZone, obj);
+    var radius = obj.GetComponent<SphereCollider>()?.radius ?? 0;
+    var sphere = Draw.DrawSphere(Tag.EventZone, obj, radius);
+    var time = __instance.m_timeout;
+    var text = $"Event: {Format.String(obj.m_event)}\n{Text.Radius(radius)}\nDuration: {Format.Int(time)} seconds";
+    Text.AddText(line, text);
+    Text.AddText(sphere, text);
+  }
+}
 
 [HarmonyPatch(typeof(OfferingBowl), nameof(OfferingBowl.Awake)), HarmonyPriority(Priority.Last)]
 public class OfferingBowl_Awake

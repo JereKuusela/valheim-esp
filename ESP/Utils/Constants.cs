@@ -72,6 +72,7 @@ public static class Tag
   public const string TrackedCreature = "TrackedCreature";
   public const string PickableOneTime = "PickableOneTime";
   public const string PickableRespawning = "PickableRespawning";
+  public const string EventZone = "EventZone";
   public const string Location = "Location";
   public const string Chest = "Chest";
   public const string Tree = "Tree";

@@ -54,6 +54,7 @@ public partial class Settings
   public static ConfigEntry<int> configShowDestructibles;
   public static ConfigEntry<int> configShowTrophySpeaks;
   public static ConfigEntry<int> configShowLocations;
+  public static ConfigEntry<int> configShowEventZones;
   public static ConfigEntry<int> configShowStructureSupport;
   private static ConfigEntry<int> GetTagEntry(string name)
   {
@@ -78,6 +79,7 @@ public partial class Settings
     if (name == Tag.PickableOneTime.ToLower()) return configShowPickablesOneTime;
     if (name == Tag.PickableRespawning.ToLower()) return configShowPickablesRespawning;
     if (name == Tag.Location.ToLower()) return configShowLocations;
+    if (name == Tag.EventZone.ToLower()) return configShowEventZones;
     if (name == Tag.Chest.ToLower()) return configShowChests;
     if (name == Tag.Tree.ToLower()) return configShowTrees;
     if (name == Tag.Ore.ToLower()) return configShowOres;
@@ -182,6 +184,8 @@ public partial class Settings
     OnChanged(configShowPickablesRespawning, Tag.PickableRespawning);
     configShowLocations = config.Bind(section, "Location rays", -1, CreateDescription());
     OnChanged(configShowLocations, Tag.Location);
+    configShowEventZones = config.Bind(section, "Event zone rays", -1, CreateDescription());
+    OnChanged(configShowEventZones, Tag.EventZone);
     configShowChests = config.Bind(section, "Chest rays", -1, CreateDescription());
     OnChanged(configShowChests, Tag.Chest);
     configShowTrees = config.Bind(section, "Tree rays", -1, CreateDescription());
