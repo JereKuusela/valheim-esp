@@ -85,7 +85,7 @@ public partial class Settings
     configAttackRayColor = config.Bind(section, "Attack ray", "magenta", "");
     OnColorChanged(configAttackRayColor, Tag.Attack);
     configCreatureRayColor = config.Bind(section, "Creature ray", "magenta", "");
-    OnColorChanged(configCreatureRayColor, Tag.TrackedCreature);
+    OnColorChanged(configCreatureRayColor, Tag.TrackedObject);
     configPickableOneTimeColor = config.Bind(section, "Pickable ray (one time)", "green", "");
     OnColorChanged(configPickableOneTimeColor, Tag.PickableOneTime);
     configPickableRespawningColor = config.Bind(section, "Pickable ray (respawning)", "blue", "");

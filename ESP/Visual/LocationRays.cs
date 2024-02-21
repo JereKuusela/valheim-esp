@@ -78,14 +78,14 @@ public class LocationUtils
     return obj.m_hideWhenPicked && obj.m_respawnTimeMinutes > 0f ? Tag.PickableRespawning : Tag.PickableOneTime;
   }
 }
-[HarmonyPatch(typeof(BaseAI), nameof(BaseAI.Awake)), HarmonyPriority(Priority.Last)]
-public class BaseAI_Ray
+[HarmonyPatch(typeof(ZNetView), nameof(ZNetView.Awake)), HarmonyPriority(Priority.Last)]
+public class ZNetView_Ray
 {
-  static void Postfix(Character ___m_character)
+  static void Postfix(ZNetView __instance)
   {
-    var obj = ___m_character;
-    if (Settings.IsDisabled(Tag.TrackedCreature) || !CharacterUtils.IsTracked(obj)) return;
-    var line = Draw.DrawMarkerLine(Tag.TrackedCreature, obj);
+    var obj = __instance;
+    if (Settings.IsDisabled(Tag.TrackedObject) || !CharacterUtils.IsTracked(obj)) return;
+    var line = Draw.DrawMarkerLine(Tag.TrackedObject, obj);
     Text.AddText(line);
   }
 }

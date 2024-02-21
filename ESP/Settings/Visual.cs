@@ -10,7 +10,7 @@ public partial class Settings
   public static ConfigEntry<int> configShowDestructibleColliders;
   public static ConfigEntry<int> configShowAttackRange;
   public static ConfigEntry<int> configShowCreatureFireRange;
-  public static ConfigEntry<int> configShowTrackedCreatures;
+  public static ConfigEntry<int> configShowTrackedObjects;
   public static ConfigEntry<int> configShowCreatureBreedingTotalRange;
   public static ConfigEntry<int> configShowCreatureBreedingPartnerRange;
   public static ConfigEntry<int> configShowCreatureFoodSearchRange;
@@ -75,7 +75,7 @@ public partial class Settings
     if (name == Tag.CreatureBreedingPartnerRange.ToLower()) return configShowCreatureBreedingPartnerRange;
     if (name == Tag.CreatureFoodSearchRange.ToLower()) return configShowCreatureFoodSearchRange;
     if (name == Tag.CreatureEatingRange.ToLower()) return configShowCreatureEatingRange;
-    if (name == Tag.TrackedCreature.ToLower()) return configShowTrackedCreatures;
+    if (name == Tag.TrackedObject.ToLower()) return configShowTrackedObjects;
     if (name == Tag.PickableOneTime.ToLower()) return configShowPickablesOneTime;
     if (name == Tag.PickableRespawning.ToLower()) return configShowPickablesRespawning;
     if (name == Tag.Location.ToLower()) return configShowLocations;
@@ -176,8 +176,8 @@ public partial class Settings
     OnChanged(configShowCreatureEatingRange, Tag.CreatureEatingRange);
     configShowCreatureFoodSearchRange = config.Bind(section, "Creature food search range", -1, CreateDescription());
     OnChanged(configShowCreatureFoodSearchRange, Tag.CreatureFoodSearchRange);
-    configShowTrackedCreatures = config.Bind(section, "Tracked creature rays", -1, CreateDescription());
-    OnChanged(configShowTrackedCreatures, Tag.TrackedCreature);
+    configShowTrackedObjects = config.Bind(section, "Tracked object rays", -1, CreateDescription());
+    OnChanged(configShowTrackedObjects, Tag.TrackedObject);
     configShowPickablesOneTime = config.Bind(section, "Pickable rays (one time)", -1, CreateDescription());
     OnChanged(configShowPickablesOneTime, Tag.PickableOneTime);
     configShowPickablesRespawning = config.Bind(section, "Pickable rays (respawning)", -1, CreateDescription());

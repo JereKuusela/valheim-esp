@@ -22,7 +22,7 @@ public partial class Settings
     configShowTimeAndWeather = config.Bind(section, "Show current time and weather", true, "Show current time and weather on the hud");
     configShowPosition = config.Bind(section, "Show current position", true, "Show current position on the hud");
     configShowShipStatsOnHud = config.Bind(section, "Show ship stats", true, "Show ship stats on the hud");
-    configTrackedObjects = config.Bind(section, "Tracked objects", "Serpent", "List of creature and item drop ids to track (separated by ,)");
+    configTrackedObjects = config.Bind(section, "Tracked objects", "Serpent", "List of objects to track (separated by ,)");
     configTrackRadius = config.Bind(section, "Track radius", 500f, "Radius to find objects.");
   }
 }

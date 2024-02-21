@@ -1,3 +1,6 @@
+- v1.23
+  - Changes the creature track to work for all objects.
+
 - v1.22
   - Adds support for showing extra biomes.
   - Adds support for event zones.

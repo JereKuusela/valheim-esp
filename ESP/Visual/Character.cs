@@ -14,12 +14,14 @@ public class CharacterUtils
     var excluded = Settings.ExcludedCreatures;
     return LocationUtils.IsIn(excluded, name) || LocationUtils.IsIn(excluded, m_name) || LocationUtils.IsIn(excluded, localized);
   }
-  public static bool IsTracked(Character instance)
+  public static bool IsTracked(ZNetView instance)
   {
     if (!instance) return false;
     var name = instance.name;
-    var m_name = instance.m_name;
-    var localized = Localization.instance.Localize(instance.m_name);
+    var m_name = name;
+    if (instance.TryGetComponent(out Character character))
+      m_name = character.m_name;
+    var localized = Localization.instance.Localize(m_name);
     var tracked = Settings.TrackedObjects;
     return LocationUtils.IsIn(tracked, name) || LocationUtils.IsIn(tracked, m_name) || LocationUtils.IsIn(tracked, localized);
   }

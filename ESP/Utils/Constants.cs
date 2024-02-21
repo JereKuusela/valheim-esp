@@ -69,7 +69,7 @@ public static class Tag
   public const string CreatureBreedingPartnerRange = "CreatureBreedingPartnerRange";
   public const string CreatureFoodSearchRange = "CreatureFoodSearchRange";
   public const string CreatureEatingRange = "CreatureEatingRange";
-  public const string TrackedCreature = "TrackedCreature";
+  public const string TrackedObject = "TrackedObject";
   public const string PickableOneTime = "PickableOneTime";
   public const string PickableRespawning = "PickableRespawning";
   public const string EventZone = "EventZone";
