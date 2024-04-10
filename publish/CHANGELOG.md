@@ -1,3 +1,6 @@
+- v1.24
+  - Fixed for the new game version.
+
 - v1.23
   - Changes the creature track to work for all objects.
 

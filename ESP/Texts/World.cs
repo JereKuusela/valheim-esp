@@ -15,7 +15,10 @@ public partial class Texts
     foreach (var l in ZoneSystem.instance.m_locations)
     {
       if (!l.m_enable) continue;
+      if (!l.m_prefab.IsValid) continue;
       if (l.m_prefabName.ToLower() != name) continue;
+      l.m_prefab.Load();
+      var loc = l.m_prefab.Asset.GetComponent<Location>();
       var count = instances.Values.Where(instance => instance.m_location.m_prefabName == l.m_prefabName).Count();
       lines.Add("Placed: " + Format.Progress(count, l.m_quantity));
       if (l.m_group != "")
@@ -31,10 +34,10 @@ public partial class Texts
         lines.Add("Forest: " + Format.Range(l.m_forestTresholdMin, l.m_forestTresholdMax));
       if (l.m_minDistanceFromSimilar > 0)
         lines.Add("Distance from similar: " + Format.Meters(l.m_minDistanceFromSimilar));
-      if (l.m_exteriorRadius > 0)
-        lines.Add("Exterior radius: " + Format.Meters(l.m_location.m_exteriorRadius));
-      if (l.m_location.m_hasInterior)
-        lines.Add("Interior radius: " + Format.Meters(l.m_location.m_interiorRadius));
+      if (loc.m_exteriorRadius > 0)
+        lines.Add("Exterior radius: " + Format.Meters(loc.m_exteriorRadius));
+      if (loc.m_hasInterior)
+        lines.Add("Interior radius: " + Format.Meters(loc.m_interiorRadius));
       List<string> flags = [];
       if (l.m_prioritized)
         flags.Add("Prioritized");
@@ -46,12 +49,13 @@ public partial class Texts
         flags.Add("Unique");
       if (l.m_iconAlways)
         flags.Add("Always show icon");
-      if (l.m_location.m_applyRandomDamage)
+      if (loc.m_applyRandomDamage)
         flags.Add("Randomly damaged");
-      if (l.m_location.m_clearArea)
+      if (l.m_clearArea)
         flags.Add("Clear area");
-      if (l.m_location.m_noBuild)
+      if (loc.m_noBuild)
         flags.Add("No build area");
+      l.m_prefab.Release();
       lines.Add(Format.JoinRow(flags));
     }
     return Format.JoinLines(lines);

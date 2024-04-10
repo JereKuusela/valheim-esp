@@ -32,7 +32,7 @@ public partial class Draw : Component
   {
     var renderer = obj.AddComponent<LineRenderer>();
     renderer.useWorldSpace = false;
-    Material material = new(Shader.Find("Particles/Standard Unlit2"));
+    Material material = new(LineShader);
     material.SetColor("_Color", GetColor(obj.name));
     material.SetFloat("_BlendOp", (float)UnityEngine.Rendering.BlendOp.Subtract);
     Texture2D texture = new(1, 1);
@@ -43,6 +43,10 @@ public partial class Draw : Component
     renderer.widthMultiplier = GetLineWidth(obj.name);
     return renderer;
   }
+  private static Shader LineShader => lineShader
+    ??= Resources.FindObjectsOfTypeAll<Shader>().FirstOrDefault(shader => shader.name == "Particles/Standard Unlit2") ?? throw new Exception("Shader not found.");
+  private static Shader? lineShader;
+
   ///<summary>Changes object color.</summary>
   private static void ChangeColor(GameObject obj)
   {
