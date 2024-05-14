@@ -132,7 +132,7 @@ public class MineRock_Ray
     Text.AddText(obj, Translate.Name(__instance));
   }
 }
-[HarmonyPatch(typeof(MineRock5), nameof(MineRock5.Start))]
+[HarmonyPatch(typeof(MineRock5), nameof(MineRock5.Awake))]
 public class MineRock5_Ray
 {
   static void Postfix(MineRock5 __instance)

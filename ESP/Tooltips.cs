@@ -13,11 +13,11 @@ public class DamageTypes_GetTooltipStringWithSkill
     if (Player.m_localPlayer == null) return;
     var obj = __instance;
 
-    Player.m_localPlayer.GetSkills().GetRandomSkillRange(out float minFactor, out float maxFactor, skillType);
+    Player.m_localPlayer.GetSkills().GetRandomSkillRange(out float min, out float max, skillType);
     if (obj.m_chop != 0f)
-      __result += "\n$inventory_chop: " + obj.DamageRange(obj.m_chop, minFactor, maxFactor) + ", " + Format.String("#CHOP_TIER", "orange");
+      __result += $"\n$inventory_chop: <color=orange>{Mathf.RoundToInt(obj.m_chop)}</color> <color=yellow>({Mathf.RoundToInt(obj.m_chop * min)}-{Mathf.RoundToInt(obj.m_chop * max)}) </color>, {Format.String("#CHOP_TIER", "orange")}";
     if (obj.m_pickaxe != 0f)
-      __result += "\n$inventory_pickaxe: " + obj.DamageRange(obj.m_pickaxe, minFactor, maxFactor) + ", " + Format.String("#PICKAXE_TIER", "orange");
+      __result += $"\n$inventory_pickaxe: <color=orange>{Mathf.RoundToInt(obj.m_pickaxe)}</color> <color=yellow>({Mathf.RoundToInt(obj.m_pickaxe * min)}-{Mathf.RoundToInt(obj.m_pickaxe * max)}) </color>, {Format.String("¤PICKAXE_TIER", "orange")}";
   }
 }
 [HarmonyPatch(typeof(HitData.DamageTypes), nameof(HitData.DamageTypes.GetTooltipString), new Type[] { })]

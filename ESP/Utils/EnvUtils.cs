@@ -31,7 +31,7 @@ public class EnvUtils
   }
   public static string GetTime()
   {
-    var time = EnvMan.instance.IsCold() ? "Night" : "Day";
+    var time = EnvMan.IsCold() ? "Night" : "Day";
     return Format.String(GetClock()) + " (" + Format.String(time) + ")";
   }
   public static string GetEnvironment(EnvEntry env, float totalWeight)

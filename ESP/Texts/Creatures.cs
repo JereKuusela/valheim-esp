@@ -113,7 +113,6 @@ public partial class Texts
     if (monsterAI)
     {
       lines.Add(GetState(obj, baseAI, monsterAI));
-      lines.Add(monsterAI.m_aiStatus);
     }
     var health = obj.GetMaxHealth();
     lines.Add(Text.GetHealth(obj.GetHealth(), health));
