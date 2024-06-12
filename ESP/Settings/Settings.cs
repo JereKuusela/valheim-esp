@@ -75,9 +75,18 @@ public partial class Settings
     options.Add(Tag.ZoneCorner);
     options.Add(Tag.SpawnZone);
     options.Add(Tool.ExtraInfo);
-    options.Add(Tool.TimeAndWeather);
-    options.Add(Tool.Position);
     options.Add(Tool.HUD);
+    options.Add(Tool.Time);
+    options.Add(Tool.Weather);
+    options.Add(Tool.Wind);
+    options.Add(Tool.Position);
+    options.Add(Tool.Altitude);
+    options.Add(Tool.Forest);
+    options.Add(Tool.Blocked);
+    options.Add(Tool.Stagger);
+    options.Add(Tool.Heat);
+    options.Add(Tool.Speed);
+    options.Add(Tool.Stealth);
     options.Sort();
     return options;
   }
@@ -85,9 +94,18 @@ public partial class Settings
   {
     name = name.ToLower();
     if (name == Tool.ExtraInfo.ToLower()) return configExtraInfo;
-    if (name == Tool.TimeAndWeather.ToLower()) return configShowTimeAndWeather;
-    if (name == Tool.Position.ToLower()) return configShowPosition;
     if (name == Tool.HUD.ToLower()) return configShowHud;
+    if (name == Tool.Time.ToLower()) return configShowTime;
+    if (name == Tool.Weather.ToLower()) return configShowWeather;
+    if (name == Tool.Wind.ToLower()) return configShowWind;
+    if (name == Tool.Position.ToLower()) return configShowPosition;
+    if (name == Tool.Altitude.ToLower()) return configShowAltitude;
+    if (name == Tool.Forest.ToLower()) return configShowForest;
+    if (name == Tool.Blocked.ToLower()) return configShowBlocked;
+    if (name == Tool.Stagger.ToLower()) return configShowStagger;
+    if (name == Tool.Heat.ToLower()) return configShowHeat;
+    if (name == Tool.Speed.ToLower()) return configShowSpeed;
+    if (name == Tool.Stealth.ToLower()) return configShowStealth;
     throw new NotImplementedException(name);
   }
   private static void SetEntry(string name, int value)

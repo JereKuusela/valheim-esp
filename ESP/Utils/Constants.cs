@@ -131,7 +131,16 @@ public static class Tag
 public static class Tool
 {
   public const string ExtraInfo = "ExtraInfo";
-  public const string TimeAndWeather = "TimeAndWeather";
+  public const string Time = "Time";
+  public const string Weather = "Weather";
+  public const string Wind = "Wind";
   public const string Position = "Position";
+  public const string Altitude = "Altitude";
+  public const string Forest = "Forest";
+  public const string Blocked = "Blocked";
   public const string HUD = "HUD";
+  public const string Stagger = "Stagger";
+  public const string Heat = "Heat";
+  public const string Speed = "Speed";
+  public const string Stealth = "Stealth";
 }

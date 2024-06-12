@@ -62,7 +62,7 @@ public partial class Texts
         var chance = weight > 0 ? drop.m_weight / weight : 1f;
         var min = drop.m_stackMin;
         var max = drop.m_stackMax;
-        if (max > min) max--; // Bug in the code.
+        if (drop.m_dontScale && max > min) max--; // Bug in the code.
         var averageItems = averageDrops * chance * (min + max) / 2.0;
         var chanceText = chance == 1f ? "" : Format.Percent(chance) + " chance for ";
         var averageText = Format.Float(averageItems);

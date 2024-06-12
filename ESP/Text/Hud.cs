@@ -18,44 +18,125 @@ public static class Hud
     }
     return lines;
   }
+  private static int[] MaxLengths = [
+    13,
+    15, // Estimate
+    10,
+    25,
+    15,
+    15,
+    7,
+    15,
+    17,
+    11,
+    10,
+    999,
+    999,
+
+  ];
   private static List<string> GetInfo()
   {
     if (!Settings.ShowHud) return [];
     var position = Player.m_localPlayer.transform.position;
-    List<string> lines =
+    List<string> sections =
     [
-      GetEnvironment(),
+      GetTime(),
+      GetWeather(),
+      GetWind(),
       GetPosition(position),
-      GetSpeed() + ", " + GetNoise() + ", " + GetLight(),
+      GetAltitude(position),
+      GetForest(position),
+      GetBlocked(position),
+      GetSpeed(),
+      GetNoise(),
+      GetLight(),
+      GetStaggerTracker(),
+      GetHeat(Player.m_localPlayer),
       GetTrackedObjects(),
-      GetStaggerTracker()
     ];
-    return lines.Where(item => item != "").ToList();
+    // Add sections as long as line length stays under 50.
+    List<string> lines = [];
+    var length = 0;
+    for (int i = 0; i < sections.Count; i++)
+    {
+      if (sections[i] == "") continue;
+      if (lines.Count == 0)
+      {
+        lines.Add(sections[i]);
+        length = MaxLengths[i];
+        continue;
+      }
+      if (length + MaxLengths[i] < 60)
+      {
+        lines[lines.Count - 1] += ", " + sections[i];
+        length += MaxLengths[i];
+      }
+      else
+      {
+        lines.Add(sections[i]);
+        length = MaxLengths[i];
+      }
+    }
+    return lines;
   }
-  private static string GetSpeed() => "Speed: " + Format.Float(Player.m_localPlayer.m_currentVel.magnitude, "0.#") + " m/s";
-  private static string GetNoise() => "Noise: " + Format.Int(Player.m_localPlayer.GetNoiseRange()) + " meters";
-  private static string GetLight() => "Light: " + Format.Percent(StealthSystem.instance.GetLightFactor(Player.m_localPlayer.GetCenterPoint()));
-  private static string GetEnvironment()
+  private static string GetSpeed() => Settings.ShowSpeed ? "Speed: " + Format.Float(Player.m_localPlayer.m_currentVel.magnitude, "0.#") + " m/s" : "";
+  private static string GetNoise() => Settings.ShowStealth ? "Noise: " + Format.Int(Player.m_localPlayer.GetNoiseRange()) + " meters" : "";
+  private static string GetLight() => Settings.ShowStealth ? "Light: " + Format.Percent(StealthSystem.instance.GetLightFactor(Player.m_localPlayer.GetCenterPoint())) : "";
+  private static string GetTime()
   {
-    if (!Settings.ShowTimeAndWeather) return "";
-    return EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment() + " (" + EnvUtils.GetWindHud() + ")";
+    if (!Settings.ShowTime) return "";
+    return EnvUtils.GetTime();
+  }
+  private static string GetWeather()
+  {
+    if (!Settings.ShowWeather) return "";
+    return EnvUtils.GetCurrentEnvironment();
+  }
+  private static string GetWind()
+  {
+    if (!Settings.ShowWind) return "";
+    return EnvUtils.GetWindHud();
   }
   private static string GetStaggerTracker()
   {
+    if (!Settings.ShowStagger) return "";
     if (CreatureStagger.StaggerDuration == 0)
       return "Stagger: ...";
     return "Stagger: " + CreatureStagger.StaggerDuration;
   }
+  private static string GetHeat(Player player)
+  {
+    if (!Settings.ShowHeat) return "";
+    var heat = WorldGenerator.GetAshlandsOceanGradient(player.transform.position);
+    if (!player.IsSwimming())
+    {
+      heat *= player.m_heatWaterTouchMultiplier;
+    }
+    heat = Mathf.Clamp01(heat);
+    var resistance = player.GetEquipmentHeatResistanceModifier();
+    heat *= 1f - resistance;
+    heat *= player.m_heatBuildupWater;
+    return $"Heat gain: {Format.Percent(heat)}, Resistance: {Format.Percent(resistance)}, Total: {Format.Percent(player.m_lavaHeatLevel)}";
+  }
   private static string GetPosition(Vector3 position)
   {
     if (!Settings.ShowPosition) return "";
-    List<string> lines = [
-        EnvUtils.GetPosition(position),
-        EnvUtils.GetAltitude(position),
-        EnvUtils.GetForest(position),
-        EnvUtils.GetBlocked(position)
-      ];
-    return Format.JoinRow(lines);
+    return EnvUtils.GetPosition(position);
+  }
+  private static string GetAltitude(Vector3 position)
+  {
+    if (!Settings.ShowAltitude) return "";
+    return EnvUtils.GetAltitude(position);
+  }
+  private static string GetForest(Vector3 position)
+  {
+    if (!Settings.ShowForest) return "";
+    return EnvUtils.GetForest(position);
+  }
+  private static string GetBlocked(Vector3 position)
+  {
+    if (!Settings.ShowBlocked) return "";
+    return EnvUtils.GetBlocked(position);
   }
   private static float TrackUpdateTimer = 0;
   // ZDO tracks take a while for big worlds so have a longer timer for them.

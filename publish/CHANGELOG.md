@@ -1,3 +1,9 @@
+- v1.26
+  - Adds a new HUD option for showing heat gain.
+  - Adds new settings to disable individual HUD elements.
+  - Fixes tree drops not being correct.
+  - Increases the width of hover text.
+
 - v1.25
   - Fixed for the new game version.
 

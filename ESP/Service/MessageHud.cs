@@ -4,6 +4,16 @@ using HarmonyLib;
 using TMPro;
 using UnityEngine;
 namespace Service;
+
+[HarmonyPatch(typeof(Hud), nameof(Hud.Awake))]
+public class HudAwake
+{
+  static void Postfix(Hud __instance)
+  {
+    var rect = __instance.m_hoverName.GetComponent<RectTransform>();
+    rect.sizeDelta = rect.sizeDelta + new Vector2(100, 0);
+  }
+}
 // Prepends a custom message to the hud.
 [HarmonyPatch(typeof(MessageHud), nameof(MessageHud.Update)), HarmonyPriority(Priority.Low)]
 public class MessageHud_UpdateMessage : MonoBehaviour
