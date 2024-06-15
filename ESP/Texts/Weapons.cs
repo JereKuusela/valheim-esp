@@ -138,7 +138,7 @@ public partial class Texts
     var animation = attack.m_attackAnimation;
     var text = GetAttackSpeed(animation, holdDuration);
     if (text == "") return "";
-    text = text.Replace("(", "<color=yellow>(");
+    text = text.Replace("(", "<color=#FFFF00>(");
     text = text.Replace(")", ")</color>");
     return "Speed: " + Format.String(text, color);
   }

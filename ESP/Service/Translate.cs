@@ -5,14 +5,14 @@ using UnityEngine;
 namespace Service;
 public class Translate
 {
-  public static string Name(string name, string color = "yellow") => Format.String(Localization.instance.Localize(name).Replace("(Clone)", ""), color);
-  public static string Name(Heightmap.Biome obj, string color = "yellow") => Name(Enum.GetName(typeof(Heightmap.Biome), obj), color);
+  public static string Name(string name, string color = "#FFFF00") => Format.String(Localization.instance.Localize(name).Replace("(Clone)", ""), color);
+  public static string Name(Heightmap.Biome obj, string color = "#FFFF00") => Name(Enum.GetName(typeof(Heightmap.Biome), obj), color);
   private static string Name(Character obj) => obj ? obj.m_name : "";
-  public static string Name(ItemDrop.ItemData obj, string color = "yellow") => obj?.m_dropPrefab ? Name(Utils.GetPrefabName(obj?.m_dropPrefab), color) : Name(obj?.m_shared?.m_name ?? "");
+  public static string Name(ItemDrop.ItemData obj, string color = "#FFFF00") => obj?.m_dropPrefab ? Name(Utils.GetPrefabName(obj?.m_dropPrefab), color) : Name(obj?.m_shared?.m_name ?? "");
   private static string Name(Pickable obj) => obj ? string.IsNullOrEmpty(obj.m_overrideName) ? obj.m_itemPrefab?.name ?? "" : obj.m_overrideName : "";
   public static string Name(CreatureSpawner obj) => obj ? Utils.GetPrefabName(obj.m_creaturePrefab) : "";
-  public static string Name(IEnumerable<GameObject> objs, string color = "yellow") => Format.JoinRow(objs.Select(prefab => Id(prefab, color)));
-  public static string Name(IEnumerable<ItemDrop> objs, string color = "yellow") => Format.JoinRow(objs.Select(prefab => Name(prefab, color)));
+  public static string Name(IEnumerable<GameObject> objs, string color = "#FFFF00") => Format.JoinRow(objs.Select(prefab => Id(prefab, color)));
+  public static string Name(IEnumerable<ItemDrop> objs, string color = "#FFFF00") => Format.JoinRow(objs.Select(prefab => Name(prefab, color)));
   private static string Name(Bed obj) => obj ? obj.GetHoverName() : "";
   private static string Name(Piece obj) => obj ? obj.m_name : "";
   private static string Name(TreeLog obj) => obj ? obj.name : "";
