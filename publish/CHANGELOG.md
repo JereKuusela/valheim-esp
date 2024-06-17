@@ -2,6 +2,7 @@
   - Adds a new HUD option for showing heat gain.
   - Adds new settings to disable individual HUD elements.
   - Fixes tree drops not being correct.
+  - Fixes colors on the weather hover text.
   - Increases the width of hover text.
 
 - v1.25
