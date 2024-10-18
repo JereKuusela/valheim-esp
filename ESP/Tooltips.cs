@@ -4,7 +4,7 @@ using HarmonyLib;
 using Service;
 using UnityEngine;
 namespace ESP;
-[HarmonyPatch(typeof(HitData.DamageTypes), nameof(HitData.DamageTypes.GetTooltipString), new[] { typeof(Skills.SkillType) })]
+[HarmonyPatch(typeof(HitData.DamageTypes), nameof(HitData.DamageTypes.GetTooltipString), [typeof(Skills.SkillType)])]
 public class DamageTypes_GetTooltipStringWithSkill
 {
   static void Postfix(Skills.SkillType skillType, HitData.DamageTypes __instance, ref string __result)
@@ -20,7 +20,7 @@ public class DamageTypes_GetTooltipStringWithSkill
       __result += $"\n$inventory_pickaxe: <color=orange>{Mathf.RoundToInt(obj.m_pickaxe)}</color> <color=#FFFF00>({Mathf.RoundToInt(obj.m_pickaxe * min)}-{Mathf.RoundToInt(obj.m_pickaxe * max)}) </color>, {Format.String("¤PICKAXE_TIER", "orange")}";
   }
 }
-[HarmonyPatch(typeof(HitData.DamageTypes), nameof(HitData.DamageTypes.GetTooltipString), new Type[] { })]
+[HarmonyPatch(typeof(HitData.DamageTypes), nameof(HitData.DamageTypes.GetTooltipString), [])]
 public class DamageTypes_GetTooltipString
 {
   static void Postfix(HitData.DamageTypes __instance, ref string __result)
@@ -32,7 +32,7 @@ public class DamageTypes_GetTooltipString
       __result += "\n$inventory_pickaxe: " + Format.Int(__instance.m_pickaxe) + " " + Format.String("(#PICKAXE_TIER)");
   }
 }
-[HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip), typeof(ItemDrop.ItemData), typeof(int), typeof(bool), typeof(float))]
+[HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip), typeof(ItemDrop.ItemData), typeof(int), typeof(bool), typeof(float), typeof(int))]
 public class ItemDropItemData_GetTooltip
 {
   static void Postfix(ItemDrop.ItemData item, ref string __result)

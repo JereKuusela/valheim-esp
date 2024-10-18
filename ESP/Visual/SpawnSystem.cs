@@ -87,6 +87,8 @@ public class SpawnSystem_Awake
   }
   static void Postfix(SpawnSystem __instance)
   {
+    // Jewelcrafting spawns this object without the terrain loaded.
+    if (!__instance.m_heightmap) return;
     DrawBiomes(__instance);
     DrawSpawnSystems(__instance);
     DrawRandEventSystem(__instance);

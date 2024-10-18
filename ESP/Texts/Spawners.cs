@@ -161,7 +161,7 @@ public partial class Texts
   {
     var position = obj.transform.position;
     var heightmap = obj.m_heightmap;
-    var zone = ZoneSystem.instance.GetZone(position);
+    var zone = ZoneSystem.GetZone(position);
     var text = "Zone: " + Format.String(zone.x + ";" + zone.y);
     var biome = heightmap.GetBiome(position);
     var biomeArea = heightmap.GetBiomeArea();
