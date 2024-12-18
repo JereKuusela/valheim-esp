@@ -1,6 +1,6 @@
 {
   "name": "ESP",
-  "version_number": "1.27.0",
+  "version_number": "1.28.0",
   "website_url": "https://github.com/JereKuusela/valheim-esp",
   "description": "This mod adds lots of new information to tooltips and visualizes many hidden mechanics which can be used to understand the game better.",
   "dependencies": [

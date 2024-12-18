@@ -3,6 +3,7 @@ using BepInEx.Bootstrap;
 using BepInEx.Logging;
 using HarmonyLib;
 using Service;
+using Visualization;
 namespace ESP;
 [BepInDependency("org.bepinex.plugins.jewelcrafting", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInPlugin(GUID, NAME, VERSION)]
@@ -10,7 +11,7 @@ public class ESP : BaseUnityPlugin
 {
   const string GUID = "esp";
   const string NAME = "ESP";
-  const string VERSION = "1.27";
+  const string VERSION = "1.28";
   private static ManualLogSource? Logs;
   public static ManualLogSource Log => Logs!;
   public void Awake()
@@ -20,6 +21,7 @@ public class ESP : BaseUnityPlugin
     MessageHud_UpdateMessage.GetMessage = Hud.GetMessage;
     new Harmony(GUID).PatchAll();
     Admin.Instance = new EspAdmin();
+    Draw.Init();
   }
   public void Start()
   {
@@ -30,5 +32,6 @@ public class ESP : BaseUnityPlugin
   {
     if (Player.m_localPlayer)
       Texts.UpdateAverageSpeed(Ship.GetLocalShip());
+    Visualization.Visualization.SharedUpdate();
   }
 }

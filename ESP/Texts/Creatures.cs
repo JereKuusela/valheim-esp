@@ -16,8 +16,8 @@ public partial class Texts
   private static string GetDamages(HitData.DamageTypes target, int tier)
   {
     var tooltip = target.GetTooltipString();
-    tooltip = tooltip.Replace("#CHOP_TIER", Texts.GetChopTier(tier));
-    tooltip = tooltip.Replace("#PICKAXE_TIER", Texts.GetPickaxeTier(tier));
+    tooltip = tooltip.Replace("<CHOP_TIER>", GetChopTier(tier));
+    tooltip = tooltip.Replace("<PICKAXE_TIER>", GetPickaxeTier(tier));
     var text = Localization.instance.Localize(tooltip.Replace("\n", ", "));
     if (text.Length > 0) return text.Substring(2);
     return text;

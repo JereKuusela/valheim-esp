@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using Service;
 using UnityEngine;
@@ -47,11 +48,25 @@ public class Visualization : MonoBehaviour
 {
   public string Tag = "";
 
-  public Quaternion? FixedRotation;
+  private static readonly List<Visualization> Visualizations = [];
+  private Quaternion? FixedRotation;
 
-  public void Update()
+  public static void SharedUpdate()
   {
-    if (FixedRotation.HasValue)
-      transform.rotation = FixedRotation.Value;
+    foreach (var visualization in Visualizations)
+    {
+      visualization.transform.rotation = visualization.FixedRotation!.Value;
+    }
+  }
+  public void OnDestroy()
+  {
+    if (Visualizations.Contains(this))
+      Visualizations.Remove(this);
+  }
+
+  public void SetFixed(Quaternion rotation)
+  {
+    FixedRotation = rotation;
+    Visualizations.Add(this);
   }
 }

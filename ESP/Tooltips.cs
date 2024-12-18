@@ -15,7 +15,7 @@ public class DamageTypes_GetTooltipStringWithSkill
 
     Player.m_localPlayer.GetSkills().GetRandomSkillRange(out float min, out float max, skillType);
     if (obj.m_chop != 0f)
-      __result += $"\n$inventory_chop: <color=orange>{Mathf.RoundToInt(obj.m_chop)}</color> <color=#FFFF00>({Mathf.RoundToInt(obj.m_chop * min)}-{Mathf.RoundToInt(obj.m_chop * max)}) </color>, {Format.String("#CHOP_TIER", "orange")}";
+      __result += $"\n$inventory_chop: <color=orange>{Mathf.RoundToInt(obj.m_chop)}</color> <color=#FFFF00>({Mathf.RoundToInt(obj.m_chop * min)}-{Mathf.RoundToInt(obj.m_chop * max)}) </color>, {Format.String("<CHOP_TIER>", "orange")}";
     if (obj.m_pickaxe != 0f)
       __result += $"\n$inventory_pickaxe: <color=orange>{Mathf.RoundToInt(obj.m_pickaxe)}</color> <color=#FFFF00>({Mathf.RoundToInt(obj.m_pickaxe * min)}-{Mathf.RoundToInt(obj.m_pickaxe * max)}) </color>, {Format.String("¤PICKAXE_TIER", "orange")}";
   }
@@ -27,9 +27,9 @@ public class DamageTypes_GetTooltipString
   {
     if (!Settings.ExtraInfo || !Settings.WeaponInfo) return;
     if (__instance.m_chop != 0f)
-      __result += "\n$inventory_chop: " + Format.Int(__instance.m_chop) + " " + Format.String("(#CHOP_TIER)");
+      __result += "\n$inventory_chop: " + Format.Int(__instance.m_chop) + " " + Format.String("(<CHOP_TIER>)");
     if (__instance.m_pickaxe != 0f)
-      __result += "\n$inventory_pickaxe: " + Format.Int(__instance.m_pickaxe) + " " + Format.String("(#PICKAXE_TIER)");
+      __result += "\n$inventory_pickaxe: " + Format.Int(__instance.m_pickaxe) + " " + Format.String("(<PICKAXE_TIER>)");
   }
 }
 [HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip), typeof(ItemDrop.ItemData), typeof(int), typeof(bool), typeof(float), typeof(int))]
@@ -39,8 +39,8 @@ public class ItemDropItemData_GetTooltip
   {
     if (!Settings.ExtraInfo || !Settings.WeaponInfo) return;
     var data = item.m_shared;
-    __result = __result.Replace("#CHOP_TIER", Texts.GetChopTier(data.m_toolTier));
-    __result = __result.Replace("#PICKAXE_TIER", Texts.GetPickaxeTier(data.m_toolTier));
+    __result = __result.Replace("<CHOP_TIER>", Texts.GetChopTier(data.m_toolTier));
+    __result = __result.Replace("<PICKAXE_TIER>", Texts.GetPickaxeTier(data.m_toolTier));
     Player.m_localPlayer.GetSkills().GetRandomSkillRange(out float minFactor, out float maxFactor, data.m_skillType);
     var skillFactor = Player.m_localPlayer.GetSkillFactor(data.m_skillType);
     int minKnockback = Mathf.RoundToInt(data.m_attackForce * minFactor);

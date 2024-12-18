@@ -3,9 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 namespace Visualization;
-public partial class Draw : Component
+public partial class Draw
 {
   public const string TriggerLayer = "character_trigger";
+
+  private static readonly Texture2D Texture = new(1, 1);
+  private static Shader LineShader => lineShader
+    ??= Resources.FindObjectsOfTypeAll<Shader>().FirstOrDefault(shader => shader.name == "Particles/Standard Unlit2") ?? throw new Exception("Shader not found.");
+  private static Shader? lineShader;
+  public static void Init()
+  {
+    Texture.SetPixel(0, 0, Color.gray);
+  }
 
   ///<summary>Creates the base object for drawing.</summary>
   private static GameObject CreateObject(GameObject parent, string tag, Quaternion? fixedRotation = null)
@@ -22,37 +31,41 @@ public partial class Draw : Component
       obj.name = tag;
       var visual = obj.AddComponent<Visualization>();
       visual.Tag = tag;
-      visual.FixedRotation = fixedRotation;
+      if (fixedRotation.HasValue)
+        visual.SetFixed(fixedRotation.Value);
       obj.SetActive(Visibility.IsTag(tag));
     }
     return obj;
   }
+
+  private static readonly Dictionary<Color, Material> materials = [];
+  private static Material GetMaterial(Color color)
+  {
+    if (materials.ContainsKey(color)) return materials[color];
+    var material = new Material(LineShader);
+    material.SetColor("_Color", color);
+    material.SetFloat("_BlendOp", (float)UnityEngine.Rendering.BlendOp.Subtract);
+    material.SetTexture("_MainTex", Texture);
+    materials[color] = material;
+    return material;
+  }
+
   ///<summary>Creates the line renderer object.</summary>
   private static LineRenderer CreateRenderer(GameObject obj)
   {
     var renderer = obj.AddComponent<LineRenderer>();
     renderer.useWorldSpace = false;
-    Material material = new(LineShader);
-    material.SetColor("_Color", GetColor(obj.name));
-    material.SetFloat("_BlendOp", (float)UnityEngine.Rendering.BlendOp.Subtract);
-    Texture2D texture = new(1, 1);
-    texture.SetPixel(0, 0, Color.gray);
-    material.SetTexture("_MainTex", texture);
-    renderer.material = material;
+    renderer.sharedMaterial = GetMaterial(GetColor(obj.name));
     renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
     renderer.widthMultiplier = GetLineWidth(obj.name);
     return renderer;
   }
-  private static Shader LineShader => lineShader
-    ??= Resources.FindObjectsOfTypeAll<Shader>().FirstOrDefault(shader => shader.name == "Particles/Standard Unlit2") ?? throw new Exception("Shader not found.");
-  private static Shader? lineShader;
 
   ///<summary>Changes object color.</summary>
   private static void ChangeColor(GameObject obj)
   {
-    var color = GetColor(obj.name);
     var renderer = obj.GetComponent<LineRenderer>();
-    if (renderer) renderer.material.SetColor("_Color", color);
+    if (renderer) renderer.sharedMaterial = GetMaterial(GetColor(obj.name));
   }
   ///<summary>Changes object line width.</summary>
   private static void ChangeLineWidth(GameObject obj)

@@ -1,3 +1,7 @@
+- v1.28
+  - Improves performance.
+  - Fixes memory leak.
+
 - v1.27
   - Fixed for the new game version.
 

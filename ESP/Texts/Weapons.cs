@@ -5,7 +5,9 @@ public partial class Texts
 {
   public static string GetChopTier(int tier)
   {
-    if (tier > 4) return "Blackmetal+";
+    if (tier > 6) return "Berserker+";
+    if (tier == 6) return "Berserker";
+    if (tier == 5) return "Blackmetal+";
     if (tier == 4) return "Blackmetal";
     if (tier == 3) return "Iron";
     if (tier == 2) return "Bronze";
@@ -14,7 +16,10 @@ public partial class Texts
   }
   public static string GetPickaxeTier(int tier)
   {
-    if (tier > 2) return "Iron+";
+    if (tier > 5) return "Battering ram+";
+    if (tier == 5) return "Battering ram";
+    if (tier == 4) return "Blackmetal+";
+    if (tier == 3) return "Blackmetal";
     if (tier == 2) return "Iron";
     if (tier == 1) return "Bronze";
     return "Antler";
