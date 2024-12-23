@@ -3,6 +3,8 @@ namespace ESP;
 public partial class Settings
 {
 #nullable disable
+  public static ConfigEntry<string> configCustom;
+  public static string Custom => configCustom.Value;
   public static ConfigEntry<bool> configDrops;
   public static bool Drops => configDrops.Value;
   public static ConfigEntry<bool> configBreeding;
@@ -15,6 +17,8 @@ public partial class Settings
   public static bool Resistances => configResistances.Value;
   public static ConfigEntry<bool> configExtraInfo;
   public static bool ExtraInfo => configExtraInfo.Value;
+  public static ConfigEntry<bool> configCustomOnly;
+  public static bool CustomOnly => configCustomOnly.Value;
   public static ConfigEntry<bool> configWeaponInfo;
   public static bool WeaponInfo => configWeaponInfo.Value;
   public static ConfigEntry<bool> configShowProgress;
@@ -57,6 +61,8 @@ public partial class Settings
     configLocations = config.Bind(section, "Locations", true, "Show generator stats for locations");
     configVegetation = config.Bind(section, "Vegetation", false, "Show generator stats for vegetation");
     configShowShipStats = config.Bind(section, "Show ship stats", true, "Show ship speed and wind direction on the ship");
+    configCustomOnly = config.Bind(section, "Custom only", false, "Show only custom info when available");
+    configCustom = config.Bind(section, "Custom", "", "Custom text format");
   }
 }
 

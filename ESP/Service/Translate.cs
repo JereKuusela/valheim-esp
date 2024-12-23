@@ -39,19 +39,18 @@ public class Translate
     if (text == "") text = Name(obj.GetComponentInParent<Destructible>());
     if (text == "") text = Name(obj.GetComponentInParent<Character>());
     if (text == "") text = Name(obj.GetComponentInParent<Piece>());
-    if (text == "") text = Id(obj.gameObject, color);
+    if (text == "") text = Id(obj.GetComponentInParent<ZNetView>(), color);
     return Name(text, color);
   }
-  public static string Id(GameObject obj, string color = "yellow")
+  public static string Id(GameObject obj, string color = "yellow") => Id(obj.GetComponentInParent<ZNetView>(), color);
+  public static string Id(ZNetView view, string color = "yellow")
   {
-    if (!obj) return "";
-    var view = obj.GetComponentInParent<ZNetView>();
     if (view)
     {
       var hash = view.GetZDO()?.GetPrefab() ?? 0;
       if (ZNetScene.instance.m_namedPrefabs.TryGetValue(hash, out var prefab))
         return Format.String(prefab.name, color);
     }
-    return Format.String(Utils.GetPrefabName(obj), color);
+    return Format.String(Utils.GetPrefabName(view.gameObject), color);
   }
 }

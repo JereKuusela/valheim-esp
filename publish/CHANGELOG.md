@@ -1,3 +1,6 @@
+- v1.29
+  - Adds support for custom hover texts.
+
 - v1.28
   - Improves performance.
   - Fixes memory leak.

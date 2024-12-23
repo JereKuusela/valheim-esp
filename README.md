@@ -149,3 +149,35 @@ Unfortunately the feature names for commands aren't documented (but the commands
   - Attack type and hitbox.
   - Accuracy and projectile speed for bows.
   - Secondary attack stats (damage multiplier, knocback multiplier, staggering multiplier).
+
+## Custom texts
+
+Custom data can be shown by adding a file `esp.yaml` to the config folder.
+
+The format is:
+
+```yaml
+key1:
+- data1
+- data2
+key2:
+- data1
+- data2
+# ...
+```
+
+A key can be:
+
+- object name
+- component name
+- list of names (separated by `,`)
+- partial name when using `*` at the start or end of the name
+- `*` to affect all objects
+
+Data can be any text. Parameters are supported. See <https://github.com/JereKuusela/valheim-expand_world_prefabs/blob/main/README.md#parameters> for more information.
+
+Multiple profiles can be created by adding more files with the name `esp*.yaml`.
+
+Command `esp_custom` can be used to select the active profile. This can also be changed in the configuration.
+
+Commands `esp_custom_prev` and `esp_custom_next` can be used to cycle through the profiles.

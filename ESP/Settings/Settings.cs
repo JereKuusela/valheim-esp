@@ -66,6 +66,36 @@ public partial class Settings
       var radius = args.TryParameterFloat(1, 10f);
       Visual.DrawHeightmap(pos, radius);
     });
+    new Terminal.ConsoleCommand("esp_custom", "[file] - Sets the custom text file.", args =>
+    {
+      if (args.Length < 2)
+      {
+        args.Context.AddString("Missing file.");
+        return;
+      }
+      if (!FormatLoading.Keys.Contains(args[1]))
+      {
+        args.Context.AddString("Invalid file.");
+        return;
+      }
+      configCustom.Value = args[1];
+    }, optionsFetcher: () => FormatLoading.Keys);
+    new Terminal.ConsoleCommand("esp_custom_prev", "Sets the previous custom text file.", args =>
+    {
+      var index = FormatLoading.Keys.IndexOf(configCustom.Value);
+      if (index < 0) index = 0;
+      else if (index == 0) index = FormatLoading.Keys.Count - 1;
+      else index--;
+      configCustom.Value = FormatLoading.Keys[index];
+    });
+    new Terminal.ConsoleCommand("esp_custom_next", "Sets the next custom text file.", args =>
+    {
+      var index = FormatLoading.Keys.IndexOf(configCustom.Value);
+      if (index < 0) index = 0;
+      else if (index == FormatLoading.Keys.Count - 1) index = 0;
+      else index++;
+      configCustom.Value = FormatLoading.Keys[index];
+    });
   }
   private static List<string> OptionsFetcher()
   {
