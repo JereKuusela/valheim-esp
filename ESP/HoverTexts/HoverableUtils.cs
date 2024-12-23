@@ -52,10 +52,11 @@ public partial class Text
   public static void AddTexts(GameObject obj, ref string __result)
   {
     if (!ExtraInfo) return;
+    var view = obj.GetComponentInParent<ZNetView>();
+    if (!view || !view.IsValid()) return;
     List<string> lines = [];
     var character = obj.GetComponentInParent<Character>();
     var baseAI = obj.GetComponentInParent<BaseAI>();
-    var view = obj.GetComponentInParent<ZNetView>();
     var customInfo = Texts.Get("", view.GetZDO());
     if (!Settings.CustomOnly || customInfo == "")
       lines.Add("Id: " + Translate.Id(view));

@@ -23,7 +23,7 @@ public class Player_AddHoverForVisuals
     // Reverse search is used to find edge when inside colliders.
     var reverseHits = Physics.RaycastAll(GameCamera.instance.transform.position + GameCamera.instance.transform.forward * distance, -GameCamera.instance.transform.forward, distance, mask);
     hits = hits.AddRangeToArray(reverseHits);
-    Array.Sort<RaycastHit>(hits, (RaycastHit x, RaycastHit y) => x.distance.CompareTo(y.distance));
+    Array.Sort(hits, (RaycastHit x, RaycastHit y) => x.distance.CompareTo(y.distance));
     foreach (var hit in hits)
     {
       if (hit.collider.GetComponent<Visualization>() != null)
