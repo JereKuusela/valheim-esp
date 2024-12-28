@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BepInEx.Configuration;
+using UnityEngine;
 using Visualization;
 namespace ESP;
 public partial class Settings
@@ -66,6 +67,45 @@ public partial class Settings
       var radius = args.TryParameterFloat(1, 10f);
       Visual.DrawHeightmap(pos, radius);
     });
+    new Terminal.ConsoleCommand("esp_paint", "[radius] - Inspects paint.", args =>
+    {
+      if (!Player.m_localPlayer) return;
+      var pos = Player.m_localPlayer.transform.position;
+      var radius = args.TryParameterFloat(1, 10f);
+      Visual.DrawPaintmap(pos, radius);
+    });
+    new Terminal.ConsoleCommand("esp_check", "[x,z] - Inspects terrain at specific coordinates.", args =>
+    {
+      if (!Player.m_localPlayer) return;
+      if (args.Length < 2)
+      {
+        args.Context.AddString("Missing coordinates.");
+        return;
+      }
+      var coords = args[1].Split(',');
+      if (coords.Length < 2)
+      {
+        args.Context.AddString("Invalid coordinates.");
+        return;
+      }
+      if (!float.TryParse(coords[0], out var x) || !float.TryParse(coords[1], out var z))
+      {
+        args.Context.AddString("Invalid coordinates.");
+        return;
+      }
+      Vector3 pos = new(x, 0, z);
+      var hm = Heightmap.FindHeightmap(pos);
+      if (!hm)
+      {
+        args.Context.AddString("No heightmap found.");
+        return;
+      }
+      var veg = hm.GetVegetationMask(pos);
+      var lava = hm.IsLava(pos);
+      var cultivated = hm.IsCultivated(pos);
+      var cleared = hm.IsCleared(pos);
+      args.Context.AddString($"Vegetation: {veg:F4}, Lava: {lava}, Cultivated: {cultivated}, Cleared: {cleared}");
+    });
     new Terminal.ConsoleCommand("esp_custom", "[file] - Sets the custom text file.", args =>
     {
       if (args.Length < 2)
@@ -100,7 +140,7 @@ public partial class Settings
   private static List<string> OptionsFetcher()
   {
     List<string> options = [.. Visibility.GetTags];
-    options = options.Where(tag => !tag.StartsWith(Tag.ZoneCorner) && !tag.StartsWith(Tag.SpawnZone)).ToList();
+    options = options.Where(tag => !tag.StartsWith(Tag.ZoneCorner) && !tag.StartsWith(Tag.SpawnZone) && !tag.StartsWith(Tag.Terrain)).ToList();
     // Collection tags are not listed automatically.
     options.Add(Tag.ZoneCorner);
     options.Add(Tag.SpawnZone);
