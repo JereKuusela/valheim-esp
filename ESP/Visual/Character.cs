@@ -48,6 +48,8 @@ public class Character_UpdateNoise : Component
 {
   static void Postfix(Character __instance)
   {
+    if (Settings.IsHidden(Tag.CreatureNoise) || CharacterUtils.IsExcluded(__instance))
+      return;
     Draw.UpdateSphere(__instance, __instance.m_noiseRange);
   }
 }

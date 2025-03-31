@@ -65,7 +65,7 @@ public partial class Settings
     configSenseLineWidth = config.Bind(section, "Creature senses", 2, "");
     OnWidthChanged(configSenseLineWidth, Tag.CreatureAlertRange);
     OnWidthChanged(configSenseLineWidth, Tag.CreatureHearRange);
-    OnWidthChanged(configSenseLineWidth, Tag.CreatureNoise);
+    OnWidthChanged(configSenseLineWidth, Tag.CreatureViewRange);
     configBreedingLineWidth = config.Bind(section, "Breeding limits", 2, "");
     OnWidthChanged(configBreedingLineWidth, Tag.CreatureBreedingPartnerRange);
     OnWidthChanged(configBreedingLineWidth, Tag.CreatureBreedingTotalRange);

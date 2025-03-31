@@ -10,7 +10,7 @@ public class Translate
   private static string Name(Character obj) => obj ? obj.m_name : "";
   public static string Name(ItemDrop.ItemData obj, string color = "#FFFF00") => obj?.m_dropPrefab ? Name(Utils.GetPrefabName(obj?.m_dropPrefab), color) : Name(obj?.m_shared?.m_name ?? "");
   private static string Name(Pickable obj) => obj ? string.IsNullOrEmpty(obj.m_overrideName) ? obj.m_itemPrefab?.name ?? "" : obj.m_overrideName : "";
-  public static string Name(CreatureSpawner obj) => obj ? Utils.GetPrefabName(obj.m_creaturePrefab) : "";
+  public static string Name(CreatureSpawner obj) => obj && obj.m_creaturePrefab ? Utils.GetPrefabName(obj.m_creaturePrefab) : "";
   public static string Name(IEnumerable<GameObject> objs, string color = "#FFFF00") => Format.JoinRow(objs.Select(prefab => Id(prefab, color)));
   public static string Name(IEnumerable<ItemDrop> objs, string color = "#FFFF00") => Format.JoinRow(objs.Select(prefab => Name(prefab, color)));
   private static string Name(Bed obj) => obj ? obj.GetHoverName() : "";

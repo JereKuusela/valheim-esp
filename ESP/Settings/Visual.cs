@@ -135,6 +135,7 @@ public partial class Settings
     throw new NotImplementedException(name);
   }
   public static bool IsDisabled(string name) => GetTagEntry(name).Value < 0;
+  public static bool IsHidden(string name) => GetTagEntry(name).Value < 1;
   private static ConfigDescription CreateDescription() => new("", new AcceptableValueRange<int>(-1, 1));
   private static void OnChanged(ConfigEntry<int> entry, string tag)
   {

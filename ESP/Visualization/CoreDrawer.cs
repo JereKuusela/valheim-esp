@@ -8,9 +8,18 @@ public partial class Draw
   public const string TriggerLayer = "character_trigger";
 
   private static readonly Texture2D Texture = new(1, 1);
+
   private static Shader LineShader => lineShader
-    ??= Resources.FindObjectsOfTypeAll<Shader>().FirstOrDefault(shader => shader.name == "Particles/Standard Unlit2") ?? throw new Exception("Shader not found.");
+    ??= Resources.FindObjectsOfTypeAll<Shader>().FirstOrDefault(shader => shader.name == shaderName) ?? Resources.FindObjectsOfTypeAll<Shader>().FirstOrDefault(shader => shader.name == "Sprites/Default") ?? throw new Exception("Shader not found.");
   private static Shader? lineShader;
+  private static string shaderName = "Sprites/Default";
+  public static void SetShader(string name)
+  {
+    shaderName = name;
+    lineShader = null;
+    materials.Clear();
+    foreach (var obj in Utils.GetVisualizations()) ChangeColor(obj.gameObject);
+  }
   public static void Init()
   {
     Texture.SetPixel(0, 0, Color.gray);

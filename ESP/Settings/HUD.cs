@@ -1,4 +1,5 @@
 ﻿using BepInEx.Configuration;
+using Visualization;
 namespace ESP;
 public partial class Settings
 {
@@ -34,6 +35,7 @@ public partial class Settings
   public static bool ShowWeather => configShowWeather.Value;
   public static ConfigEntry<bool> configShowWind;
   public static bool ShowWind => configShowWind.Value;
+  public static ConfigEntry<string> configShader;
   public static void InitHUD(ConfigFile config)
   {
     var section = "1. HUD";
@@ -52,5 +54,8 @@ public partial class Settings
     configShowShipStatsOnHud = config.Bind(section, "Show ship stats", true, "Show ship stats on the hud");
     configTrackedObjects = config.Bind(section, "Tracked objects", "Serpent", "List of objects to track (separated by ,)");
     configTrackRadius = config.Bind(section, "Track radius", 500f, "Radius to find objects.");
+    configShader = config.Bind(section, "Shader", "Sprites/Default", "Shader for the lines.");
+    configShader.SettingChanged += (s, e) => Draw.SetShader(configShader.Value);
+    Draw.SetShader(configShader.Value);
   }
 }
