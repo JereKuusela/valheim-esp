@@ -1,7 +1,9 @@
 using System;
 using HarmonyLib;
+using Service;
 using UnityEngine;
 namespace ESP;
+
 public partial class Visual
 {
   public static void Draw(EffectArea obj)
@@ -9,6 +11,14 @@ public partial class Visual
     if (!obj || !obj.m_collider) return;
     var tag = Tag.GetEffectArea(obj.m_type);
     if (Settings.IsDisabled(tag)) return;
+    // Player base uses a very tall capsule collider to ignore terrain elevation.
+    // Use ruler to visualize it on the terrain where spawns happen.
+    if (obj.m_type == EffectArea.Type.PlayerBase && obj.m_collider is CapsuleCollider)
+    {
+      var ruler = obj.gameObject.AddComponent<Visualization.CircleRuler>();
+      ruler.Radius = obj.GetRadius();
+      return;
+    }
     var text = EffectAreaUtils.GetTypeText(obj.m_type);
     var radius = obj.GetRadius() * obj.transform.lossyScale.x;
     var line = Visualization.Draw.DrawSphere(tag, obj, Math.Max(0.5f, radius));

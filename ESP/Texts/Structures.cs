@@ -5,6 +5,7 @@ using HarmonyLib;
 using Service;
 using UnityEngine;
 namespace ESP;
+
 public partial class Texts
 {
   private static string Get(Piece.ComfortGroup group)
@@ -258,7 +259,7 @@ public partial class Texts
       lines.Add("Radius: " + Format.Float(collider.radius * obj.transform.lossyScale.x));
     var body = obj.m_body;
     lines.Add("Mass: " + Format.Float(body.mass));
-    lines.Add("Velocity: " + Format.String(body.velocity.ToString("F3")));
+    lines.Add("Velocity: " + Format.String(body.linearVelocity.ToString("F3")));
     var ratio = 1f - Mathf.Clamp01(obj.m_time / obj.m_ttl);
     var vel = obj.m_vel;
     vel.y *= ratio;
@@ -427,7 +428,7 @@ public partial class Texts
   public static float GetShipForwardSpeed(Ship obj) => obj.GetSpeed();
   public static float GetShipSpeed(Ship obj)
   {
-    Vector3 velocity = obj.m_body.velocity;
+    Vector3 velocity = obj.m_body.linearVelocity;
     velocity.y = 0f;
     return velocity.magnitude;
   }
@@ -459,7 +460,7 @@ public partial class Texts
       lines.Add("Speed: " + Format.Fixed(-forwardSpeed) + " m/s away from " + Format.Int(forwardAngle) + " degrees " + avgForwardSpeed);
     else
       lines.Add("Speed: " + Format.Fixed(forwardSpeed) + " m/s towards " + Format.Int(forwardAngle) + " degrees " + avgForwardSpeed);
-    Vector3 velocity = obj.m_body.velocity;
+    Vector3 velocity = obj.m_body.linearVelocity;
     velocity.y = 0f;
     var angle = 90f - Mathf.Atan2(velocity.z, velocity.x) / Math.PI * 180f;
     var speed = GetShipSpeed(obj);

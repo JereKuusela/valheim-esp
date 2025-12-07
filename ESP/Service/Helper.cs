@@ -2,6 +2,7 @@ using System;
 using HarmonyLib;
 using UnityEngine;
 namespace Service;
+
 public class Helper
 {
   private static T Get<T>(object obj, string field) => Traverse.Create(obj).Field<T>(field).Value;
@@ -17,6 +18,13 @@ public class Helper
     var time = ZNet.instance.GetTime();
     var d = GetDateTime(obj, key, defaultValue);
     return (time - d).TotalSeconds;
+  }
+  public static GameObject GetRoot(MonoBehaviour obj)
+  {
+    var go = obj.gameObject;
+    while (go.transform.parent != null)
+      go = go.transform.parent.gameObject;
+    return go;
   }
   public static DateTime GetDateTime(MonoBehaviour obj, string key, long defaultValue = 0) => new(GetLong(obj, key, defaultValue));
   public static DateTime GetDateTime(MonoBehaviour obj, int key, long defaultValue = 0) => new(GetLong(obj, key, defaultValue));

@@ -1,3 +1,7 @@
+- v1.31
+  - Changes player base setting to spawn suppression setting.
+  - Changes spawn suppression to use workbench visualization (cylinder that snaps to terrain).
+
 - v1.30
   - Adds shader to the settings.
   - Changes the default shader.

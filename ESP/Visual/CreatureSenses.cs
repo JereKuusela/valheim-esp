@@ -3,12 +3,13 @@ using Service;
 using UnityEngine;
 using Visualization;
 namespace ESP;
+
 [HarmonyPatch(typeof(BaseAI), nameof(BaseAI.Awake)), HarmonyPriority(Priority.Last)]
 public class BaseAI_Awake
 {
   private static void DrawHearRange(BaseAI obj, string name, string text)
   {
-    if (Settings.IsDisabled(Tag.CreatureHearRange) | !obj) return;
+    if (Settings.IsDisabled(Tag.CreatureHearRange) || !obj) return;
     if (obj.m_hearRange > 100) return;
     var line = Draw.DrawSphere(Tag.CreatureHearRange, obj, obj.m_hearRange);
     Draw.AddText(line, name, text);

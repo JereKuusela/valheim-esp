@@ -1,6 +1,7 @@
 ﻿using BepInEx.Configuration;
 using Visualization;
 namespace ESP;
+
 public partial class Settings
 {
 #nullable disable
@@ -151,7 +152,6 @@ public partial class Settings
     OnWidthChanged(configEffectAreaLineWidth, Tag.EffectAreaHeat);
     OnWidthChanged(configEffectAreaLineWidth, Tag.EffectAreaNoMonsters);
     OnWidthChanged(configEffectAreaLineWidth, Tag.EffectAreaOther);
-    OnWidthChanged(configEffectAreaLineWidth, Tag.EffectAreaPlayerBase);
     OnWidthChanged(configEffectAreaLineWidth, Tag.EffectAreaPrivateArea);
     OnWidthChanged(configEffectAreaLineWidth, Tag.EffectAreaTeleport);
     OnWidthChanged(configEffectAreaLineWidth, Tag.EffectAreaWarmCozy);

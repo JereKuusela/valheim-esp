@@ -1,4 +1,5 @@
 namespace ESP;
+
 public static class Constants
 {
   public const float CoverRayCastLength = 30f;
@@ -18,40 +19,40 @@ public static class Tag
 {
   public static string GetZoneCorner(Heightmap.Biome biome)
   {
-    if (biome == Heightmap.Biome.AshLands) return Tag.ZoneCornerAshlands;
-    if (biome == Heightmap.Biome.BlackForest) return Tag.ZoneCornerBlackForest;
-    if (biome == Heightmap.Biome.DeepNorth) return Tag.ZoneCornerDeepNorth;
-    if (biome == Heightmap.Biome.Meadows) return Tag.ZoneCornerMeadows;
-    if (biome == Heightmap.Biome.Mistlands) return Tag.ZoneCornerMistlands;
-    if (biome == Heightmap.Biome.Mountain) return Tag.ZoneCornerMountain;
-    if (biome == Heightmap.Biome.Ocean) return Tag.ZoneCornerOcean;
-    if (biome == Heightmap.Biome.Plains) return Tag.ZoneCornerPlains;
-    if (biome == Heightmap.Biome.Swamp) return Tag.ZoneCornerSwamp;
-    return Tag.ZoneCornerUnknown;
+    if (biome == Heightmap.Biome.AshLands) return ZoneCornerAshlands;
+    if (biome == Heightmap.Biome.BlackForest) return ZoneCornerBlackForest;
+    if (biome == Heightmap.Biome.DeepNorth) return ZoneCornerDeepNorth;
+    if (biome == Heightmap.Biome.Meadows) return ZoneCornerMeadows;
+    if (biome == Heightmap.Biome.Mistlands) return ZoneCornerMistlands;
+    if (biome == Heightmap.Biome.Mountain) return ZoneCornerMountain;
+    if (biome == Heightmap.Biome.Ocean) return ZoneCornerOcean;
+    if (biome == Heightmap.Biome.Plains) return ZoneCornerPlains;
+    if (biome == Heightmap.Biome.Swamp) return ZoneCornerSwamp;
+    return ZoneCornerUnknown;
   }
   public static string GetSpawnZone(Heightmap.Biome biome)
   {
-    if (biome == Heightmap.Biome.AshLands) return Tag.SpawnZoneAshlands;
-    if (biome == Heightmap.Biome.BlackForest) return Tag.SpawnZoneBlackForest;
-    if (biome == Heightmap.Biome.DeepNorth) return Tag.SpawnZoneDeepNorth;
-    if (biome == Heightmap.Biome.Meadows) return Tag.SpawnZoneMeadows;
-    if (biome == Heightmap.Biome.Mistlands) return Tag.SpawnZoneMistlands;
-    if (biome == Heightmap.Biome.Mountain) return Tag.SpawnZoneMountain;
-    if (biome == Heightmap.Biome.Ocean) return Tag.SpawnZoneOcean;
-    if (biome == Heightmap.Biome.Plains) return Tag.SpawnZonePlains;
-    if (biome == Heightmap.Biome.Swamp) return Tag.SpawnZoneSwamp;
-    return Tag.SpawnZoneUnknown;
+    if (biome == Heightmap.Biome.AshLands) return SpawnZoneAshlands;
+    if (biome == Heightmap.Biome.BlackForest) return SpawnZoneBlackForest;
+    if (biome == Heightmap.Biome.DeepNorth) return SpawnZoneDeepNorth;
+    if (biome == Heightmap.Biome.Meadows) return SpawnZoneMeadows;
+    if (biome == Heightmap.Biome.Mistlands) return SpawnZoneMistlands;
+    if (biome == Heightmap.Biome.Mountain) return SpawnZoneMountain;
+    if (biome == Heightmap.Biome.Ocean) return SpawnZoneOcean;
+    if (biome == Heightmap.Biome.Plains) return SpawnZonePlains;
+    if (biome == Heightmap.Biome.Swamp) return SpawnZoneSwamp;
+    return SpawnZoneUnknown;
   }
   public static string GetEffectArea(EffectArea.Type type)
   {
-    if ((type & EffectArea.Type.Burning) != 0) return Tag.EffectAreaBurning;
-    if ((type & EffectArea.Type.Heat) != 0) return Tag.EffectAreaHeat;
-    if ((type & EffectArea.Type.Fire) != 0) return Tag.EffectAreaFire;
-    if ((type & EffectArea.Type.NoMonsters) != 0) return Tag.EffectAreaNoMonsters;
-    if ((type & EffectArea.Type.Teleport) != 0) return Tag.EffectAreaTeleport;
-    if ((type & EffectArea.Type.PlayerBase) != 0) return Tag.EffectAreaPlayerBase;
-    if ((type & EffectArea.Type.WarmCozyArea) != 0) return Tag.EffectAreaWarmCozy;
-    return Tag.EffectAreaOther;
+    if ((type & EffectArea.Type.Burning) != 0) return EffectAreaBurning;
+    if ((type & EffectArea.Type.Heat) != 0) return EffectAreaHeat;
+    if ((type & EffectArea.Type.Fire) != 0) return EffectAreaFire;
+    if ((type & EffectArea.Type.NoMonsters) != 0) return EffectAreaNoMonsters;
+    if ((type & EffectArea.Type.Teleport) != 0) return EffectAreaTeleport;
+    if ((type & EffectArea.Type.PlayerBase) != 0) return EffectAreaPlayerBase;
+    if ((type & EffectArea.Type.WarmCozyArea) != 0) return EffectAreaWarmCozy;
+    return EffectAreaOther;
   }
   public const string CreatureCollider = "CreatureCollider";
   public const string StructureCollider = "StructureCollider";
@@ -111,7 +112,7 @@ public static class Tag
   public const string SpawnZoneSwamp = "SpawnZoneSwamp";
   public const string SpawnZoneUnknown = "SpawnZoneUnknown";
   public const string RandomEventSystem = "RandomEventSystem";
-  public const string EffectAreaPrivateArea = "EffectAreaPrivateArea";
+  public const string EffectAreaPrivateArea = "EffectAreaSpawnSuppression";
   public const string EffectAreaComfort = "EffectAreaComfort";
   public const string EffectAreaBurning = "EffectAreaBurning";
   public const string EffectAreaHeat = "EffectAreaHeat";

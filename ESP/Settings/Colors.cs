@@ -2,6 +2,7 @@ using BepInEx.Configuration;
 using UnityEngine;
 using Visualization;
 namespace ESP;
+
 public partial class Settings
 {
 #nullable disable
@@ -51,7 +52,6 @@ public partial class Settings
   public static ConfigEntry<string> configEffectAreaFireColor;
   public static ConfigEntry<string> configEffectAreaNoMonstersColor;
   public static ConfigEntry<string> configEffectAreaTeleportColor;
-  public static ConfigEntry<string> configEffectAreaPlayerBaseColor;
   public static ConfigEntry<string> configEffectAreaOtherColor;
   public static ConfigEntry<string> configEffectAreaWarmCozyColor;
   public static ConfigEntry<string> configEffectAreaCustomContainerColor;
@@ -147,7 +147,7 @@ public partial class Settings
     configAltarSpawnRadiusColor = config.Bind(section, "Altar spawn radius sphere", "red", "");
     OnColorChanged(configAltarSpawnRadiusColor, Tag.AltarSpawnRadius);
     configEffectAreaPrivateAreaColor = config.Bind(section, "Ward effect sphere", "gray", "");
-    OnColorChanged(configEffectAreaPrivateAreaColor, Tag.EffectAreaPlayerBase);
+    OnColorChanged(configEffectAreaPrivateAreaColor, Tag.EffectAreaPrivateArea);
     configEffectAreaComfortColor = config.Bind(section, "Comfort effect sphere", "cyan", "");
     OnColorChanged(configEffectAreaComfortColor, Tag.EffectAreaComfort);
     configEffectAreaBurningColor = config.Bind(section, "Burning effect sphere", "yellow", "");
@@ -160,8 +160,6 @@ public partial class Settings
     OnColorChanged(configEffectAreaNoMonstersColor, Tag.EffectAreaNoMonsters);
     configEffectAreaTeleportColor = config.Bind(section, "Teleport effect sphere", "blue", "");
     OnColorChanged(configEffectAreaTeleportColor, Tag.EffectAreaTeleport);
-    configEffectAreaPlayerBaseColor = config.Bind(section, "Player base effect sphere", "white", "");
-    OnColorChanged(configEffectAreaPlayerBaseColor, Tag.EffectAreaPlayerBase);
     configEffectAreaOtherColor = config.Bind(section, "Unknown effect spheres", "black", "");
     OnColorChanged(configEffectAreaOtherColor, Tag.EffectAreaOther);
     configEffectAreaWarmCozyColor = config.Bind(section, "Warm and cozy effect sphere", "magenta", "");

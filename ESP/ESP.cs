@@ -5,13 +5,14 @@ using HarmonyLib;
 using Service;
 using Visualization;
 namespace ESP;
+
 [BepInDependency("org.bepinex.plugins.jewelcrafting", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInPlugin(GUID, NAME, VERSION)]
 public class ESP : BaseUnityPlugin
 {
   const string GUID = "esp";
   const string NAME = "ESP";
-  const string VERSION = "1.30";
+  const string VERSION = "1.31";
   public void Awake()
   {
     Log.Init(Logger);
@@ -40,5 +41,18 @@ public class ESP : BaseUnityPlugin
     if (Player.m_localPlayer)
       Texts.UpdateAverageSpeed(Ship.GetLocalShip());
     Visualization.Visualization.SharedUpdate();
+  }
+}
+
+[HarmonyPatch(typeof(Player), nameof(Player.SetupPlacementGhost)), HarmonyPriority(Priority.Last)]
+public class PlayerCleanGhost
+{
+  static void Postfix(Player __instance)
+  {
+    if (Settings.IsDisabled(Tag.EffectAreaPlayerBase)) return;
+    var ghost = __instance.m_placementGhost;
+    if (!ghost) return;
+    var oldRuler = ghost.GetComponentInChildren<CircleRuler>(true);
+    UnityEngine.Object.DestroyImmediate(oldRuler);
   }
 }

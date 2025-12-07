@@ -2,6 +2,7 @@
 using BepInEx.Configuration;
 using Visualization;
 namespace ESP;
+
 public partial class Settings
 {
 #nullable disable
@@ -43,7 +44,7 @@ public partial class Settings
   public static ConfigEntry<int> configShowEffectAreasFire;
   public static ConfigEntry<int> configShowEffectAreasNoMonsters;
   public static ConfigEntry<int> configShowEffectAreasTeleport;
-  public static ConfigEntry<int> configShowEffectAreasPlayerBase;
+  public static ConfigEntry<int> configShowSpawnSuppression;
   public static ConfigEntry<int> configShowEffectAreasWarmCozy;
   public static ConfigEntry<int> configShowEffectAreasOther;
   public static ConfigEntry<int> configShowEffectAreasCustomContainer;
@@ -125,7 +126,7 @@ public partial class Settings
     if (name == Tag.EffectAreaHeat.ToLower()) return configShowEffectAreasHeat;
     if (name == Tag.EffectAreaNoMonsters.ToLower()) return configShowEffectAreasNoMonsters;
     if (name == Tag.EffectAreaOther.ToLower()) return configShowEffectAreasOther;
-    if (name == Tag.EffectAreaPlayerBase.ToLower()) return configShowEffectAreasPlayerBase;
+    if (name == Tag.EffectAreaPlayerBase.ToLower()) return configShowSpawnSuppression;
     if (name == Tag.EffectAreaWarmCozy.ToLower()) return configShowEffectAreasWarmCozy;
     if (name == Tag.EffectAreaPrivateArea.ToLower()) return configShowEffectAreasPrivateArea;
     if (name == Tag.EffectAreaTeleport.ToLower()) return configShowEffectAreasTeleport;
@@ -255,8 +256,10 @@ public partial class Settings
     OnChanged(configShowEffectAreasNoMonsters, Tag.EffectAreaNoMonsters);
     configShowEffectAreasOther = config.Bind(section, "Area effects: Other", -1, CreateDescription());
     OnChanged(configShowEffectAreasOther, Tag.EffectAreaOther);
-    configShowEffectAreasPlayerBase = config.Bind(section, "Area effects: Player base", -1, CreateDescription());
-    OnChanged(configShowEffectAreasPlayerBase, Tag.EffectAreaPlayerBase);
+    configShowSpawnSuppression = config.Bind(section, "Area effects: Spawn suppression", -1, CreateDescription());
+    configShowSpawnSuppression.SettingChanged += (s, e) => BaseRuler.Visible = configShowSpawnSuppression.Value > 0;
+    BaseRuler.Visible = configShowSpawnSuppression.Value > 0;
+
     configShowEffectAreasWarmCozy = config.Bind(section, "Area effects: Warm cozy", -1, CreateDescription());
     OnChanged(configShowEffectAreasWarmCozy, Tag.EffectAreaWarmCozy);
     configShowEffectAreasPrivateArea = config.Bind(section, "Area effects: Private area", -1, CreateDescription());
