@@ -117,6 +117,10 @@ public partial class Draw
       return set.Contains(visualization.Tag);
     }).ToArray();
   }
+  public static bool HasVisual(MonoBehaviour obj, string tag)
+  {
+    return obj.GetComponentsInChildren<Visualization>(true).Any(visualization => visualization.Tag == tag);
+  }
   private static readonly Dictionary<string, Color> colors = [];
   public static Color GetColor(string tag) => colors.ContainsKey(tag) ? colors[tag] : Color.white;
   ///<summary>Sets colors to visuals with a given tag.</summary>

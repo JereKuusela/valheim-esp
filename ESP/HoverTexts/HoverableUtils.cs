@@ -33,16 +33,7 @@ public partial class Text
   {
     obj.AddComponent<HoverText>().m_text = text;
   }
-  public static bool ExtraInfo
-  {
-    get => Settings.ExtraInfo && Admin.Enabled;
-    set
-    {
-      if (value)
-        Admin.Check();
-      Settings.configExtraInfo.Value = value;
-    }
-  }
+  public static bool ExtraInfo;
   public static void AddHoverText(MonoBehaviour obj)
   {
     if (obj.gameObject.GetComponent<Hoverable>() == null)

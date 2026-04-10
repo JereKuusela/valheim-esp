@@ -7,6 +7,28 @@ namespace ESP;
 [HarmonyPatch(typeof(SpawnSystem), nameof(SpawnSystem.Awake)), HarmonyPriority(Priority.Last)]
 public class SpawnSystem_Awake
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<SpawnSystem>())
+    {
+      if (!obj.m_heightmap) continue;
+      ClearSpawnSystemVisuals(obj);
+      Postfix(obj);
+    }
+  }
+  private static bool IsSpawnSystemTag(string tag)
+  {
+    return tag == Tag.RandomEventSystem || tag.StartsWith(Tag.SpawnZone) || tag.StartsWith(Tag.ZoneCorner);
+  }
+  private static void ClearSpawnSystemVisuals(SpawnSystem obj)
+  {
+    var visuals = obj.GetComponentsInChildren<Visualization.Visualization>(true);
+    foreach (var visual in visuals)
+    {
+      if (!visual || !IsSpawnSystemTag(visual.Tag)) continue;
+      Object.Destroy(visual.gameObject);
+    }
+  }
   private static void DrawBiomes(SpawnSystem obj)
   {
     var heightmap = obj.m_heightmap;
@@ -82,6 +104,7 @@ public class SpawnSystem_Awake
   private static void DrawRandEventSystem(SpawnSystem instance)
   {
     if (Settings.IsDisabled(Tag.RandomEventSystem)) return;
+    if (Draw.HasVisual(instance, Tag.RandomEventSystem)) return;
     var obj = Draw.DrawMarkerLine(Tag.RandomEventSystem, instance, new(0, 0, 5));
     obj.AddComponent<RandEventSystemText>().spawnSystem = instance;
   }

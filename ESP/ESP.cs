@@ -6,20 +6,18 @@ using Service;
 using Visualization;
 namespace ESP;
 
-[BepInDependency("org.bepinex.plugins.jewelcrafting", BepInDependency.DependencyFlags.SoftDependency)]
 [BepInPlugin(GUID, NAME, VERSION)]
 public class ESP : BaseUnityPlugin
 {
   const string GUID = "esp";
   const string NAME = "ESP";
-  const string VERSION = "1.31";
+  const string VERSION = "1.31.1";
   public void Awake()
   {
     Log.Init(Logger);
     Settings.Init(Config);
     MessageHud_UpdateMessage.GetMessage = Hud.GetMessage;
     new Harmony(GUID).PatchAll();
-    Admin.Instance = new EspAdmin();
     Draw.Init();
     try
     {
@@ -35,6 +33,8 @@ public class ESP : BaseUnityPlugin
   {
     if (Chainloader.PluginInfos.TryGetValue("org.bepinex.plugins.jewelcrafting", out var info))
       JewelcraftingPatcher.DoPatching(info.Instance.GetType().Assembly);
+    if (Chainloader.PluginInfos.TryGetValue("server_devcommands", out info))
+      PermissionManager.SetupSDC(info.Instance.GetType().Assembly);
   }
   public void LateUpdate()
   {

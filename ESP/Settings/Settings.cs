@@ -5,6 +5,7 @@ using BepInEx.Configuration;
 using UnityEngine;
 using Visualization;
 namespace ESP;
+
 public partial class Settings
 {
   public static void Init(ConfigFile config)
@@ -32,7 +33,7 @@ public partial class Settings
       if (args[1] == "*")
         entries = OptionsFetcher();
       foreach (var arg in entries)
-        SetEntry(arg, 1);
+        SetEntry(arg, true);
     }, optionsFetcher: OptionsFetcher);
     new Terminal.ConsoleCommand("esp_toggle", "[name1] [name2] [name3] ... - Toggles given settings.", args =>
     {
@@ -58,7 +59,7 @@ public partial class Settings
       if (args[1] == "*")
         entries = OptionsFetcher();
       foreach (var arg in entries)
-        SetEntry(arg, -1);
+        SetEntry(arg, false);
     }, optionsFetcher: OptionsFetcher);
     new Terminal.ConsoleCommand("esp_terrain", "[radius] - Inspects terrain.", args =>
     {
@@ -178,7 +179,7 @@ public partial class Settings
     if (name == Tool.Stealth.ToLower()) return configShowStealth;
     throw new NotImplementedException(name);
   }
-  private static void SetEntry(string name, int value)
+  private static void SetEntry(string name, bool value)
   {
     try
     {
@@ -191,8 +192,8 @@ public partial class Settings
     try
     {
       var entry = GetOtherEntry(name);
-      if (entry.Value != value > 0)
-        entry.Value = value > 0;
+      if (entry.Value != value)
+        entry.Value = value;
       return;
     }
     catch (NotImplementedException) { }
@@ -203,8 +204,7 @@ public partial class Settings
     try
     {
       var entry = GetTagEntry(name);
-      if (entry.Value < 0) return;
-      entry.Value = entry.Value > 0 ? 0 : 1;
+      entry.Value = !entry.Value;
       return;
     }
     catch (NotImplementedException) { }

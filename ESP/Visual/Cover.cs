@@ -2,10 +2,13 @@ using Service;
 using UnityEngine;
 using Visualization;
 namespace ESP;
+
 public partial class Visual
 {
   private static void DrawCover(MonoBehaviour obj, Vector3 startPos, string name, string text, bool isPlayer = false)
   {
+    string[] existingTags = isPlayer ? [Tag.PlayerCover, Tag.PlayerCoverBlocked] : [Tag.StructureCover, Tag.StructureCoverBlocked];
+    if (Visualization.Draw.GetRenderers(obj, existingTags).Length > 0) return;
     var delta = startPos - obj.transform.position;
     var start = Constants.CoverRaycastStart;
     if (Cover.m_coverRays == null) Cover.Setup();
@@ -57,7 +60,7 @@ public partial class Visual
   private static void UpdateCover(MonoBehaviour obj, Vector3 startPos, string text, bool isPlayer = false)
   {
     if (!obj) return;
-    var tags = isPlayer ? new string[] { Tag.PlayerCover, Tag.PlayerCoverBlocked } : new string[] { Tag.StructureCover, Tag.StructureCoverBlocked };
+    string[] tags = isPlayer ? [Tag.PlayerCover, Tag.PlayerCoverBlocked] : [Tag.StructureCover, Tag.StructureCoverBlocked];
     var renderers = Visualization.Draw.GetRenderers(obj, tags);
     if (Cover.m_coverRays == null) return;
     var vectors = Cover.m_coverRays;

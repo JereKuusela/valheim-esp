@@ -3,6 +3,7 @@ using Service;
 using UnityEngine;
 using Visualization;
 namespace ESP;
+
 public class CharacterUtils
 {
   public static bool IsExcluded(Character instance)
@@ -30,10 +31,16 @@ public class CharacterUtils
 [HarmonyPatch(typeof(Character), nameof(Character.Awake)), HarmonyPriority(Priority.Last)]
 public class Character_Awake
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<Character>())
+      Postfix(obj);
+  }
   private static void DrawNoise(Character instance)
   {
     if (Settings.IsDisabled(Tag.CreatureNoise) || CharacterUtils.IsExcluded(instance))
       return;
+    if (Draw.HasVisual(instance, Tag.CreatureNoise)) return;
     var obj = Draw.DrawSphere(Tag.CreatureNoise, instance, instance.m_noiseRange);
     obj.AddComponent<NoiseText>().character = instance;
   }

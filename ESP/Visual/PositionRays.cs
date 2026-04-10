@@ -4,6 +4,7 @@ using Service;
 using UnityEngine;
 using Visualization;
 namespace ESP;
+
 public class LocationUtils
 {
   public static bool IsIn(string arrayStr, string name)
@@ -81,10 +82,16 @@ public class LocationUtils
 [HarmonyPatch(typeof(ZNetView), nameof(ZNetView.Awake)), HarmonyPriority(Priority.Last)]
 public class ZNetView_Ray
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<ZNetView>())
+      Postfix(obj);
+  }
   static void Postfix(ZNetView __instance)
   {
     var obj = __instance;
     if (Settings.IsDisabled(Tag.TrackedObject) || !CharacterUtils.IsTracked(obj)) return;
+    if (Draw.HasVisual(obj, Tag.TrackedObject)) return;
     var line = Draw.DrawMarkerLine(Tag.TrackedObject, obj);
     Text.AddText(line);
   }
@@ -92,10 +99,16 @@ public class ZNetView_Ray
 [HarmonyPatch(typeof(Pickable), nameof(Pickable.Awake)), HarmonyPriority(Priority.Last)]
 public class Pickable_Ray
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<Pickable>())
+      Postfix(obj);
+  }
   static void Postfix(Pickable __instance)
   {
     if (!LocationUtils.IsEnabled(__instance)) return;
     var tag = LocationUtils.GetTag(__instance);
+    if (Draw.HasVisual(__instance, tag)) return;
     var obj = Draw.DrawMarkerLine(tag, __instance);
     Text.AddText(obj, Translate.Name(__instance));
   }
@@ -103,9 +116,15 @@ public class Pickable_Ray
 [HarmonyPatch(typeof(Location), nameof(Location.Awake)), HarmonyPriority(Priority.Last)]
 public class Location_Ray
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<Location>())
+      Postfix(obj);
+  }
   static void Postfix(Location __instance)
   {
     if (Settings.IsDisabled(Tag.Location)) return;
+    if (Draw.HasVisual(__instance, Tag.Location)) return;
     var obj = Draw.DrawMarkerLine(Tag.Location, __instance);
     Text.AddText(obj, Translate.Name(__instance));
   }
@@ -113,9 +132,15 @@ public class Location_Ray
 [HarmonyPatch(typeof(Container), nameof(Container.Awake)), HarmonyPriority(Priority.Last)]
 public class Container_Ray
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<Container>())
+      Postfix(obj, obj.m_piece);
+  }
   static void Postfix(Container __instance, Piece ___m_piece)
   {
     if (Settings.IsDisabled(Tag.Chest) || !___m_piece || ___m_piece.IsPlacedByPlayer()) return;
+    if (Draw.HasVisual(__instance, Tag.Chest)) return;
     var text = Format.String(__instance.GetHoverName());
     var obj = Draw.DrawMarkerLine(Tag.Chest, __instance);
     Text.AddText(obj, text);
@@ -124,70 +149,118 @@ public class Container_Ray
 [HarmonyPatch(typeof(MineRock), nameof(MineRock.Start))]
 public class MineRock_Ray
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<MineRock>())
+      Postfix(obj);
+  }
   static void Postfix(MineRock __instance)
   {
     if (!LocationUtils.IsEnabled(__instance)) return;
     var damages = __instance.m_damageModifiers;
-    var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance);
+    var tag = LocationUtils.GetTag(damages);
+    if (Draw.HasVisual(__instance, tag)) return;
+    var obj = Draw.DrawMarkerLine(tag, __instance);
     Text.AddText(obj, Translate.Name(__instance));
   }
 }
 [HarmonyPatch(typeof(MineRock5), nameof(MineRock5.Awake))]
 public class MineRock5_Ray
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<MineRock5>())
+      Postfix(obj);
+  }
   static void Postfix(MineRock5 __instance)
   {
     if (!LocationUtils.IsEnabled(__instance)) return;
     var damages = __instance.m_damageModifiers;
-    var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance);
+    var tag = LocationUtils.GetTag(damages);
+    if (Draw.HasVisual(__instance, tag)) return;
+    var obj = Draw.DrawMarkerLine(tag, __instance);
     Text.AddText(obj, Translate.Name(__instance));
   }
 }
 [HarmonyPatch(typeof(Destructible), nameof(Destructible.Awake)), HarmonyPriority(Priority.Last)]
 public class Destructible_Ray
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<Destructible>())
+      Postfix(obj);
+  }
   static void Postfix(Destructible __instance)
   {
     if (!LocationUtils.IsEnabled(__instance)) return;
     var damages = __instance.m_damages;
-    var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance);
+    var tag = LocationUtils.GetTag(damages);
+    if (Draw.HasVisual(__instance, tag)) return;
+    var obj = Draw.DrawMarkerLine(tag, __instance);
     Text.AddText(obj, Translate.Name(__instance));
   }
 }
 [HarmonyPatch(typeof(TreeBase), nameof(TreeBase.Awake)), HarmonyPriority(Priority.Last)]
 public class TreeBase_Ray
 {
-  static void Postfix(TreeBase __instance)
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<TreeBase>())
+      Postfix(obj);
+  }
+  public static void Postfix(TreeBase __instance)
   {
     if (!LocationUtils.IsEnabled(__instance)) return;
     var damages = __instance.m_damageModifiers;
-    var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance);
+    var tag = LocationUtils.GetTag(damages);
+    if (Draw.HasVisual(__instance, tag)) return;
+    var obj = Draw.DrawMarkerLine(tag, __instance);
     Text.AddText(obj, Translate.Name(__instance));
   }
 }
 [HarmonyPatch(typeof(RandomSpeak), nameof(RandomSpeak.Start)), HarmonyPriority(Priority.Last)]
 public class RandomSpeak_Sphere
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<RandomSpeak>())
+      Postfix(obj);
+  }
   static void Postfix(RandomSpeak __instance)
   {
     if (!Settings.IsDisabled(Tag.TrophySpeak))
+    {
+      if (Draw.HasVisual(__instance, Tag.TrophySpeak)) return;
       Draw.DrawSphere(Tag.TrophySpeak, __instance, __instance.m_triggerDistance);
+    }
   }
 }
 [HarmonyPatch(typeof(TreeLog), nameof(TreeLog.Awake)), HarmonyPriority(Priority.Last)]
 public class TreeLog_Ray
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<TreeLog>())
+      Postfix(obj);
+  }
   static void Postfix(TreeLog __instance)
   {
     if (!LocationUtils.IsEnabled(__instance)) return;
     var damages = __instance.m_damages;
-    var obj = Draw.DrawMarkerLine(LocationUtils.GetTag(damages), __instance);
+    var tag = LocationUtils.GetTag(damages);
+    if (Draw.HasVisual(__instance, tag)) return;
+    var obj = Draw.DrawMarkerLine(tag, __instance);
     Text.AddText(obj, Translate.Name(__instance));
   }
 }
 [HarmonyPatch(typeof(CreatureSpawner), nameof(CreatureSpawner.Awake)), HarmonyPriority(Priority.Last)]
 public class CreatureSpawner_Ray
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<CreatureSpawner>())
+      Postfix(obj);
+  }
   private static bool IsEnabled(CreatureSpawner obj)
   {
     var tag = obj.m_respawnTimeMinuts > 0f ? Tag.SpawnPointRespawning : Tag.SpawnPointOneTime;
@@ -200,6 +273,7 @@ public class CreatureSpawner_Ray
     var obj = __instance;
     if (!IsEnabled(obj)) return;
     var tag = obj.m_respawnTimeMinuts > 0f ? Tag.SpawnPointRespawning : Tag.SpawnPointOneTime;
+    if (Draw.HasVisual(obj, tag)) return;
     var line = Draw.DrawMarkerLine(tag, obj);
     Text.AddText(line, Translate.Name(obj));
   }
@@ -208,11 +282,17 @@ public class CreatureSpawner_Ray
 [HarmonyPatch(typeof(TimedDestruction), nameof(TimedDestruction.Awake)), HarmonyPriority(Priority.Last)]
 public class EventZone_Ray
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<TimedDestruction>())
+      Postfix(obj);
+  }
   static void Postfix(TimedDestruction __instance)
   {
     if (Settings.IsDisabled(Tag.EventZone)) return;
     var obj = __instance.GetComponent<EventZone>();
     if (!obj) return;
+    if (Draw.HasVisual(obj, Tag.EventZone)) return;
     var line = Draw.DrawMarkerLine(Tag.EventZone, obj);
     var radius = obj.GetComponent<SphereCollider>()?.radius ?? 0;
     var sphere = Draw.DrawSphere(Tag.EventZone, obj, radius);
@@ -226,35 +306,66 @@ public class EventZone_Ray
 [HarmonyPatch(typeof(OfferingBowl), nameof(OfferingBowl.Awake)), HarmonyPriority(Priority.Last)]
 public class OfferingBowl_Awake
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<OfferingBowl>())
+      Postfix(obj);
+  }
   static void Postfix(OfferingBowl __instance)
   {
     if (!Settings.IsDisabled(Tag.AltarRay))
     {
-      var obj = Draw.DrawMarkerLine(Tag.AltarRay, __instance);
-      Text.AddText(obj);
+      if (!Draw.HasVisual(__instance, Tag.AltarRay))
+      {
+        var obj = Draw.DrawMarkerLine(Tag.AltarRay, __instance);
+        Text.AddText(obj);
+      }
     }
     if (!Settings.IsDisabled(Tag.AltarItemStandRange) && __instance.m_useItemStands)
-      Draw.DrawSphere(Tag.AltarItemStandRange, __instance, __instance.m_itemstandMaxRange);
-    if (!Settings.IsDisabled(Tag.SpawnerLimitRange))
-      Draw.DrawSphere(Tag.SpawnerLimitRange, __instance, __instance.m_spawnBossMaxDistance);
+    {
+      if (!Draw.HasVisual(__instance, Tag.AltarItemStandRange))
+        Draw.DrawSphere(Tag.AltarItemStandRange, __instance, __instance.m_itemstandMaxRange);
+    }
+    if (!Settings.IsDisabled(Tag.AltarSpawnRadius))
+    {
+      if (!Draw.HasVisual(__instance, Tag.AltarSpawnRadius))
+        Draw.DrawSphere(Tag.AltarSpawnRadius, __instance, __instance.m_spawnBossMaxDistance);
+    }
   }
 }
 
 [HarmonyPatch(typeof(SpawnArea), nameof(SpawnArea.Awake)), HarmonyPriority(Priority.Last)]
 public class SpawnArea_Awake
 {
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in SceneObjects.FindLoaded<SpawnArea>())
+      Postfix(obj);
+  }
   static void Postfix(SpawnArea __instance)
   {
     if (!Settings.IsDisabled(Tag.SpawnerRay))
     {
-      var obj = Draw.DrawMarkerLine(Tag.SpawnerRay, __instance);
-      Text.AddText(obj);
+      if (!Draw.HasVisual(__instance, Tag.SpawnerRay))
+      {
+        var obj = Draw.DrawMarkerLine(Tag.SpawnerRay, __instance);
+        Text.AddText(obj);
+      }
     }
     if (!Settings.IsDisabled(Tag.SpawnerTriggerRange))
-      Draw.DrawSphere(Tag.SpawnerTriggerRange, __instance, __instance.m_triggerDistance);
+    {
+      if (!Draw.HasVisual(__instance, Tag.SpawnerTriggerRange))
+        Draw.DrawSphere(Tag.SpawnerTriggerRange, __instance, __instance.m_triggerDistance);
+    }
     if (!Settings.IsDisabled(Tag.SpawnerLimitRange))
-      Draw.DrawSphere(Tag.SpawnerLimitRange, __instance, __instance.m_nearRadius);
+    {
+      if (!Draw.HasVisual(__instance, Tag.SpawnerLimitRange))
+        Draw.DrawSphere(Tag.SpawnerLimitRange, __instance, __instance.m_nearRadius);
+    }
     if (!Settings.IsDisabled(Tag.SpawnerSpawnRange))
-      Draw.DrawSphere(Tag.SpawnerSpawnRange, __instance, __instance.m_spawnRadius);
+    {
+      if (!Draw.HasVisual(__instance, Tag.SpawnerSpawnRange))
+        Draw.DrawSphere(Tag.SpawnerSpawnRange, __instance, __instance.m_spawnRadius);
+    }
   }
 }
