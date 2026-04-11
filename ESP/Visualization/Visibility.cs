@@ -6,7 +6,8 @@ namespace Visualization;
 
 public class Visibility : Component
 {
-  private static readonly HashSet<int> visibleTagHashes = [];
+  private static readonly HashSet<int> enabledTags = [];
+  private static readonly HashSet<int> previousTags = [];
   private static readonly HashSet<int> tagHashes = [];
   private static readonly Dictionary<int, string> tags = [];
   private static readonly Dictionary<int, List<System.Action>> rebuilders = [];
@@ -25,22 +26,17 @@ public class Visibility : Component
   public static bool IsTag(string name)
   {
     var hash = GetTagHash(name);
-    return PermissionManager.IsFeatureEnabledByHash(hash, visibleTagHashes.Contains(hash));
+    return PermissionManager.IsFeatureEnabledByHash(hash, enabledTags.Contains(hash));
   }
   ///<summary>Sets visibility of a tag.</summary>
   public static void SetTag(string tag, bool visibility)
   {
     var hash = GetTagHash(tag);
-    var wasVisible = visibleTagHashes.Contains(hash);
     tagHashes.Add(hash);
     tags[hash] = tag;
-    if (visibility) visibleTagHashes.Add(hash);
-    else visibleTagHashes.Remove(hash);
-    if (!visibility)
-      DestroyTag(tag);
-    else if (!wasVisible)
-      RebuildTag(tag);
-    UpdateTagVisibility(tag);
+    if (visibility) enabledTags.Add(hash);
+    else enabledTags.Remove(hash);
+    ApplyTagState(hash);
   }
   public static void RegisterRebuilder(string tag, System.Action rebuilder)
   {
@@ -76,16 +72,27 @@ public class Visibility : Component
       UpdateVisibility(obj);
     }
   }
-  private static void UpdateVisibility()
-  {
-    foreach (var obj in Utils.GetVisualizations())
-    {
-      UpdateVisibility(obj);
-    }
-  }
   public static void Reload()
   {
-    UpdateVisibility();
+    foreach (var hash in tagHashes)
+      ApplyTagState(hash);
+  }
+  private static void ApplyTagState(int hash)
+  {
+    if (!tags.TryGetValue(hash, out var tag)) return;
+
+    var previous = previousTags.Contains(hash);
+    var enabled = PermissionManager.IsFeatureEnabledByHash(hash, enabledTags.Contains(hash));
+
+    if (enabled) previousTags.Add(hash);
+    else previousTags.Remove(hash);
+
+    if (!enabled)
+      DestroyTag(tag);
+    else if (!previous)
+      RebuildTag(tag);
+
+    UpdateTagVisibility(tag);
   }
   private static void UpdateVisibility(Visualization obj)
   {
