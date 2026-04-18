@@ -4,14 +4,18 @@ This mod adds lots of new information to tooltips and visualizes many hidden mec
 
 Install on the admin client (modding [guide](https://youtu.be/L9ljm2eKLrk)).
 
-# Features
+Server usage also requires installing Server Devcommands mod for the admin check.
+
+This mod can also be enabled for non-admins by using the permissions system. See [permissions.md](permissions.md) for more information.
+
+## Features
 
 - Perfecting your builds with a better understanding of structure support, structure health, cover and smoke mechanics.
 - Spawn proofing your bases with the player base effect visualized.
 - Finding the best ways to deal with tougher enemies by knowing their resistances and attacks.
 - Getting deeper insight of exact mechanics and interaction by looking at the detailed visualizations and tooltips.
 
-# Configuration
+## Configuration
 
 By default, most features are active which adds too much information for most use cases. It's recommended to turn off most features, until you have a better idea what you are looking for.
 
@@ -34,7 +38,7 @@ Parameter `*` affects all settings. For example `esp_disable *` hides all featur
 
 Unfortunately the feature names for commands aren't documented (but the commands support autocomplete).
 
-## Structures
+### Structures
 
 - Structure stability color for all structures.
 - Exact stability values (including the material type).
@@ -58,7 +62,7 @@ Unfortunately the feature names for commands aren't documented (but the commands
 - Fuel amount of fireplace, torches and smelters.
 - Progression of beehives, smelters, kilns and windmills.
 
-## Gathering / Exploration
+### Gathering / Exploration
 
 - Growth timer, health and damage resistances of plants.
 - Visual indicator for pickables (green line when respawning, blue line when one time, stones and branches are turned off by default):
@@ -79,7 +83,7 @@ Unfortunately the feature names for commands aren't documented (but the commands
 - Stack size and despawn timer on dropped items.
 - Ship speed (both current and average), wind angle and wind strength on the HUD when sailing.
 
-## Creatures
+### Creatures
 
 - Tracker to count amount of creatures in nearby areas (by default tracks Serpents).
 - Visual indicator for tracked creatures to make detecting them easier (magenta line).
@@ -102,7 +106,7 @@ Unfortunately the feature names for commands aren't documented (but the commands
   - Breeding limit.
   - Wake up range and noise.
 
-## Environment
+### Environment
 
 - Time of the day, weather, wind, coordinates, altitude and forest factor on the HUD.
 - Coordinates on most tooltips.
@@ -115,7 +119,7 @@ Unfortunately the feature names for commands aren't documented (but the commands
   - Available events including their conditions. Grey color shows failed conditions and events that are not currently possible.
   - If an event is going, shows event name, remaining time and event spawners.
 
-## Creature spawning
+### Creature spawning
 
 - Zone based spawners at middle of zones (color of the line depends on the biome):
   - Name of the creature, spawn limit, max stars.
@@ -138,7 +142,7 @@ Unfortunately the feature names for commands aren't documented (but the commands
   - Spawn limit with current and max amount.
 - Boss altars visualized.
 
-## Combat
+### Combat
 
 - Player speed and noise on the HUD.
 - More stats for weapons:
@@ -150,7 +154,7 @@ Unfortunately the feature names for commands aren't documented (but the commands
   - Accuracy and projectile speed for bows.
   - Secondary attack stats (damage multiplier, knocback multiplier, staggering multiplier).
 
-## Custom texts
+### Custom texts
 
 Custom data can be shown by adding a file `esp.yaml` to the config folder.
 

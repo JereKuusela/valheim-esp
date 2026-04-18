@@ -138,11 +138,11 @@ public partial class Settings
   }
   public static bool IsDisabled(string name)
   {
-    return !PermissionManager.IsFeatureEnabledByHash(Visibility.GetTagHash(name), GetTagEntry(name).Value);
+    return !PermissionManager.IsVisualFeatureEnabled(Visibility.GetTagHash(name), GetTagEntry(name).Value);
   }
   public static bool IsHidden(string name)
   {
-    return !PermissionManager.IsFeatureEnabledByHash(Visibility.GetTagHash(name), GetTagEntry(name).Value);
+    return !PermissionManager.IsVisualFeatureEnabled(Visibility.GetTagHash(name), GetTagEntry(name).Value);
   }
   private static ConfigDescription CreateDescription() => new("");
   private static void OnChanged(ConfigEntry<bool> entry, string tag, params Action[] rebuilds)

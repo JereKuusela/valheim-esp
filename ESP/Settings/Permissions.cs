@@ -8,11 +8,25 @@ namespace Service;
 public class PermissionManager
 {
 
-  public static bool IsFeatureEnabled(string feature, bool localConfigValue) => IsFeatureEnabledByHash(feature.ToLowerInvariant().GetStableHashCode(), localConfigValue);
-  public static bool IsFeatureEnabledByHash(int featureHash, bool localConfigValue)
+  public static bool IsVisualFeatureEnabled(int featureHash, bool localConfigValue)
+  {
+    return IsFeatureEnabled("esp_visuals", featureHash, localConfigValue);
+  }
+
+  public static bool IsStatsFeatureEnabled(int featureHash, bool localConfigValue)
+  {
+    return IsFeatureEnabled("esp_stats", featureHash, localConfigValue);
+  }
+
+  public static bool IsHudFeatureEnabled(int featureHash, bool localConfigValue)
+  {
+    return IsFeatureEnabled("esp_hud", featureHash, localConfigValue);
+  }
+
+  private static bool IsFeatureEnabled(string sectionKey, int featureHash, bool localConfigValue)
   {
     if (isFeatureEnabledByHashMethod == null) return localConfigValue && (!ZNet.instance || ZNet.instance.IsServer());
-    return (bool)isFeatureEnabledByHashMethod.Invoke(null, ["esp", featureHash, localConfigValue]);
+    return (bool)isFeatureEnabledByHashMethod.Invoke(null, [sectionKey, featureHash, localConfigValue]);
   }
 
   private static MethodInfo? isFeatureEnabledByHashMethod;

@@ -33,7 +33,6 @@ public partial class Text
   {
     obj.AddComponent<HoverText>().m_text = text;
   }
-  public static bool ExtraInfo;
   public static void AddHoverText(MonoBehaviour obj)
   {
     if (obj.gameObject.GetComponent<Hoverable>() == null)
@@ -41,7 +40,7 @@ public partial class Text
   }
   public static void AddTexts(GameObject obj, ref string __result)
   {
-    if (!ExtraInfo) return;
+    if (!Settings.ExtraInfo) return;
     var view = obj.GetComponentInParent<ZNetView>();
     if (!view || !view.IsValid()) return;
     List<string> lines = [];

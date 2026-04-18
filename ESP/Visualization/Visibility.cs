@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ESP;
 using Service;
 using UnityEngine;
 
@@ -6,6 +7,34 @@ namespace Visualization;
 
 public class Visibility : Component
 {
+  private static readonly Dictionary<string, string> combinedTags = new(System.StringComparer.OrdinalIgnoreCase)
+  {
+    [Tag.StructureCoverBlocked] = Tag.StructureCover,
+    [Tag.PlayerCoverBlocked] = Tag.PlayerCover,
+
+    [Tag.ZoneCornerAshlands] = Tag.ZoneCorner,
+    [Tag.ZoneCornerBlackForest] = Tag.ZoneCorner,
+    [Tag.ZoneCornerDeepNorth] = Tag.ZoneCorner,
+    [Tag.ZoneCornerMeadows] = Tag.ZoneCorner,
+    [Tag.ZoneCornerMistlands] = Tag.ZoneCorner,
+    [Tag.ZoneCornerMountain] = Tag.ZoneCorner,
+    [Tag.ZoneCornerOcean] = Tag.ZoneCorner,
+    [Tag.ZoneCornerPlains] = Tag.ZoneCorner,
+    [Tag.ZoneCornerSwamp] = Tag.ZoneCorner,
+    [Tag.ZoneCornerUnknown] = Tag.ZoneCorner,
+
+    [Tag.SpawnZoneAshlands] = Tag.SpawnZone,
+    [Tag.SpawnZoneBlackForest] = Tag.SpawnZone,
+    [Tag.SpawnZoneDeepNorth] = Tag.SpawnZone,
+    [Tag.SpawnZoneMeadows] = Tag.SpawnZone,
+    [Tag.SpawnZoneMistlands] = Tag.SpawnZone,
+    [Tag.SpawnZoneMountain] = Tag.SpawnZone,
+    [Tag.SpawnZoneOcean] = Tag.SpawnZone,
+    [Tag.SpawnZonePlains] = Tag.SpawnZone,
+    [Tag.SpawnZoneSwamp] = Tag.SpawnZone,
+    [Tag.SpawnZoneUnknown] = Tag.SpawnZone,
+  };
+
   private static readonly HashSet<int> enabledTags = [];
   private static readonly HashSet<int> previousTags = [];
   private static readonly HashSet<int> tagHashes = [];
@@ -17,7 +46,13 @@ public class Visibility : Component
   public static int GetTagHash(string name)
   {
     if (tagHashCache.TryGetValue(name, out var hash)) return hash;
-    hash = name.ToLowerInvariant().GetStableHashCode();
+
+    // Combined tags can be simply implemented by using the group hash for the tag.
+    if (combinedTags.TryGetValue(name, out var groupTag))
+      hash = groupTag.ToLowerInvariant().GetStableHashCode();
+    else
+      hash = name.ToLowerInvariant().GetStableHashCode();
+
     tagHashCache[name] = hash;
     return hash;
   }
@@ -26,7 +61,7 @@ public class Visibility : Component
   public static bool IsTag(string name)
   {
     var hash = GetTagHash(name);
-    return PermissionManager.IsFeatureEnabledByHash(hash, enabledTags.Contains(hash));
+    return PermissionManager.IsVisualFeatureEnabled(hash, enabledTags.Contains(hash));
   }
   ///<summary>Sets visibility of a tag.</summary>
   public static void SetTag(string tag, bool visibility)
@@ -82,7 +117,9 @@ public class Visibility : Component
     if (!tags.TryGetValue(hash, out var tag)) return;
 
     var previous = previousTags.Contains(hash);
-    var enabled = PermissionManager.IsFeatureEnabledByHash(hash, enabledTags.Contains(hash));
+    var enabled = PermissionManager.IsVisualFeatureEnabled(hash, enabledTags.Contains(hash));
+
+    if (enabled == previous) return;
 
     if (enabled) previousTags.Add(hash);
     else previousTags.Remove(hash);

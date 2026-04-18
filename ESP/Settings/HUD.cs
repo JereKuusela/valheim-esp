@@ -7,36 +7,36 @@ public partial class Settings
 {
 #nullable disable
   public static ConfigEntry<bool> configShowShipStatsOnHud;
-  public static bool ShowShipStatsOnHud => PermissionManager.IsFeatureEnabledByHash(PermissionHash.ShowShipStatsOnHud, configShowShipStatsOnHud.Value);
+  public static bool ShowShipStatsOnHud => PermissionManager.IsHudFeatureEnabled(PermissionHash.ShowShipStatsOnHud, configShowShipStatsOnHud.Value);
   public static ConfigEntry<bool> configShowHud;
-  public static bool ShowHud => PermissionManager.IsFeatureEnabledByHash(PermissionHash.Hud, configShowHud.Value);
+  public static bool ShowHud => PermissionManager.IsHudFeatureEnabled(PermissionHash.Hud, configShowHud.Value);
   public static ConfigEntry<bool> configShowTime;
-  public static bool ShowTime => PermissionManager.IsFeatureEnabledByHash(PermissionHash.Time, configShowTime.Value);
+  public static bool ShowTime => PermissionManager.IsHudFeatureEnabled(PermissionHash.Time, configShowTime.Value);
   public static ConfigEntry<bool> configShowPosition;
-  public static bool ShowPosition => PermissionManager.IsFeatureEnabledByHash(PermissionHash.Position, configShowPosition.Value);
+  public static bool ShowPosition => PermissionManager.IsHudFeatureEnabled(PermissionHash.Position, configShowPosition.Value);
   public static ConfigEntry<bool> configShowAltitude;
-  public static bool ShowAltitude => PermissionManager.IsFeatureEnabledByHash(PermissionHash.Altitude, configShowAltitude.Value);
+  public static bool ShowAltitude => PermissionManager.IsHudFeatureEnabled(PermissionHash.Altitude, configShowAltitude.Value);
   public static ConfigEntry<bool> configShowForest;
-  public static bool ShowForest => PermissionManager.IsFeatureEnabledByHash(PermissionHash.Forest, configShowForest.Value);
+  public static bool ShowForest => PermissionManager.IsHudFeatureEnabled(PermissionHash.Forest, configShowForest.Value);
   public static ConfigEntry<bool> configShowBlocked;
-  public static bool ShowBlocked => PermissionManager.IsFeatureEnabledByHash(PermissionHash.Blocked, configShowBlocked.Value);
+  public static bool ShowBlocked => PermissionManager.IsHudFeatureEnabled(PermissionHash.Blocked, configShowBlocked.Value);
 
   public static ConfigEntry<string> configTrackedObjects;
   public static string TrackedObjects => configTrackedObjects.Value;
   public static ConfigEntry<float> configTrackRadius;
   public static float TrackRadius => configTrackRadius.Value;
   public static ConfigEntry<bool> configShowStagger;
-  public static bool ShowStagger => PermissionManager.IsFeatureEnabledByHash(PermissionHash.Stagger, configShowStagger.Value);
+  public static bool ShowStagger => PermissionManager.IsHudFeatureEnabled(PermissionHash.Stagger, configShowStagger.Value);
   public static ConfigEntry<bool> configShowHeat;
-  public static bool ShowHeat => PermissionManager.IsFeatureEnabledByHash(PermissionHash.Heat, configShowHeat.Value);
+  public static bool ShowHeat => PermissionManager.IsHudFeatureEnabled(PermissionHash.Heat, configShowHeat.Value);
   public static ConfigEntry<bool> configShowSpeed;
-  public static bool ShowSpeed => PermissionManager.IsFeatureEnabledByHash(PermissionHash.Speed, configShowSpeed.Value);
+  public static bool ShowSpeed => PermissionManager.IsHudFeatureEnabled(PermissionHash.Speed, configShowSpeed.Value);
   public static ConfigEntry<bool> configShowStealth;
-  public static bool ShowStealth => PermissionManager.IsFeatureEnabledByHash(PermissionHash.Stealth, configShowStealth.Value);
+  public static bool ShowStealth => PermissionManager.IsHudFeatureEnabled(PermissionHash.Stealth, configShowStealth.Value);
   public static ConfigEntry<bool> configShowWeather;
-  public static bool ShowWeather => PermissionManager.IsFeatureEnabledByHash(PermissionHash.Weather, configShowWeather.Value);
+  public static bool ShowWeather => PermissionManager.IsHudFeatureEnabled(PermissionHash.Weather, configShowWeather.Value);
   public static ConfigEntry<bool> configShowWind;
-  public static bool ShowWind => PermissionManager.IsFeatureEnabledByHash(PermissionHash.Wind, configShowWind.Value);
+  public static bool ShowWind => PermissionManager.IsHudFeatureEnabled(PermissionHash.Wind, configShowWind.Value);
   public static ConfigEntry<string> configShader;
   public static void InitHUD(ConfigFile config)
   {

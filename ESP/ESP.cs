@@ -11,7 +11,7 @@ public class ESP : BaseUnityPlugin
 {
   const string GUID = "esp";
   const string NAME = "ESP";
-  const string VERSION = "1.31.2";
+  const string VERSION = "1.31.4";
   public void Awake()
   {
     Log.Init(Logger);
