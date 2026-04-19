@@ -1,3 +1,11 @@
+- v1.34
+  - Adds automatic merging for spawn suppression circles.
+  - Adds new setting for spawn suppression circle color.
+  - Changes visual settings from tri-state to two-state (this causes warnings with old configs).
+
+- v1.33
+  - Accidentally released as v1.33.
+
 - v1.32
   - Fixes spawn suppression not showing up for fire sources.
   - Removes admin check. Server usage now requires Server Devcommands mod (supports the new permission system).
@@ -9,10 +17,3 @@
 - v1.30
   - Adds shader to the settings.
   - Changes the default shader.
-
-- v1.29
-  - Adds support for custom hover texts.
-
-- v1.28
-  - Improves performance.
-  - Fixes memory leak.

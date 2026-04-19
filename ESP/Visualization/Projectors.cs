@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using ESP;
 using UnityEngine;
 namespace Visualization;
 
 public abstract class BaseRuler : MonoBehaviour
 {
   private static LayerMask Mask = LayerMask.GetMask("terrain");
+  private static readonly int ColorPropertyId = Shader.PropertyToID("_Color");
   // No direct way for the projector prefab, so it must be acquired from some object.
   private static GameObject? basePrefab;
   private static GameObject BasePrefab => basePrefab ??= GetBasePrefab();
@@ -20,31 +22,21 @@ public abstract class BaseRuler : MonoBehaviour
   public static bool SnapToGround = true;
   public static bool Visible = true;
 
-  private GameObject? Center;
-
   public void OnDestroy()
   {
     foreach (GameObject obj in Segments) Destroy(obj);
-    foreach (GameObject obj in OffsetSegments) Destroy(obj);
-    Destroy(Center);
-    Center = null;
     Segments.Clear();
-    OffsetSegments.Clear();
   }
   public void Update()
   {
     if (!Visible)
     {
       CreateSegments(0);
-      CreateOffsetSegments(0);
       return;
     }
     CreateLines();
     if (SnapToGround)
       Snap();
-
-    CreateOffsetSegments(Segments.Count);
-    CreateOffsetLines();
   }
 
   protected List<GameObject> Segments = [];
@@ -53,15 +45,32 @@ public abstract class BaseRuler : MonoBehaviour
     if (Segments.Count == count) return;
     foreach (GameObject obj in Segments) Destroy(obj);
     Segments.Clear();
-    Destroy(Center);
     if (count == 0) return;
-    Center = Instantiate(BasePrefab, transform);
-    Center.transform.localPosition = Vector3.zero;
-    Center.transform.localRotation = Quaternion.identity;
-    Center.transform.localScale = new(0.1f, 0.1f, 0.1f);
     for (int i = 0; i < count; i++)
       Segments.Add(Instantiate(BasePrefab, transform));
+    ApplyColor();
   }
+
+
+  internal void ApplyColor()
+  {
+    var color = Draw.GetColor(Tag.EffectAreaPlayerBase);
+    foreach (var segment in Segments)
+      ApplyColor(segment, color);
+  }
+
+  private static void ApplyColor(GameObject obj, Color color)
+  {
+    var renderer = obj.GetComponent<Renderer>();
+    if (renderer)
+    {
+      var materials = renderer.materials;
+      for (int i = 0; i < materials.Length; i++)
+        materials[i].SetColor(ColorPropertyId, color);
+    }
+  }
+
+
   protected abstract void CreateLines();
   private void Snap()
   {
@@ -75,30 +84,6 @@ public abstract class BaseRuler : MonoBehaviour
     return pos;
   }
 
-  // Offset is simply copy of the actual segments, so no special implementation is needed.
-  public static float Offset = 0f;
-  private readonly List<GameObject> OffsetSegments = [];
-  private void CreateOffsetSegments(int count)
-  {
-    if (Mathf.Approximately(Offset, 0f)) count = 0;
-    if (OffsetSegments.Count == count) return;
-    foreach (GameObject obj in OffsetSegments) Destroy(obj);
-    OffsetSegments.Clear();
-    for (int i = 0; i < count; i++)
-      OffsetSegments.Add(Instantiate(BasePrefab, Vector3.zero, Quaternion.identity, transform));
-  }
-  private void CreateOffsetLines()
-  {
-    for (int i = 0; i < OffsetSegments.Count; i++)
-    {
-      var segment = Segments[i];
-      var offsetSegment = OffsetSegments[i];
-      offsetSegment.transform.localPosition = segment.transform.localPosition + Vector3.up * Offset;
-      offsetSegment.transform.localRotation = segment.transform.localRotation;
-      offsetSegment.transform.localScale = segment.transform.localScale;
-      offsetSegment.SetActive(segment.activeSelf);
-    }
-  }
 
   // Helper functions for the derived classes.
   protected Transform Get(int index) => Segments[index].transform;
@@ -108,7 +93,26 @@ public abstract class BaseRuler : MonoBehaviour
 
 public class CircleRuler : BaseRuler
 {
-  public float Radius = 20f;
+
+  public void Awake() => CircleAreaManager.Register(this, transform.position, radius);
+  public new void OnDestroy()
+  {
+    CircleAreaManager.Unregister(this);
+    base.OnDestroy();
+  }
+
+  [SerializeField]
+  private float radius = 20f;
+  public float Radius
+  {
+    get => radius;
+    set
+    {
+      radius = value;
+      CircleAreaManager.UpdateRadius(this, radius, transform.position);
+    }
+  }
+
   protected override void CreateLines()
   {
     var count = Math.Max(3, (int)(Radius * 4));
@@ -135,104 +139,8 @@ public class CircleRuler : BaseRuler
       SetRot(i, normalized);
     }
 
-  }
-}
+    for (int i = 0; i < count; i++)
+      Segments[i].SetActive(!CircleAreaManager.IsInsideOtherCircle(this, Segments[i].transform.position));
 
-public class RectangleRuler : BaseRuler
-{
-  public float Width = 20f;
-  public float Depth = 20f;
-  private void EdgeFix(int index, float percent, float max, float start, float end, Vector3 direction)
-  {
-    var pos = percent * max;
-    var tr = Get(index);
-    var scale = BaseScale;
-    if (pos - start < 0.5f)
-    {
-      scale.z *= pos - start + 0.5f;
-      tr.localPosition += direction * (0.5f - scale.z / 2f);
-    }
-    if (end - pos < 0.5f)
-    {
-      scale.z *= Mathf.Max(0f, end - pos + 0.5f);
-      tr.localPosition -= direction * (0.5f - scale.z / 2f);
-    }
-    if (scale.z == 0f) tr.gameObject.SetActive(false);
-    else tr.gameObject.SetActive(true);
-    tr.localScale = scale;
-  }
-  protected override void CreateLines()
-  {
-    var totalLength = 2 * Width + 2 * Depth;
-    var count = Math.Max(3, (int)totalLength);
-    var d = (int)Mathf.Max(2, Mathf.Ceil(count * Depth / totalLength));
-    var w = (int)Mathf.Max(2, Mathf.Ceil(count * Width / totalLength));
-    count = 2 * (d + w);
-    CreateSegments(count);
-    UpdateLines(w, d);
-  }
-  private void UpdateLines(int w, int d)
-  {
-    var count = Segments.Count;
-    var index = 0;
-    for (int i = 0; i < d; i++, index++)
-      SetRot(index, Vector3.forward);
-    for (int i = 0; i < w; i++, index++)
-      SetRot(index, Vector3.right);
-    for (int i = 0; i < d; i++, index++)
-      SetRot(index, Vector3.back);
-    for (int i = 0; i < w; i++, index++)
-      SetRot(index, Vector3.left);
-    index = 0;
-    var baseTime = Time.time * 0.025f * (count - 4);
-    var halfLine = 0.5f;
-    var basePos = Width * Vector3.left - (Depth + halfLine) * Vector3.forward;
-    var start = 0.5f;
-    var end = start + 2f * Depth;
-    var size = 2f * Depth * d / (d - 1);
-    var time = baseTime / d;
-    for (int i = 0; i < d; i++, index++)
-    {
-      var percent = ((float)i / d + time) % 1f;
-      var pos = basePos + percent * size * Vector3.forward;
-      Set(index, pos);
-      EdgeFix(index, percent, size, start, end, Vector3.forward);
-    }
-
-    basePos = Depth * Vector3.forward - (Width + halfLine) * Vector3.right;
-    end = start + 2f * Width;
-    size = 2f * Width * w / (w - 1);
-    time = baseTime / w;
-    for (int i = 0; i < w; i++, index++)
-    {
-      var percent = ((float)i / w + time) % 1f;
-      var pos = basePos + percent * size * Vector3.right;
-      Set(index, pos);
-      EdgeFix(index, percent, size, start, end, Vector3.right);
-    }
-
-    basePos = Width * Vector3.right - (Depth + halfLine) * Vector3.back;
-    end = start + 2f * Depth;
-    size = 2f * Depth * d / (d - 1);
-    time = baseTime / d;
-    for (int i = 0; i < d; i++, index++)
-    {
-      var percent = ((float)i / d + time) % 1f;
-      var pos = basePos + percent * size * Vector3.back;
-      Set(index, pos);
-      EdgeFix(index, percent, size, start, end, Vector3.back);
-    }
-
-    basePos = Depth * Vector3.back - (Width + halfLine) * Vector3.left;
-    end = start + 2f * Width;
-    size = 2f * Width * w / (w - 1);
-    time = baseTime / w;
-    for (int i = 0; i < w; i++, index++)
-    {
-      var percent = ((float)i / w + time) % 1f;
-      var pos = basePos + percent * size * Vector3.left;
-      Set(index, pos);
-      EdgeFix(index, percent, size, start, end, Vector3.left);
-    }
   }
 }

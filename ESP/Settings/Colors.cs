@@ -1,3 +1,4 @@
+using System;
 using BepInEx.Configuration;
 using UnityEngine;
 using Visualization;
@@ -46,6 +47,7 @@ public partial class Settings
   public static ConfigEntry<string> configAltarItemStandRangeColor;
   public static ConfigEntry<string> configAltarSpawnRadiusColor;
   public static ConfigEntry<string> configEffectAreaPrivateAreaColor;
+  public static ConfigEntry<string> configEffectAreaPlayerBaseColor;
   public static ConfigEntry<string> configEffectAreaComfortColor;
   public static ConfigEntry<string> configEffectAreaBurningColor;
   public static ConfigEntry<string> configEffectAreaHeatColor;
@@ -68,10 +70,15 @@ public partial class Settings
   public static ConfigEntry<string> configBiomePlainsColor;
   public static ConfigEntry<string> configBiomeSwampColor;
   public static ConfigEntry<string> configBiomeOtherColor;
-  private static void OnColorChanged(ConfigEntry<string> entry, string tag)
+  private static void OnColorChanged(ConfigEntry<string> entry, string tag, Action onChanged = null)
   {
-    entry.SettingChanged += (s, e) => Draw.SetColor(tag, ParseColor(entry.Value));
+    entry.SettingChanged += (s, e) =>
+    {
+      Draw.SetColor(tag, ParseColor(entry.Value));
+      onChanged?.Invoke();
+    };
     Draw.SetColor(tag, ParseColor(entry.Value));
+    onChanged?.Invoke();
   }
   private static void InitColors(ConfigFile config)
   {
@@ -148,6 +155,8 @@ public partial class Settings
     OnColorChanged(configAltarSpawnRadiusColor, Tag.AltarSpawnRadius);
     configEffectAreaPrivateAreaColor = config.Bind(section, "Ward effect sphere", "gray", "");
     OnColorChanged(configEffectAreaPrivateAreaColor, Tag.EffectAreaPrivateArea);
+    configEffectAreaPlayerBaseColor = config.Bind(section, "Spawn suppression circle", "white", "");
+    OnColorChanged(configEffectAreaPlayerBaseColor, Tag.EffectAreaPlayerBase, CircleAreaManager.RefreshColors);
     configEffectAreaComfortColor = config.Bind(section, "Comfort effect sphere", "cyan", "");
     OnColorChanged(configEffectAreaComfortColor, Tag.EffectAreaComfort);
     configEffectAreaBurningColor = config.Bind(section, "Burning effect sphere", "yellow", "");
