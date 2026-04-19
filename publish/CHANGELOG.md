@@ -1,3 +1,7 @@
+- v1.32
+  - Fixes spawn suppression not showing up for fire sources.
+  - Removes admin check. Server usage now requires Server Devcommands mod (supports the new permission system).
+
 - v1.31
   - Changes player base setting to spawn suppression setting.
   - Changes spawn suppression to use workbench visualization (cylinder that snaps to terrain).
@@ -12,13 +16,3 @@
 - v1.28
   - Improves performance.
   - Fixes memory leak.
-
-- v1.27
-  - Fixed for the new game version.
-
-- v1.26
-  - Adds a new HUD option for showing heat gain.
-  - Adds new settings to disable individual HUD elements.
-  - Fixes tree drops not being correct.
-  - Fixes colors on the weather hover text.
-  - Increases the width of hover text.

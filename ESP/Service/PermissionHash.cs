@@ -102,7 +102,7 @@ public static class PermissionHash
   public static readonly int SpawnZoneSwamp = "spawnzoneswamp".GetStableHashCode();
   public static readonly int SpawnZoneUnknown = "spawnzoneunknown".GetStableHashCode();
   public static readonly int RandomEventSystem = "randomeventsystem".GetStableHashCode();
-  public static readonly int EffectAreaPrivateArea = "effectareaspawnsuppression".GetStableHashCode();
+  public static readonly int EffectAreaPrivateArea = "effectareaprivatearea".GetStableHashCode();
   public static readonly int EffectAreaComfort = "effectareacomfort".GetStableHashCode();
   public static readonly int EffectAreaBurning = "effectareaburning".GetStableHashCode();
   public static readonly int EffectAreaHeat = "effectareaheat".GetStableHashCode();

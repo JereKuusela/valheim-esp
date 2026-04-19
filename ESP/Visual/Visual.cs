@@ -9,22 +9,26 @@ public partial class Visual
   public static void Draw(EffectArea obj)
   {
     if (!obj || !obj.m_collider) return;
-    var tag = Tag.GetEffectArea(obj.m_type);
+    DrawPlayerBase(obj);
+    var type = obj.m_type & ~EffectArea.Type.PlayerBase;
+    var tag = Tag.GetEffectArea(type);
     if (Settings.IsDisabled(tag)) return;
     if (Visualization.Draw.HasVisual(obj, tag)) return;
-    // Player base uses a very tall capsule collider to ignore terrain elevation.
-    // Use ruler to visualize it on the terrain where spawns happen.
-    if (obj.m_type == EffectArea.Type.PlayerBase && obj.m_collider is CapsuleCollider)
-    {
-      if (obj.GetComponent<Visualization.CircleRuler>()) return;
-      var ruler = obj.gameObject.AddComponent<Visualization.CircleRuler>();
-      ruler.Radius = obj.GetRadius();
-      return;
-    }
     var text = EffectAreaUtils.GetTypeText(obj.m_type);
     var radius = obj.GetRadius() * obj.transform.lossyScale.x;
     var line = Visualization.Draw.DrawSphere(tag, obj, Math.Max(0.5f, radius));
     Visualization.Draw.AddText(line, text, Text.Radius(radius));
+  }
+  private static void DrawPlayerBase(EffectArea obj)
+  {
+    var isPlayerBase = (obj.m_type & EffectArea.Type.PlayerBase) != 0;
+    if (!isPlayerBase) return;
+    var tag = Tag.EffectAreaPlayerBase;
+    if (Settings.IsDisabled(tag)) return;
+    var root = Helper.GetRoot(obj);
+    if (root.GetComponent<Visualization.CircleRuler>()) return;
+    var ruler = root.gameObject.AddComponent<Visualization.CircleRuler>();
+    ruler.Radius = obj.GetRadius();
   }
   public static void Draw(PrivateArea obj)
   {
@@ -82,7 +86,9 @@ public class EffectArea_Visual
     foreach (var obj in SceneObjects.FindLoaded<EffectArea>())
       Postfix(obj);
   }
+
   static void Postfix(EffectArea __instance) => Visual.Draw(__instance);
+
 }
 [HarmonyPatch(typeof(PrivateArea), nameof(PrivateArea.Awake)), HarmonyPriority(Priority.Last)]
 public class PrivateArea_Visual

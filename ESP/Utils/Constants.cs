@@ -112,7 +112,7 @@ public static class Tag
   public const string SpawnZoneSwamp = "SpawnZoneSwamp";
   public const string SpawnZoneUnknown = "SpawnZoneUnknown";
   public const string RandomEventSystem = "RandomEventSystem";
-  public const string EffectAreaPrivateArea = "EffectAreaSpawnSuppression";
+  public const string EffectAreaPrivateArea = "EffectAreaPrivateArea";
   public const string EffectAreaComfort = "EffectAreaComfort";
   public const string EffectAreaBurning = "EffectAreaBurning";
   public const string EffectAreaHeat = "EffectAreaHeat";
