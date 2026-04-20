@@ -24,13 +24,13 @@ public static class PermissionHash
   public static readonly int Destructibles = "destructibles".GetStableHashCode();
   public static readonly int Pickables = "pickables".GetStableHashCode();
   public static readonly int ItemDrops = "itemdrops".GetStableHashCode();
-  public static readonly int ShowShipStats = "showshipstats".GetStableHashCode();
+  public static readonly int Ships = "ships".GetStableHashCode();
   public static readonly int Locations = "locations".GetStableHashCode();
   public static readonly int Vegetation = "vegetation".GetStableHashCode();
 
   // HUD settings.
-  public static readonly int ShowShipStatsOnHud = "showshipstatsonhud".GetStableHashCode();
   public static readonly int Hud = "hud".GetStableHashCode();
+  public static readonly int Ship = "ship".GetStableHashCode();
   public static readonly int Time = "time".GetStableHashCode();
   public static readonly int Position = "position".GetStableHashCode();
   public static readonly int Altitude = "altitude".GetStableHashCode();

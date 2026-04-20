@@ -81,7 +81,7 @@ public partial class Text
       lines.Add(Texts.Get(obj.GetComponentInParent<SpawnArea>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<OfferingBowl>()));
       lines.Add(Texts.GetVegetation(obj));
-      if (Settings.ShowShipStats)
+      if (Settings.Ships)
         lines.Add(Texts.Get(obj.GetComponentInParent<Ship>()));
       lines.Add(Texts.Get(obj.GetComponentInParent<EffectArea>()));
       lines.Add(Texts.Get(character, baseAI, obj.GetComponentInParent<MonsterAI>()));

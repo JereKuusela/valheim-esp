@@ -37,8 +37,8 @@ public partial class Settings
   public static bool Pickables => PermissionManager.IsStatsFeatureEnabled(PermissionHash.Pickables, configPickables.Value);
   public static ConfigEntry<bool> configItemDrops;
   public static bool ItemDrops => PermissionManager.IsStatsFeatureEnabled(PermissionHash.ItemDrops, configItemDrops.Value);
-  public static ConfigEntry<bool> configShowShipStats;
-  public static bool ShowShipStats => PermissionManager.IsStatsFeatureEnabled(PermissionHash.ShowShipStats, configShowShipStats.Value);
+  public static ConfigEntry<bool> configShips;
+  public static bool Ships => PermissionManager.IsStatsFeatureEnabled(PermissionHash.Ships, configShips.Value);
   public static ConfigEntry<bool> configLocations;
   public static bool Locations => PermissionManager.IsStatsFeatureEnabled(PermissionHash.Locations, configLocations.Value);
   public static ConfigEntry<bool> configVegetation;
@@ -62,7 +62,7 @@ public partial class Settings
     configSupport = config.Bind(section, "Show stats", true, "Show support for structures");
     configLocations = config.Bind(section, "Locations", true, "Show generator stats for locations");
     configVegetation = config.Bind(section, "Vegetation", false, "Show generator stats for vegetation");
-    configShowShipStats = config.Bind(section, "Show ship stats", true, "Show ship speed and wind direction on the ship");
+    configShips = config.Bind(section, "Show ship stats", true, "Show ship speed and wind direction on the ship");
     configCustomOnly = config.Bind(section, "Custom only", false, "Show only custom info when available");
     configCustom = config.Bind(section, "Custom", "", "Custom text format");
   }

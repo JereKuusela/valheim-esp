@@ -6,8 +6,8 @@ namespace ESP;
 public partial class Settings
 {
 #nullable disable
-  public static ConfigEntry<bool> configShowShipStatsOnHud;
-  public static bool ShowShipStatsOnHud => PermissionManager.IsHudFeatureEnabled(PermissionHash.ShowShipStatsOnHud, configShowShipStatsOnHud.Value);
+  public static ConfigEntry<bool> configShowShip;
+  public static bool ShowShip => PermissionManager.IsHudFeatureEnabled(PermissionHash.Ship, configShowShip.Value);
   public static ConfigEntry<bool> configShowHud;
   public static bool ShowHud => PermissionManager.IsHudFeatureEnabled(PermissionHash.Hud, configShowHud.Value);
   public static ConfigEntry<bool> configShowTime;
@@ -53,7 +53,7 @@ public partial class Settings
     configShowHeat = config.Bind(section, "Show heat", false, "Shows heat");
     configShowSpeed = config.Bind(section, "Show speed", false, "Shows speed");
     configShowStealth = config.Bind(section, "Show stealth", false, "Shows stealth");
-    configShowShipStatsOnHud = config.Bind(section, "Show ship stats", true, "Show ship stats on the hud");
+    configShowShip = config.Bind(section, "Show ship stats", true, "Show ship stats on the hud");
     configTrackedObjects = config.Bind(section, "Tracked objects", "Serpent", "List of objects to track (separated by ,)");
     configTrackRadius = config.Bind(section, "Track radius", 500f, "Radius to find objects.");
     configShader = config.Bind(section, "Shader", "Sprites/Default", "Shader for the lines.");

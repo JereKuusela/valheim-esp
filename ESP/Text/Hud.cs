@@ -5,20 +5,18 @@ using HarmonyLib;
 using Service;
 using UnityEngine;
 namespace ESP;
+
 public static class Hud
 {
   public static List<string> GetMessage()
   {
-    List<string> lines = [.. GetInfo()];
-    var localShip = Ship.GetLocalShip();
-    if (localShip)
-    {
-      lines.Add(" ");
-      lines.AddRange(Texts.Get(localShip).Split('\n').Where(line => line != ""));
-    }
+    if (!Settings.ShowHud) return [];
+    List<string> lines = [];
+    AddInfo(lines);
+    AddShipStats(lines);
     return lines;
   }
-  private static int[] MaxLengths = [
+  private static readonly int[] MaxLengths = [
     13,
     15, // Estimate
     10,
@@ -34,9 +32,19 @@ public static class Hud
     999,
 
   ];
-  private static List<string> GetInfo()
+
+  private static void AddShipStats(List<string> lines)
   {
-    if (!Settings.ShowHud) return [];
+    if (!Settings.ShowShip) return;
+    var localShip = Ship.GetLocalShip();
+    if (localShip && Settings.ShowShip)
+    {
+      lines.Add(" ");
+      lines.AddRange(Texts.Get(localShip).Split('\n').Where(line => line != ""));
+    }
+  }
+  private static void AddInfo(List<string> lines)
+  {
     var position = Player.m_localPlayer.transform.position;
     List<string> sections =
     [
@@ -55,7 +63,6 @@ public static class Hud
       GetTrackedObjects(),
     ];
     // Add sections as long as line length stays under 50.
-    List<string> lines = [];
     var length = 0;
     for (int i = 0; i < sections.Count; i++)
     {
@@ -77,7 +84,6 @@ public static class Hud
         length = MaxLengths[i];
       }
     }
-    return lines;
   }
   private static string GetSpeed() => Settings.ShowSpeed ? "Speed: " + Format.Float(Player.m_localPlayer.m_currentVel.magnitude, "0.#") + " m/s" : "";
   private static string GetNoise() => Settings.ShowStealth ? "Noise: " + Format.Int(Player.m_localPlayer.GetNoiseRange()) + " meters" : "";

@@ -20,7 +20,6 @@ Section and feature names are case-insensitive.
 
 ### `esp_hud`
 
-- `showshipstatsonhud`
 - `hud`
 - `time`
 - `position`
@@ -29,6 +28,7 @@ Section and feature names are case-insensitive.
 - `blocked`
 - `stagger`
 - `heat`
+- `ship`
 - `speed`
 - `stealth`
 - `weather`
@@ -51,7 +51,7 @@ Section and feature names are case-insensitive.
 - `destructibles`
 - `pickables`
 - `itemdrops`
-- `showshipstats`
+- `ships`
 - `locations`
 - `vegetation`
 
