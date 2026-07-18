@@ -61,7 +61,6 @@ public class Visibility : Component
   }
   public static void Reload()
   {
-    Log.Warning("Reloading visualizations due to permission change.");
     foreach (var hash in tagHashes)
       ApplyTagState(hash);
   }

@@ -4,6 +4,7 @@ using System.Linq;
 using Service;
 using UnityEngine;
 namespace ESP;
+
 public partial class Texts
 {
   public static string Get(LocationProxy obj)
@@ -19,7 +20,7 @@ public partial class Texts
       if (l.m_prefabName.ToLower() != name) continue;
       l.m_prefab.Load();
       var loc = l.m_prefab.Asset.GetComponent<Location>();
-      var count = instances.Values.Where(instance => instance.m_location.m_prefabName == l.m_prefabName).Count();
+      var count = instances.Values.Count(instance => instance.m_location.m_prefabName == l.m_prefabName);
       lines.Add("Placed: " + Format.Progress(count, l.m_quantity));
       if (l.m_group != "")
         lines.Add("Group: " + Format.String(l.m_group));
