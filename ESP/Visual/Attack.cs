@@ -12,6 +12,7 @@ public class AttackTrigger
   static void Postfix(Attack __instance)
   {
     if (!__instance.m_character) return;
+    if (Settings.IsDisabled(Tag.Attack)) return;
     AttackUtils.DrawAttack(__instance.m_character, __instance);
   }
 }

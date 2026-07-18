@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Globalization;
 using HarmonyLib;
+using Service;
 using UnityEngine;
+using Visualization;
 
 namespace ESP;
+
 public partial class Visual
 {
   private static readonly List<GameObject> renderers = [];
@@ -107,36 +110,43 @@ public partial class Visual
 }
 
 
-[HarmonyPatch(typeof(Heightmap))]
-public class TestPatches
+[HarmonyPatch]
+public class ZoneCorners
 {
-  [HarmonyPatch("WorldToVertexMask"), HarmonyPrefix]
-  static bool PatchWorldToVertexMask(Heightmap __instance, Vector3 worldPos, ref int x, ref int y)
+  [HarmonyPatch(typeof(Heightmap), nameof(Heightmap.Generate)), HarmonyPriority(Priority.Last), HarmonyPrefix]
+  static void DrawOnGenerate(Heightmap __instance) => DrawCornerRays(__instance);
+  static void DrawCornerRays(Heightmap obj)
   {
-    WorldToVertexMask(__instance, worldPos, ref x, ref y);
-    return false;
-  }
-  private const float scale = 64f / 65f;
-  private const int half = 32;
-  static void WorldToVertexMask(Heightmap hm, Vector3 worldPos, ref int x, ref int y)
-  {
-    Vector3 vector = worldPos - hm.transform.position;
-    x = Mathf.FloorToInt(vector.x / scale + 0.5f) + half;
-    y = Mathf.FloorToInt(vector.z / scale + 0.5f) + half;
-  }
+    if (WorldGenerator.instance.m_world.m_menu) return;
+    if (obj.IsDistantLod) return;
+    if (Settings.IsDisabled(Tag.ZoneCorner)) return;
+    Visualization.Visualization.Remove(obj.gameObject, Tag.ZoneCorner);
+    var num = 32f;
+    Vector3 pos1 = new(-num, 0f, -num);
+    Vector3 pos2 = new(num, 0f, -num);
+    Vector3 pos3 = new(-num, 0f, num);
+    Vector3 pos4 = new(num, 0f, num);
+    var pos = obj.transform.position;
+    var biome1 = WorldGenerator.instance.GetBiome(pos.x - num, pos.z - num);
+    var biome2 = WorldGenerator.instance.GetBiome(pos.x + num, pos.z - num);
+    var biome3 = WorldGenerator.instance.GetBiome(pos.x - num, pos.z + num);
+    var biome4 = WorldGenerator.instance.GetBiome(pos.x + num, pos.z + num);
 
-
-  [HarmonyPatch("GetVegetationMask"), HarmonyPrefix]
-  static bool PatchGetVegetationMask(Heightmap __instance, Vector3 worldPos, ref float __result)
-  {
-    __result = GetVegetationMask(__instance, worldPos);
-    return false;
+    DrawMarker(obj, pos1, biome1);
+    DrawMarker(obj, pos2, biome2);
+    DrawMarker(obj, pos3, biome3);
+    DrawMarker(obj, pos4, biome4);
   }
-  static float GetVegetationMask(Heightmap hm, Vector3 worldPos)
+  private static void DrawMarker(MonoBehaviour parent, Vector3 position, Heightmap.Biome biome)
   {
-    //worldPos.x -= 0.5f;
-    //worldPos.z -= 0.5f;
-    hm.WorldToVertexMask(worldPos, out var x, out var y);
-    return hm.m_paintMask.GetPixel(x, y).a;
+    var subTag = Tag.GetZoneCorner(biome);
+    var obj = Draw.DrawMarkerLine(Tag.ZoneCorner, subTag, parent, position);
+    var text = obj.AddComponent<BiomeText>();
+    text.biome = biome;
+  }
+  public static void RebuildLoaded()
+  {
+    foreach (var obj in Heightmap.s_heightmaps)
+      DrawCornerRays(obj);
   }
 }

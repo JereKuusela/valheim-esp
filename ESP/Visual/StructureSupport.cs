@@ -25,7 +25,7 @@ public static class SupportUtils
     return obj.m_supports && (!piece || !piece.m_waterPiece);
   }
   ///<summary>Returns whether visual should be drawn for a given structure.</summary>
-  public static bool VisualEnabled(WearNTear obj) => Visibility.IsTag(Tag.StructureSupport) && Enabled(obj);
+  public static bool VisualEnabled(WearNTear obj) => !Settings.IsDisabled(Tag.StructureSupport) && Enabled(obj);
   ///<summary>Updates visual of a given structure.</summary>
   public static void Update(WearNTear obj)
   {

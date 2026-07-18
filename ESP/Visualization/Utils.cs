@@ -1,14 +1,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using Service;
 using UnityEngine;
 namespace Visualization;
-public class Utils
-{
-  public static Visualization[] GetVisualizations() => Resources.FindObjectsOfTypeAll<Visualization>();
-}
+
 [HarmonyPatch(typeof(Player), nameof(Player.UpdateHover))]
 public class Player_AddHoverForVisuals
 {
@@ -46,27 +44,60 @@ public class StaticText : MonoBehaviour, Hoverable
 /// <summary>Custom component to allow finding visualizations more easily.</summary>
 public class Visualization : MonoBehaviour
 {
+  public static Visualization[] Get(string tag) => [.. Visualizations.Where(v => v.Tag == tag)];
+  public static IEnumerable<Visualization> Get() => Visualizations;
+  public static void Remove(string tag)
+  {
+    foreach (var obj in Visualizations.Where(v => v.Tag == tag).ToArray())
+    {
+      Destroy(obj.gameObject);
+    }
+  }
+  public static void Remove(GameObject obj, string tag)
+  {
+    var vis = obj.GetComponentsInChildren<Visualization>(true);
+    foreach (var visualization in vis)
+    {
+      if (!visualization || visualization.Tag != tag) continue;
+      Destroy(visualization.gameObject);
+    }
+  }
   public string Tag = "";
+  public string? SubTag;
 
-  private static readonly List<Visualization> Visualizations = [];
+  private static readonly HashSet<Visualization> Visualizations = [];
+  private static readonly HashSet<Visualization> FixedVisualizations = [];
   private Quaternion? FixedRotation;
+
+  public void OnEnable()
+  {
+    Visualizations.Add(this);
+  }
+
+  public void OnDisable()
+  {
+    Visualizations.Remove(this);
+    FixedVisualizations.Remove(this);
+  }
 
   public static void SharedUpdate()
   {
-    foreach (var visualization in Visualizations)
+    foreach (var visualization in FixedVisualizations)
     {
+      if (!visualization) continue;
       visualization.transform.rotation = visualization.FixedRotation!.Value;
     }
   }
   public void OnDestroy()
   {
-    if (Visualizations.Contains(this))
-      Visualizations.Remove(this);
+    Visualizations.Remove(this);
+    FixedVisualizations.Remove(this);
   }
 
   public void SetFixed(Quaternion rotation)
   {
     FixedRotation = rotation;
     Visualizations.Add(this);
+    FixedVisualizations.Add(this);
   }
 }

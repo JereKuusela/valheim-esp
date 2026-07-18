@@ -64,8 +64,14 @@ public partial class Draw
   ///<summary>Creates a renderer with a vertical line (relative to the object).</summary>
   public static GameObject DrawMarkerLine(string tag, MonoBehaviour parent, Vector3 start)
   {
+    return DrawMarkerLine(tag, "", parent, start);
+  }
+
+  ///<summary>Creates a renderer with a vertical line (relative to the object).</summary>
+  public static GameObject DrawMarkerLine(string tag, string subTag, MonoBehaviour parent, Vector3 start)
+  {
     Vector3 end = new(start.x, 500f, start.z);
-    var obj = DrawLineSub(CreateObject(parent.gameObject, tag, Quaternion.identity), start, end);
+    var obj = DrawLineSub(CreateObject(parent.gameObject, tag, Quaternion.identity, subTag), start, end);
     AddBoxCollider(obj);
     return obj;
   }

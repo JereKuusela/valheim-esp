@@ -19,22 +19,15 @@ This mod can also be enabled for non-admins by using the permissions system. See
 
 By default, most features are active which adds too much information for most use cases. It's recommended to turn off most features, until you have a better idea what you are looking for.
 
-The best way is to use the configuration manager since it provides a decent UI and works during the game. Three values are possible for features:
-
-- 1: Feature is enabled.
-- 0: Feature is hidden. Enabling the feature will instantly make it visible.
-- -1: Feature is disabled. Enabling the feature may not appear until the area/object is reloaded.
+The best way is to use the configuration manager since it provides a decent UI and works during the game.
 
 Another way is to use the commands `esp_toggle`, `esp_enable` and `esp_disable`.
 
-- `esp_toggle`: Switches the value between 0 and 1.
-- `esp_enable`: Sets the value to 1.
-- `esp_disable`: Sets the value to -1.
-- `esp_terrain [radius]`: Visualizes the terrain within the radius.
+Terrain can be visualized with the command `esp_terrain [radius]`. This is not optimized so large values will slow down the game.
 
 However once you know what you need, you should bind the `esp_toggle` command to a key to quick turn features on/off. For example: `bind o esp_toggle HUD ExtraInfo` would toggle the HUD and extra hover texts when pressing O button.
 
-Parameter `*` affects all settings. For example `esp_disable *` hides all features.
+Parameter `*` affects all settings. For example `esp_disable *` disables all features.
 
 Unfortunately the feature names for commands aren't documented (but the commands support autocomplete).
 

@@ -2,6 +2,8 @@
 
 ESP integrates with the permission system provided by Server Devcommands.
 
+This is an optional feature, admins get full access to all features by default.
+
 To use permissions for ESP:
 
 - Install Server Devcommands on the server.

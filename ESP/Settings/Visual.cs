@@ -97,27 +97,7 @@ public partial class Settings
     if (name == Tag.AltarItemStandRange.ToLower()) return configShowAltarItemStandRange;
     if (name == Tag.AltarSpawnRadius.ToLower()) return configShowAltarSpawnRadius;
     if (name == Tag.ZoneCorner.ToLower()) return configShowZoneCorners;
-    if (name == Tag.ZoneCornerAshlands.ToLower()) return configShowZoneCorners;
-    if (name == Tag.ZoneCornerBlackForest.ToLower()) return configShowZoneCorners;
-    if (name == Tag.ZoneCornerDeepNorth.ToLower()) return configShowZoneCorners;
-    if (name == Tag.ZoneCornerMeadows.ToLower()) return configShowZoneCorners;
-    if (name == Tag.ZoneCornerMistlands.ToLower()) return configShowZoneCorners;
-    if (name == Tag.ZoneCornerMountain.ToLower()) return configShowZoneCorners;
-    if (name == Tag.ZoneCornerOcean.ToLower()) return configShowZoneCorners;
-    if (name == Tag.ZoneCornerPlains.ToLower()) return configShowZoneCorners;
-    if (name == Tag.ZoneCornerSwamp.ToLower()) return configShowZoneCorners;
-    if (name == Tag.ZoneCornerUnknown.ToLower()) return configShowZoneCorners;
     if (name == Tag.SpawnZone.ToLower()) return configShowSpawnZones;
-    if (name == Tag.SpawnZoneAshlands.ToLower()) return configShowSpawnZones;
-    if (name == Tag.SpawnZoneBlackForest.ToLower()) return configShowSpawnZones;
-    if (name == Tag.SpawnZoneDeepNorth.ToLower()) return configShowSpawnZones;
-    if (name == Tag.SpawnZoneMeadows.ToLower()) return configShowSpawnZones;
-    if (name == Tag.SpawnZoneMistlands.ToLower()) return configShowSpawnZones;
-    if (name == Tag.SpawnZoneMountain.ToLower()) return configShowSpawnZones;
-    if (name == Tag.SpawnZoneOcean.ToLower()) return configShowSpawnZones;
-    if (name == Tag.SpawnZonePlains.ToLower()) return configShowSpawnZones;
-    if (name == Tag.SpawnZoneSwamp.ToLower()) return configShowSpawnZones;
-    if (name == Tag.SpawnZoneUnknown.ToLower()) return configShowSpawnZones;
     if (name == Tag.RandomEventSystem.ToLower()) return configShowRandomEventSystem;
     if (name == Tag.EffectAreaBurning.ToLower()) return configShowEffectAreasBurning;
     if (name == Tag.EffectAreaComfort.ToLower()) return configShowEffectAreasComfort;
@@ -136,14 +116,7 @@ public partial class Settings
     if (name == Tag.PlayerCoverBlocked.ToLower()) return configShowPlayerCover;
     throw new NotImplementedException(name);
   }
-  public static bool IsDisabled(string name)
-  {
-    return !PermissionManager.IsVisualFeatureEnabled(Visibility.GetTagHash(name), GetTagEntry(name).Value);
-  }
-  public static bool IsHidden(string name)
-  {
-    return !PermissionManager.IsVisualFeatureEnabled(Visibility.GetTagHash(name), GetTagEntry(name).Value);
-  }
+  public static bool IsDisabled(string name) => !Visibility.IsTagEnabled(name);
   private static ConfigDescription CreateDescription() => new("");
   private static void OnChanged(ConfigEntry<bool> entry, string tag, params Action[] rebuilds)
   {
@@ -167,7 +140,6 @@ public partial class Settings
     OnChanged(configShowAttackRange, Tag.Attack);
     configShowStructureCover = config.Bind(section, "Structure cover", false, CreateDescription());
     OnChanged(configShowStructureCover, Tag.StructureCover, Piece_Visual.RebuildLoaded);
-    OnChanged(configShowStructureCover, Tag.StructureCoverBlocked, Piece_Visual.RebuildLoaded);
     configShowStructureCover.SettingChanged += (s, e) => SupportUtils.UpdateVisibility();
     configShowStructureSupport = config.Bind(section, "Structure support", false, CreateDescription());
     OnChanged(configShowStructureSupport, Tag.StructureSupport, SupportUtils.UpdateVisibility);
@@ -228,27 +200,9 @@ public partial class Settings
     configShowAltarSpawnRadius = config.Bind(section, "Altar spawn radius", false, CreateDescription());
     OnChanged(configShowAltarSpawnRadius, Tag.AltarSpawnRadius, OfferingBowl_Awake.RebuildLoaded);
     configShowSpawnZones = config.Bind(section, "Spawn zones", false, CreateDescription());
-    OnChanged(configShowSpawnZones, Tag.SpawnZoneAshlands, SpawnSystem_Awake.RebuildLoaded);
-    OnChanged(configShowSpawnZones, Tag.SpawnZoneBlackForest);
-    OnChanged(configShowSpawnZones, Tag.SpawnZoneDeepNorth);
-    OnChanged(configShowSpawnZones, Tag.SpawnZoneMeadows);
-    OnChanged(configShowSpawnZones, Tag.SpawnZoneMistlands);
-    OnChanged(configShowSpawnZones, Tag.SpawnZoneMountain);
-    OnChanged(configShowSpawnZones, Tag.SpawnZoneOcean);
-    OnChanged(configShowSpawnZones, Tag.SpawnZonePlains);
-    OnChanged(configShowSpawnZones, Tag.SpawnZoneSwamp);
-    OnChanged(configShowSpawnZones, Tag.SpawnZoneUnknown);
+    OnChanged(configShowSpawnZones, Tag.SpawnZone, SpawnSystem_Awake.RebuildLoaded);
     configShowZoneCorners = config.Bind(section, "Zone corner rays", false, CreateDescription());
-    OnChanged(configShowZoneCorners, Tag.ZoneCornerAshlands, SpawnSystem_Awake.RebuildLoaded);
-    OnChanged(configShowZoneCorners, Tag.ZoneCornerBlackForest);
-    OnChanged(configShowZoneCorners, Tag.ZoneCornerDeepNorth);
-    OnChanged(configShowZoneCorners, Tag.ZoneCornerMeadows);
-    OnChanged(configShowZoneCorners, Tag.ZoneCornerMistlands);
-    OnChanged(configShowZoneCorners, Tag.ZoneCornerMountain);
-    OnChanged(configShowZoneCorners, Tag.ZoneCornerOcean);
-    OnChanged(configShowZoneCorners, Tag.ZoneCornerPlains);
-    OnChanged(configShowZoneCorners, Tag.ZoneCornerSwamp);
-    OnChanged(configShowZoneCorners, Tag.ZoneCornerUnknown);
+    OnChanged(configShowZoneCorners, Tag.ZoneCorner, ZoneCorners.RebuildLoaded);
     configShowRandomEventSystem = config.Bind(section, "Random event system", false, CreateDescription());
     OnChanged(configShowRandomEventSystem, Tag.RandomEventSystem, SpawnSystem_Awake.RebuildLoaded);
     configShowEffectAreasBurning = config.Bind(section, "Area effects: Burning", false, CreateDescription());
@@ -281,7 +235,6 @@ public partial class Settings
     OnChanged(configShowSmoke, Tag.Smoke, Smoke_Visual.RebuildLoaded);
     configShowPlayerCover = config.Bind(section, "Player cover", false, CreateDescription());
     OnChanged(configShowPlayerCover, Tag.PlayerCover, Player_Cover.RebuildLoaded);
-    OnChanged(configShowPlayerCover, Tag.PlayerCoverBlocked, Player_Cover.RebuildLoaded);
     Visibility.SetTag(Tag.Terrain, true);
   }
 }

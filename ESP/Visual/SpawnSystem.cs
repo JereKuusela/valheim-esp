@@ -18,7 +18,7 @@ public class SpawnSystem_Awake
   }
   private static bool IsSpawnSystemTag(string tag)
   {
-    return tag == Tag.RandomEventSystem || tag.StartsWith(Tag.SpawnZone) || tag.StartsWith(Tag.ZoneCorner);
+    return tag == Tag.RandomEventSystem || tag == Tag.SpawnZone;
   }
   private static void ClearSpawnSystemVisuals(SpawnSystem obj)
   {
@@ -28,31 +28,6 @@ public class SpawnSystem_Awake
       if (!visual || !IsSpawnSystemTag(visual.Tag)) continue;
       Object.Destroy(visual.gameObject);
     }
-  }
-  private static void DrawBiomes(SpawnSystem obj)
-  {
-    var heightmap = obj.m_heightmap;
-    var num = ZoneSystem.instance.m_zoneSize * 0.5f;
-    Vector3 pos1 = new(num, 0f, num);
-    Vector3 pos2 = new(-num, 0f, num);
-    Vector3 pos3 = new(num, 0f, -num);
-    Vector3 pos4 = new(-num, 0f, -num);
-    var biome1 = heightmap.GetBiome(obj.transform.position + pos1);
-    var biome2 = heightmap.GetBiome(obj.transform.position + pos2);
-    var biome3 = heightmap.GetBiome(obj.transform.position + pos3);
-    var biome4 = heightmap.GetBiome(obj.transform.position + pos4);
-    DrawMarker(obj, pos1, biome1);
-    DrawMarker(obj, pos2, biome2);
-    DrawMarker(obj, pos3, biome3);
-    DrawMarker(obj, pos4, biome4);
-  }
-  private static void DrawMarker(MonoBehaviour parent, Vector3 position, Heightmap.Biome biome)
-  {
-    var tag = Tag.GetZoneCorner(biome);
-    if (Settings.IsDisabled(tag)) return;
-    var obj = Draw.DrawMarkerLine(tag, parent, position);
-    var text = obj.AddComponent<BiomeText>();
-    text.biome = biome;
   }
   private static int GetTotalAmountOfSpawnSystems(SpawnSystem instance, Heightmap heightmap)
   {
@@ -75,12 +50,12 @@ public class SpawnSystem_Awake
   }
   private static void DrawSpawnSystems(SpawnSystem obj)
   {
+    if (Settings.IsDisabled(Tag.SpawnZone)) return;
     var heightmap = obj.m_heightmap;
     var totalAmount = GetTotalAmountOfSpawnSystems(obj, heightmap);
     var counter = -totalAmount / 2;
     var biome = heightmap.GetBiome(obj.transform.position);
-    var tag = Tag.GetSpawnZone(biome);
-    if (Settings.IsDisabled(tag)) return;
+    var subTag = Tag.GetSpawnZone(biome);
     obj.m_spawnLists.ForEach(list =>
     {
       var num = 0;
@@ -92,7 +67,7 @@ public class SpawnSystem_Awake
         if (!IsEnabled(spawnData)) return;
         var stableHashCode = ("b_" + spawnData.m_prefab.name + num.ToString()).GetStableHashCode();
         Vector3 position = new(counter * 3f * Settings.configSpawnZoneRayWidth.Value / 100f, 0, 0);
-        var line = Draw.DrawMarkerLine(tag, obj, position);
+        var line = Draw.DrawMarkerLine(Tag.SpawnZone, subTag, obj, position);
         var text = line.AddComponent<SpawnSystemText>();
         text.spawnSystem = obj;
         text.spawnData = spawnData;
@@ -112,7 +87,6 @@ public class SpawnSystem_Awake
   {
     // Jewelcrafting spawns this object without the terrain loaded.
     if (!__instance.m_heightmap) return;
-    DrawBiomes(__instance);
     DrawSpawnSystems(__instance);
     DrawRandEventSystem(__instance);
   }
