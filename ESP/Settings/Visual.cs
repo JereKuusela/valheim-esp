@@ -222,8 +222,7 @@ public partial class Settings
     configShowEffectAreasOther = config.Bind(section, "Area effects: Other", false, CreateDescription());
     OnChanged(configShowEffectAreasOther, Tag.EffectAreaOther, EffectArea_Visual.RebuildLoaded);
     configShowSpawnSuppression = config.Bind(section, "Area effects: Spawn suppression", false, CreateDescription());
-    configShowSpawnSuppression.SettingChanged += (s, e) => BaseRuler.Visible = configShowSpawnSuppression.Value;
-    BaseRuler.Visible = configShowSpawnSuppression.Value;
+    OnChanged(configShowSpawnSuppression, Tag.EffectAreaPlayerBase, EffectArea_Visual.RebuildLoaded);
 
     configShowEffectAreasWarmCozy = config.Bind(section, "Area effects: Warm cozy", false, CreateDescription());
     OnChanged(configShowEffectAreasWarmCozy, Tag.EffectAreaWarmCozy, EffectArea_Visual.RebuildLoaded);

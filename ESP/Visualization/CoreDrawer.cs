@@ -49,6 +49,12 @@ public partial class Draw
     return obj;
   }
 
+  ///<summary>Creates a tagged child object that participates in visibility cleanup.</summary>
+  public static GameObject CreateTaggedObject(GameObject parent, string tag)
+  {
+    return CreateObject(parent, tag);
+  }
+
   private static readonly Dictionary<Color, Material> materials = [];
   private static Material GetMaterial(Color color)
   {

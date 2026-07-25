@@ -20,7 +20,6 @@ public abstract class BaseRuler : MonoBehaviour
   }
 
   public static bool SnapToGround = true;
-  public static bool Visible = true;
 
   public void OnDestroy()
   {
@@ -29,11 +28,6 @@ public abstract class BaseRuler : MonoBehaviour
   }
   public void Update()
   {
-    if (!Visible)
-    {
-      CreateSegments(0);
-      return;
-    }
     CreateLines();
     if (SnapToGround)
       Snap();

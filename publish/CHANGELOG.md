@@ -1,3 +1,6 @@
+- v1.37
+  - Fixes spawn suppression circles not showing up for player bases.
+
 - v1.36
   - Fixes zone corners requiring zone spawners to be enabled (for example Expand World Data can disable these).
   - Fixes settings randomly not working (cache was not cleared on world change).
@@ -12,7 +15,3 @@
 
 - v1.33
   - Accidentally released as v1.33.
-
-- v1.32
-  - Fixes spawn suppression not showing up for fire sources.
-  - Removes admin check. Server usage now requires Server Devcommands mod (supports the new permission system).

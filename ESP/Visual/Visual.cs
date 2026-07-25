@@ -26,8 +26,11 @@ public partial class Visual
     var tag = Tag.EffectAreaPlayerBase;
     if (Settings.IsDisabled(tag)) return;
     var root = Helper.GetRoot(obj);
-    if (root.GetComponent<Visualization.CircleRuler>()) return;
-    var ruler = root.gameObject.AddComponent<Visualization.CircleRuler>();
+
+    var holder = Visualization.Draw.CreateTaggedObject(root.gameObject, tag);
+    holder.name = "ESP_PlayerBaseRuler";
+
+    var ruler = holder.AddComponent<Visualization.CircleRuler>();
     ruler.Radius = obj.GetRadius();
   }
   public static void Draw(PrivateArea obj)
