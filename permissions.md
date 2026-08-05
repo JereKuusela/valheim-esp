@@ -20,7 +20,7 @@ ESP checks three permission sections:
 
 Section and feature names are case-insensitive.
 
-For example to allow a player to use player base visualization:
+For example to allow a player to use player base visualization and to show time on the HUD:
 
 ```yaml
 - id: Steam_XXXXXXXXXXXX
@@ -28,6 +28,8 @@ For example to allow a player to use player base visualization:
   character: 930479656
   esp_visuals:
     effectareaplayerbase: yes
+  esp_hud:
+    time: yes
 ```
 
 ## ESP features by section
