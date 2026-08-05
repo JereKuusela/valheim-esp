@@ -7,8 +7,10 @@ This is an optional feature, admins get full access to all features by default.
 To use permissions for ESP:
 
 - Install Server Devcommands on the server.
+  - ESP is not needed on the server for this feature.
+- Install Server Devcommands on the client that wants to use ESP.
+  - Also install ESP on the client.
 - Configure rules in `permissions.yaml`.
-- ESP is not needed on the server for this feature.
 
 ESP checks three permission sections:
 
@@ -17,6 +19,16 @@ ESP checks three permission sections:
 - `esp_visuals`
 
 Section and feature names are case-insensitive.
+
+For example to allow a player to use player base visualization:
+
+```yaml
+- id: Steam_XXXXXXXXXXXX
+  name: Jere
+  character: 930479656
+  esp_visuals:
+    effectareaplayerbase: yes
+```
 
 ## ESP features by section
 
