@@ -86,11 +86,12 @@ public class Visibility : Component
   }
 }
 
-[HarmonyPatch(typeof(WorldGenerator), nameof(WorldGenerator.Initialize))]
-public class CleanupOnStart
+[HarmonyPatch(typeof(ZNet), nameof(ZNet.Shutdown))]
+public class CleanupOnShutdown
 {
   static void Postfix()
   {
     Visibility.CleanUp();
+    Visualization.CleanUp();
   }
 }

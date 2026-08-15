@@ -74,7 +74,12 @@ public abstract class BaseRuler : MonoBehaviour
   private Vector3 Snap(Vector3 pos)
   {
     if (Physics.Raycast(pos + Vector3.up * 500f, Vector3.down, out var raycastHit, 1000f, Mask.value))
+    {
       pos.y = raycastHit.point.y;
+      // Ashlands has weird terrain with offset. So this makes the lines more visible.
+      if (Heightmap.FindBiome(pos) == Heightmap.Biome.AshLands)
+        pos.y += 0.5f;
+    }
     return pos;
   }
 

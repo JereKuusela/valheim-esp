@@ -1,3 +1,7 @@
+- v1.38
+  - Fixes possible error when trying to toggle off visualizations.
+  - Moves spawn suppression circles 0.5 meters up in Ashlands to reduce clipping with terrain.
+
 - v1.37
   - Fixes spawn suppression circles not showing up for player bases.
 
@@ -12,6 +16,3 @@
   - Adds automatic merging for spawn suppression circles.
   - Adds new setting for spawn suppression circle color.
   - Changes visual settings from tri-state to two-state (this causes warnings with old configs).
-
-- v1.33
-  - Accidentally released as v1.33.

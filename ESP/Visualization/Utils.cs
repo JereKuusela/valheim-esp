@@ -44,13 +44,24 @@ public class StaticText : MonoBehaviour, Hoverable
 /// <summary>Custom component to allow finding visualizations more easily.</summary>
 public class Visualization : MonoBehaviour
 {
+  public static void CleanUp()
+  {
+    Visualizations.Clear();
+    FixedVisualizations.Clear();
+  }
   public static Visualization[] Get(string tag) => [.. Visualizations.Where(v => v.Tag == tag)];
   public static IEnumerable<Visualization> Get() => Visualizations;
   public static void Remove(string tag)
   {
     foreach (var obj in Visualizations.Where(v => v.Tag == tag).ToArray())
     {
-      Destroy(obj.gameObject);
+      if (obj && obj.gameObject)
+        Destroy(obj.gameObject);
+      else
+      {
+        FixedVisualizations.Remove(obj!);
+        Visualizations.Remove(obj!);
+      }
     }
   }
   public static void Remove(GameObject obj, string tag)
@@ -72,6 +83,8 @@ public class Visualization : MonoBehaviour
   public void OnEnable()
   {
     Visualizations.Add(this);
+    if (FixedRotation.HasValue)
+      FixedVisualizations.Add(this);
   }
 
   public void OnDisable()
@@ -97,7 +110,7 @@ public class Visualization : MonoBehaviour
   public void SetFixed(Quaternion rotation)
   {
     FixedRotation = rotation;
-    Visualizations.Add(this);
-    FixedVisualizations.Add(this);
+    if (isActiveAndEnabled)
+      FixedVisualizations.Add(this);
   }
 }

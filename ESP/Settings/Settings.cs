@@ -29,9 +29,9 @@ public partial class Settings
         args.Context.AddString("Missing name.");
         return;
       }
-      var entries = args[1].Split(' ').ToList();
+      var entries = args[1].Split([' '], StringSplitOptions.RemoveEmptyEntries);
       if (args[1] == "*")
-        entries = OptionsFetcher();
+        entries = [.. OptionsFetcher()];
       foreach (var arg in entries)
         SetEntry(arg, true);
     }, optionsFetcher: OptionsFetcher);
@@ -42,9 +42,9 @@ public partial class Settings
         args.Context.AddString("Missing name.");
         return;
       }
-      var entries = args[1].Split(' ').ToList();
+      var entries = args[1].Split([' '], StringSplitOptions.RemoveEmptyEntries);
       if (args[1] == "*")
-        entries = OptionsFetcher();
+        entries = [.. OptionsFetcher()];
       foreach (var arg in entries)
         ToggleEntry(arg);
     }, optionsFetcher: OptionsFetcher);
@@ -55,9 +55,9 @@ public partial class Settings
         args.Context.AddString("Missing name.");
         return;
       }
-      var entries = args[1].Split(' ').ToList();
+      var entries = args[1].Split([' '], StringSplitOptions.RemoveEmptyEntries);
       if (args[1] == "*")
-        entries = OptionsFetcher();
+        entries = [.. OptionsFetcher()];
       foreach (var arg in entries)
         SetEntry(arg, false);
     }, optionsFetcher: OptionsFetcher);
