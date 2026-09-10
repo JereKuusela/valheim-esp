@@ -18,6 +18,7 @@ public class CustomHoverText : MonoBehaviour, Hoverable
       title = Translate.Name(this);
     return title;
   }
+  public float GetHoverOffset() => 0f;
   private string title = "";
 }
 public partial class Text

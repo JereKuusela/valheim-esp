@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Service;
 namespace ESP;
+
 public partial class Texts
 {
   public static string GetNames(Heightmap.Biome biome, Heightmap.Biome validBiome = (Heightmap.Biome)(-1))
@@ -19,9 +20,9 @@ public partial class Texts
     }
     return Format.JoinRow(names);
   }
-  public static string Get(Heightmap.Biome obj)
+  public static string Get(BiomeSector obj)
   {
-    var text = Translate.Name(obj) + "\n" + EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment();
+    var text = Translate.Name(obj.GetName(true)) + "\n" + EnvUtils.GetTime() + ", " + EnvUtils.GetCurrentEnvironment();
     var envs = EnvMan.instance.GetAvailableEnvironments(obj);
     var totalWeight = envs.Sum(env => env.m_weight);
     var avgWind = envs.Sum(EnvUtils.GetAvgWind) / totalWeight;

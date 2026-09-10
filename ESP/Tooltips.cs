@@ -3,6 +3,7 @@ using HarmonyLib;
 using Service;
 using UnityEngine;
 namespace ESP;
+
 [HarmonyPatch(typeof(HitData.DamageTypes), nameof(HitData.DamageTypes.GetTooltipString), [typeof(Skills.SkillType)])]
 public class DamageTypes_GetTooltipStringWithSkill
 {
@@ -31,7 +32,7 @@ public class DamageTypes_GetTooltipString
       __result += "\n$inventory_pickaxe: " + Format.Int(__instance.m_pickaxe) + " " + Format.String("(<PICKAXE_TIER>)");
   }
 }
-[HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip), typeof(ItemDrop.ItemData), typeof(int), typeof(bool), typeof(float), typeof(int))]
+[HarmonyPatch(typeof(ItemDrop.ItemData), nameof(ItemDrop.ItemData.GetTooltip), typeof(ItemDrop.ItemData), typeof(int), typeof(bool), typeof(float), typeof(int), typeof(bool))]
 public class ItemDropItemData_GetTooltip
 {
   static void Postfix(ItemDrop.ItemData item, ref string __result)

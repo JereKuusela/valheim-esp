@@ -38,6 +38,8 @@ public class StaticText : MonoBehaviour, Hoverable
 {
   public string GetHoverText() => Format.String(title) + "\n" + text;
   public string GetHoverName() => title;
+  public float GetHoverOffset() => 0f;
+
   public string title = "";
   public string text = "";
 }

@@ -64,6 +64,7 @@ public class NoiseText : MonoBehaviour, Hoverable
 {
   public string GetHoverText() => character == null ? "" : GetHoverName() + "\n" + Texts.GetNoise(character);
   public string GetHoverName() => character == null ? "" : Translate.Name(character);
+  public float GetHoverOffset() => 0f;
   public Character? character;
 }
 [HarmonyPatch(typeof(Character), nameof(Character.GetHoverText))]

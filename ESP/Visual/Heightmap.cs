@@ -127,19 +127,19 @@ public class ZoneCorners
     Vector3 pos3 = new(-num, 0f, num);
     Vector3 pos4 = new(num, 0f, num);
     var pos = obj.transform.position;
-    var biome1 = WorldGenerator.instance.GetBiome(pos.x - num, pos.z - num);
-    var biome2 = WorldGenerator.instance.GetBiome(pos.x + num, pos.z - num);
-    var biome3 = WorldGenerator.instance.GetBiome(pos.x - num, pos.z + num);
-    var biome4 = WorldGenerator.instance.GetBiome(pos.x + num, pos.z + num);
+    var biome1 = WorldGenerator.instance.GetBiomeSector(pos.x - num, pos.z - num);
+    var biome2 = WorldGenerator.instance.GetBiomeSector(pos.x + num, pos.z - num);
+    var biome3 = WorldGenerator.instance.GetBiomeSector(pos.x - num, pos.z + num);
+    var biome4 = WorldGenerator.instance.GetBiomeSector(pos.x + num, pos.z + num);
 
     DrawMarker(obj, pos1, biome1);
     DrawMarker(obj, pos2, biome2);
     DrawMarker(obj, pos3, biome3);
     DrawMarker(obj, pos4, biome4);
   }
-  private static void DrawMarker(MonoBehaviour parent, Vector3 position, Heightmap.Biome biome)
+  private static void DrawMarker(MonoBehaviour parent, Vector3 position, BiomeSector biome)
   {
-    var subTag = Tag.GetZoneCorner(biome);
+    var subTag = Tag.GetZoneCorner(biome.Biome);
     var obj = Draw.DrawMarkerLine(Tag.ZoneCorner, subTag, parent, position);
     var text = obj.AddComponent<BiomeText>();
     text.biome = biome;

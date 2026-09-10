@@ -96,12 +96,14 @@ public class RandEventSystemText : MonoBehaviour, Hoverable
 {
   public string GetHoverText() => spawnSystem != null ? Texts.GetRandomEvent(spawnSystem) : "";
   public string GetHoverName() => "Random events";
+  public float GetHoverOffset() => 0f;
   public SpawnSystem? spawnSystem;
 }
 public class SpawnSystemText : MonoBehaviour, Hoverable
 {
   public string GetHoverText() => spawnSystem == null || spawnData == null ? "" : Texts.Get(spawnSystem, spawnData, stableHashCode);
   public string GetHoverName() => spawnData == null ? "" : spawnData.m_name.Length > 0 ? spawnData.m_name : spawnData.m_prefab.name;
+  public float GetHoverOffset() => 0f;
   public SpawnSystem? spawnSystem;
   public SpawnSystem.SpawnData? spawnData;
   public int stableHashCode;
@@ -109,7 +111,8 @@ public class SpawnSystemText : MonoBehaviour, Hoverable
 
 public class BiomeText : MonoBehaviour, Hoverable
 {
-  public string GetHoverText() => Texts.Get(biome);
-  public string GetHoverName() => Translate.Name(biome);
-  public Heightmap.Biome biome;
+  public string GetHoverText() => biome != null ? Texts.Get(biome) : "";
+  public string GetHoverName() => biome != null ? Translate.Name(BiomeSector.GetBiomeName(biome.Biome)) : "";
+  public float GetHoverOffset() => 0f;
+  public BiomeSector? biome;
 }

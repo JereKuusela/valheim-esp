@@ -1,3 +1,6 @@
+- v1.39
+  - Fixes for the new game version.
+
 - v1.38
   - Fixes possible error when trying to toggle off visualizations.
   - Moves spawn suppression circles 0.5 meters up in Ashlands to reduce clipping with terrain.
@@ -11,8 +14,3 @@
 
 - v1.35
   - Fixes ship stats always showing on HUD regardless of settings.
-
-- v1.34
-  - Adds automatic merging for spawn suppression circles.
-  - Adds new setting for spawn suppression circle color.
-  - Changes visual settings from tri-state to two-state (this causes warnings with old configs).
