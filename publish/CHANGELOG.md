@@ -1,3 +1,6 @@
+- v1.40
+  - Fixes possible errors caused by other mods. Thanks voyagi!
+
 - v1.39
   - Fixes for the new game version.
 
@@ -11,6 +14,3 @@
 - v1.36
   - Fixes zone corners requiring zone spawners to be enabled (for example Expand World Data can disable these).
   - Fixes settings randomly not working (cache was not cleared on world change).
-
-- v1.35
-  - Fixes ship stats always showing on HUD regardless of settings.
