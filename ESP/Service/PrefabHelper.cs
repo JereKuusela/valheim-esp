@@ -46,6 +46,8 @@ public class PrefabHelper
       kvp.Value.GetComponentsInChildren(ZNetView.m_tempComponents);
       foreach (var component in ZNetView.m_tempComponents)
       {
+        // A missing script shows up as a null entry.
+        if (!component) continue;
         var hash = component.GetType().Name.ToLowerInvariant().GetStableHashCode();
         if (!Groups.ContainsKey(hash))
           Groups[hash] = [];
