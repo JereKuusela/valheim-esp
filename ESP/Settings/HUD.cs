@@ -25,6 +25,8 @@ public partial class Settings
   public static string TrackedObjects => configTrackedObjects.Value;
   public static ConfigEntry<float> configTrackRadius;
   public static float TrackRadius => configTrackRadius.Value;
+  public static ConfigEntry<float> configTextSize;
+  public static float TextSize => configTextSize.Value;
   public static ConfigEntry<bool> configCustomLayout;
   public static bool CustomLayout => configCustomLayout.Value;
   public static ConfigEntry<string> configLayout;
@@ -63,6 +65,7 @@ public partial class Settings
       if (!IsDisabled(Tag.TrackedObject)) ZNetView_Ray.RebuildLoaded();
     };
     configTrackRadius = config.Bind(section, "Track radius", 500f, "Radius to find objects.");
+    configTextSize = config.Bind(section, "Text size", 20f, "Font size of the HUD text.");
     configShader = config.Bind(section, "Shader", "Sprites/Default", "Shader for the lines.");
     configShader.SettingChanged += (s, e) => Draw.SetShader(configShader.Value);
     Draw.SetShader(configShader.Value);
