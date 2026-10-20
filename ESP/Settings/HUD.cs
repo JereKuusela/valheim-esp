@@ -55,6 +55,10 @@ public partial class Settings
     configShowStealth = config.Bind(section, "Show stealth", false, "Shows stealth");
     configShowShip = config.Bind(section, "Show ship stats", true, "Show ship stats on the hud");
     configTrackedObjects = config.Bind(section, "Tracked objects", "Serpent", "List of objects to track (separated by ,)");
+    configTrackedObjects.SettingChanged += (s, e) =>
+    {
+      if (!IsDisabled(Tag.TrackedObject)) ZNetView_Ray.RebuildLoaded();
+    };
     configTrackRadius = config.Bind(section, "Track radius", 500f, "Radius to find objects.");
     configShader = config.Bind(section, "Shader", "Sprites/Default", "Shader for the lines.");
     configShader.SettingChanged += (s, e) => Draw.SetShader(configShader.Value);
