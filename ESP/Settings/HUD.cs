@@ -64,7 +64,11 @@ public partial class Settings
     {
       if (!IsDisabled(Tag.TrackedObject)) ZNetView_Ray.RebuildLoaded();
     };
-    configTrackRadius = config.Bind(section, "Track radius", 500f, "Radius to find objects.");
+    configTrackRadius = config.Bind(section, "Track radius", 500f, "Radius to find objects. Rays are checked when the object loads.");
+    configTrackRadius.SettingChanged += (s, e) =>
+    {
+      if (!IsDisabled(Tag.TrackedObject)) ZNetView_Ray.RebuildLoaded();
+    };
     configTextSize = config.Bind(section, "Text size", 20f, "Font size of the HUD text.");
     configShader = config.Bind(section, "Shader", "Sprites/Default", "Shader for the lines.");
     configShader.SettingChanged += (s, e) => Draw.SetShader(configShader.Value);
