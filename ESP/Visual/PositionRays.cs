@@ -85,7 +85,12 @@ public class ZNetView_Ray
   public static void RebuildLoaded()
   {
     foreach (var obj in SceneObjects.FindLoaded<ZNetView>())
-      Postfix(obj);
+    {
+      if (CharacterUtils.IsTracked(obj))
+        Postfix(obj);
+      else
+        Visualization.Visualization.Remove(obj.gameObject, Tag.TrackedObject);
+    }
   }
   static void Postfix(ZNetView __instance)
   {

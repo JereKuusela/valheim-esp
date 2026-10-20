@@ -198,6 +198,16 @@ public static class Hud
   // More careful solution would be using sectors but more complicated.
   private static float TrackUpdateLongTimer = 0;
   private static readonly Dictionary<string, int> trackCache = [];
+  private static readonly Dictionary<string, HashSet<int>> wildcardPrefabs = [];
+  private static int CountWildcard(string name)
+  {
+    if (!wildcardPrefabs.TryGetValue(name, out var hashes))
+      wildcardPrefabs[name] = hashes = [.. ZNetScene.instance.m_namedPrefabs.Where(kvp => kvp.Value && LocationUtils.IsIn(name, kvp.Value.name)).Select(kvp => kvp.Key)];
+    if (hashes.Count == 0) return -1;
+    var position = Player.m_localPlayer.transform.position;
+    var radius = Settings.TrackRadius;
+    return ZDOMan.instance.m_objectsByID.Values.Count(zdo => hashes.Contains(zdo.m_prefab) && (radius < 0 || Utils.DistanceXZ(zdo.GetPosition(), position) < radius));
+  }
   private static string GetTrackedObjects()
   {
     if (Settings.TrackedObjects == "") return "";
@@ -210,6 +220,11 @@ public static class Hud
       var itemsDrops = ItemDrop.s_instances;
       foreach (var name in tracked)
       {
+        if (name.Contains('*'))
+        {
+          if (TrackUpdateLongTimer >= 5f) trackCache[name] = CountWildcard(name);
+          continue;
+        }
         var prefab = ZNetScene.instance.GetPrefab(name);
         var count = 0;
         if (prefab == null)
