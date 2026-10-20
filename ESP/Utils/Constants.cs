@@ -144,4 +144,5 @@ public static class Tool
   public const string Heat = "Heat";
   public const string Speed = "Speed";
   public const string Stealth = "Stealth";
+  public const string Tracked = "Tracked";
 }
