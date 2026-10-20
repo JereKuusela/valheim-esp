@@ -9,9 +9,9 @@ namespace ESP;
 [BepInPlugin(GUID, NAME, VERSION)]
 public class ESP : BaseUnityPlugin
 {
-  const string GUID = "esp";
-  const string NAME = "ESP";
-  const string VERSION = "1.40";
+  public const string GUID = "esp";
+  public const string NAME = "ESP";
+  public const string VERSION = "1.41";
   public static ESP? Instance;
   public void NormalizeLayout() => Settings.NormalizeLayout();
   public void Awake()

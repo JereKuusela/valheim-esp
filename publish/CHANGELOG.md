@@ -1,3 +1,11 @@
+- v1.41
+  - Adds new setting for HUD text size. Thanks Zeall!
+  - Adds new setting for custom HUD layout. Thanks Zeall!
+  - Fixes incorrect setting names for "Random event system ray" and "Tracked object rays". Thanks Zeall!
+  - Fixes some objects ignoring track radius. Thanks Zeall!
+  - Fixes tracks, structure cover, player cover and structure support not updating properly after setting changes. Thanks Zeall!
+  - Fixes wildcard not working for tracking. Thanks Zeall!
+
 - v1.40
   - Fixes possible errors caused by other mods. Thanks voyagi!
 
