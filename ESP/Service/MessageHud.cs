@@ -19,6 +19,7 @@ public class HudAwake
 public class MessageHud_UpdateMessage : MonoBehaviour
 {
   public static Func<List<string>> GetMessage = () => new() { "Default message. Replace with your own function." };
+  private static float? DefaultFontSize;
   static void Postfix(MessageHud __instance)
   {
     // Wait for the game to load.
@@ -28,6 +29,8 @@ public class MessageHud_UpdateMessage : MonoBehaviour
     hud.m_messageText.alignment = TextAlignmentOptions.TopLeft;
     var previousText = hud.m_messageText.text;
     var lines = GetMessage();
+    DefaultFontSize ??= hud.m_messageText.fontSize;
+    hud.m_messageText.fontSize = lines.Count > 0 ? ESP.Settings.TextSize : DefaultFontSize.Value;
     if (lines.Count == 0) return;
     if (previousText != "")
     {
