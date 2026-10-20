@@ -27,6 +27,9 @@ public partial class Settings
   public static float TrackRadius => configTrackRadius.Value;
   public static ConfigEntry<float> configTextSize;
   public static float TextSize => configTextSize.Value;
+  public static ConfigEntry<bool> configCustomLayout;
+  public static bool CustomLayout => configCustomLayout.Value;
+  public static ConfigEntry<string> configLayout;
   public static ConfigEntry<bool> configShowStagger;
   public static bool ShowStagger => PermissionManager.IsHudFeatureEnabled(PermissionHash.Stagger, configShowStagger.Value);
   public static ConfigEntry<bool> configShowHeat;
@@ -57,10 +60,29 @@ public partial class Settings
     configShowStealth = config.Bind(section, "Show stealth", false, "Shows stealth");
     configShowShip = config.Bind(section, "Show ship stats", true, "Show ship stats on the hud");
     configTrackedObjects = config.Bind(section, "Tracked objects", "Serpent", "List of objects to track (separated by ,)");
+    configTrackedObjects.SettingChanged += (s, e) =>
+    {
+      if (!IsDisabled(Tag.TrackedObject)) ZNetView_Ray.RebuildLoaded();
+    };
     configTrackRadius = config.Bind(section, "Track radius", 500f, "Radius to find objects.");
     configTextSize = config.Bind(section, "Text size", 20f, "Font size of the HUD text.");
     configShader = config.Bind(section, "Shader", "Sprites/Default", "Shader for the lines.");
     configShader.SettingChanged += (s, e) => Draw.SetShader(configShader.Value);
     Draw.SetShader(configShader.Value);
+    configCustomLayout = config.Bind(section, "Custom layout", false, "Use the layout setting instead of the default layout.");
+    configLayout = config.Bind(section, "Layout", Hud.DefaultLayout, "Stats (separated by ,) and lines (separated by |).");
+    configLayout.SettingChanged += (s, e) => ApplyLayout();
+    ApplyLayout();
+  }
+  private static void ApplyLayout()
+  {
+    Hud.SetLayout(configLayout.Value);
+    ESP.Instance!.CancelInvoke(nameof(ESP.NormalizeLayout));
+    ESP.Instance.Invoke(nameof(ESP.NormalizeLayout), 2f);
+  }
+  public static void NormalizeLayout()
+  {
+    var layout = Hud.SetLayout(configLayout.Value);
+    if (layout != configLayout.Value) configLayout.Value = layout;
   }
 }
