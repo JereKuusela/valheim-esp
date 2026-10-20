@@ -24,7 +24,10 @@ public class CharacterUtils
       m_name = character.m_name;
     var localized = Localization.instance.Localize(m_name);
     var tracked = Settings.TrackedObjects;
-    return LocationUtils.IsIn(tracked, name) || LocationUtils.IsIn(tracked, m_name) || LocationUtils.IsIn(tracked, localized);
+    if (!LocationUtils.IsIn(tracked, name) && !LocationUtils.IsIn(tracked, m_name) && !LocationUtils.IsIn(tracked, localized)) return false;
+    var radius = Settings.TrackRadius;
+    var player = Player.m_localPlayer;
+    return radius < 0 || !player || Utils.DistanceXZ(instance.transform.position, player.transform.position) < radius;
   }
 
 }
