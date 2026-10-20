@@ -32,6 +32,56 @@ public static class Hud
     999,
 
   ];
+  public static readonly string[] Names = [Tool.Time, Tool.Weather, Tool.Wind, Tool.Position, Tool.Altitude, Tool.Forest, Tool.Blocked, Tool.Speed, Tool.Stealth, Tool.Stagger, Tool.Heat, Tool.Tracked];
+  private static readonly int[][] NameSections = [[0], [1], [2], [3], [4], [5], [6], [7], [8, 9], [10], [11], [12]];
+  public const string DefaultLayout = "Time, Weather, Wind | Position, Altitude, Forest | Blocked, Speed, Stealth | Stagger | Heat | Tracked";
+  private static readonly List<List<int>> DefaultRows = [[.. Enumerable.Range(0, MaxLengths.Length)]];
+  private static List<List<int>> layoutRows = DefaultRows;
+
+  public static string SetLayout(string value)
+  {
+    List<List<int>> rows = [];
+    List<List<int>> nameRows = [];
+    HashSet<int> used = [];
+    foreach (var line in value.Split('|'))
+    {
+      List<int> row = [];
+      List<int> nameRow = [];
+      foreach (var part in line.Split(','))
+      {
+        var name = part.Trim();
+        if (name == "") continue;
+        var index = Array.FindIndex(Names, n => n.Equals(name, StringComparison.OrdinalIgnoreCase));
+        if (index < 0)
+          Log.Warning($"Unknown HUD layout stat: {name}");
+        else if (!used.Add(index))
+          Log.Warning($"Duplicate HUD layout stat: {name}");
+        else
+        {
+          row.AddRange(NameSections[index]);
+          nameRow.Add(index);
+        }
+      }
+      if (row.Count > 0)
+      {
+        rows.Add(row);
+        nameRows.Add(nameRow);
+      }
+    }
+    for (var i = 0; i < Names.Length; i++)
+    {
+      if (used.Contains(i)) continue;
+      if (rows.Count == 0)
+      {
+        rows.Add([]);
+        nameRows.Add([]);
+      }
+      rows[rows.Count - 1].AddRange(NameSections[i]);
+      nameRows[nameRows.Count - 1].Add(i);
+    }
+    layoutRows = rows;
+    return string.Join(" | ", nameRows.Select(row => string.Join(", ", row.Select(i => Names[i]))));
+  }
 
   private static void AddShipStats(List<string> lines)
   {
@@ -64,24 +114,23 @@ public static class Hud
     ];
     // Add sections as long as line length stays under 50.
     var length = 0;
-    for (int i = 0; i < sections.Count; i++)
+    foreach (var row in Settings.CustomLayout ? layoutRows : DefaultRows)
     {
-      if (sections[i] == "") continue;
-      if (lines.Count == 0)
+      var newLine = true;
+      foreach (var i in row)
       {
-        lines.Add(sections[i]);
-        length = MaxLengths[i];
-        continue;
-      }
-      if (length + MaxLengths[i] < 60)
-      {
-        lines[lines.Count - 1] += ", " + sections[i];
-        length += MaxLengths[i];
-      }
-      else
-      {
-        lines.Add(sections[i]);
-        length = MaxLengths[i];
+        if (sections[i] == "") continue;
+        if (newLine || length + MaxLengths[i] >= 60)
+        {
+          lines.Add(sections[i]);
+          length = MaxLengths[i];
+          newLine = false;
+        }
+        else
+        {
+          lines[lines.Count - 1] += ", " + sections[i];
+          length += MaxLengths[i];
+        }
       }
     }
   }

@@ -12,8 +12,11 @@ public class ESP : BaseUnityPlugin
   const string GUID = "esp";
   const string NAME = "ESP";
   const string VERSION = "1.40";
+  public static ESP? Instance;
+  public void NormalizeLayout() => Settings.NormalizeLayout();
   public void Awake()
   {
+    Instance = this;
     Log.Init(Logger);
     Settings.Init(Config);
     MessageHud_UpdateMessage.GetMessage = Hud.GetMessage;
