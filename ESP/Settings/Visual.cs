@@ -138,10 +138,12 @@ public partial class Settings
     configShowAttackRange = config.Bind(section, "Attack range", false, CreateDescription());
     OnChanged(configShowAttackRange, Tag.Attack);
     configShowStructureCover = config.Bind(section, "Structure cover", false, CreateDescription());
+    OnChanged(configShowStructureCover, Tag.StructureCoverBlocked);
     OnChanged(configShowStructureCover, Tag.StructureCover, Piece_Visual.RebuildLoaded);
     configShowStructureCover.SettingChanged += (s, e) => SupportUtils.UpdateVisibility();
     configShowStructureSupport = config.Bind(section, "Structure support", false, CreateDescription());
     OnChanged(configShowStructureSupport, Tag.StructureSupport, SupportUtils.UpdateVisibility);
+    configShowStructureSupport.SettingChanged += (s, e) => SupportUtils.UpdateVisibility();
     configShowCreatureNoise = config.Bind(section, "Creature noise", false, CreateDescription());
     OnChanged(configShowCreatureNoise, Tag.CreatureNoise, Character_Awake.RebuildLoaded);
     configShowCreatureHearRange = config.Bind(section, "Creature hear range", false, CreateDescription());
@@ -232,6 +234,7 @@ public partial class Settings
     configShowSmoke = config.Bind(section, "Smoke", false, CreateDescription());
     OnChanged(configShowSmoke, Tag.Smoke, Smoke_Visual.RebuildLoaded);
     configShowPlayerCover = config.Bind(section, "Player cover", false, CreateDescription());
+    OnChanged(configShowPlayerCover, Tag.PlayerCoverBlocked);
     OnChanged(configShowPlayerCover, Tag.PlayerCover, Player_Cover.RebuildLoaded);
     Visibility.SetTag(Tag.Terrain, true);
   }
