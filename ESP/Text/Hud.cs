@@ -230,9 +230,9 @@ public static class Hud
         if (prefab == null)
           count = -1;
         else if (prefab.GetComponent<Character>() != null)
-          count = SpawnSystem.GetNrOfInstances(prefab, Player.m_localPlayer.transform.position, 0f);
+          count = SpawnSystem.GetNrOfInstances(prefab, Player.m_localPlayer.transform.position, Settings.TrackRadius);
         else if (prefab.GetComponent<ItemDrop>() != null)
-          count = itemsDrops.Where(item => item.name.Replace("(Clone)", "") == prefab.name).Sum(item => item.m_itemData.m_stack);
+          count = itemsDrops.Where(item => item.name.Replace("(Clone)", "") == prefab.name && (Settings.TrackRadius < 0 || Utils.DistanceXZ(item.transform.position, Player.m_localPlayer.transform.position) < Settings.TrackRadius)).Sum(item => item.m_itemData.m_stack);
         else
         {
           if (TrackUpdateLongTimer < 5f) continue;
