@@ -179,7 +179,7 @@ public partial class Settings
     OnColorChanged(configEffectAreaCustomCraftingColor, Tag.EffectAreaCustomCrafting);
     configSmokeColor = config.Bind(section, "Smoke sphere", "black", "");
     OnColorChanged(configSmokeColor, Tag.Smoke);
-    configRandomEventSystemRayColor = config.Bind(section, "Random even system ray", "black", "");
+    configRandomEventSystemRayColor = config.Bind(section, "Random event system ray", "black", "");
     OnColorChanged(configRandomEventSystemRayColor, Tag.RandomEventSystem);
     configBiomeAshlandsColor = config.Bind(section, "Ashlands color", "red", "");
     OnColorChanged(configBiomeAshlandsColor, Tag.ZoneCornerAshlands);
