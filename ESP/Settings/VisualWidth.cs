@@ -80,7 +80,7 @@ public partial class Settings
     OnWidthChanged(configPlayerCoverRayWidth, Tag.PlayerCoverBlocked);
     configSmokeLineWidth = config.Bind(section, "Smoke", 2, "");
     OnWidthChanged(configSmokeLineWidth, Tag.Smoke);
-    configTrackedObjectRayWidth = config.Bind(section, "Tracted object rays", 10, "");
+    configTrackedObjectRayWidth = config.Bind(section, "Tracked object rays", 10, "");
     OnWidthChanged(configTrackedObjectRayWidth, Tag.TrackedObject);
     configSpawntPointOneTimeRayWidth = config.Bind(section, "Spawn points (one time)", 2, "");
     OnWidthChanged(configSpawntPointOneTimeRayWidth, Tag.SpawnPointOneTime);
