@@ -2,3 +2,4 @@
 Libs
 bin
 obj
+/Directory.Build.props.user
